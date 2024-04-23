@@ -24,6 +24,27 @@ pipeline{
                 }
             }
         }
+
+        stage('Send JAR File to Deploy Server'){
+            steps{
+                dir('backend'){
+                    sh '''
+                        echo 'Send JAR File to Deploy Server...'
+                        scp -i ~/.ssh/id_rsa ./build/libs/algonote-0.0.1-SNAPSHOT.jar ubuntu@k10b203.p.ssafy.io:/home/ubuntu/spring/algonote-0.0.1-SNAPSHOT.jar
+                        scp -i ~/.ssh/id_rsa ./Dockerfile ubuntu@k10b203.p.ssafy.io:/home/ubuntu/spring/Dockerfile
+                        scp -i ~/.ssh/id_rsa ./init.sh ubuntu@k10b203.p.ssafy.io:/home/ubuntu/spring/init.sh
+                    '''
+                }
+            }
+        }
+
+        stage('Docker build'){
+            steps{
+                dir('backend'){
+                    sh 'ssh -i ~/.ssh/id_rsa ubuntu@k10b203.p.ssafy.io "cd /home/ubuntu/spring && sh init.sh"  ' 
+                }
+            }
+        }
     }
 
 }
