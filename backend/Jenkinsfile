@@ -1,0 +1,29 @@
+pipeline{
+    agent any
+
+    parameters{
+        string(name: 'NAME', defaultValue: 'springtest')
+    }
+
+    stages{
+        stage('SCM'){
+            steps{
+                sh "echo SCM..."
+                checkout scm
+            }
+        }
+
+        stage('Springboot build'){
+            steps{
+                dir('backend'){
+                    sh '''
+                        echo 'Springboot build...'
+                        chmod +x gradlew
+                        ./gradlew clean build
+                    '''
+                }
+            }
+        }
+    }
+
+}
