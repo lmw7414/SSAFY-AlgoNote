@@ -32,9 +32,9 @@ pipeline{
                 dir('backend'){
                     sh '''
                         echo 'Send JAR File to Deploy Server...'
-                        scp -i /var/jenkins_home/.ssh/id_rsa/id_rsa ./build/libs/algonote-0.0.1-SNAPSHOT.jar ubuntu@k10b203.p.ssafy.io:/home/ubuntu/spring/algonote-0.0.1-SNAPSHOT.jar
-                        scp -i /var/jenkins_home/.ssh/id_rsa/id_rsa ./Dockerfile ubuntu@k10b203.p.ssafy.io:/home/ubuntu/spring/Dockerfile
-                        scp -i /var/jenkins_home/.ssh/id_rsa/id_rsa ./init.sh ubuntu@k10b203.p.ssafy.io:/home/ubuntu/spring/init.sh
+                        scp -i ~/.ssh/id_rsa ./build/libs/algonote-0.0.1-SNAPSHOT.jar ubuntu@k10b203.p.ssafy.io:/home/ubuntu/spring/algonote-0.0.1-SNAPSHOT.jar
+                        scp -i ~/.ssh/id_rsa ./Dockerfile ubuntu@k10b203.p.ssafy.io:/home/ubuntu/spring/Dockerfile
+                        scp -i ~/.ssh/id_rsa ./init.sh ubuntu@k10b203.p.ssafy.io:/home/ubuntu/spring/init.sh
                     '''
                 }
             }
@@ -43,7 +43,7 @@ pipeline{
         stage('Docker build'){
             steps{
                 dir('backend'){
-                    sh 'ssh -i /var/jenkins_home/.ssh/id_rsa/id_rsa ubuntu@k10b203.p.ssafy.io "cd /home/ubuntu/spring && sh init.sh"  ' 
+                    sh 'ssh -i ~/.ssh/id_rsa ubuntu@k10b203.p.ssafy.io "cd /home/ubuntu/spring && sh init.sh"  ' 
                 }
             }
         }
