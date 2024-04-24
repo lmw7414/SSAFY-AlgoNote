@@ -1,0 +1,16 @@
+pipeline{
+    agent any
+
+    stages{
+        stage('Docker build'){
+            steps{
+                dir('frontend/algonote'){
+                    sh '''
+                        echo Next build ...
+                        ./init.sh 
+                    '''
+                }
+            }
+        }
+    }
+}
