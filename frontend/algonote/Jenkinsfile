@@ -2,13 +2,23 @@ pipeline{
     agent any
 
     stages{
-        stage('Docker build'){
+        stage('Send Dockerfile'){
             steps{
                 dir('frontend/algonote'){
                     sh '''
                         echo Next build ...
-                        ./init.sh 
+                        scp -i ~/.ssh/id_rsa Dockerfile ubuntu@k10b203.p.ssafy.io:/home/ubuntu/frontend/Dockerfile
+                        scp -i ~/.ssh/id_rsa init.sh ubuntu@k10b203.p.ssafy.io:/home/ubuntu/frontend/init.sh
+                        
                     '''
+                }
+            }
+        }
+
+        stage('Docker build'){
+            steps{
+                dir('frontend/algonote'){
+                    sh 'ssh -i ~/.ssh/id_rsa ubuntu@k10b203.p.ssafy.io "cd /home/ubuntu/frontend && sh init.sh"  ' 
                 }
             }
         }
