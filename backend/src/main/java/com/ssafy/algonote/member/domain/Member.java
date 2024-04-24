@@ -1,6 +1,8 @@
 package com.ssafy.algonote.member.domain;
 
 import com.ssafy.algonote.common.BaseEntity;
+import com.ssafy.algonote.member.dto.request.LoginReqDto;
+import com.ssafy.algonote.member.dto.request.SignUpReqDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -41,4 +43,13 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private MemberRole role;
 
+
+    public static Member from(SignUpReqDto signUpReqDto) {
+        return Member.builder()
+            .email(signUpReqDto.getEmail())
+            .password(signUpReqDto.getPassword())
+            .nickname(signUpReqDto.getNickname())
+            .role(MemberRole.USER)
+            .build();
+    }
 }
