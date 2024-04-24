@@ -37,7 +37,7 @@ pipeline{
             }
         } 
 
-        stage('Deploy on deploy Server'){
+        stage('Deploy on Deploy Server'){
             steps{
                 sh '''
                     ssh -i /var/jenkins_home/.ssh/id_rsa ubuntu@k10b203.p.ssafy.io "docker pull tollea1234/algonote-frontend:latest"
