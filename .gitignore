@@ -1,3 +1,8 @@
-
+###### BE PART ####### 
+## public
 backend/src/main/resources/application.yml
 frontend/**
+
+## minwoo
+backend/database/**
+backend/docker-compose.yml
