@@ -1,6 +1,8 @@
 package com.ssafy.algonote.member.controller;
 
+import com.ssafy.algonote.member.dto.request.EmailDupCheckReqDto;
 import com.ssafy.algonote.member.dto.request.LoginReqDto;
+import com.ssafy.algonote.member.dto.request.NicknameDupCheckReqDto;
 import com.ssafy.algonote.member.dto.request.SignUpReqDto;
 import com.ssafy.algonote.member.dto.response.LoginResDto;
 import com.ssafy.algonote.member.dto.response.LoginReturnDto;
@@ -47,5 +49,19 @@ public class MemberController {
 
         return new ResponseEntity<LoginResDto>(loginResDto, header, HttpStatus.OK);
 
+    }
+
+    @PostMapping("/email-dupcheck")
+    public ResponseEntity<Object> emailDupCheck(@RequestBody EmailDupCheckReqDto emailDupCheckReqDto) {
+        log.info("emailDupCheckReqDto : {}", emailDupCheckReqDto);
+        memberService.emailDupCheck(emailDupCheckReqDto);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/nickname-dupcheck")
+    public ResponseEntity<Object> nicknameDupCheck(@RequestBody NicknameDupCheckReqDto nicknameDupCheckReqDto) {
+        log.info("nicknameDupCheckReqDto : {}", nicknameDupCheckReqDto);
+        memberService.nicknameDupCheck(nicknameDupCheckReqDto);
+        return ResponseEntity.ok().build();
     }
 }
