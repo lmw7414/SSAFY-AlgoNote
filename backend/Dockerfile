@@ -1,6 +1,8 @@
 
-FROM openjdk:17-ea-slim
+FROM openjdk:17-ea
 
 ARG JAR_FILE=./algonote-0.0.1-SNAPSHOT.jar
 COPY ${JAR_FILE} app.jar
+
+
 ENTRYPOINT [ "java", "-jar" ,"./app.jar" ]
