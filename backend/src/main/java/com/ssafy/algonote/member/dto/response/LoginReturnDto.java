@@ -12,8 +12,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class LoginReturnDto {
-    String token;
-    Long memberId;
-    String email;
-    String nickname;
+    private String token;
+    private Long memberId;
+    private String email;
+    private String nickname;
 }

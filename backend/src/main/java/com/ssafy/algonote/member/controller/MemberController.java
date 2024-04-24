@@ -38,15 +38,14 @@ public class MemberController {
     public ResponseEntity<LoginResDto> login (@RequestBody LoginReqDto loginReqDto) {
         log.info("loginReqDto : {}", loginReqDto);
         LoginReturnDto loginReturnDto = memberService.login(loginReqDto);
-        LoginResDto loginResDto = LoginResDto.builder()
-            .memberId(loginReturnDto.getMemberId())
-            .email(loginReturnDto.getEmail())
-            .nickname(loginReturnDto.getNickname())
-            .build();
+
+
+        LoginResDto loginResDto = LoginResDto.from(loginReturnDto);
 
         HttpHeaders header = new HttpHeaders();
         header.add("token", loginReturnDto.getToken());
 
         return new ResponseEntity<LoginResDto>(loginResDto, header, HttpStatus.OK);
+
     }
 }

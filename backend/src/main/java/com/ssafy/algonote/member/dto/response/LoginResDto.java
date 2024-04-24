@@ -9,11 +9,16 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
-public class LoginResDto {
-    private Long memberId;
-    private String email;
-    private String nickname;
-
+public record LoginResDto (
+     Long memberId,
+     String email,
+     String nickname
+){
+    public static LoginResDto from(LoginReturnDto loginReturnDto) {
+        return LoginResDto.builder()
+            .memberId(loginReturnDto.getMemberId())
+            .email(loginReturnDto.getEmail())
+            .nickname(loginReturnDto.getNickname())
+            .build();
+    }
 }

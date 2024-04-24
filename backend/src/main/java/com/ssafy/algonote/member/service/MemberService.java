@@ -37,12 +37,7 @@ public class MemberService {
             throw new CustomException(ErrorCode.WRONG_PASSWORD);
         }
 
-        MemberInfoDto memberInfoDto = MemberInfoDto.builder()
-            .userId(member.getId())
-            .email(member.getEmail())
-            .nickname(member.getNickname())
-            .role(member.getRole())
-            .build();
+        MemberInfoDto memberInfoDto = MemberInfoDto.from(member);
 
         String token = jwtUtil.createAccessToken(memberInfoDto);
 
