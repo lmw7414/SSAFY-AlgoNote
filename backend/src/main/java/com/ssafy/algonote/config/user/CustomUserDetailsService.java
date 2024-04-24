@@ -1,5 +1,7 @@
 package com.ssafy.algonote.config.user;
 
+import com.ssafy.algonote.exception.CustomException;
+import com.ssafy.algonote.exception.ErrorCode;
 import com.ssafy.algonote.member.domain.Member;
 import com.ssafy.algonote.member.repository.MemberRepository;
 import jakarta.transaction.Transactional;
@@ -22,7 +24,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
-        Member member = memberRepository.findById(Long.parseLong(userId)).get();
+        Member member = memberRepository.findById(Long.parseLong(userId))
+            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_INVALID));
 
         MemberInfoDto memberInfoDto = MemberInfoDto.builder()
             .userId(member.getId())
