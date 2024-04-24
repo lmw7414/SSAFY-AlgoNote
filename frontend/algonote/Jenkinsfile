@@ -36,5 +36,15 @@ pipeline{
                 sh "docker rmi $repository:$BUILD_NUMBER" // docker image 제거
             }
         } 
+
+        stage('Deploy on deploy Server'){
+            steps{
+                sh '''
+                    ssh -i ~/.ssh/id_rsa ubuntu@k10b203.p.ssafy.io "docker pull tollea1234/algonote-frontend:latest \ && 
+                                                                    docker rm frontend-container --force \ &&
+                                                                    docker run -p 3000:3000 -d --name frontend-container tollea1234/algonote-frontend:latest"
+                '''
+            }
+        }
     }
 }
