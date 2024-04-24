@@ -1,26 +1,40 @@
 pipeline{
+    environment{
+        repository = "tollea1234/algonote-frontend"
+        DOCKERHUB_CREDENTIALS = credentials('docker') // jenkins에 등록해 놓은 docker hub credentials 이름
+        dockerImage = '' 
+    }
+
     agent any
 
     stages{
-        stage('Send Dockerfile'){
+        stage('Build docker image'){
             steps{
                 dir('frontend/algonote'){
-                    sh '''
-                        echo Next build ...
-                        scp -i ~/.ssh/id_rsa Dockerfile ubuntu@k10b203.p.ssafy.io:/home/ubuntu/frontend/Dockerfile
-                        scp -i ~/.ssh/id_rsa init.sh ubuntu@k10b203.p.ssafy.io:/home/ubuntu/frontend/init.sh
-                        
-                    '''
+                    script{
+                        dockerImage = docker.build repository + ":$BUILD_NUMBER"
+                    }
                 }
             }
         }
-
-        stage('Docker build'){
-            steps{
-                dir('frontend/algonote'){
-                    sh 'ssh -i ~/.ssh/id_rsa ubuntu@k10b203.p.ssafy.io "cd /home/ubuntu/frontend && sh init.sh"  ' 
-                }
-            }
+        
+        stage('Login'){
+          steps{
+              sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin' // docker hub 로그인
+          }
         }
+        
+        stage('Deploy our image') { 
+            steps { 
+                script {
+                    sh 'docker push $repository:$BUILD_NUMBER' //docker push
+                } 
+            }
+        } 
+        stage('Cleaning up') { 
+            steps { 
+                sh "docker rmi $repository:$BUILD_NUMBER" // docker image 제거
+            }
+        } 
     }
 }
