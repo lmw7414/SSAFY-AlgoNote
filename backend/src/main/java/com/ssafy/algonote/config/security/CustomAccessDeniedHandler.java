@@ -20,12 +20,13 @@ import org.springframework.stereotype.Component;
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
     private final ObjectMapper objectMapper;
+
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response,
         AccessDeniedException accessDeniedException) throws IOException, ServletException {
         log.error("No Authorities"); // accessDeniedException
 
-        AuthorityErrorResponseDto accessDenyResponseDto = AuthorityErrorResponseDto.builder()
+        AuthorityErrorResDto accessDenyResponseDto = AuthorityErrorResDto.builder()
             .httpStatus(HttpStatus.FORBIDDEN.value())
             .message(accessDeniedException.getMessage())
             .dateTime(LocalDateTime.now())

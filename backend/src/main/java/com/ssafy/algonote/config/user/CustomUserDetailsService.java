@@ -35,7 +35,6 @@ public class CustomUserDetailsService implements UserDetailsService {
             .role(member.getRole())
             .build();
 
-
         return new CustomUserDetails(memberInfoDto);
     }
 }

@@ -20,19 +20,20 @@ import org.springframework.stereotype.Component;
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     private final ObjectMapper objectMapper;
+
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
         AuthenticationException authException) throws IOException, ServletException {
 
         log.error("Not Authenticated Request");
 
-        AuthorityErrorResponseDto authorityErrorResponseDto = AuthorityErrorResponseDto.builder()
+        AuthorityErrorResDto authorityErrorResDto = AuthorityErrorResDto.builder()
             .httpStatus(HttpStatus.UNAUTHORIZED.value())
             .message(authException.getMessage())
             .dateTime(LocalDateTime.now())
             .build();
 
-        String responseBody = objectMapper.writeValueAsString(authorityErrorResponseDto);
+        String responseBody = objectMapper.writeValueAsString(authorityErrorResDto);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setCharacterEncoding("UTF-8");

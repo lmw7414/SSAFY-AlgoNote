@@ -1,6 +1,6 @@
 package com.ssafy.algonote.member.controller;
 
-import com.ssafy.algonote.member.dto.request.SignUpRequestDto;
+import com.ssafy.algonote.member.dto.request.SignUpReqDto;
 import com.ssafy.algonote.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,8 +23,8 @@ public class MemberController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<Object> signUp(SignUpRequestDto signUpRequestDto) {
-        Long id = memberService.signUp(signUpRequestDto);
+    public ResponseEntity<Object> signUp(SignUpReqDto signUpReqDto) {
+        Long id = memberService.signUp(signUpReqDto);
         return ResponseEntity.ok().build();
     }
 }

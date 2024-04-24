@@ -13,13 +13,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Slf4j
 @Getter
 @RequiredArgsConstructor
-public class CustomUserDetails implements UserDetails{
+public class CustomUserDetails implements UserDetails {
+
     private final MemberInfoDto memberInfoDto;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<String> roles = new ArrayList<>();
-        roles.add("ROLE_"+ memberInfoDto.getRole().toString());
+        roles.add("ROLE_" + memberInfoDto.getRole().toString());
 
         return roles.stream().map(SimpleGrantedAuthority::new).toList();
     }

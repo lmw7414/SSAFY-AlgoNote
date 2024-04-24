@@ -12,7 +12,8 @@ import lombok.ToString;
 @Setter
 @ToString
 @AllArgsConstructor
-public class AuthorityErrorResponseDto {
+public class AuthorityErrorResDto {
+
     int httpStatus;
     String message;
     LocalDateTime dateTime;

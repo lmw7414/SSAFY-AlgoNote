@@ -20,8 +20,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 @AllArgsConstructor
 public class SecurityConfig {
+
     private static final String[] AUTH_WHITELIST = {
-      "/auth/**", "/**"
+        "/auth/**", "/**"
     };
 
     private final JwtUtil jwtUtil;
@@ -30,8 +31,8 @@ public class SecurityConfig {
     private final CustomAuthenticationEntryPoint authenticationEntryPoint;
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-        http.csrf(csrf->csrf.disable());
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.csrf(csrf -> csrf.disable());
         http.cors(Customizer.withDefaults());
 
         http.sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(
@@ -49,8 +50,8 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests(
             authorize -> authorize.requestMatchers(AUTH_WHITELIST)
-                                  .permitAll()
-                                  .anyRequest().authenticated()
+                .permitAll()
+                .anyRequest().authenticated()
         );
 
         return http.build();

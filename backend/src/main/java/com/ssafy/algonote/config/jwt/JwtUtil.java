@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class JwtUtil {
+
     private final Key key;
     private final long accessTokenExpTime;
 
@@ -36,7 +37,7 @@ public class JwtUtil {
         return createToken(user, accessTokenExpTime);
     }
 
-    private String createToken(MemberInfoDto user, long expireTime){
+    private String createToken(MemberInfoDto user, long expireTime) {
         Claims claims = Jwts.claims();
 
         claims.put("userId", user.getUserId());
@@ -53,11 +54,10 @@ public class JwtUtil {
             .setExpiration(Date.from(tokenValidity.toInstant()))
             .signWith(key, SignatureAlgorithm.HS256)
             .compact();
-
     }
 
     // jwt 검증
-    public boolean validateToken(String token){
+    public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
@@ -73,14 +73,15 @@ public class JwtUtil {
         return false;
     }
 
-    public Long getUserId(String token){
+    public Long getUserId(String token) {
         return parseClaims(token).get("userId", Long.class);
     }
 
-    public Claims parseClaims(String accessToken){
-        try{
-            return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken).getBody();
-        }catch(ExpiredJwtException e){
+    public Claims parseClaims(String accessToken) {
+        try {
+            return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken)
+                .getBody();
+        } catch (ExpiredJwtException e) {
             return e.getClaims();
         }
     }
