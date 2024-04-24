@@ -18,8 +18,8 @@ pipeline{
                 dir('backend'){
                     sh '''
                         echo 'Springboot build...'
-
-                        cp /var/jenkins_home/env/application.yml ./src/main/resources
+                        mkdir ./src/main/resources
+                        cp /var/jenkins_home/env/application.yml ./src/main/resources/application.yml
                         chmod +x gradlew
                         ./gradlew clean build
                     '''
