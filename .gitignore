@@ -1,0 +1,9 @@
+###### BE PART ####### 
+## public
+backend/src/main/resources/application.yml
+backend/.gradle/**
+backend/.idea/
+backend/build/**
+## minwoo
+backend/database/**
+backend/docker-compose.yml
