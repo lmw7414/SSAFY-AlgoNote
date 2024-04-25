@@ -38,7 +38,8 @@ public class ReviewService {
             throw new CustomException(ErrorCode.INVALID_LINE_RANGE);
         }
 
-        Review.of(req, member, note);
+        Review review = Review.of(req, member, note);
+        reviewRepository.save(review);
     }
 
     @Transactional(readOnly = true)
@@ -66,7 +67,6 @@ public class ReviewService {
         }
 
         review.update(req);
-        reviewRepository.save(review);
     }
 
 }
