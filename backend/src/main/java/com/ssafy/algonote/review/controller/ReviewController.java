@@ -1,9 +1,12 @@
 package com.ssafy.algonote.review.controller;
 
 import com.ssafy.algonote.review.dto.request.ReviewReqDto;
+import com.ssafy.algonote.review.dto.response.ReviewResDto;
 import com.ssafy.algonote.review.service.ReviewService;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,6 +22,11 @@ public class ReviewController {
     public ResponseEntity<Void> create(@PathVariable Long noteId, @RequestBody ReviewReqDto req) {
         reviewService.create(req, noteId);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/notes/{noteId}/reviews")
+    public ResponseEntity<List<ReviewResDto>> readList(@PathVariable Long noteId) {
+        return ResponseEntity.ok(reviewService.readList(noteId));
     }
 
 }
