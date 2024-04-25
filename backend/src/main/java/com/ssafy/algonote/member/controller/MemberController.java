@@ -1,12 +1,17 @@
 package com.ssafy.algonote.member.controller;
 
+import com.ssafy.algonote.member.dto.request.DestEmatilReqDto;
+import com.ssafy.algonote.member.dto.request.EmailAuthReqDto;
 import com.ssafy.algonote.member.dto.request.EmailDupCheckReqDto;
 import com.ssafy.algonote.member.dto.request.LoginReqDto;
 import com.ssafy.algonote.member.dto.request.NicknameDupCheckReqDto;
 import com.ssafy.algonote.member.dto.request.SignUpReqDto;
+import com.ssafy.algonote.member.dto.response.EmailAuthResDto;
 import com.ssafy.algonote.member.dto.response.LoginResDto;
 import com.ssafy.algonote.member.dto.response.LoginReturnDto;
+import com.ssafy.algonote.member.service.MailService;
 import com.ssafy.algonote.member.service.MemberService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -25,6 +30,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberController {
 
     private final MemberService memberService;
+    private final MailService mailService;
+
     @GetMapping("/test")
     public ResponseEntity<String> test() {
         return ResponseEntity.ok("test");
@@ -44,7 +51,7 @@ public class MemberController {
         LoginReturnDto loginReturnDto = memberService.login(loginReqDto);
 
 
-        LoginResDto loginResDto = LoginResDto.from(loginReturnDto);
+        LoginResDto loginResDto = LoginResDto.of(loginReturnDto);
 
         HttpHeaders header = new HttpHeaders();
         header.add("token", loginReturnDto.token());
@@ -66,5 +73,23 @@ public class MemberController {
         memberService.nicknameDupCheck(nicknameDupCheckReqDto);
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/verification-requests")
+    public ResponseEntity<Void> sendMessage(@Valid @RequestBody DestEmatilReqDto destEmatilReqDto) {
+        log.info("destEmatilReqDto : {}", destEmatilReqDto);
+        memberService.sendCodeToEmail(destEmatilReqDto.email());
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/verification")
+    public ResponseEntity<EmailAuthResDto> verifyCode(@Valid @RequestBody EmailAuthReqDto emailAuthReqDto) {
+        log.info("emailAuthReqDto : {}", emailAuthReqDto);
+        EmailAuthResDto emailAuthResDto = memberService.verifyCode(emailAuthReqDto);
+
+        return ResponseEntity.ok(emailAuthResDto);
+    }
+
+
 
 }

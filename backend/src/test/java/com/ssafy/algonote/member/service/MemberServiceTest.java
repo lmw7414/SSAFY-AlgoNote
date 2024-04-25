@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.ssafy.algonote.exception.CustomException;
 import com.ssafy.algonote.exception.ErrorCode;
+import com.ssafy.algonote.member.dto.request.EmailAuthReqDto;
 import com.ssafy.algonote.member.dto.request.LoginReqDto;
 import com.ssafy.algonote.member.dto.request.SignUpReqDto;
 import com.ssafy.algonote.member.dto.response.LoginReturnDto;
@@ -18,6 +19,9 @@ class MemberServiceTest {
 
     @Autowired
     private MemberService memberService;
+
+    @Autowired
+    private RedisService redisService;
 
 
     @Test
@@ -75,5 +79,40 @@ class MemberServiceTest {
         });
         System.out.println("exception.getErrorCode() = " + exception.getErrorCode());
         assertEquals(ErrorCode.WRONG_PASSWORD, exception.getErrorCode());
+    }
+
+    @Test
+    void authicationSendTest() {
+        String toEmail = "wlskaka4@gmail.com";
+        String AUTH_CODE_PREFIX = "AuthCode ";
+        memberService.sendCodeToEmail(toEmail);
+
+        String authCode = redisService.getData(AUTH_CODE_PREFIX+ toEmail);
+        System.out.println("authCode = " + authCode);
+
+    }
+
+    @Test
+    void verificationSuccessTest() {
+        EmailAuthReqDto emailAuthReqDto = EmailAuthReqDto.builder()
+            .email("wlskaka4@gmail.com")
+            .authCode("587947")
+            .build();
+
+        boolean authenticated = memberService.verifyCode(emailAuthReqDto).authenticated();
+
+        assertThat(authenticated).isTrue();
+    }
+
+    @Test
+    void verificationFailTest() {
+        EmailAuthReqDto emailAuthReqDto = EmailAuthReqDto.builder()
+            .email("wlskaka4@gmail.com")
+            .authCode("478708")
+            .build();
+
+        boolean authenticated = memberService.verifyCode(emailAuthReqDto).authenticated();
+
+        assertThat(authenticated).isFalse();
     }
 }
