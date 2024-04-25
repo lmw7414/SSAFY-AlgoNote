@@ -69,4 +69,22 @@ public class ReviewService {
         review.update(req);
     }
 
+    public void delete(Long noteId, Long reviewId) {
+        Long memberId = 1L;  // TODO: 추후 accessToken 으로부터 조회하는 방식으로 변경
+        Member member = memberRepository.findById(memberId)
+            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
+        Review review = reviewRepository.findById(reviewId)
+            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_REVIEW));
+
+        if (!review.getNote().getId().equals(noteId)) {
+            throw new CustomException(ErrorCode.INVALID_PATH);
+        }
+
+        if (!review.getMember().getId().equals(member.getId())) {
+            throw new CustomException(ErrorCode.NO_AUTHORITY);
+        }
+
+        reviewRepository.delete(review);
+    }
+
 }
