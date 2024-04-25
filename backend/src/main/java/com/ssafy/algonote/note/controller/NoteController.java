@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class NoteController {
 
     private final HeartService heartService;
-    @PostMapping("/{noteId}/heart")
+    @PostMapping("/{noteId}/hearts")
     public ResponseEntity<HeartResDto> heart(@PathVariable("noteId") Long noteId) {
         log.info("noteId: {}", noteId);
 

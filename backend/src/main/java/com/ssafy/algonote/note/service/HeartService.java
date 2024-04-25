@@ -9,6 +9,7 @@ import com.ssafy.algonote.note.domain.Note;
 import com.ssafy.algonote.note.dto.HeartResDto;
 import com.ssafy.algonote.note.repository.HeartRepository;
 import com.ssafy.algonote.note.repository.NoteRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ public class HeartService {
     private final MemberRepository memberRepository;
     private final NoteRepository noteRepository;
 
+    @Transactional
     public HeartResDto heart(Long memberId, Long noteId) {
 
 
