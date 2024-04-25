@@ -16,6 +16,7 @@ import com.ssafy.algonote.note.domain.Note;
 import com.ssafy.algonote.note.repository.NoteRepository;
 import com.ssafy.algonote.review.domain.Review;
 import com.ssafy.algonote.review.dto.request.ReviewReqDto;
+import com.ssafy.algonote.review.dto.request.ReviewUpdateReqDto;
 import com.ssafy.algonote.review.dto.response.ReviewResDto;
 import com.ssafy.algonote.review.repository.ReviewRepository;
 import java.util.Arrays;
@@ -166,8 +167,112 @@ public class ReviewServiceTest {
 
     }
 
+    @Nested
+    @DisplayName("리뷰 수정")
+    class testUpdate {
+
+        private Long noteId;
+        private Long reviewId;
+        private Member member;
+        private Review review;
+        private ReviewUpdateReqDto reviewUpdateReqDto;
+
+        @BeforeEach
+        void setup() {
+            noteId = 1L;
+            reviewId = 1L;
+            member = getMember();
+            review = getReview();
+            reviewUpdateReqDto = getReviewUpdateReqDto();
+        }
+
+        @Test
+        @DisplayName("[성공]")
+        void success() {
+            // given
+            willReturn(Optional.of(member)).given(memberRepository).findById(any());
+            willReturn(Optional.of(review)).given(reviewRepository).findById(any());
+
+            // when
+            reviewService.update(reviewUpdateReqDto, noteId, reviewId);
+
+            // then
+            verify(reviewRepository, times(1)).save(any());
+        }
+
+        @Test
+        @DisplayName("[실패] 유효하지 않은 경로")
+        void fail_invalid_path() {
+            // given
+            Long wrongNoteId = 10L;
+            willReturn(Optional.of(member)).given(memberRepository).findById(any());
+            willReturn(Optional.of(review)).given(reviewRepository).findById(any());
+
+            //when
+            CustomException exception = assertThrows(CustomException.class,
+                () -> reviewService.update(reviewUpdateReqDto, wrongNoteId, reviewId));
+
+            //then
+            assertEquals(ErrorCode.INVALID_PATH, exception.getErrorCode());
+        }
+
+        @Test
+        @DisplayName("[실패] 유효하지 않은 memberId")
+        void fail_member() {
+            // given
+            willReturn(Optional.empty()).given(memberRepository).findById(any());
+
+            //when
+            CustomException exception = assertThrows(CustomException.class,
+                () -> reviewService.update(reviewUpdateReqDto, noteId, reviewId));
+
+            //then
+            assertEquals(ErrorCode.NOT_FOUND_MEMBER, exception.getErrorCode());
+        }
+
+        @Test
+        @DisplayName("[실패] 유효하지 않은 reviewId")
+        void fail_review() {
+            // given
+            Long wrongReviewId = 10L;
+            willReturn(Optional.of(member)).given(memberRepository).findById(any());
+            willReturn(Optional.empty()).given(reviewRepository).findById(any());
+
+            //when
+            CustomException exception = assertThrows(CustomException.class,
+                () -> reviewService.update(reviewUpdateReqDto, noteId, wrongReviewId));
+
+            //then
+            assertEquals(ErrorCode.NOT_FOUND_REVIEW, exception.getErrorCode());
+        }
+
+        @Test
+        @DisplayName("[실패] 작성자가 아닌 멤버가 수정을 시도하는 경우")
+        void fail_no_authority() {
+            // given
+            Member memberWithNoAuthority = Member.builder()
+                .id(10L)
+                .build();
+
+            willReturn(Optional.of(memberWithNoAuthority)).given(memberRepository).findById(any());
+            willReturn(Optional.of(review)).given(reviewRepository).findById(any());
+
+            //when
+            CustomException exception = assertThrows(CustomException.class,
+                () -> reviewService.update(reviewUpdateReqDto, noteId, reviewId));
+
+            //then
+            assertEquals(ErrorCode.NO_AUTHORITY, exception.getErrorCode());
+        }
+
+    }
+
     ReviewReqDto getReviewReqDto() {
         return new ReviewReqDto(1, 3, "content");
+    }
+
+    ReviewUpdateReqDto getReviewUpdateReqDto() {
+        return new ReviewUpdateReqDto("updated content");
     }
 
     Note getNote() {
@@ -179,6 +284,14 @@ public class ReviewServiceTest {
     Member getMember() {
         return Member.builder()
             .id(1L)
+            .build();
+    }
+
+    Review getReview() {
+        return Review.builder()
+            .id(1L)
+            .member(getMember())
+            .note(getNote())
             .build();
     }
 
