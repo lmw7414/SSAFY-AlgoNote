@@ -8,7 +8,6 @@ import lombok.*;
 public record NicknameDupCheckReqDto(
    @NotBlank String nickname
 ) {
-
     public NicknameDupCheckReqDto(String nickname) {
         this.nickname = nickname.trim();
     }

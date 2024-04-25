@@ -51,7 +51,7 @@ public class MemberController {
         LoginReturnDto loginReturnDto = memberService.login(loginReqDto);
 
 
-        LoginResDto loginResDto = LoginResDto.of(loginReturnDto);
+        LoginResDto loginResDto = LoginResDto.from(loginReturnDto);
 
         HttpHeaders header = new HttpHeaders();
         header.add("token", loginReturnDto.token());

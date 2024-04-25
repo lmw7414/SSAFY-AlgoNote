@@ -8,7 +8,7 @@ public record LoginResDto (
      String email,
      String nickname
 ){
-    public static LoginResDto of(LoginReturnDto loginReturnDto) {
+    public static LoginResDto from(LoginReturnDto loginReturnDto) {
         return LoginResDto.builder()
             .memberId(loginReturnDto.memberId())
             .email(loginReturnDto.email())

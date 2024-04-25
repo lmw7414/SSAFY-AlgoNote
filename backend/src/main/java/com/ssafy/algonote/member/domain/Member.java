@@ -40,7 +40,7 @@ public class Member extends BaseEntity {
     private MemberRole role;
 
 
-    public static Member of(SignUpReqDto signUpReqDto) {
+    public static Member from(SignUpReqDto signUpReqDto) {
         return Member.builder()
             .email(signUpReqDto.email())
             .password(signUpReqDto.password())

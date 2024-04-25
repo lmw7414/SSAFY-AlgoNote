@@ -81,22 +81,18 @@ class MemberServiceTest {
         assertEquals(ErrorCode.WRONG_PASSWORD, exception.getErrorCode());
     }
 
+
     @Test
-    void authicationSendTest() {
+    void verificationSuccessTest() {
         String toEmail = "wlskaka4@gmail.com";
         String AUTH_CODE_PREFIX = "AuthCode ";
         memberService.sendCodeToEmail(toEmail);
 
         String authCode = redisService.getData(AUTH_CODE_PREFIX+ toEmail);
-        System.out.println("authCode = " + authCode);
 
-    }
-
-    @Test
-    void verificationSuccessTest() {
         EmailAuthReqDto emailAuthReqDto = EmailAuthReqDto.builder()
-            .email("wlskaka4@gmail.com")
-            .authCode("587947")
+            .email(toEmail)
+            .authCode(authCode)
             .build();
 
         boolean authenticated = memberService.verifyCode(emailAuthReqDto).authenticated();
@@ -106,13 +102,18 @@ class MemberServiceTest {
 
     @Test
     void verificationFailTest() {
+        String toEmail = "wlskaka4@gmail.com";
+        String AUTH_CODE_PREFIX = "AuthCode ";
+        memberService.sendCodeToEmail(toEmail);
+
+        String authCode = redisService.getData(AUTH_CODE_PREFIX+ toEmail);
+
         EmailAuthReqDto emailAuthReqDto = EmailAuthReqDto.builder()
-            .email("wlskaka4@gmail.com")
-            .authCode("478708")
+            .email(toEmail)
+            .authCode(authCode+"1")
             .build();
 
         boolean authenticated = memberService.verifyCode(emailAuthReqDto).authenticated();
-
         assertThat(authenticated).isFalse();
     }
 }
