@@ -1,21 +1,20 @@
 package com.ssafy.algonote.member.dto.request;
 
-import lombok.AllArgsConstructor;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
 @Builder
-@ToString
-public class SignUpReqDto {
+public record SignUpReqDto(
+    @NotBlank @Email String email,
+    @NotBlank String password,
+    @NotBlank String nickname
+) {
 
-        private String email;
-        private String password;
-        private String nickname;
+    public SignUpReqDto(String email, String password, String nickname) {
+        this.email = email.trim();
+        this.password = password;
+        this.nickname = nickname;
+    }
 }
