@@ -1,18 +1,17 @@
 package com.ssafy.algonote.member.dto.request;
 
-
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 
 @Builder
-public record LoginReqDto(
+public record EmailAuthReqDto(
     @NotBlank @Email String email,
-    @NotBlank String password
+    @NotBlank String authCode
 ) {
 
-    public LoginReqDto(String email, String password) {
+    public EmailAuthReqDto(@NotBlank @Email String email, @NotBlank String authCode) {
         this.email = email.trim();
-        this.password = password.trim();
+        this.authCode = authCode;
     }
 }

@@ -8,13 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class EmailServiceTest {
+class RedisServiceTest {
     @Autowired
-    private EmailService emailService;
+    private RedisService redisService;
 
     @Test
     void saveTest(){
-        emailService.save("test", "test", 10L, TimeUnit.SECONDS);
-        assertEquals("test", emailService.getData("test"));
+        redisService.save("test", "test", 10L, TimeUnit.SECONDS);
+        assertEquals("test", redisService.getData("test"));
     }
 }
