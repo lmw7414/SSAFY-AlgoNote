@@ -8,7 +8,9 @@ import com.ssafy.algonote.note.domain.Note;
 import com.ssafy.algonote.note.repository.NoteRepository;
 import com.ssafy.algonote.review.domain.Review;
 import com.ssafy.algonote.review.dto.request.ReviewReqDto;
+import com.ssafy.algonote.review.dto.response.ReviewResDto;
 import com.ssafy.algonote.review.repository.ReviewRepository;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -25,11 +27,11 @@ public class ReviewService {
     private final MemberRepository memberRepository;
 
     public void create(ReviewReqDto req, Long noteId) {
-        Long memberId = 1L;
+        Long memberId = 1L;  // TODO: 추후 accessToken 으로부터 조회하는 방식으로 변경
         Member member = memberRepository.findById(memberId)
-            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID));  // TODO: 추후 accessToken 으로부터 조회하는 방식으로 변경
+            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
         Note note = noteRepository.findById(noteId)
-            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID));
+            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_NOTE));
 
         if (!(req.startLine() <= req.endLine())) {
             throw new CustomException(ErrorCode.INVALID_LINE_RANGE);
@@ -37,6 +39,15 @@ public class ReviewService {
 
         Review review = Review.of(req, member, note);
         reviewRepository.save(review);
+    }
+
+    @Transactional(readOnly = true)
+    public List<ReviewResDto> readList(Long noteId) {
+        noteRepository.findById(noteId)
+            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_NOTE));
+
+        List<Review> reviews = reviewRepository.findAllByNoteId(noteId);
+        return reviews.stream().map(ReviewResDto::from).toList();
     }
 
 }

@@ -6,6 +6,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.willReturn;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.ssafy.algonote.exception.CustomException;
 import com.ssafy.algonote.exception.ErrorCode;
@@ -13,8 +14,12 @@ import com.ssafy.algonote.member.domain.Member;
 import com.ssafy.algonote.member.repository.MemberRepository;
 import com.ssafy.algonote.note.domain.Note;
 import com.ssafy.algonote.note.repository.NoteRepository;
+import com.ssafy.algonote.review.domain.Review;
 import com.ssafy.algonote.review.dto.request.ReviewReqDto;
+import com.ssafy.algonote.review.dto.response.ReviewResDto;
 import com.ssafy.algonote.review.repository.ReviewRepository;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -72,7 +77,7 @@ public class ReviewServiceTest {
         }
 
         @Test
-        @DisplayName("[실패] 멤버 조회 실패")
+        @DisplayName("[실패] 유효하지 않은 memberId")
         void fail_member() {
             // given
             willReturn(Optional.empty()).given(memberRepository).findById(any());
@@ -82,11 +87,11 @@ public class ReviewServiceTest {
                 () -> reviewService.create(reviewReqDto, noteId));
 
             //then
-            assertEquals(ErrorCode.NOT_FOUND_ID, exception.getErrorCode());
+            assertEquals(ErrorCode.NOT_FOUND_MEMBER, exception.getErrorCode());
         }
 
         @Test
-        @DisplayName("[실패] 노트 조회 실패")
+        @DisplayName("[실패] 유효하지 않은 noteId")
         void fail_note() {
             // given
             willReturn(Optional.of(member)).given(memberRepository).findById(any());
@@ -97,7 +102,7 @@ public class ReviewServiceTest {
                 () -> reviewService.create(reviewReqDto, noteId));
 
             //then
-            assertEquals(ErrorCode.NOT_FOUND_ID, exception.getErrorCode());
+            assertEquals(ErrorCode.NOT_FOUND_NOTE, exception.getErrorCode());
         }
 
         @Test
@@ -114,6 +119,49 @@ public class ReviewServiceTest {
 
             //then
             assertEquals(ErrorCode.INVALID_LINE_RANGE, exception.getErrorCode());
+        }
+
+    }
+
+    @Nested
+    @DisplayName("리뷰 목록 조회")
+    class testReadList {
+
+        @Test
+        @DisplayName("[성공]")
+        void success() {
+            // given
+            Member member = getMember();
+            Note note = getNote();
+
+            Review review1 = new Review(1L, member, note, 1, 3, "content1");
+            Review review2 = new Review(2L, member, note, 2, 4, "content2");
+            List<Review> reviews = Arrays.asList(review1, review2);
+
+            willReturn(Optional.of(note)).given(noteRepository).findById(any());
+            when(reviewRepository.findAllByNoteId(any())).thenReturn(reviews);
+
+            // when
+            List<ReviewResDto> resultList = reviewService.readList(any());
+
+            // then
+            assertEquals(2, resultList.size());
+            assertEquals("content1", resultList.get(0).content());
+        }
+
+        @Test
+        @DisplayName("[실패] 유효하지 않은 noteId")
+        void fail_note() {
+            // given
+            Long noteId = 1L;
+            willReturn(Optional.empty()).given(noteRepository).findById(any());
+
+            // when
+            CustomException exception = assertThrows(CustomException.class,
+                () -> reviewService.readList(noteId));
+
+            // then
+            assertEquals(ErrorCode.NOT_FOUND_NOTE, exception.getErrorCode());
         }
 
     }

@@ -50,7 +50,7 @@ public class MemberService {
 
     public LoginReturnDto login(LoginReqDto loginReqDto){
         Member member = memberRepository.findByEmail(loginReqDto.email())
-            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID));
+            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
 
 
         if(!checkPassword(loginReqDto.password(), member.getPassword())) {

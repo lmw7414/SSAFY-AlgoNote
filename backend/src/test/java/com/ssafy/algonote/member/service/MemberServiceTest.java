@@ -59,13 +59,13 @@ class MemberServiceTest {
             .password("1233")
             .build();
 
-        CustomException exception = assertThrows(CustomException.class, ()->{
-            memberService.login(loginReqDto);
-        });
+        CustomException exception = assertThrows(CustomException.class,
+            () -> memberService.login(loginReqDto));
         System.out.println("exception.getErrorCode() = " + exception.getErrorCode());
-        assertEquals(ErrorCode.NOT_FOUND_ID, exception.getErrorCode());
+        assertEquals(ErrorCode.NOT_FOUND_MEMBER, exception.getErrorCode());
 
     }
+
     @Test
     @Transactional
     void loginPasswordFailTest() {
@@ -74,9 +74,8 @@ class MemberServiceTest {
             .password("1234")
             .build();
 
-        CustomException exception = assertThrows(CustomException.class, () -> {
-            memberService.login(loginReqDto);
-        });
+        CustomException exception = assertThrows(CustomException.class,
+            () -> memberService.login(loginReqDto));
         System.out.println("exception.getErrorCode() = " + exception.getErrorCode());
         assertEquals(ErrorCode.WRONG_PASSWORD, exception.getErrorCode());
     }
@@ -116,4 +115,5 @@ class MemberServiceTest {
         boolean authenticated = memberService.verifyCode(emailAuthReqDto).authenticated();
         assertThat(authenticated).isFalse();
     }
+
 }
