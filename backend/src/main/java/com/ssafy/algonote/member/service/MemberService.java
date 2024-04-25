@@ -32,10 +32,10 @@ public class MemberService {
     }
 
     public LoginReturnDto login(LoginReqDto loginReqDto){
-        Member member = memberRepository.findByEmail(loginReqDto.getEmail())
+        Member member = memberRepository.findByEmail(loginReqDto.email())
             .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID));
 
-        if(!member.getPassword().equals(loginReqDto.getPassword())) {
+        if(!member.getPassword().equals(loginReqDto.password())) {
             throw new CustomException(ErrorCode.WRONG_PASSWORD);
         }
 
@@ -52,12 +52,12 @@ public class MemberService {
     }
 
     public void emailDupCheck(EmailDupCheckReqDto emailDupCheckReqDto) {
-        Member member = memberRepository.findByEmail(emailDupCheckReqDto.getEmail())
+        Member member = memberRepository.findByEmail(emailDupCheckReqDto.email())
                         .orElseThrow(()-> new CustomException(ErrorCode.DUPLICATE_EMAIL));
     }
 
     public void nicknameDupCheck(NicknameDupCheckReqDto nicknameDupCheckReqDto) {
-        Member member = memberRepository.findByNickname(nicknameDupCheckReqDto.getNickname())
+        Member member = memberRepository.findByNickname(nicknameDupCheckReqDto.nickname())
                         .orElseThrow(() -> new CustomException(ErrorCode.DUPLICATE_NICKNAME));
 
     }

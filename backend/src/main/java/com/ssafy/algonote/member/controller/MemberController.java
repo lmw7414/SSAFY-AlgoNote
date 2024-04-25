@@ -32,6 +32,8 @@ public class MemberController {
 
     @PostMapping("/signup")
     public ResponseEntity<Object> signUp(@RequestBody SignUpReqDto signUpReqDto) {
+        log.info("signUpReqDto : {}", signUpReqDto);
+
         Long id = memberService.signUp(signUpReqDto);
         return ResponseEntity.ok().build();
     }
@@ -45,7 +47,7 @@ public class MemberController {
         LoginResDto loginResDto = LoginResDto.from(loginReturnDto);
 
         HttpHeaders header = new HttpHeaders();
-        header.add("token", loginReturnDto.getToken());
+        header.add("token", loginReturnDto.token());
 
         return new ResponseEntity<LoginResDto>(loginResDto, header, HttpStatus.OK);
 

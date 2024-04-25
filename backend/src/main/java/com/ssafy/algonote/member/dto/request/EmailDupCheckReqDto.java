@@ -2,12 +2,10 @@ package com.ssafy.algonote.member.dto.request;
 
 import lombok.*;
 
-@Getter
-@Setter
 @Builder
-@ToString
-@AllArgsConstructor
-@NoArgsConstructor
-public class EmailDupCheckReqDto {
-    String email;
+public record EmailDupCheckReqDto(String email) {
+
+    public EmailDupCheckReqDto(String email) {
+        this.email = email.trim();
+    }
 }
