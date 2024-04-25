@@ -3,7 +3,7 @@ package com.ssafy.algonote.review.domain;
 import com.ssafy.algonote.common.BaseEntity;
 import com.ssafy.algonote.member.domain.Member;
 import com.ssafy.algonote.note.domain.Note;
-import com.ssafy.algonote.review.dto.request.ReviewReq;
+import com.ssafy.algonote.review.dto.request.ReviewReqDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -45,7 +45,7 @@ public class Review extends BaseEntity {
     @Column(nullable = false)
     private String content;
 
-    public static Review of(ReviewReq req, Member member, Note note) {
+    public static Review of(ReviewReqDto req, Member member, Note note) {
         return Review.builder()
             .startLine(req.startLine())
             .endLine(req.endLine())
