@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Component
 @NoArgsConstructor
 public class SecurityUtil {
-    public static Long getUserId() {
+    public static Long getMemberId() {
         final Authentication authentication = SecurityContextHolder.getContext()
             .getAuthentication();
 
