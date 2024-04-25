@@ -2,6 +2,7 @@ package com.ssafy.algonote.problem.domain;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 import java.util.Set;
@@ -9,6 +10,7 @@ import java.util.Set;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Problem {
 
     @Id

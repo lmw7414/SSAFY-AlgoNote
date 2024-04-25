@@ -6,6 +6,7 @@ import com.ssafy.algonote.member.domain.Member;
 import com.ssafy.algonote.member.repository.MemberRepository;
 import com.ssafy.algonote.note.domain.Heart;
 import com.ssafy.algonote.note.domain.Note;
+import com.ssafy.algonote.note.dto.HeartResDto;
 import com.ssafy.algonote.note.repository.HeartRepository;
 import com.ssafy.algonote.note.repository.NoteRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,22 +21,28 @@ public class HeartService {
     private final MemberRepository memberRepository;
     private final NoteRepository noteRepository;
 
-    public void heart(Long memberId, Long noteId) {
-        log.info("userId: {}, noteId: {}", memberId, noteId);
+    public HeartResDto heart(Long memberId, Long noteId) {
 
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(
-            ErrorCode.NOT_FOUND_MEMBER));
+
+        Member member = memberRepository.findById(memberId).orElseThrow(
+            () -> new CustomException(ErrorCode.NOT_FOUND_MEMBER)
+        );
+
+        Note note = noteRepository.findById(noteId).orElseThrow(
+            ()->new CustomException(ErrorCode.NOT_FOUND_NOTE)
+        );
 
         Heart heart = heartRepository.findOneByMemberIdAndNoteId(memberId, noteId);
 
         if (heart == null) {
-            Member member = Member.builder()
-                                  .id(memberId)
-                                  .build();
+            log.info("ADD HEART userId: {}, noteId: {}", memberId, noteId);
+            member = Member.builder()
+                          .id(memberId)
+                          .build();
 
-            Note note = Note.builder()
-                            .id(noteId)
-                            .build();
+            note = Note.builder()
+                    .id(noteId)
+                    .build();
 
             heart = Heart.builder()
                          .member(member)
@@ -44,8 +51,13 @@ public class HeartService {
 
             heartRepository.save(heart);
 
+            return new HeartResDto(true);
+
         }else{
+            log.info("DELETE HEART userId: {}, noteId: {}", memberId, noteId);
+
             heartRepository.delete(heart);
+            return new HeartResDto(false);
         }
 
     }

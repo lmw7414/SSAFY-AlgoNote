@@ -1,6 +1,7 @@
 package com.ssafy.algonote.note.controller;
 
 import com.ssafy.algonote.config.security.SecurityUtil;
+import com.ssafy.algonote.note.dto.HeartResDto;
 import com.ssafy.algonote.note.service.HeartService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,13 +19,11 @@ public class NoteController {
 
     private final HeartService heartService;
     @PostMapping("/{noteId}/heart")
-    public ResponseEntity<Void> heart(@PathVariable("noteId") Long noteId) {
+    public ResponseEntity<HeartResDto> heart(@PathVariable("noteId") Long noteId) {
         log.info("noteId: {}", noteId);
 
         Long memberId = SecurityUtil.getUserId();
-        heartService.heart(memberId, noteId);
-
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(heartService.heart(memberId, noteId));
     }
 
 }
