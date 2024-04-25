@@ -52,18 +52,13 @@ public class MemberService {
     }
 
     public void emailDupCheck(EmailDupCheckReqDto emailDupCheckReqDto) {
-        Member member = memberRepository.findByEmail(emailDupCheckReqDto.getEmail()).orElse(null);
-
-        if(member != null){
-            throw new CustomException(ErrorCode.DUPLICATE_EMAIL);
-        }
+        Member member = memberRepository.findByEmail(emailDupCheckReqDto.getEmail())
+                        .orElseThrow(()-> new CustomException(ErrorCode.DUPLICATE_EMAIL));
     }
 
     public void nicknameDupCheck(NicknameDupCheckReqDto nicknameDupCheckReqDto) {
-        Member member = memberRepository.findByNickname(nicknameDupCheckReqDto.getNickname()).orElse(null);
+        Member member = memberRepository.findByNickname(nicknameDupCheckReqDto.getNickname())
+                        .orElseThrow(() -> new CustomException(ErrorCode.DUPLICATE_NICKNAME));
 
-        if(member != null){
-            throw new CustomException(ErrorCode.DUPLICATE_NICKNAME);
-        }
     }
 }
