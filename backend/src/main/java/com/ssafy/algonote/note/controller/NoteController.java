@@ -22,7 +22,7 @@ public class NoteController {
     public ResponseEntity<HeartResDto> heart(@PathVariable("noteId") Long noteId) {
         log.info("noteId: {}", noteId);
 
-        Long memberId = SecurityUtil.getUserId();
+        Long memberId = SecurityUtil.getMemberId();
         return ResponseEntity.ok(heartService.heart(memberId, noteId));
     }
 
