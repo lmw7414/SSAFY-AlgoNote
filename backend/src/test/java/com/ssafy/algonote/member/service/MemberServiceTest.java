@@ -59,7 +59,7 @@ class MemberServiceTest {
             memberService.login(loginReqDto);
         });
         System.out.println("exception.getErrorCode() = " + exception.getErrorCode());
-        assertEquals(ErrorCode.NOT_FOUND_ID, exception.getErrorCode());
+        assertEquals(ErrorCode.NOT_FOUND_MEMBER, exception.getErrorCode());
 
     }
     @Test

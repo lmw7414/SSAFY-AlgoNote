@@ -5,12 +5,10 @@ import com.ssafy.algonote.config.user.MemberInfoDto;
 import com.ssafy.algonote.exception.CustomException;
 import com.ssafy.algonote.exception.ErrorCode;
 import com.ssafy.algonote.member.domain.Member;
-import com.ssafy.algonote.member.domain.MemberRole;
 import com.ssafy.algonote.member.dto.request.EmailDupCheckReqDto;
 import com.ssafy.algonote.member.dto.request.LoginReqDto;
 import com.ssafy.algonote.member.dto.request.NicknameDupCheckReqDto;
 import com.ssafy.algonote.member.dto.request.SignUpReqDto;
-import com.ssafy.algonote.member.dto.response.LoginResDto;
 import com.ssafy.algonote.member.dto.response.LoginReturnDto;
 import com.ssafy.algonote.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +31,7 @@ public class MemberService {
 
     public LoginReturnDto login(LoginReqDto loginReqDto){
         Member member = memberRepository.findByEmail(loginReqDto.email())
-            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID));
+            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
 
         if(!member.getPassword().equals(loginReqDto.password())) {
             throw new CustomException(ErrorCode.WRONG_PASSWORD);

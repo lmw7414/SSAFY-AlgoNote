@@ -87,7 +87,7 @@ public class ReviewServiceTest {
                 () -> reviewService.create(reviewReqDto, noteId));
 
             //then
-            assertEquals(ErrorCode.NOT_FOUND_ID, exception.getErrorCode());
+            assertEquals(ErrorCode.NOT_FOUND_MEMBER, exception.getErrorCode());
         }
 
         @Test
@@ -102,7 +102,7 @@ public class ReviewServiceTest {
                 () -> reviewService.create(reviewReqDto, noteId));
 
             //then
-            assertEquals(ErrorCode.NOT_FOUND_ID, exception.getErrorCode());
+            assertEquals(ErrorCode.NOT_FOUND_NOTE, exception.getErrorCode());
         }
 
         @Test
@@ -161,7 +161,7 @@ public class ReviewServiceTest {
                 () -> reviewService.readList(noteId));
 
             // then
-            assertEquals(ErrorCode.NOT_FOUND_ID, exception.getErrorCode());
+            assertEquals(ErrorCode.NOT_FOUND_NOTE, exception.getErrorCode());
         }
 
     }
