@@ -46,9 +46,9 @@ public class Member extends BaseEntity {
 
     public static Member from(SignUpReqDto signUpReqDto) {
         return Member.builder()
-            .email(signUpReqDto.getEmail())
-            .password(signUpReqDto.getPassword())
-            .nickname(signUpReqDto.getNickname())
+            .email(signUpReqDto.email())
+            .password(signUpReqDto.password())
+            .nickname(signUpReqDto.nickname())
             .role(MemberRole.USER)
             .build();
     }

@@ -6,7 +6,9 @@ import com.ssafy.algonote.exception.CustomException;
 import com.ssafy.algonote.exception.ErrorCode;
 import com.ssafy.algonote.member.domain.Member;
 import com.ssafy.algonote.member.domain.MemberRole;
+import com.ssafy.algonote.member.dto.request.EmailDupCheckReqDto;
 import com.ssafy.algonote.member.dto.request.LoginReqDto;
+import com.ssafy.algonote.member.dto.request.NicknameDupCheckReqDto;
 import com.ssafy.algonote.member.dto.request.SignUpReqDto;
 import com.ssafy.algonote.member.dto.response.LoginResDto;
 import com.ssafy.algonote.member.dto.response.LoginReturnDto;
@@ -30,10 +32,10 @@ public class MemberService {
     }
 
     public LoginReturnDto login(LoginReqDto loginReqDto){
-        Member member = memberRepository.findByEmail(loginReqDto.getEmail())
+        Member member = memberRepository.findByEmail(loginReqDto.email())
             .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ID));
 
-        if(!member.getPassword().equals(loginReqDto.getPassword())) {
+        if(!member.getPassword().equals(loginReqDto.password())) {
             throw new CustomException(ErrorCode.WRONG_PASSWORD);
         }
 
@@ -47,5 +49,16 @@ public class MemberService {
             .email(member.getEmail())
             .nickname(member.getNickname())
             .build();
+    }
+
+    public void emailDupCheck(EmailDupCheckReqDto emailDupCheckReqDto) {
+        Member member = memberRepository.findByEmail(emailDupCheckReqDto.email())
+                        .orElseThrow(()-> new CustomException(ErrorCode.DUPLICATE_EMAIL));
+    }
+
+    public void nicknameDupCheck(NicknameDupCheckReqDto nicknameDupCheckReqDto) {
+        Member member = memberRepository.findByNickname(nicknameDupCheckReqDto.nickname())
+                        .orElseThrow(() -> new CustomException(ErrorCode.DUPLICATE_NICKNAME));
+
     }
 }

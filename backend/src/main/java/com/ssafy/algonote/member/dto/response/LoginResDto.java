@@ -14,9 +14,9 @@ public record LoginResDto (
 ){
     public static LoginResDto from(LoginReturnDto loginReturnDto) {
         return LoginResDto.builder()
-            .memberId(loginReturnDto.getMemberId())
-            .email(loginReturnDto.getEmail())
-            .nickname(loginReturnDto.getNickname())
+            .memberId(loginReturnDto.memberId())
+            .email(loginReturnDto.email())
+            .nickname(loginReturnDto.nickname())
             .build();
     }
 }

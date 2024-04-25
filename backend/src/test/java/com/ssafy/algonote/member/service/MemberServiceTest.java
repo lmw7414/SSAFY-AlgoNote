@@ -43,7 +43,7 @@ class MemberServiceTest {
             .build();
 
         LoginReturnDto login = memberService.login(loginReqDto);
-        assertThat(login.getEmail()).isEqualTo("wlskaka4@gmail.com");
+        assertThat(login.email()).isEqualTo("wlskaka4@gmail.com");
 
     }
 
