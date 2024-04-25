@@ -4,6 +4,7 @@ import com.ssafy.algonote.common.BaseEntity;
 import com.ssafy.algonote.member.domain.Member;
 import com.ssafy.algonote.note.domain.Note;
 import com.ssafy.algonote.review.dto.request.ReviewReqDto;
+import com.ssafy.algonote.review.dto.request.ReviewUpdateReqDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -53,6 +54,10 @@ public class Review extends BaseEntity {
             .member(member)
             .note(note)
             .build();
+    }
+
+    public void update(ReviewUpdateReqDto dto) {
+        this.content = dto.content();
     }
 
 }
