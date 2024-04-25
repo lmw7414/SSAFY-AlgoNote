@@ -12,6 +12,7 @@ import lombok.Setter;
 public record LoginReturnDto(String token,
                              Long memberId,
                              String email,
-                             String nickname) {
+                             String nickname,
+                             String profileImg) {
 
 }

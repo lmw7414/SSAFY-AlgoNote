@@ -39,6 +39,9 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private MemberRole role;
 
+    @Column(nullable = false)
+    private String profileImg;
+
 
     public static Member from(SignUpReqDto signUpReqDto) {
         return Member.builder()

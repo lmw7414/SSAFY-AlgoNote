@@ -20,6 +20,7 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +36,9 @@ public class MemberService {
 
     private static final String AUTH_CODE_PREFIX = "AuthCode ";
 
+    @Value("${cloud.aws.s3.prefix}")
+    private String prefix;
+
     public Long signUp(SignUpReqDto signUpReqDto) {
         log.info("signUp dto : {}", signUpReqDto);
 
@@ -43,6 +47,7 @@ public class MemberService {
             .password(passwordEncoder.encode(signUpReqDto.password()))
             .nickname(signUpReqDto.nickname())
             .role(MemberRole.USER)
+            .profileImg(prefix+"/defaultProfile.png")
             .build();
 
         return memberRepository.save(member).getId();
@@ -66,6 +71,7 @@ public class MemberService {
             .memberId(member.getId())
             .email(member.getEmail())
             .nickname(member.getNickname())
+            .profileImg(member.getProfileImg())
             .build();
     }
 
