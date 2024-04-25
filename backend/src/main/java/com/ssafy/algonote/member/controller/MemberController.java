@@ -52,14 +52,14 @@ public class MemberController {
     }
 
     @PostMapping("/email-dupcheck")
-    public ResponseEntity<Object> emailDupCheck(@RequestBody EmailDupCheckReqDto emailDupCheckReqDto) {
+    public ResponseEntity<Void> emailDupCheck(@RequestBody EmailDupCheckReqDto emailDupCheckReqDto) {
         log.info("emailDupCheckReqDto : {}", emailDupCheckReqDto);
         memberService.emailDupCheck(emailDupCheckReqDto);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/nickname-dupcheck")
-    public ResponseEntity<Object> nicknameDupCheck(@RequestBody NicknameDupCheckReqDto nicknameDupCheckReqDto) {
+    public ResponseEntity<Void> nicknameDupCheck(@RequestBody NicknameDupCheckReqDto nicknameDupCheckReqDto) {
         log.info("nicknameDupCheckReqDto : {}", nicknameDupCheckReqDto);
         memberService.nicknameDupCheck(nicknameDupCheckReqDto);
         return ResponseEntity.ok().build();
