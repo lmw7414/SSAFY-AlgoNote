@@ -73,7 +73,7 @@ public class ReviewServiceTest {
             willReturn(Optional.of(note)).given(noteRepository).findById(any());
 
             // when
-            reviewService.create(memberId, reviewReqDto, noteId);
+            reviewService.create(reviewReqDto, memberId, noteId);
 
             // then
             verify(reviewRepository, times(1)).save(any());
@@ -87,7 +87,7 @@ public class ReviewServiceTest {
 
             //when
             CustomException exception = assertThrows(CustomException.class,
-                () -> reviewService.create(memberId, reviewReqDto, noteId));
+                () -> reviewService.create(reviewReqDto, memberId, noteId));
 
             //then
             assertEquals(ErrorCode.NOT_FOUND_MEMBER, exception.getErrorCode());
@@ -102,7 +102,7 @@ public class ReviewServiceTest {
 
             //when
             CustomException exception = assertThrows(CustomException.class,
-                () -> reviewService.create(memberId, reviewReqDto, noteId));
+                () -> reviewService.create(reviewReqDto, memberId, noteId));
 
             //then
             assertEquals(ErrorCode.NOT_FOUND_NOTE, exception.getErrorCode());
@@ -118,7 +118,7 @@ public class ReviewServiceTest {
 
             //when
             CustomException exception = assertThrows(CustomException.class,
-                () -> reviewService.create(memberId, invalidReviewReqDto, noteId));
+                () -> reviewService.create(invalidReviewReqDto, memberId, noteId));
 
             //then
             assertEquals(ErrorCode.INVALID_LINE_RANGE, exception.getErrorCode());
@@ -198,7 +198,7 @@ public class ReviewServiceTest {
             willReturn(Optional.of(review)).given(reviewRepository).findById(any());
 
             // when
-            reviewService.update(memberId, reviewUpdateReqDto, noteId, reviewId);
+            reviewService.update(reviewUpdateReqDto, memberId, noteId, reviewId);
 
             // then
 //            verify(reviewRepository, times(1)).save(any());
@@ -215,7 +215,7 @@ public class ReviewServiceTest {
 
             //when
             CustomException exception = assertThrows(CustomException.class,
-                () -> reviewService.update(memberId, reviewUpdateReqDto, wrongNoteId, reviewId));
+                () -> reviewService.update(reviewUpdateReqDto, memberId, wrongNoteId, reviewId));
 
             //then
             assertEquals(ErrorCode.INVALID_PATH, exception.getErrorCode());
@@ -229,7 +229,7 @@ public class ReviewServiceTest {
 
             //when
             CustomException exception = assertThrows(CustomException.class,
-                () -> reviewService.update(memberId, reviewUpdateReqDto, noteId, reviewId));
+                () -> reviewService.update(reviewUpdateReqDto, memberId, noteId, reviewId));
 
             //then
             assertEquals(ErrorCode.NOT_FOUND_MEMBER, exception.getErrorCode());
@@ -245,7 +245,7 @@ public class ReviewServiceTest {
 
             //when
             CustomException exception = assertThrows(CustomException.class,
-                () -> reviewService.update(memberId, reviewUpdateReqDto, noteId, wrongReviewId));
+                () -> reviewService.update(reviewUpdateReqDto, memberId, noteId, wrongReviewId));
 
             //then
             assertEquals(ErrorCode.NOT_FOUND_REVIEW, exception.getErrorCode());
@@ -264,7 +264,7 @@ public class ReviewServiceTest {
 
             //when
             CustomException exception = assertThrows(CustomException.class,
-                () -> reviewService.update(memberId, reviewUpdateReqDto, noteId, reviewId));
+                () -> reviewService.update(reviewUpdateReqDto, memberId, noteId, reviewId));
 
             //then
             assertEquals(ErrorCode.NO_AUTHORITY, exception.getErrorCode());

@@ -27,7 +27,7 @@ public class ReviewService {
     private final NoteRepository noteRepository;
     private final MemberRepository memberRepository;
 
-    public void create(Long memberId, ReviewReqDto req, Long noteId) {
+    public void create(ReviewReqDto req, Long memberId, Long noteId) {
         Member member = getOrElseThrow(memberId);
         Note note = getNoteOrElseThrow(noteId);
 
@@ -52,7 +52,7 @@ public class ReviewService {
         return reviews.stream().map(ReviewResDto::from).toList();
     }
 
-    public void update(Long memberId, ReviewUpdateReqDto req, Long noteId, Long reviewId) {
+    public void update(ReviewUpdateReqDto req, Long memberId, Long noteId, Long reviewId) {
         Member member = getOrElseThrow(memberId);
         Review review = getReviewOrElseThrow(reviewId);
 

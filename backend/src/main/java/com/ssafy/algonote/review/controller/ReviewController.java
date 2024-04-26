@@ -25,7 +25,7 @@ public class ReviewController {
     @PostMapping("/notes/{noteId}/reviews")
     public ResponseEntity<Void> create(@PathVariable Long noteId, @RequestBody ReviewReqDto req) {
         Long memberId = SecurityUtil.getMemberId();
-        reviewService.create(memberId, req, noteId);
+        reviewService.create( req, memberId, noteId);
         return ResponseEntity.ok().build();
     }
 
@@ -38,7 +38,7 @@ public class ReviewController {
     public ResponseEntity<Void> update(
         @RequestBody ReviewUpdateReqDto req, @PathVariable Long noteId, @PathVariable Long reviewId) {
         Long memberId = SecurityUtil.getMemberId();
-        reviewService.update(memberId, req, noteId, reviewId);
+        reviewService.update(req, memberId, noteId, reviewId);
         return ResponseEntity.ok().build();
     }
 
