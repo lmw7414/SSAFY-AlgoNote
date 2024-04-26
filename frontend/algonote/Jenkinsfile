@@ -27,13 +27,13 @@ pipeline{
         stage('Deploy our image') { 
             steps { 
                 script {
-                    sh 'docker push $repository //docker push
+                    sh 'docker push $repository' //docker push
                 } 
             }
         } 
         stage('Cleaning up') { 
             steps { 
-                sh "docker rmi $repository// docker image 제거
+                sh "docker rmi $repository"// docker image 제거
             }
         } 
 
