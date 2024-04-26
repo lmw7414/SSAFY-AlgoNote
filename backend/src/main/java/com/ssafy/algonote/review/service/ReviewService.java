@@ -28,7 +28,7 @@ public class ReviewService {
     private final MemberRepository memberRepository;
 
     public void create(ReviewReqDto req, Long memberId, Long noteId) {
-        Member member = getOrElseThrow(memberId);
+        Member member = getMemberOrElseThrow(memberId);
         Note note = getNoteOrElseThrow(noteId);
 
         if (!(req.startLine() <= req.endLine())) {
@@ -53,7 +53,7 @@ public class ReviewService {
     }
 
     public void update(ReviewUpdateReqDto req, Long memberId, Long noteId, Long reviewId) {
-        Member member = getOrElseThrow(memberId);
+        Member member = getMemberOrElseThrow(memberId);
         Review review = getReviewOrElseThrow(reviewId);
 
         if (!review.getNote().getId().equals(noteId)) {
@@ -73,7 +73,7 @@ public class ReviewService {
     }
 
     public void delete(Long memberId, Long noteId, Long reviewId) {
-        Member member = getOrElseThrow(memberId);
+        Member member = getMemberOrElseThrow(memberId);
         Review review = getReviewOrElseThrow(reviewId);
 
         if (!review.getNote().getId().equals(noteId)) {
@@ -87,7 +87,7 @@ public class ReviewService {
         reviewRepository.delete(review);
     }
 
-    private Member getOrElseThrow(Long memberId) {
+    private Member getMemberOrElseThrow(Long memberId) {
         return memberRepository.findById(memberId)
             .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
     }
