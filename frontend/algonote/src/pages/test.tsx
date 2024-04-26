@@ -1,4 +1,4 @@
-import NavBar from '@/components/commons/nav_bar/index'
+import NavBar from '@/components/commons/NavBar/index'
 
 const Test = () => {
   return <NavBar />

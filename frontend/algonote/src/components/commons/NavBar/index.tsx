@@ -1,5 +1,5 @@
-import styles from './style.module.scss'
 import Image from 'next/image'
+import styles from './NavBar.module.scss'
 
 const NavBar = () => {
   return (
