@@ -6,3 +6,4 @@ frontend/**
 ## minwoo
 backend/database/**
 backend/docker-compose.yml
+backend/redis/**
