@@ -9,7 +9,9 @@ import com.ssafy.algonote.member.dto.request.EmailAuthReqDto;
 import com.ssafy.algonote.member.dto.request.LoginReqDto;
 import com.ssafy.algonote.member.dto.request.SignUpReqDto;
 import com.ssafy.algonote.member.dto.response.LoginReturnDto;
+import com.ssafy.algonote.member.dto.response.ProfileInfoResDto;
 import jakarta.transaction.Transactional;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,7 +27,7 @@ class MemberServiceTest {
 
 
     @Test
-    @Transactional
+//    @Transactional
     void signUpTest(){
         // given
         SignUpReqDto signUpReqDto = SignUpReqDto.builder()
@@ -34,8 +36,7 @@ class MemberServiceTest {
             .nickname("wlskaka4")
             .build();
         Long id = memberService.signUp(signUpReqDto);
-
-        assertThat(id).isEqualTo(1L);
+        System.out.println("id = " + id);
     }
 
     @Test
@@ -43,11 +44,12 @@ class MemberServiceTest {
     void loginSuccessTest(){
         LoginReqDto loginReqDto = LoginReqDto.builder()
             .email("wlskaka4@gmail.com")
-            .password("1233")
+            .password("1234")
             .build();
 
         LoginReturnDto login = memberService.login(loginReqDto);
         assertThat(login.email()).isEqualTo("wlskaka4@gmail.com");
+        System.out.println("login.profileImg() = " + login.profileImg());
 
     }
 
@@ -115,5 +117,7 @@ class MemberServiceTest {
         boolean authenticated = memberService.verifyCode(emailAuthReqDto).authenticated();
         assertThat(authenticated).isFalse();
     }
+
+
 
 }

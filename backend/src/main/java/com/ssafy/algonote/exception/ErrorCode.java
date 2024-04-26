@@ -21,8 +21,7 @@ public enum ErrorCode {
     NO_SUCH_ALGORITHM(HttpStatus.INTERNAL_SERVER_ERROR, "알고리즘이 존재하지 않습니다."),
     MEMBER_INVALID(HttpStatus.UNAUTHORIZED, "토큰에 해당하는 유저가 없습니다"),
 
-
-
+    FAILED_IMAGE_UPLOAD(HttpStatus.INTERNAL_SERVER_ERROR, "이미지 업로드에 실패했습니다."),
 
     INVALID_LINE_RANGE(HttpStatus.BAD_REQUEST, "endLine은 startLine보다 작을 수 없습니다.");
 

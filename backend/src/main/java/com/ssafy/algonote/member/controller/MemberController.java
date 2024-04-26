@@ -1,95 +1,44 @@
 package com.ssafy.algonote.member.controller;
 
-import com.ssafy.algonote.member.dto.request.DestEmatilReqDto;
-import com.ssafy.algonote.member.dto.request.EmailAuthReqDto;
-import com.ssafy.algonote.member.dto.request.EmailDupCheckReqDto;
-import com.ssafy.algonote.member.dto.request.LoginReqDto;
-import com.ssafy.algonote.member.dto.request.NicknameDupCheckReqDto;
-import com.ssafy.algonote.member.dto.request.SignUpReqDto;
-import com.ssafy.algonote.member.dto.response.EmailAuthResDto;
-import com.ssafy.algonote.member.dto.response.LoginResDto;
-import com.ssafy.algonote.member.dto.response.LoginReturnDto;
-import com.ssafy.algonote.member.service.MailService;
+import com.ssafy.algonote.config.security.SecurityUtil;
+import com.ssafy.algonote.member.dto.response.ProfileInfoResDto;
 import com.ssafy.algonote.member.service.MemberService;
-import jakarta.validation.Valid;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
-@RestController
 @Slf4j
-@RequestMapping("/auth")
+@RestController
+@RequestMapping("/member")
 @RequiredArgsConstructor
 public class MemberController {
 
+
     private final MemberService memberService;
-    private final MailService mailService;
 
-    @GetMapping("/test")
-    public ResponseEntity<String> test() {
-        return ResponseEntity.ok("test");
+    @GetMapping()
+    public ResponseEntity<ProfileInfoResDto> getProfileInfo(@RequestParam("memberId") Long memberId){
+        return ResponseEntity.ok(memberService.getProfileInfo(memberId));
     }
 
-    @PostMapping("/signup")
-    public ResponseEntity<Object> signUp(@RequestBody SignUpReqDto signUpReqDto) {
-        log.info("signUpReqDto : {}", signUpReqDto);
-
-        Long id = memberService.signUp(signUpReqDto);
+    @PutMapping("/update")
+    public ResponseEntity<Void> updateProfile(@RequestPart(value="nickname", required = false) String updateNickname,
+                                       @RequestPart(value="profileImg", required = false) MultipartFile profileImg) {
+        Long memberId = SecurityUtil.getMemberId();
+        log.info("memberId : {}", memberId);
+        log.info("nickname : {}", updateNickname);
+        log.info("profileImg : {}", profileImg);
+        memberService.update(memberId, updateNickname, profileImg);
         return ResponseEntity.ok().build();
     }
-
-    @PostMapping("/login")
-    public ResponseEntity<LoginResDto> login (@RequestBody LoginReqDto loginReqDto) {
-        log.info("loginReqDto : {}", loginReqDto);
-        LoginReturnDto loginReturnDto = memberService.login(loginReqDto);
-
-
-        LoginResDto loginResDto = LoginResDto.from(loginReturnDto);
-
-        HttpHeaders header = new HttpHeaders();
-        header.add("token", loginReturnDto.token());
-
-        return new ResponseEntity<LoginResDto>(loginResDto, header, HttpStatus.OK);
-
-    }
-
-    @PostMapping("/email-dupcheck")
-    public ResponseEntity<Void> emailDupCheck(@RequestBody EmailDupCheckReqDto emailDupCheckReqDto) {
-        log.info("emailDupCheckReqDto : {}", emailDupCheckReqDto);
-        memberService.emailDupCheck(emailDupCheckReqDto);
-        return ResponseEntity.ok().build();
-    }
-
-    @PostMapping("/nickname-dupcheck")
-    public ResponseEntity<Void> nicknameDupCheck(@RequestBody NicknameDupCheckReqDto nicknameDupCheckReqDto) {
-        log.info("nicknameDupCheckReqDto : {}", nicknameDupCheckReqDto);
-        memberService.nicknameDupCheck(nicknameDupCheckReqDto);
-        return ResponseEntity.ok().build();
-    }
-
-    @PostMapping("/verification-requests")
-    public ResponseEntity<Void> sendMessage(@Valid @RequestBody DestEmatilReqDto destEmatilReqDto) {
-        log.info("destEmatilReqDto : {}", destEmatilReqDto);
-        memberService.sendCodeToEmail(destEmatilReqDto.email());
-
-        return ResponseEntity.ok().build();
-    }
-
-    @PostMapping("/verification")
-    public ResponseEntity<EmailAuthResDto> verifyCode(@Valid @RequestBody EmailAuthReqDto emailAuthReqDto) {
-        log.info("emailAuthReqDto : {}", emailAuthReqDto);
-        EmailAuthResDto emailAuthResDto = memberService.verifyCode(emailAuthReqDto);
-
-        return ResponseEntity.ok(emailAuthResDto);
-    }
-
-
 
 }
