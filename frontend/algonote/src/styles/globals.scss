@@ -1,27 +1,29 @@
 // 색상
-$white: #ffffff;
-$black: #191919;
-$gray: #b9b9b9;
-$blue: #3c87fe;
-$skyblue: #3ac1e7;
-$navy: #02366f;
-$soft-gray: #f2f2f7;
-$soft-sky-gray: #eaeff6;
-$medium-sky-gray: #90a5bc;
-$charcoal: #525b63;
-$red: #fb4444;
+:root {
+--white: #ffffff;
+--black: #191919;
+--gray: #b9b9b9;
+--blue: #3c87fe;
+--skyblue: #3ac1e7;
+--navy: #02366f;
+--soft-gray: #f2f2f7;
+--soft-sky: #E9F6FF;
+--soft-sky-gray: #eaeff6;
+--medium-sky-gray: #90a5bc;
+--charcoal: #525b63;
+--red: #fb4444;
 
-$platinum: #27e2a4;
-$gold: #ffd600;
-$silver: #647f98;
-$bronze: #d68f4d;
-$dia: #43c9ff;
-$ruby: #ff0062;
+--platinum: #27e2a4;
+--gold: #ffd600;
+--silver: #647f98;
+--bronze: #d68f4d;
+--dia: #43c9ff;
+--ruby: #ff0062;
 
 // pirmary 그라디언트 색상
-$color-start: #6b65e9;
-$color-end: #39c3e7;
-
+--color-start: #6b65e9;
+--color-end: #39c3e7;
+}
 /*
 사용 예제
 .my-gradient {
