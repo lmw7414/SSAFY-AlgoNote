@@ -1,28 +1,28 @@
 // 색상
 :root {
---white: #ffffff;
---black: #191919;
---gray: #b9b9b9;
---blue: #3c87fe;
---skyblue: #3ac1e7;
---navy: #02366f;
---soft-gray: #f2f2f7;
---soft-sky: #E9F6FF;
---soft-sky-gray: #eaeff6;
---medium-sky-gray: #90a5bc;
---charcoal: #525b63;
---red: #fb4444;
+  --white: #ffffff;
+  --black: #191919;
+  --gray: #b9b9b9;
+  --blue: #3c87fe;
+  --skyblue: #3ac1e7;
+  --navy: #02366f;
+  --soft-gray: #f2f2f7;
+  --soft-sky: #e9f6ff;
+  --soft-sky-gray: #eaeff6;
+  --medium-sky-gray: #90a5bc;
+  --charcoal: #525b63;
+  --red: #fb4444;
 
---platinum: #27e2a4;
---gold: #ffd600;
---silver: #647f98;
---bronze: #d68f4d;
---dia: #43c9ff;
---ruby: #ff0062;
+  --platinum: #27e2a4;
+  --gold: #ffd600;
+  --silver: #647f98;
+  --bronze: #d68f4d;
+  --dia: #43c9ff;
+  --ruby: #ff0062;
 
-// pirmary 그라디언트 색상
---color-start: #6b65e9;
---color-end: #39c3e7;
+  // pirmary 그라디언트 색상
+  --color-start: #6b65e9;
+  --color-end: #39c3e7;
 }
 /*
 사용 예제
@@ -31,8 +31,19 @@
 }
 */
 
-// default.
+// font : pretendard
+@font-face {
+  font-family: 'Pretendard';
+  src: url('/fonts/PretendardVariable.woff2') format('woff2');
+  font-weight: 45 920;
+  font-display: swap;
+}
 
+body {
+  font-family: 'Pretendard', sans-serif;
+}
+
+// default.scss
 html {
   font-family: 'Apple SD Gothic Neo', Roboto, 'Noto Sans KR', NanumGothic,
     'Malgun Gothic', sans-serif;
@@ -167,11 +178,11 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
-img {
-  max-width: 100%;
-  height: auto;
-  border: 0;
-}
+// img {
+//   max-width: 100%;
+//   height: auto;
+//   border: 0;
+// }
 button {
   border: 0;
   background: transparent;
