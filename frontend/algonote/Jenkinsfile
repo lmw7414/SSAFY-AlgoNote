@@ -12,7 +12,7 @@ pipeline{
             steps{
                 dir('frontend/algonote'){
                     script{
-                        dockerImage = docker.build repository + ":$BUILD_NUMBER"
+                        dockerImage = docker.build repository
                     }
                 }
             }
@@ -27,22 +27,22 @@ pipeline{
         stage('Deploy our image') { 
             steps { 
                 script {
-                    sh 'docker push $repository:$BUILD_NUMBER' //docker push
+                    sh 'docker push $repository' //docker push
                 } 
             }
         } 
         stage('Cleaning up') { 
             steps { 
-                sh "docker rmi $repository:$BUILD_NUMBER" // docker image 제거
+                sh "docker rmi $repository"// docker image 제거
             }
         } 
 
         stage('Deploy on Deploy Server'){
             steps{
                 sh '''
-                    ssh -i ~/.ssh/id_rsa ubuntu@k10b203.p.ssafy.io "docker pull tollea1234/algonote-frontend:$BUILD_NUMBER"
+                    ssh -i ~/.ssh/id_rsa ubuntu@k10b203.p.ssafy.io "docker pull tollea1234/algonote-frontend"
                     ssh -i ~/.ssh/id_rsa ubuntu@k10b203.p.ssafy.io "docker rm frontend-container --force"
-                    ssh -i ~/.ssh/id_rsa ubuntu@k10b203.p.ssafy.io "docker run -p 3000:3000 -d --name frontend-container tollea1234/algonote-frontend:$BUILD_NUMBER"
+                    ssh -i ~/.ssh/id_rsa ubuntu@k10b203.p.ssafy.io "docker run -p 3000:3000 -d --name frontend-container tollea1234/algonote-frontend"
                     
                 '''
             }

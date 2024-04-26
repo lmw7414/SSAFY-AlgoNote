@@ -1,52 +1,74 @@
 import Image from 'next/image'
 import styles from './NavBar.module.scss'
+import Link from 'next/link'
 
 const NavBar = () => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.navBox}>
         <div className={styles.logoSec}>
-          <Image
-            src="/images/logo.png" // 이미지 경로
-            alt="logo"
-            width={120}
-            height={15}
-          />
+          <Link href="/test">
+            <Image
+              src="/images/logo.png" // 이미지 경로
+              alt="logo"
+              width={112}
+              height={20}
+            />
+          </Link>
         </div>
         <div className={styles.menuSec}>
-          <p>새노트 작성</p>
-          <p>내 노트</p>
-          <p>문제 추천</p>
-          <p>코드 비교</p>
+          <Link href="/newnote">
+            <p>새 노트 작성</p>
+          </Link>
+
+          <Link href="/mynote">
+            <p>내 노트</p>
+          </Link>
+
+          <Link href="/recommand">
+            <p>문제 추천</p>
+          </Link>
+
+          <Link href="/compare">
+            <p>코드 비교</p>
+          </Link>
         </div>
         <div className={styles.blank} />
         <div className={styles.buttonSec}>
-          <Image
-            src="/images/search.png" // 이미지 경로
-            alt="searchIcon"
-            width={16}
-            height={10}
-          />
-          <Image
-            src="/images/save.png" // 이미지 경로
-            alt="saveIcon"
-            width={16}
-            height={10}
-          />
-          <Image
-            src="/images/alarm.png" // 이미지 경로
-            alt="alarmIcon"
-            width={16}
-            height={10}
-          />
+          <Link href="/search">
+            <Image
+              src="/images/search2.png"
+              alt="searchIcon"
+              width={21}
+              height={21}
+            />
+          </Link>
+          <Link href="/bookmark">
+            <Image
+              src="/images/save.png"
+              alt="saveIcon"
+              width={21}
+              height={21}
+            />
+          </Link>
+          <Link href="/alarm">
+            <Image
+              src="/images/alarm.png"
+              alt="alarmIcon"
+              width={21}
+              height={21}
+            />
+          </Link>
         </div>
         <div className={styles.profileSec}>
-          <Image
-            src="/images/profileImage.png" // 이미지 경로
-            alt="profileImage"
-            width={30}
-            height={30}
-          />
+          <Link href="/profile">
+            <Image
+              src="/images/profileImage.png"
+              alt="profileImage"
+              width={30}
+              height={30}
+            />
+          </Link>
         </div>
       </div>
     </div>
