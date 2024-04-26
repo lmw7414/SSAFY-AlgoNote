@@ -1,13 +1,36 @@
 package com.ssafy.algonote.problem.domain;
 
-import lombok.RequiredArgsConstructor;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-@RequiredArgsConstructor
-public enum Tag {
-    MATH("math", "수학"),
-    IMPLEMENTATION("implementation", "구현"),
-    DP("dp", "다이나믹 프로그래밍");
+import java.util.Comparator;
+import java.util.Set;
+import java.util.TreeSet;
 
-    private final String key;
-    private final String nameKo;
+@Entity
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+public class Tag {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    private String nameEn;
+
+    @ToString.Exclude
+    @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
+    private Set<Problem> problems = new TreeSet<>(Comparator.comparingLong(Problem::getId));  // id 기준 오름차순 정렬
+
+    private Tag(String nameEn) {
+        this.nameEn = nameEn;
+    }
+
+    public static Tag of(String nameEn) {
+        return new Tag(nameEn);
+    }
+
 }
