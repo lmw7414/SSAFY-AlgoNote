@@ -7,6 +7,7 @@ import com.ssafy.algonote.review.service.ReviewService;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,9 +33,15 @@ public class ReviewController {
     }
 
     @PatchMapping("/notes/{noteId}/reviews/{reviewId}")
-    public ResponseEntity<Void> create(
+    public ResponseEntity<Void> update(
         @RequestBody ReviewUpdateReqDto req, @PathVariable Long noteId, @PathVariable Long reviewId) {
         reviewService.update(req, noteId, reviewId);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/notes/{noteId}/reviews/{reviewId}")
+    public ResponseEntity<Void> delete(@PathVariable Long noteId, @PathVariable Long reviewId) {
+        reviewService.delete(noteId, reviewId);
         return ResponseEntity.ok().build();
     }
 

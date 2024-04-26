@@ -267,6 +267,104 @@ public class ReviewServiceTest {
 
     }
 
+    @Nested
+    @DisplayName("리뷰 삭제")
+    class testDelete {
+
+        private Long noteId;
+        private Long reviewId;
+        private Member member;
+        private Review review;
+
+        @BeforeEach
+        void setup() {
+            noteId = 1L;
+            reviewId = 1L;
+            member = getMember();
+            review = getReview();
+        }
+
+        @Test
+        @DisplayName("[성공]")
+        void success() {
+            // given
+            willReturn(Optional.of(member)).given(memberRepository).findById(any());
+            willReturn(Optional.of(review)).given(reviewRepository).findById(any());
+
+            // when
+            reviewService.delete(noteId, reviewId);
+
+            // then
+            verify(reviewRepository, times(1)).delete(any());
+        }
+
+        @Test
+        @DisplayName("[실패] 유효하지 않은 경로")
+        void fail_invalid_path() {
+            // given
+            Long wrongNoteId = 10L;
+            willReturn(Optional.of(member)).given(memberRepository).findById(any());
+            willReturn(Optional.of(review)).given(reviewRepository).findById(any());
+
+            //when
+            CustomException exception = assertThrows(CustomException.class,
+                () -> reviewService.delete(wrongNoteId, reviewId));
+
+            //then
+            assertEquals(ErrorCode.INVALID_PATH, exception.getErrorCode());
+        }
+
+        @Test
+        @DisplayName("[실패] 유효하지 않은 memberId")
+        void fail_member() {
+            // given
+            willReturn(Optional.empty()).given(memberRepository).findById(any());
+
+            //when
+            CustomException exception = assertThrows(CustomException.class,
+                () -> reviewService.delete(noteId, reviewId));
+
+            //then
+            assertEquals(ErrorCode.NOT_FOUND_MEMBER, exception.getErrorCode());
+        }
+
+        @Test
+        @DisplayName("[실패] 유효하지 않은 reviewId")
+        void fail_review() {
+            // given
+            Long wrongReviewId = 10L;
+            willReturn(Optional.of(member)).given(memberRepository).findById(any());
+            willReturn(Optional.empty()).given(reviewRepository).findById(any());
+
+            //when
+            CustomException exception = assertThrows(CustomException.class,
+                () -> reviewService.delete(noteId, wrongReviewId));
+
+            //then
+            assertEquals(ErrorCode.NOT_FOUND_REVIEW, exception.getErrorCode());
+        }
+
+        @Test
+        @DisplayName("[실패] 작성자가 아닌 멤버가 삭제를 시도하는 경우")
+        void fail_no_authority() {
+            // given
+            Member memberWithNoAuthority = Member.builder()
+                .id(10L)
+                .build();
+
+            willReturn(Optional.of(memberWithNoAuthority)).given(memberRepository).findById(any());
+            willReturn(Optional.of(review)).given(reviewRepository).findById(any());
+
+            //when
+            CustomException exception = assertThrows(CustomException.class,
+                () -> reviewService.delete(noteId, reviewId));
+
+            //then
+            assertEquals(ErrorCode.NO_AUTHORITY, exception.getErrorCode());
+        }
+
+    }
+
     ReviewReqDto getReviewReqDto() {
         return new ReviewReqDto(1, 3, "content");
     }
