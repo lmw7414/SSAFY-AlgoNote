@@ -37,7 +37,10 @@
 
     &.search{
         border-top-left-radius: 0;
+    }
 
+    &.search.clicked{
+        background-color: #4CAF50;
     }
   }
   

@@ -1,5 +1,5 @@
 import BookMarkSVG from '@public/images/bookmark.svg'
-import BooMarkOffSVG from '@public/images/bookmark_off.svg'
+import BookMarkOffSVG from '@public/images/bookmark_off.svg'
 import ToggleButton from './ToggleButton'
 
 interface BookmarkProps {
@@ -8,9 +8,7 @@ interface BookmarkProps {
 }
 
 const BookmarkToggle = ({ isOff, onClick }: BookmarkProps) => {
-  /* eslint-disable no-console */
-  console.log(isOff)
-  const imageSrc = isOff ? BooMarkOffSVG : BookMarkSVG
+  const imageSrc = isOff ? BookMarkOffSVG : BookMarkSVG
   return <ToggleButton imageSrc={imageSrc} onClick={onClick} />
 }
 

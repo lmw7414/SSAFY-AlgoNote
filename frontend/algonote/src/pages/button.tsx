@@ -3,32 +3,37 @@
 import { useState } from 'react'
 import GPT from '@public/images/btn-new-chat.svg'
 import BookmarkToggle from '@/components/commons/Buttons/BookmarkToggle'
-import Button from '@/components/commons/Buttons/Button'
+import { SimpleButton, FilterButton } from '@/components/commons/Buttons/Button'
 import ToggleButton from '@/components/commons/Buttons/ToggleButton'
 
 const ButtonFunction = () => {
   const [count, setCount] = useState(0)
+  const [isClicked, setIsClicked] = useState(false)
   const [isOff, setIsOff] = useState(false)
+
+  // eslint-disable-next-line no-console
+  console.log(count)
 
   return (
     <div>
-      <Button text="기본버튼" onClick={() => setCount(count + 1)} />
-      <Button
+      <SimpleButton text="기본버튼" onClick={() => setCount(count + 1)} />
+      <SimpleButton
         text="돌아가기"
         onClick={() => setCount(count + 1)}
         className="back"
       />
-      <Button
+      <SimpleButton
         text="추천검색어"
         onClick={() => setCount(count + 1)}
         className="recommend"
       />
-      <Button
+      <FilterButton
         text="검색필터"
-        onClick={() => setCount(count + 1)}
+        onClick={() => setIsClicked(!isClicked)}
         className="search"
+        initialClicked
       />
-      <BookmarkToggle isOff onClick={() => setIsOff(!isOff)} />
+      <BookmarkToggle isOff={isOff} onClick={() => setIsOff(!isOff)} />
       <ToggleButton imageSrc={GPT} onClick={() => setCount(count + 1)} />
     </div>
   )
