@@ -1,9 +1,6 @@
 import Image from 'next/image'
-<<<<<<< HEAD:frontend/algonote/src/components/commons/NavBar/index.tsx
 import styles from './NavBar.module.scss'
-=======
 import Link from 'next/link'
->>>>>>> FE/feat/25-landing:frontend/algonote/src/components/commons/nav_bar/index.tsx
 
 const NavBar = () => {
   return (
