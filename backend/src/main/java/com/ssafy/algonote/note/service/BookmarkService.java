@@ -6,9 +6,11 @@ import com.ssafy.algonote.member.domain.Member;
 import com.ssafy.algonote.member.repository.MemberRepository;
 import com.ssafy.algonote.note.domain.Bookmark;
 import com.ssafy.algonote.note.domain.Note;
+import com.ssafy.algonote.note.dto.BookmarkRes;
 import com.ssafy.algonote.note.dto.BookmarkStatusRes;
 import com.ssafy.algonote.note.repository.BookmarkRepository;
 import com.ssafy.algonote.note.repository.NoteRepository;
+import java.util.List;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -52,6 +54,15 @@ public class BookmarkService {
     private Note getNoteOrElseThrow(Long noteId) {
         return noteRepository.findById(noteId)
             .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_NOTE));
+    }
+
+    @Transactional(readOnly = true)
+    public List<BookmarkRes> getList(Long memberId) {
+        getMemberOrElseThrow(memberId);
+        return bookmarkRepository.findAllByMemberId(memberId)
+            .stream()
+            .map(BookmarkRes::from)
+            .toList();
     }
 
 }
