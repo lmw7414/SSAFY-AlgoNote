@@ -20,10 +20,10 @@ public enum ErrorCode {
     UNABLE_TO_SEND_EMAIL(HttpStatus.INTERNAL_SERVER_ERROR, "이메일 전송에 실패했습니다."),
     NO_SUCH_ALGORITHM(HttpStatus.INTERNAL_SERVER_ERROR, "알고리즘이 존재하지 않습니다."),
     MEMBER_INVALID(HttpStatus.UNAUTHORIZED, "토큰에 해당하는 유저가 없습니다"),
-
-
-
-
+    NOT_FOUND_PROBLEM(HttpStatus.NOT_FOUND, "해당하는 문제를 찾을 수 없습니다."),
+    DUPLICATE_PROBLEM(HttpStatus.CONFLICT, "이미 존재하는 문제입니다."),
+    NOT_FOUND_TAG(HttpStatus.NOT_FOUND, "해당하는 태그 정보를 찾을 수 없습니다."),
+    DUPLICATE_TAG(HttpStatus.CONFLICT, "이미 존재하는 태그입니다."),
     INVALID_LINE_RANGE(HttpStatus.BAD_REQUEST, "endLine은 startLine보다 작을 수 없습니다.");
 
     private final HttpStatus httpStatus;
