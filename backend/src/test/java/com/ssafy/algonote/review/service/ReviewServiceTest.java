@@ -51,6 +51,7 @@ public class ReviewServiceTest {
     class testCreate {
 
         private Long noteId;
+        private Long memberId;
         private Member member;
         private Note note;
         private ReviewReqDto reviewReqDto;
@@ -58,6 +59,7 @@ public class ReviewServiceTest {
         @BeforeEach
         void setup() {
             noteId = 1L;
+            memberId = 1L;
             member = getMember();
             note = getNote();
             reviewReqDto = getReviewReqDto();
@@ -71,7 +73,7 @@ public class ReviewServiceTest {
             willReturn(Optional.of(note)).given(noteRepository).findById(any());
 
             // when
-            reviewService.create(reviewReqDto, noteId);
+            reviewService.create(reviewReqDto, memberId, noteId);
 
             // then
             verify(reviewRepository, times(1)).save(any());
@@ -85,7 +87,7 @@ public class ReviewServiceTest {
 
             //when
             CustomException exception = assertThrows(CustomException.class,
-                () -> reviewService.create(reviewReqDto, noteId));
+                () -> reviewService.create(reviewReqDto, memberId, noteId));
 
             //then
             assertEquals(ErrorCode.NOT_FOUND_MEMBER, exception.getErrorCode());
@@ -100,7 +102,7 @@ public class ReviewServiceTest {
 
             //when
             CustomException exception = assertThrows(CustomException.class,
-                () -> reviewService.create(reviewReqDto, noteId));
+                () -> reviewService.create(reviewReqDto, memberId, noteId));
 
             //then
             assertEquals(ErrorCode.NOT_FOUND_NOTE, exception.getErrorCode());
@@ -116,7 +118,7 @@ public class ReviewServiceTest {
 
             //when
             CustomException exception = assertThrows(CustomException.class,
-                () -> reviewService.create(invalidReviewReqDto, noteId));
+                () -> reviewService.create(invalidReviewReqDto, memberId, noteId));
 
             //then
             assertEquals(ErrorCode.INVALID_LINE_RANGE, exception.getErrorCode());
@@ -173,6 +175,7 @@ public class ReviewServiceTest {
 
         private Long noteId;
         private Long reviewId;
+        private Long memberId;
         private Member member;
         private Review review;
         private ReviewUpdateReqDto reviewUpdateReqDto;
@@ -181,6 +184,7 @@ public class ReviewServiceTest {
         void setup() {
             noteId = 1L;
             reviewId = 1L;
+            memberId = 1L;
             member = getMember();
             review = getReview();
             reviewUpdateReqDto = getReviewUpdateReqDto();
@@ -194,10 +198,11 @@ public class ReviewServiceTest {
             willReturn(Optional.of(review)).given(reviewRepository).findById(any());
 
             // when
-            reviewService.update(reviewUpdateReqDto, noteId, reviewId);
+            reviewService.update(reviewUpdateReqDto, memberId, noteId, reviewId);
 
             // then
-            verify(reviewRepository, times(1)).save(any());
+//            verify(reviewRepository, times(1)).save(any());
+            assertEquals(reviewUpdateReqDto.content(), review.getContent());
         }
 
         @Test
@@ -210,7 +215,7 @@ public class ReviewServiceTest {
 
             //when
             CustomException exception = assertThrows(CustomException.class,
-                () -> reviewService.update(reviewUpdateReqDto, wrongNoteId, reviewId));
+                () -> reviewService.update(reviewUpdateReqDto, memberId, wrongNoteId, reviewId));
 
             //then
             assertEquals(ErrorCode.INVALID_PATH, exception.getErrorCode());
@@ -224,7 +229,7 @@ public class ReviewServiceTest {
 
             //when
             CustomException exception = assertThrows(CustomException.class,
-                () -> reviewService.update(reviewUpdateReqDto, noteId, reviewId));
+                () -> reviewService.update(reviewUpdateReqDto, memberId, noteId, reviewId));
 
             //then
             assertEquals(ErrorCode.NOT_FOUND_MEMBER, exception.getErrorCode());
@@ -240,7 +245,7 @@ public class ReviewServiceTest {
 
             //when
             CustomException exception = assertThrows(CustomException.class,
-                () -> reviewService.update(reviewUpdateReqDto, noteId, wrongReviewId));
+                () -> reviewService.update(reviewUpdateReqDto, memberId, noteId, wrongReviewId));
 
             //then
             assertEquals(ErrorCode.NOT_FOUND_REVIEW, exception.getErrorCode());
@@ -259,7 +264,107 @@ public class ReviewServiceTest {
 
             //when
             CustomException exception = assertThrows(CustomException.class,
-                () -> reviewService.update(reviewUpdateReqDto, noteId, reviewId));
+                () -> reviewService.update(reviewUpdateReqDto, memberId, noteId, reviewId));
+
+            //then
+            assertEquals(ErrorCode.NO_AUTHORITY, exception.getErrorCode());
+        }
+
+    }
+
+    @Nested
+    @DisplayName("리뷰 삭제")
+    class testDelete {
+
+        private Long noteId;
+        private Long reviewId;
+        private Long memberId;
+        private Member member;
+        private Review review;
+
+        @BeforeEach
+        void setup() {
+            noteId = 1L;
+            reviewId = 1L;
+            memberId = 1L;
+            member = getMember();
+            review = getReview();
+        }
+
+        @Test
+        @DisplayName("[성공]")
+        void success() {
+            // given
+            willReturn(Optional.of(member)).given(memberRepository).findById(any());
+            willReturn(Optional.of(review)).given(reviewRepository).findById(any());
+
+            // when
+            reviewService.delete(memberId, noteId, reviewId);
+
+            // then
+            verify(reviewRepository, times(1)).delete(any());
+        }
+
+        @Test
+        @DisplayName("[실패] 유효하지 않은 경로")
+        void fail_invalid_path() {
+            // given
+            Long wrongNoteId = 10L;
+            willReturn(Optional.of(member)).given(memberRepository).findById(any());
+            willReturn(Optional.of(review)).given(reviewRepository).findById(any());
+
+            //when
+            CustomException exception = assertThrows(CustomException.class,
+                () -> reviewService.delete(memberId, wrongNoteId, reviewId));
+
+            //then
+            assertEquals(ErrorCode.INVALID_PATH, exception.getErrorCode());
+        }
+
+        @Test
+        @DisplayName("[실패] 유효하지 않은 memberId")
+        void fail_member() {
+            // given
+            willReturn(Optional.empty()).given(memberRepository).findById(any());
+
+            //when
+            CustomException exception = assertThrows(CustomException.class,
+                () -> reviewService.delete(memberId, noteId, reviewId));
+
+            //then
+            assertEquals(ErrorCode.NOT_FOUND_MEMBER, exception.getErrorCode());
+        }
+
+        @Test
+        @DisplayName("[실패] 유효하지 않은 reviewId")
+        void fail_review() {
+            // given
+            Long wrongReviewId = 10L;
+            willReturn(Optional.of(member)).given(memberRepository).findById(any());
+            willReturn(Optional.empty()).given(reviewRepository).findById(any());
+
+            //when
+            CustomException exception = assertThrows(CustomException.class,
+                () -> reviewService.delete(memberId, noteId, wrongReviewId));
+
+            //then
+            assertEquals(ErrorCode.NOT_FOUND_REVIEW, exception.getErrorCode());
+        }
+
+        @Test
+        @DisplayName("[실패] 작성자가 아닌 멤버가 삭제를 시도하는 경우")
+        void fail_no_authority() {
+            // given
+            Member memberWithNoAuthority = Member.builder()
+                .id(10L)
+                .build();
+
+            willReturn(Optional.of(memberWithNoAuthority)).given(memberRepository).findById(any());
+            willReturn(Optional.of(review)).given(reviewRepository).findById(any());
+
+            //when
+            CustomException exception = assertThrows(CustomException.class,
+                () -> reviewService.delete(memberId, noteId, reviewId));
 
             //then
             assertEquals(ErrorCode.NO_AUTHORITY, exception.getErrorCode());

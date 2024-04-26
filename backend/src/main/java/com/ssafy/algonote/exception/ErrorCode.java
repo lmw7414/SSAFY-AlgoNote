@@ -24,6 +24,7 @@ public enum ErrorCode {
     DUPLICATE_PROBLEM(HttpStatus.CONFLICT, "이미 존재하는 문제입니다."),
     NOT_FOUND_TAG(HttpStatus.NOT_FOUND, "해당하는 태그 정보를 찾을 수 없습니다."),
     DUPLICATE_TAG(HttpStatus.CONFLICT, "이미 존재하는 태그입니다."),
+    FAILED_IMAGE_UPLOAD(HttpStatus.INTERNAL_SERVER_ERROR, "이미지 업로드에 실패했습니다."),
     INVALID_LINE_RANGE(HttpStatus.BAD_REQUEST, "endLine은 startLine보다 작을 수 없습니다.");
 
     private final HttpStatus httpStatus;
