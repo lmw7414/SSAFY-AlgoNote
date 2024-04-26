@@ -1,6 +1,5 @@
 package com.ssafy.algonote.review.service;
 
-import com.ssafy.algonote.config.security.SecurityUtil;
 import com.ssafy.algonote.exception.CustomException;
 import com.ssafy.algonote.exception.ErrorCode;
 import com.ssafy.algonote.member.domain.Member;
@@ -28,8 +27,8 @@ public class ReviewService {
     private final NoteRepository noteRepository;
     private final MemberRepository memberRepository;
 
-    public void create(ReviewReqDto req, Long noteId) {
-        Member member = getOrElseThrow();
+    public void create(Long memberId, ReviewReqDto req, Long noteId) {
+        Member member = getOrElseThrow(memberId);
         Note note = getNoteOrElseThrow(noteId);
 
         if (!(req.startLine() <= req.endLine())) {
@@ -53,8 +52,8 @@ public class ReviewService {
         return reviews.stream().map(ReviewResDto::from).toList();
     }
 
-    public void update(ReviewUpdateReqDto req, Long noteId, Long reviewId) {
-        Member member = getOrElseThrow();
+    public void update(Long memberId, ReviewUpdateReqDto req, Long noteId, Long reviewId) {
+        Member member = getOrElseThrow(memberId);
         Review review = getReviewOrElseThrow(reviewId);
 
         if (!review.getNote().getId().equals(noteId)) {
@@ -73,8 +72,8 @@ public class ReviewService {
             .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_REVIEW));
     }
 
-    public void delete(Long noteId, Long reviewId) {
-        Member member = getOrElseThrow();
+    public void delete(Long memberId, Long noteId, Long reviewId) {
+        Member member = getOrElseThrow(memberId);
         Review review = getReviewOrElseThrow(reviewId);
 
         if (!review.getNote().getId().equals(noteId)) {
@@ -88,8 +87,8 @@ public class ReviewService {
         reviewRepository.delete(review);
     }
 
-    private Member getOrElseThrow() {
-        return memberRepository.findById(SecurityUtil.getMemberId())
+    private Member getOrElseThrow(Long memberId) {
+        return memberRepository.findById(memberId)
             .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
     }
 
