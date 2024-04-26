@@ -1,0 +1,48 @@
+// 버튼 기본 스타일
+.button {
+    padding: 0.25rem 0.75rem;
+    border: 0.125rem solid;
+    border-color: var(--blue);
+    border-radius: 0.75rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    background-color: var(--blue);
+    color: var(--white);
+    width: 7.5rem;
+    height: 3rem;
+    
+    // 돌아가기
+    &.back{
+        background-color: var(--white);
+        color: var(--blue);
+        border: 0.125rem solid;
+        border-color: var(--blue);
+    }
+
+    &.back:hover{
+        background-color: var(--blue);
+        border-color: var(--blue);
+        color: var(--white);
+    }
+
+    // 추천 검색어
+    &.recommend{
+        @extend .back;
+        color: var(--black); 
+        border-radius: 1.25rem;
+        border: 0.1rem solid;
+        border-color: var(--blue);
+    }
+
+    &.search{
+        border-top-left-radius: 0;
+
+    }
+  }
+  
+
+  .button:hover{
+    background-color: #3170d5;
+    border-color: #3170d5;
+  }
