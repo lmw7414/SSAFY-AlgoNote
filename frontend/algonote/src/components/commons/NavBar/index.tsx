@@ -1,6 +1,6 @@
 import Image from 'next/image'
-import styles from './NavBar.module.scss'
 import Link from 'next/link'
+import styles from './NavBar.module.scss'
 
 const NavBar = () => {
   return (
