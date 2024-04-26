@@ -1,5 +1,7 @@
+import NavBar from '@/components/commons/nav_bar/index'
+
 const Test = () => {
-  return <h1> Hello </h1>
+  return <NavBar />
 }
 
 export default Test
