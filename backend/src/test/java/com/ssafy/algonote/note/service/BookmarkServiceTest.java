@@ -9,6 +9,7 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.willReturn;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import com.ssafy.algonote.exception.CustomException;
 import com.ssafy.algonote.exception.ErrorCode;
@@ -16,9 +17,15 @@ import com.ssafy.algonote.member.domain.Member;
 import com.ssafy.algonote.member.repository.MemberRepository;
 import com.ssafy.algonote.note.domain.Bookmark;
 import com.ssafy.algonote.note.domain.Note;
+import com.ssafy.algonote.note.dto.BookmarkRes;
 import com.ssafy.algonote.note.dto.BookmarkStatusRes;
 import com.ssafy.algonote.note.repository.BookmarkRepository;
 import com.ssafy.algonote.note.repository.NoteRepository;
+import com.ssafy.algonote.problem.domain.Problem;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -139,9 +146,63 @@ class BookmarkServiceTest {
 
     }
 
+    @Nested
+    @DisplayName("북마크 목록 조회")
+    class testGetList {
+
+        private Long memberId;
+        private Note note;
+        private Member member;
+
+        @BeforeEach
+        void setup() {
+            memberId = 1L;
+            note = getNote();
+            member = getMember();
+        }
+
+        @Test
+        @DisplayName("[성공]")
+        void success() {
+            // given
+            member = getMember();
+            note = getNote();
+
+            Bookmark bookmark1 = new Bookmark(1L, member, note);
+            Bookmark bookmark2 = new Bookmark(2L, member, note);
+            List<Bookmark> bookmarks = Arrays.asList(bookmark1, bookmark2);
+
+            when(memberRepository.findById(anyLong())).thenReturn(Optional.of(member));
+            when(bookmarkRepository.findAllByMemberId(any())).thenReturn(bookmarks);
+
+            // when
+            List<BookmarkRes> resultList = bookmarkService.getList(memberId);
+
+            // then
+            assertEquals(2, resultList.size());
+        }
+
+        @Test
+        @DisplayName("[실패] 유효하지 않은 memberId")
+        void fail_member() {
+            // given
+            when(memberRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+            //when
+            CustomException exception = assertThrows(CustomException.class,
+                () -> bookmarkService.getList(memberId));
+
+            //then
+            assertEquals(ErrorCode.NOT_FOUND_MEMBER, exception.getErrorCode());
+        }
+
+    }
+
     Note getNote() {
         return Note.builder()
             .id(1L)
+            .problem(new Problem(1L, "title", 1, 1, 1, new HashSet<>()))
+            .hearts(new ArrayList<>())
             .build();
     }
 
