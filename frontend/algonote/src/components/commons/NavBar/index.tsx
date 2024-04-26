@@ -48,7 +48,7 @@ const NavBar = () => {
               src="/images/save.png"
               alt="saveIcon"
               width={21}
-              height={19}
+              height={21}
             />
           </Link>
           <Link href="/alarm">
@@ -56,7 +56,7 @@ const NavBar = () => {
               src="/images/alarm.png"
               alt="alarmIcon"
               width={21}
-              height={19}
+              height={21}
             />
           </Link>
         </div>
