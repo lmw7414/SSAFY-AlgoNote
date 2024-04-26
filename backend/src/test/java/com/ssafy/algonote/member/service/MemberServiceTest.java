@@ -9,7 +9,9 @@ import com.ssafy.algonote.member.dto.request.EmailAuthReqDto;
 import com.ssafy.algonote.member.dto.request.LoginReqDto;
 import com.ssafy.algonote.member.dto.request.SignUpReqDto;
 import com.ssafy.algonote.member.dto.response.LoginReturnDto;
+import com.ssafy.algonote.member.dto.response.ProfileInfoResDto;
 import jakarta.transaction.Transactional;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -115,5 +117,7 @@ class MemberServiceTest {
         boolean authenticated = memberService.verifyCode(emailAuthReqDto).authenticated();
         assertThat(authenticated).isFalse();
     }
+
+
 
 }

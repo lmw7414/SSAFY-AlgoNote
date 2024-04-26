@@ -42,6 +42,10 @@ public class Member extends BaseEntity {
     @Column(nullable = false)
     private String profileImg;
 
+    public void update(String nickname, String profileImg) {
+        this.nickname = nickname;
+        this.profileImg = profileImg;
+    }
 
     public static Member from(SignUpReqDto signUpReqDto) {
         return Member.builder()

@@ -24,7 +24,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private static final String[] AUTH_WHITELIST = {
-        "/auth/**", "/**"
+        "/auth/**", "/member/**"
     };
 
     private final JwtUtil jwtUtil;
@@ -56,8 +56,9 @@ public class SecurityConfig {
             .authenticationEntryPoint(authenticationEntryPoint));
 
         http.authorizeHttpRequests(
-            authorize -> authorize.requestMatchers(AUTH_WHITELIST)
-                .permitAll()
+            authorize -> authorize
+                .requestMatchers("/member/update").authenticated()
+                .requestMatchers(AUTH_WHITELIST).permitAll()
                 .anyRequest().authenticated()
         );
 

@@ -1,6 +1,7 @@
 package com.ssafy.algonote.member.service;
 
 import com.ssafy.algonote.config.jwt.JwtUtil;
+import com.ssafy.algonote.config.s3.AwsFileService;
 import com.ssafy.algonote.config.user.MemberInfoDto;
 import com.ssafy.algonote.exception.CustomException;
 import com.ssafy.algonote.exception.ErrorCode;
@@ -13,7 +14,9 @@ import com.ssafy.algonote.member.dto.request.NicknameDupCheckReqDto;
 import com.ssafy.algonote.member.dto.request.SignUpReqDto;
 import com.ssafy.algonote.member.dto.response.EmailAuthResDto;
 import com.ssafy.algonote.member.dto.response.LoginReturnDto;
+import com.ssafy.algonote.member.dto.response.ProfileInfoResDto;
 import com.ssafy.algonote.member.repository.MemberRepository;
+import jakarta.transaction.Transactional;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Random;
@@ -23,6 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -33,6 +37,7 @@ public class MemberService {
     private final MailService mailService;
     private final RedisService redisService;
     private final PasswordEncoder passwordEncoder;
+    private final AwsFileService awsFileService;
 
     private static final String AUTH_CODE_PREFIX = "AuthCode ";
 
@@ -66,13 +71,7 @@ public class MemberService {
 
         String token = jwtUtil.createAccessToken(memberInfoDto);
 
-        return LoginReturnDto.builder()
-            .token(token)
-            .memberId(member.getId())
-            .email(member.getEmail())
-            .nickname(member.getNickname())
-            .profileImg(member.getProfileImg())
-            .build();
+        return LoginReturnDto.from(token, member);
     }
 
     private boolean checkPassword(String password, String encodedPassword) {
@@ -111,6 +110,31 @@ public class MemberService {
         return EmailAuthResDto.builder()
             .authenticated(authenticated)
             .build();
+    }
+
+    public ProfileInfoResDto getProfileInfo(Long memberId) {
+        Member member = memberRepository.findById(memberId)
+            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
+
+        return ProfileInfoResDto.from(member);
+    }
+
+    @Transactional
+    public void update(Long memberId, String updateNickname, MultipartFile profileImg) {
+        Member member = memberRepository.findById(memberId)
+            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
+        String imgUrl = member.getProfileImg();
+        String nickname = member.getNickname();
+
+        if(profileImg != null){
+            imgUrl = awsFileService.saveFile(profileImg);
+        }
+
+        if (updateNickname != null) {
+            nickname = updateNickname;
+        }
+
+        member.update(nickname, imgUrl);
     }
 
     private String createCode(){
