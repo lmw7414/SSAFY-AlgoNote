@@ -31,4 +31,13 @@ public class Note extends BaseEntity {
     private String title;
     private String content;
 
+    public static Note of(Member member, Problem problem, String title, String content) {
+        return Note.builder()
+                .member(member)
+                .problem(problem)
+                .title(title)
+                .content(content)
+                .build();
+    }
+
 }
