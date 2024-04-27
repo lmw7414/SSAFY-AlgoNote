@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/problem")
+@RequestMapping("/problems")
 @RequiredArgsConstructor
 public class ProblemController {
 
