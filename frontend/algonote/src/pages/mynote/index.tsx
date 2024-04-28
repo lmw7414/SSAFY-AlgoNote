@@ -1,6 +1,5 @@
 import s from './mynote.module.scss'
 import Folder from '@/components/commons/Folder'
-import NavBar from '@/components/commons/NavBar/index'
 
 const MyNote = () => {
   const problems = [
@@ -45,24 +44,21 @@ const MyNote = () => {
     },
   ]
   return (
-    <>
-      <NavBar />
-      <div className={s.test}>
-        <div className={s.container}>
-          <div className={s.folderContainer}>
-            {problems.map((problem) => (
-              <Folder
-                key={problem.id}
-                tier={problem.tier}
-                problemId={problem.id}
-                problemTitle={problem.title}
-                notes={problem.notes}
-              />
-            ))}
-          </div>
+    <div className={s.test}>
+      <div className={s.container}>
+        <div className={s.folderContainer}>
+          {problems.map((problem) => (
+            <Folder
+              key={problem.id}
+              tier={problem.tier}
+              problemId={problem.id}
+              problemTitle={problem.title}
+              notes={problem.notes}
+            />
+          ))}
         </div>
       </div>
-    </>
+    </div>
   )
 }
 
