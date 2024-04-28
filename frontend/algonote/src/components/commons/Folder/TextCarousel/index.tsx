@@ -18,8 +18,8 @@ const TextCarousel = ({ notes }: { notes: Array<string> }) => {
         </div>
       ) : (
         <Slider {...settings}>
-          {notes.map((noteTitle) => (
-            <div key={noteTitle} className={s.noteTitleCon}>
+          {notes.map((noteTitle, index) => (
+            <div key={index} className={s.noteTitleCon}>
               <p className={s.noteTitle}>{noteTitle}</p>
             </div>
           ))}
