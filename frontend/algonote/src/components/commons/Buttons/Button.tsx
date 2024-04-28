@@ -10,7 +10,7 @@ interface SimpleButtonProps {
 }
 
 const SimpleButton = ({ text, onClick, className }: SimpleButtonProps) => {
-  const buttonClass = `${styles.button} ${className ? styles[className] : ''}`
+  const buttonClass = `${styles.button} ${className ? styles[className] : ' '}`
 
   return (
     <button type="button" onClick={onClick} className={buttonClass}>
@@ -20,32 +20,28 @@ const SimpleButton = ({ text, onClick, className }: SimpleButtonProps) => {
 }
 
 SimpleButton.defaultProps = {
-  className: '',
-  initialClicked: false,
+  className: ' ',
+}
+
+interface FilterButtonProps extends SimpleButtonProps {
+  initialClicked: boolean
 }
 
 const FilterButton = ({
   text,
   onClick,
   className,
-  initialClicked = false,
-}: SimpleButtonProps & { initialClicked?: boolean }) => {
+  initialClicked,
+}: FilterButtonProps) => {
   const [isClicked, setIsClicked] = useState(initialClicked)
-  const handleClick = () => {
+
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     setIsClicked(!isClicked)
+    onClick(e)
   }
 
-  const buttonClass = `${styles[className]} ${isClicked ? styles.clicked : ''}`
-
   return (
-    <SimpleButton
-      text={text}
-      onClick={() => {
-        handleClick()
-        onClick()
-      }}
-      className={buttonClass}
-    />
+    <SimpleButton text={text} onClick={handleClick} className={className} />
   )
 }
 

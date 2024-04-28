@@ -11,9 +11,6 @@ const ButtonFunction = () => {
   const [isClicked, setIsClicked] = useState(false)
   const [isOff, setIsOff] = useState(false)
 
-  // eslint-disable-next-line no-console
-  console.log(count)
-
   return (
     <div>
       <SimpleButton text="기본버튼" onClick={() => setCount(count + 1)} />
@@ -31,7 +28,7 @@ const ButtonFunction = () => {
         text="검색필터"
         onClick={() => setIsClicked(!isClicked)}
         className="search"
-        initialClicked
+        initialClicked={false}
       />
       <BookmarkToggle isOff={isOff} onClick={() => setIsOff(!isOff)} />
       <ToggleButton imageSrc={GPT} onClick={() => setCount(count + 1)} />
