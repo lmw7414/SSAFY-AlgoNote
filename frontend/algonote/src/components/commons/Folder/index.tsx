@@ -1,6 +1,6 @@
-import { Bronze, Silver, Gold, Platinum, Diamond, Ruby } from '../Tiers'
 import s from './Folder.module.scss'
 import TextCarousel from './TextCarousel'
+import { Bronze, Silver, Gold, Platinum, Diamond, Ruby } from './Tiers'
 
 interface FolderProps {
   tier: string
