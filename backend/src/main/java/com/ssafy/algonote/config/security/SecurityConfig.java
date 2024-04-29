@@ -49,7 +49,7 @@ public class SecurityConfig {
             CorsConfiguration config = new CorsConfiguration();
             config.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://k10b203.p.ssafy.io:3000", "https://algnote.duckdns.org"));
             config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH")); // 허용할 HTTP 메소드
-            config.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization")); // 허용할 헤더
+            config.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization", "token")); // 허용할 헤더
             config.setAllowCredentials(true);
             return config;
         }));
