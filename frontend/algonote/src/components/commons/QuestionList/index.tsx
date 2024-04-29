@@ -2,7 +2,23 @@ import styles from './QuestionList.module.scss'
 import Image from 'next/image'
 import Link from 'next/link'
 
-const QuestionList = ({ title, category, tier, src, type, time }) => {
+interface QuestionListProps {
+  title: string
+  category: string
+  tier: string
+  src: string
+  type: string
+  time: string
+}
+
+const QuestionList = ({
+  title,
+  category,
+  tier,
+  src,
+  type,
+  time,
+}: QuestionListProps) => {
   return (
     <div>
       <div className={styles.wrapper}>
