@@ -1,0 +1,77 @@
+.wrapper {
+  overflow-x: hidden;
+  scroll-snap-type: y mandatory;
+}
+
+.introduce {
+  margin: auto;
+  max-width: 75vw;
+  height: 100%;
+}
+
+.title {
+  padding-top: 7rem;
+  font-size: 2.8rem;
+  font-weight: 600;
+  color: var(--white);
+}
+
+.description {
+  padding-top: 5rem;
+  font-size: 1.3rem;
+  line-height: 2rem;
+  color: var(--white);
+}
+
+.startButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.05rem;
+  margin-top: 4em;
+  width: 15rem;
+  height: 55px;
+  padding: 10px 20px;
+  background-color: var(--black);
+  color: var(--white);
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 600;
+  border: none;
+  transition: background-color 0.5s;
+}
+
+.startButton:hover {
+  background-color: #333; /* 호버시 배경색 변경 */
+}
+
+.emphasis {
+  color: yellow;
+}
+
+.warning {
+  margin-top: 8rem;
+  font-size: 0.9rem;
+  color: var(--white);
+}
+
+.firstSection {
+  scroll-snap-align: start;
+  background: linear-gradient(45deg, var(--color-start), var(--color-end));
+  height: 100vh - 7.6;
+}
+
+.secondSection {
+  background: var(--white);
+  height: 100vh;
+}
+
+.thirdSection {
+  background: var(--navy);
+  height: 100vh;
+}
+
+.forthSection {
+  background: var(--skyblue);
+  height: 100vh;
+}
