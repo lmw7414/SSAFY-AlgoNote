@@ -9,7 +9,6 @@ import com.ssafy.algonote.member.dto.request.SignUpReqDto;
 import com.ssafy.algonote.member.dto.response.EmailAuthResDto;
 import com.ssafy.algonote.member.dto.response.LoginResDto;
 import com.ssafy.algonote.member.dto.response.LoginReturnDto;
-import com.ssafy.algonote.member.service.MailService;
 import com.ssafy.algonote.member.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
