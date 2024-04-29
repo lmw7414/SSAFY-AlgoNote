@@ -1,6 +1,9 @@
 .wrapper {
+  height: 100vh;
   overflow-x: hidden;
   scroll-snap-type: y mandatory;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
 }
 
 .introduce {
@@ -58,20 +61,23 @@
 .firstSection {
   scroll-snap-align: start;
   background: linear-gradient(45deg, var(--color-start), var(--color-end));
-  height: 100vh - 7.6;
+  height: 100vh;
 }
 
 .secondSection {
+  scroll-snap-align: start;
   background: var(--white);
   height: 100vh;
 }
 
 .thirdSection {
+  scroll-snap-align: start;
   background: var(--navy);
   height: 100vh;
 }
 
 .forthSection {
+  scroll-snap-align: start;
   background: var(--skyblue);
   height: 100vh;
 }

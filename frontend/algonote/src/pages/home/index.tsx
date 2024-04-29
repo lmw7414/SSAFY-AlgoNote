@@ -4,8 +4,8 @@ import styles from './home.module.scss'
 const Home = () => {
   return (
     <div className={styles.wrapper}>
-      <NavBar />
       <div className={styles.firstSection}>
+        <NavBar />
         <div className={styles.introduce}>
           <div className={styles.title}>
             <p>균형잡힌 알고리즘 공부</p>
