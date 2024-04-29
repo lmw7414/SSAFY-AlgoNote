@@ -3,6 +3,7 @@ package com.ssafy.algonote.config.security;
 import com.ssafy.algonote.config.jwt.JwtAuthFilter;
 import com.ssafy.algonote.config.jwt.JwtUtil;
 import com.ssafy.algonote.config.user.CustomUserDetailsService;
+import java.util.Arrays;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,6 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
 
 @Configuration
 @EnableWebSecurity
@@ -25,6 +27,10 @@ public class SecurityConfig {
 
     private static final String[] AUTH_WHITELIST = {
         "/auth/**", "/member/**", "/problems/search-**"
+        "/auth/**",
+        "/member/**",
+        "/problem/**",
+        "/bookmarks/**"
     };
 
     private final JwtUtil jwtUtil;
@@ -40,7 +46,15 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable());
-        http.cors(Customizer.withDefaults());
+        http.cors(cors->cors.configurationSource(request -> {
+            CorsConfiguration config = new CorsConfiguration();
+            config.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://k10b203.p.ssafy.io:3000", "https://algnote.duckdns.org"));
+            config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH")); // 허용할 HTTP 메소드
+            config.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization", "token")); // 허용할 헤더
+            config.setExposedHeaders(Arrays.asList("token")); // 클라이언트에 노출할 헤더
+            config.setAllowCredentials(true);
+            return config;
+        }));
 
         http.sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(
             SessionCreationPolicy.STATELESS));
