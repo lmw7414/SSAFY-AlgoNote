@@ -1,0 +1,56 @@
+.wrapper {
+    width: 23.8%;
+    min-width: 12rem;
+    margin-bottom: 1rem;
+}
+
+.tierContainer {
+    margin: 0;
+    position: relative;
+    display: flex;
+}
+
+.tier {
+    position: absolute;
+    top:0.25rem;
+    left: 0.8rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--white);  
+}
+
+.tierBlack {
+    position: absolute;
+    top:0.25rem;
+    left: 0.8rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    
+}
+
+.container {
+    height: 8rem;
+    margin: 0;
+    padding: 1rem 1.2rem;
+    border-radius: 0 0.75rem 0.75rem 0.75rem;
+    background-color: var(--soft-sky-gray);
+}
+
+.top {
+    margin-bottom: 1rem;
+}
+
+.problemId {
+    font-weight: 400;
+    color: var(--medium-sky-gray);
+    margin-bottom: 0.2rem;
+}
+
+.problemTitle {
+    font-weight: 600;
+    color: var(--black);
+}
+
+.carouselContainer {
+    margin: 0 1.2rem;
+}

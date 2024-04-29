@@ -67,5 +67,6 @@ module.exports = {
     "import/extensions": "off",
     'import/no-unresolved': 'off',
     'react/react-in-jsx-scope': 'off',
+    "no-nested-ternary": "off",
   },
 }
