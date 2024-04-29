@@ -6,7 +6,7 @@ const NoteNavBar = () => {
   return (
     <div className={styles.wrapper}>
       <div>
-        <Link href="/test">
+        <Link href="/home">
           <Image
             src="/images/logoinnote.png" // 이미지 경로
             alt="logo"
