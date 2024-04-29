@@ -1,8 +1,8 @@
 package com.ssafy.algonote.note.controller;
 
 import com.ssafy.algonote.config.security.SecurityUtil;
-import com.ssafy.algonote.note.dto.BookmarkRes;
-import com.ssafy.algonote.note.dto.BookmarkStatusRes;
+import com.ssafy.algonote.note.dto.BookmarkResDto;
+import com.ssafy.algonote.note.dto.BookmarkStatusResDto;
 import com.ssafy.algonote.note.service.BookmarkService;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -20,13 +20,13 @@ public class BookmarkController {
     private final BookmarkService bookmarkService;
 
     @PostMapping("/notes/{noteId}/bookmarks")
-    public ResponseEntity<BookmarkStatusRes> doBookmark(@PathVariable Long noteId) {
+    public ResponseEntity<BookmarkStatusResDto> doBookmark(@PathVariable Long noteId) {
         Long memberId = SecurityUtil.getMemberId();
         return ResponseEntity.ok(bookmarkService.doBookmark(memberId, noteId));
     }
 
     @GetMapping("/bookmarks")
-    public ResponseEntity<List<BookmarkRes>> getList(@RequestParam("memberId") Long memberId) {
+    public ResponseEntity<List<BookmarkResDto>> getList(@RequestParam("memberId") Long memberId) {
         return ResponseEntity.ok(bookmarkService.getList(memberId));
     }
 
