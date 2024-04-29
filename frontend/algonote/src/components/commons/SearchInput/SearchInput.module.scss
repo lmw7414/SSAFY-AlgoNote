@@ -20,18 +20,14 @@
     }
   }
   
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     .border {
-      margin-left: 10rem;
-      margin-right: 10rem;
-      width: calc(100% - 20rem); /* 더 작은 화면에서 마진 조정 */
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .border {
-      margin-left: 2rem;
-      margin-right: 2rem;
-      width: calc(100% - 4rem); /* 가장 작은 화면에서 마진 조정 */
+      margin: 1rem;
+      width: calc(100% - 2rem);
+      padding: 0.5rem 0.2rem;
+
+      input{
+        font-size: 1rem;
+      }
     }
   }

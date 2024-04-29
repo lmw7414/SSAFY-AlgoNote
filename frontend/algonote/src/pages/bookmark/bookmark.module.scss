@@ -8,6 +8,7 @@
     
     .filterButton{
         display: flex;
+        flex-wrap: wrap;
         gap: 1rem;
         margin-top: 0.5rem;
     }
@@ -15,8 +16,25 @@
 }
 
 
+
 .division_line{
     border: 0.05rem solid var(--gray);
     margin: 2.5rem 12.5% 8rem ;
 
+}
+
+  
+  @media (max-width: 768px) {
+    .bookmark {
+ 
+      width: calc(100% - 4rem);
+
+      .filterButton {
+        gap: 0.5rem;
+        button {
+            padding: 0.8rem;
+            font-size: 1rem;
+        }
+    }
+    }
 }

@@ -1,9 +1,24 @@
 .frame {
     margin: 0 12.5%;
     display: grid;
-    grid-template-columns: repeat(4, 1fr); // 3열 레이아웃
+    grid-template-columns: repeat(4, 1fr); // 4열 레이아웃
     justify-content: space-between; // 각 열 사이에 균일한 간격 유지
     gap: 1.6%; // 그리드 아이템 사이의 간격 추가
+}
+
+
+/* 화면이 1024px 이하일 때 3열로 변경 */
+@media (max-width: 1024px) {
+    .frame {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* 화면이 768px 이하일 때 1열로 변경 */
+@media (max-width: 768px) {
+    .frame {
+        grid-template-columns: repeat(1, 1fr);
+    }
 }
 
 .note {
