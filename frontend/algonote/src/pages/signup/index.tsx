@@ -48,62 +48,64 @@ const SignUp = () => {
   return (
     <div className={s.container}>
       <div className={s.signupContainer}>
-        <div className={s.imgContainer}>
-          <Image
-            src="/images/loginLogo.png"
-            alt="loginLogo"
-            width={160}
-            height={72.5}
-          />
-        </div>
         <div className={s.contents}>
-          <div className={s.emailContainer}>
-            <Input
-              type="email"
-              label="이메일"
-              variant="underlined"
-              value={email}
-              onChange={handleEmail}
+          <div className={s.imgContainer}>
+            <Image
+              src="/images/loginLogo.png"
+              alt="loginLogo"
+              width={160}
+              height={72.5}
             />
-            <Button>확인</Button>
           </div>
-          <div className={s.authContainer}>
+          <div className={s.contents}>
+            <div className={s.emailContainer}>
+              <Input
+                type="email"
+                label="이메일"
+                variant="underlined"
+                value={email}
+                onChange={handleEmail}
+              />
+              <Button>확인</Button>
+            </div>
+            <div className={s.authContainer}>
+              <Input
+                type="authCode"
+                label="인증코드"
+                variant="underlined"
+                value={authCode}
+                onChange={handleAuthCode}
+              />
+              <Button>인증</Button>
+            </div>
             <Input
-              type="authCode"
-              label="인증코드"
+              type="password"
+              label="비밀번호"
               variant="underlined"
-              value={authCode}
-              onChange={handleAuthCode}
+              value={password}
+              onChange={handlePassword}
             />
-            <Button>인증</Button>
-          </div>
-          <Input
-            type="password"
-            label="비밀번호"
-            variant="underlined"
-            value={password}
-            onChange={handlePassword}
-          />
-          <Input
-            type="password2"
-            label="비밀번호 확인"
-            variant="underlined"
-            value={password2}
-            onChange={handlePassword2}
-          />
-          <div className={s.nicknameContainer}>
             <Input
-              type="nickname"
-              label="닉네임"
+              type="password2"
+              label="비밀번호 확인"
               variant="underlined"
-              value={nickname}
-              onChange={handleNickname}
+              value={password2}
+              onChange={handlePassword2}
             />
-            <Button>중복 확인</Button>
+            <div className={s.nicknameContainer}>
+              <Input
+                type="nickname"
+                label="닉네임"
+                variant="underlined"
+                value={nickname}
+                onChange={handleNickname}
+              />
+              <Button>중복 확인</Button>
+            </div>
+            <Button className={s.btn} onClick={signUp}>
+              회원가입하기
+            </Button>
           </div>
-          <Button className={s.btn} onClick={signUp}>
-            회원가입하기
-          </Button>
         </div>
       </div>
     </div>

@@ -1,5 +1,5 @@
 .container {
-    height: 90vh;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -15,17 +15,24 @@
     background-color: var(--white);
 }
 
-.label {
-    font-size: 1rem;
-    margin: 0.625rem 0 0.625rem 0;
-  }
-
-.inputWrapper {
-    margin-bottom: 0.75rem;
+.contents {
+    width: 62.5%;
+    margin: auto;
 }
 
-.btn {
-    width: 80%;
+.emailInput {
+    width: 100%;
+    box-sizing: border-box;
+    border: none;
+}
+
+.passwordInput {
+width: 100%;
+box-sizing: border-box;
+}
+
+.loginBtn {
+    width: 100%;
     height: 2.4rem;
     border-radius: 0.75rem;
     background-color: var(--blue);
