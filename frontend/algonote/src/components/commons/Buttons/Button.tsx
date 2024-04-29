@@ -6,7 +6,7 @@ import styles from '@/components/commons/Buttons/Button.module.scss'
 interface SimpleButtonProps {
   text: string
   onClick: (e: React.MouseEvent<HTMLButtonElement>) => void
-  className?: string
+  className: string
 }
 
 const SimpleButton = ({ text, onClick, className }: SimpleButtonProps) => {
@@ -19,9 +19,9 @@ const SimpleButton = ({ text, onClick, className }: SimpleButtonProps) => {
   )
 }
 
-SimpleButton.defaultProps = {
-  className: ' ',
-}
+// SimpleButton.defaultProps = {
+//   className: ' ',
+// }
 
 interface FilterButtonProps extends SimpleButtonProps {
   initialClicked: boolean
