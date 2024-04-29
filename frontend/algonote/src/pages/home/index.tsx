@@ -1,5 +1,6 @@
-import NavBar from '@/components/commons/NavBar'
+import Image from 'next/image'
 import styles from './home.module.scss'
+import NavBar from '@/components/commons/NavBar'
 
 const Home = () => {
   return (
@@ -34,7 +35,27 @@ const Home = () => {
         </div>
       </div>
 
-      <div className={styles.secondSection}>asdf</div>
+      <div className={styles.secondSection}>
+        <div className={styles.secondWrapper}>
+          <div className={styles.secondImageBox}>
+            <Image src="/images/secondMainImage.png" alt="second-image" fill />
+          </div>
+          <div className={styles.secondTitleBox}>
+            <div className={styles.secondTitle}>
+              <p>틀린 문제는</p>
+              <p>
+                <span>오답노트</span>에 정리해보세요
+              </p>
+            </div>
+            <div className={styles.secondDescription}>
+              <p>문제 분석부터 시간 복잡도까지</p>
+              <p>
+                <span>한 눈에</span> 볼 수 있는 템플릿을 제공해드려요.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
       <div className={styles.thirdSection}>asdf</div>
       <div className={styles.forthSection}>asdf</div>
     </div>
