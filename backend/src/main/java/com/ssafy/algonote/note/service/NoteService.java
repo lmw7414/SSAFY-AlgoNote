@@ -5,6 +5,7 @@ import com.ssafy.algonote.exception.ErrorCode;
 import com.ssafy.algonote.member.domain.Member;
 import com.ssafy.algonote.member.repository.MemberRepository;
 import com.ssafy.algonote.note.domain.Note;
+import com.ssafy.algonote.note.repository.BookmarkRepository;
 import com.ssafy.algonote.note.repository.HeartRepository;
 import com.ssafy.algonote.note.repository.NoteRepository;
 import com.ssafy.algonote.problem.domain.SolvedProblem;
@@ -16,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -26,12 +26,12 @@ public class NoteService {
     private final MemberRepository memberRepository;
     private final SolvedProblemRepository solvedProblemRepository;
     private final HeartRepository heartRepository;
+    private final BookmarkRepository bookmarkRepository;
 
     // 노트 생성
     public void saveNote(Long memberId, Long problemId, String title, String content) {
         Member member = getMemberOrException(memberId);
         SolvedProblem problem = getSolvedProblemOrException(memberId, problemId);
-        log.info("problem info : {}", problem);
         noteRepository.save(Note.of(member, problem.getProblem(), title.trim(), content));
     }
 
@@ -42,7 +42,7 @@ public class NoteService {
         if (note.getMember() != member) {
             throw new CustomException(ErrorCode.NO_AUTHORITY);
         }
-        // TODO: 북마크 관련 삭제
+        bookmarkRepository.deleteAllByNote(note);
         heartRepository.deleteAllByNote(note);
         noteRepository.delete(note);
     }

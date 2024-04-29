@@ -4,6 +4,7 @@ import com.ssafy.algonote.exception.CustomException;
 import com.ssafy.algonote.member.domain.Member;
 import com.ssafy.algonote.member.repository.MemberRepository;
 import com.ssafy.algonote.note.domain.Note;
+import com.ssafy.algonote.note.repository.BookmarkRepository;
 import com.ssafy.algonote.note.repository.HeartRepository;
 import com.ssafy.algonote.note.repository.NoteRepository;
 import com.ssafy.algonote.problem.domain.Problem;
@@ -36,6 +37,8 @@ class NoteServiceTest {
     private MemberRepository memberRepository;
     @Mock
     private HeartRepository heartRepository;
+    @Mock
+    private BookmarkRepository bookmarkRepository;
     @Mock
     private SolvedProblemRepository solvedProblemRepository;
 
