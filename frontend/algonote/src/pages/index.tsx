@@ -2,10 +2,18 @@ import { Inter } from 'next/font/google'
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '@/styles/Home.module.css'
+import { useEffect } from 'react'
+import { useRouter } from 'next/router'
 
 const inter = Inter({ subsets: ['latin'] })
 
 const Home = () => {
+  const router = useRouter()
+
+  useEffect(() => {
+    router.replace('/home') // 사용자를 '/about' 페이지로 리다이렉트합니다.
+  }, [router])
+
   return (
     <>
       <Head>

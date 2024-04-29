@@ -7,7 +7,7 @@ const NavBar = () => {
     <div className={styles.wrapper}>
       <div className={styles.navBox}>
         <div className={styles.logoSec}>
-          <Link href="/test">
+          <Link href="/home">
             <Image
               src="/images/logo.png" // 이미지 경로
               alt="logo"
