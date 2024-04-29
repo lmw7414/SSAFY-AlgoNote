@@ -38,8 +38,7 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity<Object> signUp(@RequestBody SignUpReqDto signUpReqDto) {
         log.info("signUpReqDto : {}", signUpReqDto);
-
-        Long id = memberService.signUp(signUpReqDto);
+        memberService.signUp(signUpReqDto);
         return ResponseEntity.ok().build();
     }
 
@@ -54,7 +53,7 @@ public class AuthController {
         HttpHeaders header = new HttpHeaders();
         header.add("token", loginReturnDto.token());
 
-        return new ResponseEntity<LoginResDto>(loginResDto, header, HttpStatus.OK);
+        return new ResponseEntity<>(loginResDto, header, HttpStatus.OK);
 
     }
 
