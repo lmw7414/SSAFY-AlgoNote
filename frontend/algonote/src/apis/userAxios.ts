@@ -19,9 +19,9 @@ const loginApi = async (email: string, password: string) => {
   console.log('loginApi call')
   const local = axiosApi()
   return local
-    .post('/api/auth/signup', { email, password })
+    .post('/api/auth/login', { email, password })
     .then((response) => {
-      console.log('signUpApi response: ', response)
+      console.log('loginApi response: ', response)
       return response
     })
     .catch((error) => {
