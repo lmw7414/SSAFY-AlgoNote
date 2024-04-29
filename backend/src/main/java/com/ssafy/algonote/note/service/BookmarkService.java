@@ -6,8 +6,8 @@ import com.ssafy.algonote.member.domain.Member;
 import com.ssafy.algonote.member.repository.MemberRepository;
 import com.ssafy.algonote.note.domain.Bookmark;
 import com.ssafy.algonote.note.domain.Note;
-import com.ssafy.algonote.note.dto.BookmarkRes;
-import com.ssafy.algonote.note.dto.BookmarkStatusRes;
+import com.ssafy.algonote.note.dto.BookmarkResDto;
+import com.ssafy.algonote.note.dto.BookmarkStatusResDto;
 import com.ssafy.algonote.note.repository.BookmarkRepository;
 import com.ssafy.algonote.note.repository.NoteRepository;
 import java.util.List;
@@ -27,7 +27,7 @@ public class BookmarkService {
     private final MemberRepository memberRepository;
     private final NoteRepository noteRepository;
 
-    public BookmarkStatusRes doBookmark(Long memberId, Long noteId) {
+    public BookmarkStatusResDto doBookmark(Long memberId, Long noteId) {
         Member member = getMemberOrElseThrow(memberId);
         Note note = getNoteOrElseThrow(noteId);
 
@@ -38,11 +38,11 @@ public class BookmarkService {
                 .note(note)
                 .build());
 
-            return new BookmarkStatusRes(true);
+            return new BookmarkStatusResDto(true);
         } else {
             bookmarkRepository.delete(optionalBookmark.get());
 
-            return new BookmarkStatusRes(false);
+            return new BookmarkStatusResDto(false);
         }
     }
 
@@ -57,11 +57,11 @@ public class BookmarkService {
     }
 
     @Transactional(readOnly = true)
-    public List<BookmarkRes> getList(Long memberId) {
+    public List<BookmarkResDto> getList(Long memberId) {
         getMemberOrElseThrow(memberId);
         return bookmarkRepository.findAllByMemberId(memberId)
             .stream()
-            .map(BookmarkRes::from)
+            .map(BookmarkResDto::from)
             .toList();
     }
 

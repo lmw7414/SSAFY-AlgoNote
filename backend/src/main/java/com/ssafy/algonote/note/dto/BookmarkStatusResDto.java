@@ -1,6 +1,6 @@
 package com.ssafy.algonote.note.dto;
 
-public record BookmarkStatusRes(
+public record BookmarkStatusResDto(
     boolean bookmarked
 ) {
 

@@ -17,8 +17,8 @@ import com.ssafy.algonote.member.domain.Member;
 import com.ssafy.algonote.member.repository.MemberRepository;
 import com.ssafy.algonote.note.domain.Bookmark;
 import com.ssafy.algonote.note.domain.Note;
-import com.ssafy.algonote.note.dto.BookmarkRes;
-import com.ssafy.algonote.note.dto.BookmarkStatusRes;
+import com.ssafy.algonote.note.dto.BookmarkResDto;
+import com.ssafy.algonote.note.dto.BookmarkStatusResDto;
 import com.ssafy.algonote.note.repository.BookmarkRepository;
 import com.ssafy.algonote.note.repository.NoteRepository;
 import com.ssafy.algonote.problem.domain.Problem;
@@ -83,7 +83,7 @@ class BookmarkServiceTest {
             willReturn(Optional.empty()).given(bookmarkRepository).findByNoteIdAndMemberId(anyLong(), anyLong());
 
             // when
-            BookmarkStatusRes result = bookmarkService.doBookmark(1L, 1L);
+            BookmarkStatusResDto result = bookmarkService.doBookmark(1L, 1L);
 
             // then
             verify(bookmarkRepository, times(1)).findByNoteIdAndMemberId(1L, 1L);
@@ -105,7 +105,7 @@ class BookmarkServiceTest {
             willReturn(Optional.of(bookmark)).given(bookmarkRepository).findByNoteIdAndMemberId(anyLong(), anyLong());
 
             // when
-            BookmarkStatusRes result = bookmarkService.doBookmark(1L, 1L);
+            BookmarkStatusResDto result = bookmarkService.doBookmark(1L, 1L);
 
             // then
             verify(bookmarkRepository, times(1)).findByNoteIdAndMemberId(1L, 1L);
@@ -176,7 +176,7 @@ class BookmarkServiceTest {
             when(bookmarkRepository.findAllByMemberId(any())).thenReturn(bookmarks);
 
             // when
-            List<BookmarkRes> resultList = bookmarkService.getList(memberId);
+            List<BookmarkResDto> resultList = bookmarkService.getList(memberId);
 
             // then
             assertEquals(2, resultList.size());

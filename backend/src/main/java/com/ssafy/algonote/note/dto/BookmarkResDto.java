@@ -4,13 +4,13 @@ import com.ssafy.algonote.note.domain.Bookmark;
 import lombok.Builder;
 
 @Builder
-public record BookmarkRes(
+public record BookmarkResDto(
     BookmarkNoteResDto note,
     BookmarkProblemResDto problem,
     BookmarkMemberResDto member
 ) {
-    public static BookmarkRes from(Bookmark bookmark) {
-        return BookmarkRes.builder()
+    public static BookmarkResDto from(Bookmark bookmark) {
+        return BookmarkResDto.builder()
             .note(BookmarkNoteResDto.from(bookmark.getNote()))
             .problem(BookmarkProblemResDto.from(bookmark.getNote().getProblem()))
             .member(BookmarkMemberResDto.from(bookmark.getMember()))
