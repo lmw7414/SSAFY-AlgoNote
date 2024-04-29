@@ -1,0 +1,54 @@
+.wrapper {
+  height: 30px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  div {
+    line-height: 30px;
+    height: 100%;
+    text-align: center;
+    color: var(--black);
+    font-weight: 600;
+    font-size: 15px;
+  }
+
+  .level {
+    flex: 1;
+
+    // background: blue;
+  }
+
+  .questionNumber {
+    flex: 1;
+    // background: skyblue;
+  }
+
+  .title {
+    flex: 4;
+    // text-align: start;
+    // padding-left: 1em;
+    // background: greenyellow;
+  }
+
+  .type {
+    flex: 2;
+    // background: yellow;
+  }
+
+  .summitDate {
+    flex: 1;
+    // background: antiquewhite;
+  }
+
+  .writeNote {
+    flex: 1;
+    // background: dodgerblue;
+  }
+}
+
+.bottomHr {
+  border: none;
+  height: 1px;
+  background-color: var(--soft-gray);
+}
