@@ -1,12 +1,9 @@
 package com.ssafy.algonote.problem.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.ssafy.algonote.exception.CustomException;
 import com.ssafy.algonote.problem.domain.Problem;
 import com.ssafy.algonote.problem.domain.Tag;
-import com.ssafy.algonote.problem.dto.ConsumerProblemResDto;
 import com.ssafy.algonote.problem.repository.ProblemRepository;
-import com.ssafy.algonote.problem.repository.TagRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -5,13 +5,15 @@ import lombok.Builder;
 
 @Builder
 public record BookmarkNoteResDto(
-    String title,
-    int heartCnt
+        Long id,
+        String title,
+        long heartCnt
 ) {
-    public static BookmarkNoteResDto from(Note note) {
+    public static BookmarkNoteResDto from(Note note, long heartCnt) {
         return BookmarkNoteResDto.builder()
-            .title(note.getTitle())
-            .heartCnt(note.getHearts().size())
-            .build();
+                .id(note.getId())
+                .title(note.getTitle())
+                .heartCnt(heartCnt)
+                .build();
     }
 }
