@@ -6,6 +6,7 @@ import com.ssafy.algonote.member.dto.request.EmailDupCheckReqDto;
 import com.ssafy.algonote.member.dto.request.LoginReqDto;
 import com.ssafy.algonote.member.dto.request.NicknameDupCheckReqDto;
 import com.ssafy.algonote.member.dto.request.SignUpReqDto;
+import com.ssafy.algonote.member.dto.response.DupcheckResDto;
 import com.ssafy.algonote.member.dto.response.EmailAuthResDto;
 import com.ssafy.algonote.member.dto.response.LoginResDto;
 import com.ssafy.algonote.member.dto.response.LoginReturnDto;
@@ -58,17 +59,17 @@ public class AuthController {
     }
 
     @PostMapping("/email-dupcheck")
-    public ResponseEntity<Void> emailDupCheck(@RequestBody EmailDupCheckReqDto emailDupCheckReqDto) {
+    public ResponseEntity<DupcheckResDto> emailDupCheck(@RequestBody EmailDupCheckReqDto emailDupCheckReqDto) {
         log.info("emailDupCheckReqDto : {}", emailDupCheckReqDto);
-        memberService.emailDupCheck(emailDupCheckReqDto);
-        return ResponseEntity.ok().build();
+        boolean duplicated = memberService.emailDupCheck(emailDupCheckReqDto);
+        return ResponseEntity.ok(new DupcheckResDto(duplicated));
     }
 
     @PostMapping("/nickname-dupcheck")
-    public ResponseEntity<Void> nicknameDupCheck(@RequestBody NicknameDupCheckReqDto nicknameDupCheckReqDto) {
+    public ResponseEntity<DupcheckResDto> nicknameDupCheck(@RequestBody NicknameDupCheckReqDto nicknameDupCheckReqDto) {
         log.info("nicknameDupCheckReqDto : {}", nicknameDupCheckReqDto);
-        memberService.nicknameDupCheck(nicknameDupCheckReqDto);
-        return ResponseEntity.ok().build();
+        boolean duplicated = memberService.nicknameDupCheck(nicknameDupCheckReqDto);
+        return ResponseEntity.ok(new DupcheckResDto(duplicated));
     }
 
     @PostMapping("/verification-requests")
