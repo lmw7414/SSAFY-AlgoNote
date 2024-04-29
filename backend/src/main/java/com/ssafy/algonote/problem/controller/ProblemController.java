@@ -1,6 +1,6 @@
 package com.ssafy.algonote.problem.controller;
 
-import com.ssafy.algonote.problem.dto.ProblemResDto;
+import com.ssafy.algonote.problem.dto.response.ProblemResDto;
 import com.ssafy.algonote.problem.service.ProblemService;
 import com.ssafy.algonote.problem.service.TagService;
 import lombok.RequiredArgsConstructor;

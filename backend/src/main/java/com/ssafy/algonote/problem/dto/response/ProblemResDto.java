@@ -1,4 +1,4 @@
-package com.ssafy.algonote.problem.dto;
+package com.ssafy.algonote.problem.dto.response;
 
 import com.ssafy.algonote.problem.domain.Problem;
 import com.ssafy.algonote.problem.domain.Tag;
