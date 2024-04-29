@@ -5,13 +5,15 @@ import lombok.Builder;
 
 @Builder
 public record BookmarkProblemResDto(
-    String title,
-    int tier
+        Long id,
+        String title,
+        int tier
 ) {
     public static BookmarkProblemResDto from(Problem problem) {
         return BookmarkProblemResDto.builder()
-            .title(problem.getTitle())
-            .tier(problem.getTier())
-            .build();
+                .id(problem.getId())
+                .title(problem.getTitle())
+                .tier(problem.getTier())
+                .build();
     }
 }

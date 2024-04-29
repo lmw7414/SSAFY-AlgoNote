@@ -5,11 +5,13 @@ import lombok.Builder;
 
 @Builder
 public record BookmarkMemberResDto(
-    String nickname
+        Long id,
+        String nickname
 ) {
     public static BookmarkMemberResDto from(Member member) {
         return BookmarkMemberResDto.builder()
-            .nickname(member.getNickname())
-            .build();
+                .id(member.getId())
+                .nickname(member.getNickname())
+                .build();
     }
 }
