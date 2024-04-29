@@ -7,7 +7,6 @@ import com.ssafy.algonote.note.domain.Note;
 import com.ssafy.algonote.note.repository.NoteRepository;
 import com.ssafy.algonote.problem.domain.Problem;
 import com.ssafy.algonote.problem.repository.ProblemRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -77,7 +76,7 @@ class NoteServiceTest {
 
     @Test
     @DisplayName("[생성] 노트 작성 시 존재하지 않는 문제를 등록한 경우")
-    void test() {
+    void givenNoteAndMemberInfo_whenSaveNotewithNonExistProblem_thenThrowException() {
         // given
         String title = "title";
         String content = "content";
@@ -111,18 +110,74 @@ class NoteServiceTest {
         verify(noteRepository).delete(any());
     }
 
+    @Test
+    @DisplayName("[삭제] 노트 삭제 시 권한이 없는 경우")
+    void givenMemberAndNote_whenDeleteNoteWithoutAuthority_thenThrowException() {
+        // given
+        Long memberId = 1L;
+        Long noteId = 1000L;
 
-    // 노트 조회
+        Member writer = createMember(memberId);
+        Member other = createMember(2L);
+        Note note = createNote(noteId, other);
 
+        given(memberRepository.findById(memberId)).willReturn(Optional.of(writer));
+        given(noteRepository.findById(noteId)).willReturn(Optional.of(note));
+
+        // when & then
+        assertThrows(CustomException.class, () -> {
+            sut.deleteNote(memberId, noteId);
+        });
+    }
+
+    @Test
+    @DisplayName("[삭제] 노트 삭제 시 노트가 존재하지 않는 경우")
+    void givenMemberAndNote_whenDeleteNoteWithoutNote_thenThrowException() {
+        // given
+        Long memberId = 1L;
+        Long noteId = 1000L;
+
+        Member member = createMember(memberId);
+
+        given(memberRepository.findById(memberId)).willReturn(Optional.of(member));
+        given(noteRepository.findById(noteId)).willReturn(Optional.empty());
+
+        // when & then
+        assertThrows(CustomException.class, () -> {
+            sut.deleteNote(memberId, noteId);
+        });
+    }
 
 
     // 노트 업데이트
+    @Test
+    @DisplayName("노트 수정 성공")
+    void givenTitleAndContent_whenUpdateNote_thenNothing() {
+        // given
+        Long memberId = 1L;
+        Long noteId = 1000L;
+        String title = "updatedTitle";
+        String content = "updatedContent";
+
+        Member member = createMember(memberId);
+        Note note = createNote(noteId, member);
+
+        given(memberRepository.findById(memberId)).willReturn(Optional.of(member));
+        given(noteRepository.findById(noteId)).willReturn(Optional.of(note));
+
+        // when
+        sut.update(memberId, noteId, title, content);
+
+        //then
+        verify(noteRepository).saveAndFlush(any());
+    }
 
     private Member createMember(Long memberId) {
         Member member = new Member();
         ReflectionTestUtils.setField(member, "id", memberId);
         return member;
     }
+
     private Note createNote(Long noteId, Member member) {
         Note note = new Note();
         ReflectionTestUtils.setField(note, "id", noteId);

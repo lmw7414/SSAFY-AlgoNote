@@ -24,14 +24,12 @@ public class HeartService {
 
     @Transactional
     public HeartResDto heart(Long memberId, Long noteId) {
-
-
         Member member = memberRepository.findById(memberId).orElseThrow(
-            () -> new CustomException(ErrorCode.NOT_FOUND_MEMBER)
+                () -> new CustomException(ErrorCode.NOT_FOUND_MEMBER)
         );
 
         Note note = noteRepository.findById(noteId).orElseThrow(
-            ()->new CustomException(ErrorCode.NOT_FOUND_NOTE)
+                () -> new CustomException(ErrorCode.NOT_FOUND_NOTE)
         );
 
         Heart heart = heartRepository.findOneByMemberIdAndNoteId(memberId, noteId);
@@ -39,28 +37,47 @@ public class HeartService {
         if (heart == null) {
             log.info("ADD HEART userId: {}, noteId: {}", memberId, noteId);
             member = Member.builder()
-                          .id(memberId)
-                          .build();
+                    .id(memberId)
+                    .build();
 
             note = Note.builder()
                     .id(noteId)
                     .build();
 
             heart = Heart.builder()
-                         .member(member)
-                         .note(note)
-                         .build();
+                    .member(member)
+                    .note(note)
+                    .build();
 
             heartRepository.save(heart);
-
             return new HeartResDto(true);
-
-        }else{
+        } else {
             log.info("DELETE HEART userId: {}, noteId: {}", memberId, noteId);
-
             heartRepository.delete(heart);
             return new HeartResDto(false);
         }
+    }
 
+    // 좋아요 개수 카운트
+    public long heartCnt(Long noteId) {
+        Note note = getNoteOrException(noteId);
+        return heartRepository.countByNote(note);
+    }
+
+    // 좋아요 여부 확인
+    public boolean heartStatus(Long memberId, Long noteId) {
+        Note note = getNoteOrException(noteId);
+        Member member = getMemberOrException(memberId);
+        return heartRepository.existsByMemberAndNote(member, note);
+    }
+
+    private Note getNoteOrException(Long noteId) {
+        return noteRepository.findById(noteId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_NOTE));
+    }
+
+    private Member getMemberOrException(Long memberId) {
+        return memberRepository.findById(memberId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
     }
 }
