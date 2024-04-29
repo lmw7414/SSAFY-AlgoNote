@@ -7,14 +7,16 @@ import com.ssafy.algonote.member.repository.MemberRepository;
 import com.ssafy.algonote.note.domain.Note;
 import com.ssafy.algonote.note.repository.HeartRepository;
 import com.ssafy.algonote.note.repository.NoteRepository;
-import com.ssafy.algonote.problem.domain.Problem;
-import com.ssafy.algonote.problem.repository.ProblemRepository;
+import com.ssafy.algonote.problem.domain.SolvedProblem;
+import com.ssafy.algonote.problem.repository.SolvedProblemRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -22,14 +24,15 @@ public class NoteService {
 
     private final NoteRepository noteRepository;
     private final MemberRepository memberRepository;
-    private final ProblemRepository problemRepository;
+    private final SolvedProblemRepository solvedProblemRepository;
     private final HeartRepository heartRepository;
 
     // 노트 생성
     public void saveNote(Long memberId, Long problemId, String title, String content) {
         Member member = getMemberOrException(memberId);
-        Problem problem = getProblemOrException(problemId);
-        noteRepository.save(Note.of(member, problem, title.trim(), content));
+        SolvedProblem problem = getSolvedProblemOrException(memberId, problemId);
+        log.info("problem info : {}", problem);
+        noteRepository.save(Note.of(member, problem.getProblem(), title.trim(), content));
     }
 
     // 노트 삭제
@@ -44,24 +47,17 @@ public class NoteService {
         noteRepository.delete(note);
     }
 
-    // 전체 노트 조회
-    @Transactional(readOnly = true)
-    public Page<Note> getNotes(Pageable pageable) {
-        return noteRepository.findAll(pageable);
-    }
-
     // 문제별로 노트 조회
     @Transactional(readOnly = true)
-    public Page<Note> getNotesByProblem(Pageable pageable, Long problemId) {
-        Problem problem = getProblemOrException(problemId);
-        return noteRepository.findByProblem(pageable, problem);
+    public Note getNoteById(Long noteId) {
+        return getNoteOrException(noteId);
     }
 
     // 사용자별로 노트 조회 & 내가 작성한 노트 조회
     @Transactional(readOnly = true)
-    public Page<Note> getNotesByMember(Pageable pageable, Long memberId) {
+    public List<Note> getNotesByMember(Long memberId) {
         Member member = getMemberOrException(memberId);
-        return noteRepository.findByMember(pageable, member);
+        return noteRepository.findByMember(member);
     }
 
     // 노트 수정
@@ -88,9 +84,9 @@ public class NoteService {
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
     }
 
-    private Problem getProblemOrException(Long problemId) {
-        return problemRepository.findById(problemId)
-                .orElseThrow(() -> new CustomException((ErrorCode.NOT_FOUND_PROBLEM)));
+    private SolvedProblem getSolvedProblemOrException(Long memberId, Long problemId) {
+        return solvedProblemRepository.findByMember_IdAndProblem_Id(memberId, problemId)
+                .orElseThrow(() -> new CustomException((ErrorCode.NOT_SOLVED)));
     }
 
 }

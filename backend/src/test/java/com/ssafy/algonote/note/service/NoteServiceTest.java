@@ -4,9 +4,11 @@ import com.ssafy.algonote.exception.CustomException;
 import com.ssafy.algonote.member.domain.Member;
 import com.ssafy.algonote.member.repository.MemberRepository;
 import com.ssafy.algonote.note.domain.Note;
+import com.ssafy.algonote.note.repository.HeartRepository;
 import com.ssafy.algonote.note.repository.NoteRepository;
 import com.ssafy.algonote.problem.domain.Problem;
-import com.ssafy.algonote.problem.repository.ProblemRepository;
+import com.ssafy.algonote.problem.domain.SolvedProblem;
+import com.ssafy.algonote.problem.repository.SolvedProblemRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,7 +35,9 @@ class NoteServiceTest {
     @Mock
     private MemberRepository memberRepository;
     @Mock
-    private ProblemRepository problemRepository;
+    private HeartRepository heartRepository;
+    @Mock
+    private SolvedProblemRepository solvedProblemRepository;
 
     // 노트 생성
     @Test
@@ -48,7 +52,7 @@ class NoteServiceTest {
         //mocking
         given(memberRepository.findById(memberId)).willReturn(Optional.of(mock(Member.class)));
         given(noteRepository.save(any())).willReturn(mock(Note.class));
-        given(problemRepository.findById(problemId)).willReturn(Optional.of(mock(Problem.class)));
+        given(solvedProblemRepository.findByMember_IdAndProblem_Id(memberId, problemId)).willReturn(Optional.of(mock(SolvedProblem.class)));
 
         //when
         sut.saveNote(memberId, problemId, title, content);
@@ -75,7 +79,7 @@ class NoteServiceTest {
     }
 
     @Test
-    @DisplayName("[생성] 노트 작성 시 존재하지 않는 문제를 등록한 경우")
+    @DisplayName("[생성] 노트 작성 시 풀지 않은 문제를 등록한 경우")
     void givenNoteAndMemberInfo_whenSaveNotewithNonExistProblem_thenThrowException() {
         // given
         String title = "title";
@@ -84,7 +88,7 @@ class NoteServiceTest {
         Long problemId = 1000L;
 
         given(memberRepository.findById(memberId)).willReturn(Optional.of(mock(Member.class)));
-        given(problemRepository.findById(problemId)).willReturn(Optional.empty());
+        given(solvedProblemRepository.findByMember_IdAndProblem_Id(memberId, problemId)).willReturn(Optional.empty());
 
         // when & then
         assertThrows(CustomException.class, () -> {

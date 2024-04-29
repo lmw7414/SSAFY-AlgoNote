@@ -29,11 +29,17 @@ public class SolvedProblemService {
     public void saveSolvedProblem(Long memberId, Long problemId, LocalDateTime uploadedAt) {
         Member member = getMemberOrException(memberId);
         Problem problem = getProblemOrException(problemId);
-        solvedProblemRepository.save(SolvedProblem.of(member, problem, uploadedAt));
+        solvedProblemRepository.findByMember_IdAndProblem_Id(memberId, problemId).ifPresentOrElse(
+                it -> {
+                    it.setUploadedAt(uploadedAt);
+                    solvedProblemRepository.save(it);
+                },
+                () -> solvedProblemRepository.save(SolvedProblem.of(member, problem, uploadedAt))
+        );
     }
 
     public Page<SolvedProblem> getSolvedProblemByMember(Pageable pageable, Long memberId) {
-        Member member  = getMemberOrException(memberId);
+        Member member = getMemberOrException(memberId);
         return solvedProblemRepository.findAllByMember(pageable, member);
     }
 
@@ -45,5 +51,10 @@ public class SolvedProblemService {
     private Problem getProblemOrException(Long problemId) {
         return problemRepository.findById(problemId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
+    }
+
+    private SolvedProblem getSolvedProblemOrException(Long memberId, Long problemId) {
+        return solvedProblemRepository.findByMember_IdAndProblem_Id(memberId, problemId)
+                .orElseThrow(() -> new CustomException((ErrorCode.NOT_SOLVED)));
     }
 }
