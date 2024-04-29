@@ -47,6 +47,7 @@ const Bookmark = () => {
           })}
         </div>
       </div>
+      <div className={Styles.division_line} />
       <Note />
     </div>
   )

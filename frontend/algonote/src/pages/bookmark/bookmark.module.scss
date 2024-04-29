@@ -1,8 +1,22 @@
+
+
 .bookmark{
     font-weight: 600;
     margin: 0 12.5%;
+    font-size: 1.25rem;
+    margin-top: 1.625rem;
+    
+    .filterButton{
+        display: flex;
+        gap: 1rem;
+        margin-top: 0.5rem;
+    }
+
 }
 
-.filterButton{
-    display: flex;
+
+.division_line{
+    border: 0.05rem solid var(--gray);
+    margin: 2.5rem 12.5% 8rem ;
+
 }
