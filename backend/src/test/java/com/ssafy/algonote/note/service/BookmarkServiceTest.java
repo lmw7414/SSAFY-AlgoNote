@@ -1,16 +1,5 @@
 package com.ssafy.algonote.note.service;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.BDDMockito.willReturn;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import com.ssafy.algonote.exception.CustomException;
 import com.ssafy.algonote.exception.ErrorCode;
 import com.ssafy.algonote.member.domain.Member;
@@ -20,13 +9,9 @@ import com.ssafy.algonote.note.domain.Note;
 import com.ssafy.algonote.note.dto.BookmarkResDto;
 import com.ssafy.algonote.note.dto.BookmarkStatusResDto;
 import com.ssafy.algonote.note.repository.BookmarkRepository;
+import com.ssafy.algonote.note.repository.HeartRepository;
 import com.ssafy.algonote.note.repository.NoteRepository;
 import com.ssafy.algonote.problem.domain.Problem;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -35,6 +20,17 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.BDDMockito.willReturn;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class BookmarkServiceTest {
@@ -50,6 +46,9 @@ class BookmarkServiceTest {
 
     @Mock
     MemberRepository memberRepository;
+
+    @Mock
+    HeartRepository heartRepository;
 
     @Nested
     @DisplayName("북마크 생성/삭제")
@@ -123,7 +122,7 @@ class BookmarkServiceTest {
 
             //when
             CustomException exception = assertThrows(CustomException.class,
-                () -> bookmarkService.doBookmark(memberId, noteId));
+                    () -> bookmarkService.doBookmark(memberId, noteId));
 
             //then
             assertEquals(ErrorCode.NOT_FOUND_MEMBER, exception.getErrorCode());
@@ -138,7 +137,7 @@ class BookmarkServiceTest {
 
             //when
             CustomException exception = assertThrows(CustomException.class,
-                () -> bookmarkService.doBookmark(memberId, noteId));
+                    () -> bookmarkService.doBookmark(memberId, noteId));
 
             //then
             assertEquals(ErrorCode.NOT_FOUND_NOTE, exception.getErrorCode());
@@ -190,7 +189,7 @@ class BookmarkServiceTest {
 
             //when
             CustomException exception = assertThrows(CustomException.class,
-                () -> bookmarkService.getList(memberId));
+                    () -> bookmarkService.getList(memberId));
 
             //then
             assertEquals(ErrorCode.NOT_FOUND_MEMBER, exception.getErrorCode());
@@ -200,22 +199,21 @@ class BookmarkServiceTest {
 
     Note getNote() {
         return Note.builder()
-            .id(1L)
-            .problem(new Problem(1L, "title", 1, 1, 1, new HashSet<>()))
-            .hearts(new ArrayList<>())
-            .build();
+                .id(1L)
+                .problem(new Problem(1L, "title", 1, 1, 1, new HashSet<>()))
+                .build();
     }
 
     Member getMember() {
         return Member.builder()
-            .id(1L)
-            .build();
+                .id(1L)
+                .build();
     }
 
     Bookmark getBookmark() {
         return Bookmark.builder()
-            .id(1L)
-            .build();
+                .id(1L)
+                .build();
     }
 
 }

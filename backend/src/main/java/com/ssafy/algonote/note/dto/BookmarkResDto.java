@@ -9,9 +9,9 @@ public record BookmarkResDto(
     BookmarkProblemResDto problem,
     BookmarkMemberResDto member
 ) {
-    public static BookmarkResDto from(Bookmark bookmark) {
+    public static BookmarkResDto from(Bookmark bookmark, long heartCnt) {
         return BookmarkResDto.builder()
-            .note(BookmarkNoteResDto.from(bookmark.getNote()))
+            .note(BookmarkNoteResDto.from(bookmark.getNote(), heartCnt))
             .problem(BookmarkProblemResDto.from(bookmark.getNote().getProblem()))
             .member(BookmarkMemberResDto.from(bookmark.getMember()))
             .build();
