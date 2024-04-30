@@ -5,14 +5,12 @@ import com.ssafy.algonote.submission.dto.request.SubmissionReqDto;
 import com.ssafy.algonote.submission.dto.response.SubmissionResDto;
 import com.ssafy.algonote.submission.service.SubmissionService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Slf4j
 @RestController
 @RequestMapping("/submissions")
 @RequiredArgsConstructor
@@ -23,7 +21,6 @@ public class SubmissionController {
     @PostMapping
     public ResponseEntity<Void> saveSubmission(@RequestBody SubmissionReqDto dto) {
         Long memberId = SecurityUtil.getMemberId();
-        log.info("req : {}", dto);
         submissionService.saveSubmission(
                 dto.submissionId(),
                 memberId,
