@@ -1,7 +1,7 @@
 import Tier from '@public/images/tier.svg'
 import Image from 'next/image'
 import styles from './Note.module.scss'
-import HeartButton from '@/components/commons/Button/Heart'
+import HeartButton from '@/components/commons/Buttons/Heart'
 
 const dummy = {
   bookmarks: [

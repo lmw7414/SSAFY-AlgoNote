@@ -13,7 +13,11 @@ const ButtonFunction = () => {
 
   return (
     <div>
-      <SimpleButton text="기본버튼" onClick={() => setCount(count + 1)} />
+      <SimpleButton
+        text="기본버튼"
+        onClick={() => setCount(count + 1)}
+        className="simple"
+      />
       <SimpleButton
         text="돌아가기"
         onClick={() => setCount(count + 1)}

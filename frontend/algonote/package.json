@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@next/font": "^14.2.3",
+    "@nextui-org/react": "^2.3.6",
     "@svgr/webpack": "^8.1.0",
     "axios": "^1.6.8",
     "next": "14.2.2",

@@ -1,0 +1,43 @@
+.container {
+    height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--soft-sky);
+}
+
+.signupContainer {
+    width: 30%;
+    min-width: 20rem;
+    height: 80%;
+    border-radius: 1.5rem;
+    background-color: var(--white);
+}
+
+.imgContainer {
+    display: flex;
+    justify-content: center;
+}
+
+.contents {
+    
+}
+
+.emailContainer {
+    display: flex;
+}
+
+.authContainer {
+    display: flex;
+}
+
+.nicknameContainer {
+    display: flex;
+}
+
+.btn {
+    width: 80%;
+    height: 2.4rem;
+    border-radius: 0.75rem;
+    background-color: var(--blue);
+}
