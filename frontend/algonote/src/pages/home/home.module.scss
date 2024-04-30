@@ -80,7 +80,7 @@
 
 .forthSection {
   scroll-snap-align: start;
-  background: var(--skyblue);
+  background: linear-gradient(180deg, var(--light-skyblue), var(--white));
   height: 100vh;
 }
 
@@ -93,10 +93,11 @@
   height: 100%;
 }
 
-.secondImageBox {
+// image
+.imageBox {
   display: flex;
-  width: 45%;
-  height: 80%;
+  width: 50%;
+  height: 78%;
   padding-right: 1rem;
   // background: skyblue;
 
@@ -115,23 +116,23 @@
   // background: navy;
 }
 
-.secondTitle {
-  font-size: 2.6rem;
-  font-weight: 600;
+.blackTitle {
+  font-size: 2.4rem;
+  font-weight: 500;
   color: var(--black);
   // background: navy;
 
   span {
     // color: var(--blue);
-    font-weight: 700;
-    font-size: 2.8rem;
+    font-weight: 600;
+    font-size: 2.6rem;
   }
 }
 
-.secondDescription {
+.blackDescription {
   margin-top: 3rem;
   // margin-left: 0.2rem;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   font-weight: 400;
   line-height: 2rem;
   color: var(--gray);
@@ -139,5 +140,46 @@
 
   span {
     color: var(--blue);
+  }
+}
+
+.lastDescription {
+  margin-top: 3rem;
+  // margin-left: 0.2rem;
+  font-size: 1.2rem;
+  font-weight: 400;
+  line-height: 2rem;
+  color: var(--black);
+  // background: navy;
+
+  span {
+    color: var(--blue);
+  }
+}
+
+.whiteTitle {
+  font-size: 2.4rem;
+  font-weight: 500;
+  color: var(--white);
+  // background: navy;
+
+  span {
+    // color: var(--blue);
+    font-weight: 600;
+    font-size: 2.6rem;
+  }
+}
+
+.whiteDescription {
+  margin-top: 3rem;
+  // margin-left: 0.2rem;
+  font-size: 1.2rem;
+  font-weight: 400;
+  line-height: 2rem;
+  color: var(--white);
+  // background: navy;
+
+  span {
+    color: var(--white);
   }
 }

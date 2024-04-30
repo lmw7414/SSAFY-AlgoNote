@@ -37,17 +37,17 @@ const Home = () => {
 
       <div className={styles.secondSection}>
         <div className={styles.secondWrapper}>
-          <div className={styles.secondImageBox}>
+          <div className={styles.imageBox}>
             <Image src="/images/secondMainImage.png" alt="second-image" fill />
           </div>
           <div className={styles.secondTitleBox}>
-            <div className={styles.secondTitle}>
+            <div className={styles.blackTitle}>
               <p>틀린 문제는</p>
               <p>
                 <span>오답노트</span>에 정리해보세요
               </p>
             </div>
-            <div className={styles.secondDescription}>
+            <div className={styles.blackDescription}>
               <p>문제 분석부터 시간 복잡도까지</p>
               <p>
                 <span>한 눈에</span> 볼 수 있는 템플릿을 제공해드려요.
@@ -56,8 +56,49 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <div className={styles.thirdSection}>asdf</div>
-      <div className={styles.forthSection}>asdf</div>
+      <div className={styles.thirdSection}>
+        <div className={styles.secondWrapper}>
+          <div className={styles.imageBox}>
+            <Image src="/images/thirdMainImage.png" alt="second-image" fill />
+          </div>
+          <div className={styles.secondTitleBox}>
+            <div className={styles.whiteTitle}>
+              <p>부족한 유형은</p>
+              <p>
+                <span>추천 문제</span>로 대비하세요
+              </p>
+            </div>
+            <div className={styles.whiteDescription}>
+              <p>회원님의 제출 이력을 분석하여</p>
+              <p>
+                부족한 유형의 문제를 <span>추천</span>해드려요.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className={styles.forthSection}>
+        {' '}
+        <div className={styles.secondWrapper}>
+          <div className={styles.secondTitleBox}>
+            <div className={styles.blackTitle}>
+              <p>혼자 풀기 지루하다면?</p>
+              <p>
+                친구와<span> 1:1 코드배틀!</span>
+              </p>
+            </div>
+            <div className={styles.lastDescription}>
+              <p>친구들과 실시간으로</p>
+              <p>
+                <span>알고리즘</span>을 경쟁해보세요.
+              </p>
+            </div>
+          </div>
+          <div className={styles.imageBox}>
+            <Image src="/images/thirdMainImage.png" alt="second-image" fill />
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
