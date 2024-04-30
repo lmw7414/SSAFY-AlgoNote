@@ -103,11 +103,17 @@ const dummy = {
 }
 
 const Note = () => {
-  const [heartIsOff, setHeartIsOff] = useState(false)
+  const [heartIsOff, setHeartIsOff] = useState(dummy.bookmarks.map(() => true))
+
+  const handleHeartState = (index: number) => {
+    const newHeartState = [...heartIsOff]
+    newHeartState[index] = !heartIsOff[index]
+    setHeartIsOff(newHeartState)
+  }
 
   return (
     <div className={styles.frame}>
-      {dummy.bookmarks.map((it) => {
+      {dummy.bookmarks.map((it, index) => {
         let key = 1
         key += 1
 
@@ -123,13 +129,17 @@ const Note = () => {
               <div className={styles.note_title}>{it.note.title}</div>
               <div className={styles.details}>
                 <ImageToggle
-                  isOff={heartIsOff}
-                  onClick={() => setHeartIsOff(!heartIsOff)}
+                  isOff={heartIsOff[index]}
+                  onClick={() => handleHeartState(index)}
                   offImg={HeartOffSVG}
                   onImg={HeartSVG}
+                  width="1.6rem"
+                  height="1.6rem"
                 />
-                {it.note.heartCnt}
-                <div className={styles.nickname}>{it.member.nickname}</div>
+                <div className={styles.countNickname}>
+                  <div>{it.note.heartCnt}</div>
+                  <div className={styles.nickname}>{it.member.nickname}</div>
+                </div>
               </div>
             </div>
           </div>

@@ -25,7 +25,6 @@ const FilterSection = ({ title, items, itemKey }: FilterSectionProps) => {
                 text={it}
                 onClick={() => console.log('눌렸음')}
                 className="search"
-                initialClicked={false}
               />
             </div>
           )

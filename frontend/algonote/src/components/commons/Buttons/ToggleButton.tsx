@@ -1,4 +1,5 @@
 import Image, { StaticImageData } from 'next/image'
+import styles from './ToggleButton.module.scss'
 
 export interface ToggleButtonProps {
   imageSrc: StaticImageData
@@ -19,8 +20,13 @@ const ToggleButton = ({
   }
 
   return (
-    <button type="button" onClick={onClick} style={buttonStyle}>
-      <Image src={imageSrc} alt="토글버튼" />
+    <button
+      type="button"
+      onClick={onClick}
+      style={buttonStyle}
+      className={styles.button}
+    >
+      <Image src={imageSrc} alt="토글버튼" layout="fill" objectFit="contain" />
     </button>
   )
 }
