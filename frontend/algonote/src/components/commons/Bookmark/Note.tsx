@@ -1,7 +1,10 @@
+import { useState } from 'react'
+import HeartOffSVG from '@public/images/heart.svg'
+import HeartSVG from '@public/images/redHeart.svg'
 import Tier from '@public/images/tier.svg'
 import Image from 'next/image'
 import styles from './Note.module.scss'
-import HeartButton from '@/components/commons/Buttons/Heart'
+import ImageToggle from '@/components/commons/Buttons/ImageToggle'
 
 const dummy = {
   bookmarks: [
@@ -100,6 +103,8 @@ const dummy = {
 }
 
 const Note = () => {
+  const [heartIsOff, setHeartIsOff] = useState(false)
+
   return (
     <div className={styles.frame}>
       {dummy.bookmarks.map((it) => {
@@ -117,7 +122,12 @@ const Note = () => {
               </div>
               <div className={styles.note_title}>{it.note.title}</div>
               <div className={styles.details}>
-                <HeartButton />
+                <ImageToggle
+                  isOff={heartIsOff}
+                  onClick={() => setHeartIsOff(!heartIsOff)}
+                  offImg={HeartOffSVG}
+                  onImg={HeartSVG}
+                />
                 {it.note.heartCnt}
                 <div className={styles.nickname}>{it.member.nickname}</div>
               </div>

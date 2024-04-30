@@ -1,15 +1,20 @@
 'use client'
 
 import { useState } from 'react'
+import BookMarkSVG from '@public/images/bookmark.svg'
+import BookMarkOffSVG from '@public/images/bookmark_off.svg'
 import GPT from '@public/images/btn-new-chat.svg'
-import BookmarkToggle from '@/components/commons/Buttons/BookmarkToggle'
+import HeartOffSVG from '@public/images/heart.svg'
+import HeartSVG from '@public/images/redHeart.svg'
 import { SimpleButton, FilterButton } from '@/components/commons/Buttons/Button'
+import ImageToggle from '@/components/commons/Buttons/ImageToggle'
 import ToggleButton from '@/components/commons/Buttons/ToggleButton'
 
 const ButtonFunction = () => {
   const [count, setCount] = useState(0)
   const [isClicked, setIsClicked] = useState(false)
-  const [isOff, setIsOff] = useState(false)
+  const [markIsOff, setMarkIsOff] = useState(false)
+  const [heartIsOff, setHeartIsOff] = useState(false)
 
   return (
     <div>
@@ -34,7 +39,18 @@ const ButtonFunction = () => {
         className="search"
         initialClicked={false}
       />
-      <BookmarkToggle isOff={isOff} onClick={() => setIsOff(!isOff)} />
+      <ImageToggle
+        isOff={markIsOff}
+        onClick={() => setMarkIsOff(!markIsOff)}
+        offImg={BookMarkSVG}
+        onImg={BookMarkOffSVG}
+      />
+      <ImageToggle
+        isOff={heartIsOff}
+        onClick={() => setHeartIsOff(!heartIsOff)}
+        offImg={HeartOffSVG}
+        onImg={HeartSVG}
+      />
       <ToggleButton imageSrc={GPT} onClick={() => setCount(count + 1)} />
     </div>
   )
