@@ -63,7 +63,7 @@ const axiosApi = (): AxiosInstance => {
   console.log('axiosApi call')
   const instance = axios.create({
     baseURL: api,
-    timeout: 2000,
+    timeout: 5000,
   })
   return instance
 }
