@@ -3,37 +3,48 @@
 import { useState } from 'react'
 import styles from '@/components/commons/Buttons/Button.module.scss'
 
-interface SimpleButtonProps {
+export interface SimpleButtonProps {
   text: string
   onClick: (e: React.MouseEvent<HTMLButtonElement>) => void
-  className: string
+  className?: string
+  width?: string
+  height?: string
 }
 
-const SimpleButton = ({ text, onClick, className }: SimpleButtonProps) => {
+const SimpleButton = ({
+  text,
+  onClick,
+  className,
+  width,
+  height,
+}: SimpleButtonProps) => {
   const buttonClass = `${styles.button} ${className ? styles[className] : ' '}`
 
+  const buttonStyle = {
+    width: width || '100%',
+    height: height || '3rem',
+  }
+
   return (
-    <button type="button" onClick={onClick} className={buttonClass}>
+    <button
+      type="button"
+      onClick={onClick}
+      className={buttonClass}
+      style={buttonStyle}
+    >
       {text}
     </button>
   )
-}
-
-// SimpleButton.defaultProps = {
-//   className: ' ',
-// }
-
-interface FilterButtonProps extends SimpleButtonProps {
-  initialClicked: boolean
 }
 
 const FilterButton = ({
   text,
   onClick,
   className,
-  initialClicked,
-}: FilterButtonProps) => {
-  const [isClicked, setIsClicked] = useState(initialClicked)
+  width,
+  height,
+}: SimpleButtonProps) => {
+  const [isClicked, setIsClicked] = useState(false)
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     setIsClicked(!isClicked)
@@ -41,7 +52,13 @@ const FilterButton = ({
   }
 
   return (
-    <SimpleButton text={text} onClick={handleClick} className={className} />
+    <SimpleButton
+      text={text}
+      onClick={handleClick}
+      className={className}
+      width={width}
+      height={height}
+    />
   )
 }
 

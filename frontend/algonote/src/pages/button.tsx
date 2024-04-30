@@ -18,15 +18,14 @@ const ButtonFunction = () => {
 
   return (
     <div>
-      <SimpleButton
-        text="기본버튼"
-        onClick={() => setCount(count + 1)}
-        className="simple"
-      />
+      <SimpleButton text="기본버튼" onClick={() => setCount(count + 1)} />
+
       <SimpleButton
         text="돌아가기"
         onClick={() => setCount(count + 1)}
         className="back"
+        width="100px"
+        height="100px"
       />
       <SimpleButton
         text="추천검색어"
@@ -37,7 +36,6 @@ const ButtonFunction = () => {
         text="검색필터"
         onClick={() => setIsClicked(!isClicked)}
         className="search"
-        initialClicked={false}
       />
       <ImageToggle
         isOff={markIsOff}
