@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import HeartOffSVG from '@public/images/heart.svg'
 import HeartSVG from '@public/images/redHeart.svg'
 import Tier from '@public/images/tier.svg'
