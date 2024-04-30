@@ -70,20 +70,17 @@
             flex: 1;
             display: flex;
             font-weight: 600;
-            border: 1px solid red;
             gap: 5px;
 
             .countNickname{
                 width: 100%;
                 display: flex; 
                 align-items: center;
-                border: 1px solid blue;
                 align-items: space-between;
             }
 
             .nickname {
                 @extend .problem;
-                border: 1px solid purple;
                 justify-content: right;               
             }
         }

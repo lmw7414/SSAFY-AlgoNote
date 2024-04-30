@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import HeartOffSVG from '@public/images/heart.svg'
 import HeartSVG from '@public/images/redHeart.svg'
 import Tier from '@public/images/tier.svg'
@@ -104,18 +104,38 @@ const dummy = {
 
 const Note = () => {
   const [heartIsOff, setHeartIsOff] = useState(dummy.bookmarks.map(() => true))
+  const [bookmarks, setBookmarks] = useState(dummy.bookmarks)
 
   const handleHeartState = (index: number) => {
     const newHeartState = [...heartIsOff]
     newHeartState[index] = !heartIsOff[index]
     setHeartIsOff(newHeartState)
+
+    // hearCnt 증가
+
+    const updatedDummy = bookmarks.map((bookmark, idx) => {
+      if (index === idx) {
+        if (heartIsOff[index]) {
+          return {
+            ...bookmark,
+            note: { ...bookmark.note, heartCnt: bookmark.note.heartCnt + 1 },
+          }
+        }
+
+        return {
+          ...bookmark,
+          note: { ...bookmark.note, heartCnt: bookmark.note.heartCnt - 1 },
+        }
+      }
+      return bookmark
+    })
+    setBookmarks(updatedDummy)
   }
 
   return (
     <div className={styles.frame}>
-      {dummy.bookmarks.map((it, index) => {
-        let key = 1
-        key += 1
+      {bookmarks.map((it, index) => {
+        const key = `${it.problem.title}-${index}`
 
         return (
           <div key={key} className={styles.note}>
