@@ -18,8 +18,8 @@ public class ExceptionController {
             .body(new ExceptionResponse(e.getErrorCode(), e.getMessage()));
     }
 
-    @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<ExceptionResponse> handlerRuntimeException(final RuntimeException e) {
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ExceptionResponse> handlerRuntimeException(final Exception e) {
         log.error("runtime Exception : {}", e.getMessage());
         return ResponseEntity.status(ErrorCode.RUNTIME_EXCEPTION.getHttpStatus())
             .body(new ExceptionResponse(ErrorCode.RUNTIME_EXCEPTION, e.getMessage()));
