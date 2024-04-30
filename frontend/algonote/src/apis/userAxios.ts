@@ -1,3 +1,4 @@
+import { setCookie } from '@/utils/cookie'
 import { axiosApi } from '@/utils/instance'
 
 const signUpApi = async (email: string, password: string, nickname: string) => {
@@ -17,16 +18,11 @@ const signUpApi = async (email: string, password: string, nickname: string) => {
 
 const loginApi = async (email: string, password: string) => {
   console.log('loginApi call')
-  const local = axiosApi()
-  return local
+  return axiosApi()
     .post('/api/auth/login', { email, password })
     .then((response) => {
-      console.log('loginApi response: ', response)
-      return response
-    })
-    .catch((error) => {
-      console.error()
-      console.log(error)
+      setCookie('access_token', response.headers.token, 1) // 1일의 만료기간
+      // console.log('loginApi response: ', response)
     })
 }
 

@@ -1,5 +1,5 @@
 .container {
-    height: 100vh;
+    height: calc(100vh - 60px);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -8,32 +8,78 @@
 
 .loginContainer {
     width: 30%;
-    min-width: 20rem;
+    min-width: 22rem;
     height: 80%;
     border-radius: 1.5rem;
-    text-align: center;
     background-color: var(--white);
+    display: flex;
+    justify-content: center;
 }
 
 .contents {
     width: 62.5%;
-    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.emailInput {
+.logo {
+    margin-top: 4rem;
+}
+
+.inpuCont {
+    width: 100%;
+    margin-top: 0.8rem;
+}
+
+.label {
+    font-weight: 500;
+    color: var(--medium-sky-gray);
+}
+
+.input {
     width: 100%;
     box-sizing: border-box;
     border: none;
+    border-bottom: 1px solid var(--medium-sky-gray);
+    padding: 0.2rem 0;
+    outline: none;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
 }
 
-.passwordInput {
-width: 100%;
-box-sizing: border-box;
+/* 기본적인 테두리 스타일 제거 */
+.input:focus {
+    border-bottom-color: var(--blue);
 }
 
-.loginBtn {
+.input::placeholder {
+    color: var(--medium-sky-gray); /* 플레이스홀더 텍스트의 글자색 지정 */
+}
+
+.inputFailed {
     width: 100%;
-    height: 2.4rem;
-    border-radius: 0.75rem;
-    background-color: var(--blue);
+    box-sizing: border-box;
+    border: none;
+    border-bottom: 1px solid var(--red);
+    padding: 0.4rem 0;
+    outline: none;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.validation {
+    font-size: 0.85rem;
+    color: var(--red);
+}
+
+.btnCont {
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.bottom {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
 }
