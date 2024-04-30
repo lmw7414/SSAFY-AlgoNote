@@ -68,6 +68,7 @@ public class SecurityConfig {
                 .accessDeniedHandler(accessDeniedHandler)
                 .authenticationEntryPoint(authenticationEntryPoint));
 
+
         http.authorizeHttpRequests(
                 authorize -> authorize
                         .requestMatchers("/member/update").authenticated()

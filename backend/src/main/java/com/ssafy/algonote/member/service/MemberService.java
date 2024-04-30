@@ -56,7 +56,8 @@ public class MemberService {
 
         Member member = Member.builder()
             .email(signUpReqDto.email())
-            .password(passwordEncoder.encode(signUpReqDto.password()))
+//            .password(passwordEncoder.encode(signUpReqDto.password()))
+            .password(signUpReqDto.password())
             .nickname(signUpReqDto.nickname())
             .role(MemberRole.USER)
             .profileImg(prefix+"/defaultProfile.png")
@@ -82,8 +83,10 @@ public class MemberService {
     }
 
     private boolean checkPassword(String password, String encodedPassword) {
-        return passwordEncoder.matches(password, encodedPassword);
+//        return passwordEncoder.matches(password, encodedPassword);
+        return password.equals(encodedPassword);
     }
+
 
     public boolean emailDupCheck(EmailDupCheckReqDto emailDupCheckReqDto) {
         return checkDuplicated(emailDupCheckReqDto.email(), "email");
