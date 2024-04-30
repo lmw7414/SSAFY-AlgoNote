@@ -14,10 +14,10 @@ import org.springframework.stereotype.Component;
 public class ProblemConsumer {
     private final ProblemService problemService;
 
-//    @KafkaListener(topics = "${spring.kafka.topic.problem}")
-//    public void consumeBoj(ConsumerProblemResDto dto, Acknowledgment ack) {
-//        log.info("Consume the event {}", dto);
-//        problemService.saveProblem(dto);
-//        ack.acknowledge();
-//    }
+    @KafkaListener(topics = "${spring.kafka.topic.problem}")
+    public void consumeBoj(ConsumerProblemResDto dto, Acknowledgment ack) {
+        log.info("Consume the event {}", dto);
+        problemService.saveProblem(dto);
+        ack.acknowledge();
+    }
 }

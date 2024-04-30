@@ -36,8 +36,7 @@ public class ProblemService {
         Problem problem = Problem.of(dto.getProblemId(), dto.getTitle(), dto.getLevel(), dto.getAcceptedUserCount(), dto.getAverageTries());
         Set<Tag> tagSet = dto.getTags().stream().map(tagService::saveTagIfNotExists).collect(Collectors.toUnmodifiableSet());
         problem.addTags(tagSet);
-        for (Tag tag : problem.getTags())
-            System.out.println(tag);
+
         problemRepository.save(problem);
     }
 
