@@ -1,12 +1,15 @@
-import { useState, ChangeEvent, FormEvent } from 'react'
-// import { Button, Input } from '@nextui-org/react'
+import { useState, ChangeEvent } from 'react'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 import s from './login.module.scss'
 import { loginApi } from '@/apis/userAxios'
+import { SimpleButton } from '@/components/commons/Buttons/Button'
 
 const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [isUserValid, setIsUserValid] = useState(true)
+  const [failedPassword, setFailedPassword] = useState('')
 
   const handleEmail = (event: ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value
@@ -19,17 +22,28 @@ const Login = () => {
     setPassword(newValue)
   }
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault() // 폼의 기본 동작 방지
+  const router = useRouter()
 
+  const handleSubmit = async () => {
     try {
       console.log('로그인 요청')
       await loginApi(email, password) // 로그인 API 호출
       console.log('로그인 성공!')
+      router.push('/')
       // 로그인 성공 후 필요한 작업 수행 (예: 페이지 이동 등)
-    } catch (error) {
-      console.error('로그인 실패:', error)
+    } catch (e) {
+      console.error('로그인 실패:', e)
+      setIsUserValid(false)
+      setFailedPassword(password)
+
       // 로그인 실패 처리
+    }
+  }
+
+  if (!isUserValid) {
+    if (password !== failedPassword) {
+      setFailedPassword('')
+      setIsUserValid(true)
     }
   }
 
@@ -42,46 +56,40 @@ const Login = () => {
             alt="loginLogo"
             width={150}
             height={112.5}
+            className={s.logo}
           />
-          <form onSubmit={handleSubmit}>
+          <div className={s.inpuCont}>
+            <p className={s.label}>이메일</p>
             <input
               type="email"
-              placeholder="이메일"
+              // placeholder="이메일"
               value={email}
               onChange={handleEmail}
-              className={s.emailInput}
+              className={s.input}
             />
-            <hr />
+          </div>
+          <div className={s.inpuCont}>
+            <p className={s.label}>비밀번호</p>
             <input
               type="password"
-              placeholder="비밀번호"
+              // placeholder="비밀번호"
               value={password}
               onChange={handlePassword}
-              className={s.passwordInput}
+              className={isUserValid ? s.input : s.inputFailed}
             />
-            {/* <Input
-            type="email"
-            label="이메일"
-            variant="underlined"
-            value={email}
-            onChange={handleEmail}
-          /> */}
-            {/* <Input
-            type="password"
-            label="비밀번호"
-            variant="underlined"
-            value={password}
-            onChange={handlePassword}
-          /> */}
-            <button type="submit" className={s.loginBtn}>
-              로그인
-            </button>
-          </form>
-          {/* <Button className={s.btn} onClick={login}>
-            로그인
-          </Button> */}
-          <p>아직 회원이 아니신가요?</p>
-          <a href="./signup">회원가입하기</a>
+            {isUserValid ? null : (
+              <p className={s.validation}>
+                이메일 또는 비밀번호가 잘못되었습니다.
+              </p>
+            )}
+          </div>
+          <div className={s.btnCont}>
+            <SimpleButton text="로그인" onClick={handleSubmit} className="" />
+          </div>
+          <div className={s.bottom}>
+            <p>아직 회원이 아니신가요?</p>
+            <a href="./signup">회원가입하기</a>
+          </div>
         </div>
       </div>
     </div>
