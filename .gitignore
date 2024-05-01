@@ -7,3 +7,4 @@ frontend/**
 backend/database/**
 backend/docker-compose.yml
 backend/redis/**
+backend/recommender/solved_problem_history.csv
