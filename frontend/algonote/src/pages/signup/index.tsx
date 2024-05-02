@@ -229,7 +229,13 @@ const SignUp = () => {
                 }}
                 className={s.input}
               />
-              <SimpleButton text="인증" onClick={checkAuthCode} className="" />
+              <SimpleButton
+                text="인증"
+                onClick={checkAuthCode}
+                width="6rem"
+                height="2rem"
+                className=""
+              />
             </div>
             {authCodeState === 1 ? (
               <p className={s.validationSuccess}>인증되었습니다.</p>
@@ -241,7 +247,7 @@ const SignUp = () => {
               <p className={s.invisible}>인증 코드를 입력해주세요.</p>
             )}
 
-            <p className={s.label}>비밀번호</p>
+            <p className={s.marginLabel}>비밀번호</p>
             <div className={s.inputCont}>
               <input
                 type="password"
@@ -283,7 +289,7 @@ const SignUp = () => {
               <p className={s.invisible}>비밀번호2를 입력해주세요.</p>
             )}
 
-            <p className={s.label}>닉네임</p>
+            <p className={s.marginLabel}>닉네임</p>
             <div className={s.inputCont}>
               <input
                 type="nickname"
@@ -296,6 +302,8 @@ const SignUp = () => {
               <SimpleButton
                 text="중복 확인"
                 onClick={nicknameDupCheck}
+                width="6rem"
+                height="2rem"
                 className=""
               />
             </div>
