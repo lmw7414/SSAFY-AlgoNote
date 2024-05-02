@@ -195,9 +195,13 @@ const SignUp = () => {
                 <SimpleButton
                   text="코드 전송"
                   onClick={sendAuthCode}
-                  className=""
-                  width="6rem"
-                  height="2rem"
+                  style={{
+                    width: '6rem',
+                    height: '2rem',
+                    fontSize: '0.8rem',
+                    fontWeight: '500',
+                    padding: '0',
+                  }}
                 />
               ) : emailState === 3 ? (
                 <div className={s.spinnerCont}>
@@ -207,9 +211,13 @@ const SignUp = () => {
                 <SimpleButton
                   text="중복 확인"
                   onClick={emailDupCheck}
-                  className=""
-                  width="6rem"
-                  height="2rem"
+                  style={{
+                    width: '6rem',
+                    height: '2rem',
+                    fontSize: '0.8rem',
+                    fontWeight: '500',
+                    padding: '0',
+                  }}
                 />
               )}
             </div>
@@ -234,9 +242,13 @@ const SignUp = () => {
               <SimpleButton
                 text="인증"
                 onClick={checkAuthCode}
-                width="6rem"
-                height="2rem"
-                className=""
+                style={{
+                  width: '6rem',
+                  height: '2rem',
+                  fontSize: '0.8rem',
+                  fontWeight: '500',
+                  padding: '0',
+                }}
               />
             </div>
             {authCodeState === 1 ? (
@@ -304,9 +316,13 @@ const SignUp = () => {
               <SimpleButton
                 text="중복 확인"
                 onClick={nicknameDupCheck}
-                width="6rem"
-                height="2rem"
-                className=""
+                style={{
+                  width: '6rem',
+                  height: '2rem',
+                  fontSize: '0.8rem',
+                  fontWeight: '500',
+                  padding: '0',
+                }}
               />
             </div>
             {nicknameState === 1 ? (
@@ -325,7 +341,13 @@ const SignUp = () => {
           </div>
 
           <div className={s.btnCont}>
-            <SimpleButton text="회원가입" onClick={signUp} className="" />
+            <SimpleButton
+              text="회원가입"
+              onClick={signUp}
+              style={{
+                fontWeight: '500',
+              }}
+            />
           </div>
         </div>
       </div>
