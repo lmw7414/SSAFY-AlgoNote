@@ -1,5 +1,7 @@
+'use client'
+
 import Styles from './bookmark.module.scss'
-import Note from '@/components/commons/Bookmark/Note'
+import Notes from '@/components/commons/Bookmark/Note'
 import { FilterButton } from '@/components/commons/Buttons/Button'
 import SearchInput from '@/components/commons/SearchInput'
 
@@ -41,7 +43,7 @@ const Bookmark = () => {
       <FilterSection title="티어" items={tier} itemKey="tier" />
       <FilterSection title="유형" items={category} itemKey="category" />
       <div className={Styles.division_line} />
-      <Note />
+      <Notes />
     </div>
   )
 }
