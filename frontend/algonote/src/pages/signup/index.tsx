@@ -1,9 +1,11 @@
 import { useState, ChangeEvent } from 'react'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 import s from './signup.module.scss'
 import {
   checkAuthCodeApi,
   emailDupCheckApi,
+  loginApi,
   nicknameDupCheckApi,
   sendAuthCodeApi,
   signUpApi,
@@ -23,6 +25,8 @@ const SignUp = () => {
   const [nickname, setNickname] = useState('')
   const [failedNickname, setFailedNickname] = useState('')
   const [nicknameState, setNicknameState] = useState(0)
+
+  const router = useRouter()
 
   const handleInput = (event: ChangeEvent<HTMLInputElement>, type: string) => {
     const newValue = event.target.value
@@ -142,6 +146,8 @@ const SignUp = () => {
         console.log('회원가입 요청')
         await signUpApi(email, password, nickname) // 로그인 API 호출
         console.log('회원가입 성공!')
+        loginApi(email, password)
+        router.push('/')
       } catch (error) {
         console.error('회원가입 실패:', error)
       }
