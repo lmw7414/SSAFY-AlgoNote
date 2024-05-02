@@ -67,13 +67,21 @@
             color: var(--black);
         } 
         .details {
-            flex: 0.5;
+            flex: 1;
             display: flex;
             font-weight: 600;
+            gap: 5px;
+
+            .countNickname{
+                width: 100%;
+                display: flex; 
+                align-items: center;
+                align-items: space-between;
+            }
 
             .nickname {
                 @extend .problem;
-                justify-content: right;
+                justify-content: right;            
             }
         }
     }
