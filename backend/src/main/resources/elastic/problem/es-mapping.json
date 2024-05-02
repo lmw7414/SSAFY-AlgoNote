@@ -1,0 +1,30 @@
+{
+
+    "properties": {
+      "id": {
+        "type": "text"
+      },
+      "title": {
+        "type": "text",
+        "analyzer": "nori"
+      },
+      "tier": {
+        "type": "integer"
+      },
+      "acceptedUserCount": {
+        "type": "integer"
+      },
+      "averageTries": {
+        "type": "double"
+      },
+      "tags": {
+        "type": "nested",
+        "properties": {
+          "tag": {
+            "type": "text"
+          }
+        }
+      }
+    }
+
+}
