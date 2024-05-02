@@ -29,7 +29,8 @@ public class SecurityConfig {
             "/auth/**",
             "/member/**",
             "/problems/search-**",
-            "/bookmarks/**"
+            "/bookmarks/**",
+            "/gpt/**"
     };
 
     private final JwtUtil jwtUtil;
