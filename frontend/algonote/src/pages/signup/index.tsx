@@ -124,19 +124,21 @@ const SignUp = () => {
   }
 
   const nicknameDupCheck = async () => {
-    try {
-      const response = await nicknameDupCheckApi(nickname)
-      if (response) {
-        console.log('사용 가능한 닉네임입니다.')
-        setNicknameState(1)
-      } else {
-        setNicknameState(2)
-        setFailedNickname(nickname)
-        console.log(emailState)
-        console.log('이미 사용중인 닉네임입니다.')
+    if (nicknameState === 3) {
+      try {
+        const response = await nicknameDupCheckApi(nickname)
+        if (response) {
+          console.log('사용 가능한 닉네임입니다.')
+          setNicknameState(1)
+        } else {
+          setNicknameState(2)
+          setFailedNickname(nickname)
+          console.log(emailState)
+          console.log('이미 사용중인 닉네임입니다.')
+        }
+      } catch (e) {
+        console.log('이메일 중복체크 실패:', e)
       }
-    } catch (e) {
-      console.log('이메일 중복체크 실패:', e)
     }
   }
 
