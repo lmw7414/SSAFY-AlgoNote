@@ -44,8 +44,8 @@ const MyNote = () => {
     },
   ]
   return (
-    <div className={s.test}>
-      <div className={s.container}>
+    <div className={s.container}>
+      <div className={s.contents}>
         <div className={s.folderContainer}>
           {problems.map((problem) => (
             <Folder
