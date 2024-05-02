@@ -58,6 +58,14 @@ const SignUp = () => {
         setPasswordState2(2)
       }
     } else if (type === 'nickname') {
+      const idRegExp = /^.{2,14}$/
+      setNickname(newValue)
+      const check = idRegExp.test(newValue)
+      if (check) {
+        setNicknameState(3)
+      } else {
+        setNicknameState(4)
+      }
       setNickname(newValue)
     }
   }
@@ -282,6 +290,12 @@ const SignUp = () => {
               <p className={s.validationSuccess}>사용 가능한 닉네임입니다.</p>
             ) : nicknameState === 2 ? (
               <p className={s.validationFailed}>이미 사용중인 닉네임입니다.</p>
+            ) : nicknameState === 3 ? (
+              <p className={s.invisible}>닉네임을 입력해주세요.</p>
+            ) : nicknameState === 4 ? (
+              <p className={s.validationFailed}>
+                닉네임은 2-14자이여야 합니다.
+              </p>
             ) : (
               <p className={s.invisible}>닉네임을 입력해주세요.</p>
             )}
