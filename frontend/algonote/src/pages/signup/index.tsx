@@ -95,11 +95,16 @@ const SignUp = () => {
   }
 
   const sendAuthCode = async () => {
+    setEmailState(3)
     try {
       await sendAuthCodeApi(email)
       console.log('인증 코드 전송')
+      window.alert('인증코드가 전송되었습니다.')
+      setEmailState(1)
     } catch (e) {
       console.log('인증코드 전송 실패:', e)
+      window.alert('인증코드 전송에 실패하였습니다.')
+      setEmailState(1)
     }
   }
 
@@ -119,19 +124,21 @@ const SignUp = () => {
   }
 
   const nicknameDupCheck = async () => {
-    try {
-      const response = await nicknameDupCheckApi(nickname)
-      if (response) {
-        console.log('사용 가능한 닉네임입니다.')
-        setNicknameState(1)
-      } else {
-        setNicknameState(2)
-        setFailedNickname(nickname)
-        console.log(emailState)
-        console.log('이미 사용중인 닉네임입니다.')
+    if (nicknameState === 3) {
+      try {
+        const response = await nicknameDupCheckApi(nickname)
+        if (response) {
+          console.log('사용 가능한 닉네임입니다.')
+          setNicknameState(1)
+        } else {
+          setNicknameState(2)
+          setFailedNickname(nickname)
+          console.log(emailState)
+          console.log('이미 사용중인 닉네임입니다.')
+        }
+      } catch (e) {
+        console.log('이메일 중복체크 실패:', e)
       }
-    } catch (e) {
-      console.log('이메일 중복체크 실패:', e)
     }
   }
 
@@ -189,12 +196,20 @@ const SignUp = () => {
                   text="코드 전송"
                   onClick={sendAuthCode}
                   className=""
+                  width="6rem"
+                  height="2rem"
                 />
+              ) : emailState === 3 ? (
+                <div className={s.spinnerCont}>
+                  <div className={s.spinner} />
+                </div>
               ) : (
                 <SimpleButton
                   text="중복 확인"
                   onClick={emailDupCheck}
                   className=""
+                  width="6rem"
+                  height="2rem"
                 />
               )}
             </div>
@@ -216,7 +231,13 @@ const SignUp = () => {
                 }}
                 className={s.input}
               />
-              <SimpleButton text="인증" onClick={checkAuthCode} className="" />
+              <SimpleButton
+                text="인증"
+                onClick={checkAuthCode}
+                width="6rem"
+                height="2rem"
+                className=""
+              />
             </div>
             {authCodeState === 1 ? (
               <p className={s.validationSuccess}>인증되었습니다.</p>
@@ -228,7 +249,7 @@ const SignUp = () => {
               <p className={s.invisible}>인증 코드를 입력해주세요.</p>
             )}
 
-            <p className={s.label}>비밀번호</p>
+            <p className={s.marginLabel}>비밀번호</p>
             <div className={s.inputCont}>
               <input
                 type="password"
@@ -261,7 +282,7 @@ const SignUp = () => {
               />
             </div>
             {passwordState2 === 1 ? (
-              <p className={s.validationSuccess}>비밀번호가 일치합니다.</p>
+              <p className={s.invisible}>비밀번호2를 입력해주세요.</p>
             ) : passwordState2 === 2 ? (
               <p className={s.validationFailed}>
                 비밀번호가 일치하지 않습니다.
@@ -270,7 +291,7 @@ const SignUp = () => {
               <p className={s.invisible}>비밀번호2를 입력해주세요.</p>
             )}
 
-            <p className={s.label}>닉네임</p>
+            <p className={s.marginLabel}>닉네임</p>
             <div className={s.inputCont}>
               <input
                 type="nickname"
@@ -283,6 +304,8 @@ const SignUp = () => {
               <SimpleButton
                 text="중복 확인"
                 onClick={nicknameDupCheck}
+                width="6rem"
+                height="2rem"
                 className=""
               />
             </div>

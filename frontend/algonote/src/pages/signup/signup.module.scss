@@ -9,7 +9,7 @@
 .loginContainer {
     width: 32%;
     min-width: 24rem;
-    height: 74%;
+    height: 80%;
     margin-top: 60px;
     border-radius: 1.5rem;
     background-color: var(--white);
@@ -35,11 +35,16 @@
 
 .inputCont {
     width: 100%;
-    margin-top: 1rem;
     display: flex;
 }
 
 .label {
+    font-weight: 500;
+    color: var(--medium-sky-gray);
+}
+
+.marginLabel{
+    margin-top: 1rem;
     font-weight: 500;
     color: var(--medium-sky-gray);
 }
@@ -49,7 +54,7 @@
     box-sizing: border-box;
     border: none;
     border-bottom: 1px solid var(--medium-sky-gray);
-    padding: 0.2rem 0;
+    padding: 0;
     outline: none;
     font-size: 1rem;
     transition: border-color 0.3s ease;
@@ -60,7 +65,7 @@
     box-sizing: border-box;
     border: none;
     border-bottom: 1px solid var(--red);
-    padding: 0.2rem 0;
+    padding: 0;
     outline: none;
     font-size: 1rem;
     transition: border-color 0.3s ease;
@@ -111,3 +116,28 @@
         color: var(--blue);
     }
 }
+
+.spinnerCont {
+    width: 6rem;
+    height: 2rem;
+    display: flex;
+    justify-content: center;
+}
+
+.spinner {
+    border: 3px solid rgba(0, 0, 0, 0.1);
+    border-left-color: #3498db;
+    border-radius: 50%;
+    width: 1.6rem;
+    height: 1.6rem;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
