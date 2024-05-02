@@ -180,6 +180,9 @@ const SignUp = () => {
             height={75}
             className={s.logo}
           />
+          <div className={s.title}>
+            <h1>알고노트 회원가입</h1>
+          </div>
           <div className={s.inputsCont}>
             <p className={s.label}>이메일</p>
             <div className={s.inputCont}>
