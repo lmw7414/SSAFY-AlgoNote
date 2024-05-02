@@ -1,0 +1,25 @@
+{
+
+    "properties": {
+      "id": {
+        "type": "integer"
+      },
+      "noteTitle": {
+        "type": "text",
+        "analyzer": "nori"
+      },
+      "content": {
+        "type": "text",
+        "analyzer": "nori"
+      },
+      "problemTitle": {
+          "type": "text",
+          "analyzer": "nori"
+
+      },
+      "problemId": {
+        "type": "integer"
+      }
+    }
+
+}
