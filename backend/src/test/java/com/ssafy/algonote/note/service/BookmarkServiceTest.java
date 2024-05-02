@@ -1,25 +1,17 @@
 package com.ssafy.algonote.note.service;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.BDDMockito.willReturn;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-
 import com.ssafy.algonote.exception.CustomException;
 import com.ssafy.algonote.exception.ErrorCode;
 import com.ssafy.algonote.member.domain.Member;
 import com.ssafy.algonote.member.repository.MemberRepository;
 import com.ssafy.algonote.note.domain.Bookmark;
 import com.ssafy.algonote.note.domain.Note;
-import com.ssafy.algonote.note.dto.BookmarkStatusRes;
+import com.ssafy.algonote.note.dto.BookmarkResDto;
+import com.ssafy.algonote.note.dto.BookmarkStatusResDto;
 import com.ssafy.algonote.note.repository.BookmarkRepository;
+import com.ssafy.algonote.note.repository.HeartRepository;
 import com.ssafy.algonote.note.repository.NoteRepository;
-import java.util.Optional;
+import com.ssafy.algonote.problem.domain.Problem;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -28,6 +20,17 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.BDDMockito.willReturn;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class BookmarkServiceTest {
@@ -43,6 +46,9 @@ class BookmarkServiceTest {
 
     @Mock
     MemberRepository memberRepository;
+
+    @Mock
+    HeartRepository heartRepository;
 
     @Nested
     @DisplayName("북마크 생성/삭제")
@@ -76,7 +82,7 @@ class BookmarkServiceTest {
             willReturn(Optional.empty()).given(bookmarkRepository).findByNoteIdAndMemberId(anyLong(), anyLong());
 
             // when
-            BookmarkStatusRes result = bookmarkService.doBookmark(1L, 1L);
+            BookmarkStatusResDto result = bookmarkService.doBookmark(1L, 1L);
 
             // then
             verify(bookmarkRepository, times(1)).findByNoteIdAndMemberId(1L, 1L);
@@ -98,7 +104,7 @@ class BookmarkServiceTest {
             willReturn(Optional.of(bookmark)).given(bookmarkRepository).findByNoteIdAndMemberId(anyLong(), anyLong());
 
             // when
-            BookmarkStatusRes result = bookmarkService.doBookmark(1L, 1L);
+            BookmarkStatusResDto result = bookmarkService.doBookmark(1L, 1L);
 
             // then
             verify(bookmarkRepository, times(1)).findByNoteIdAndMemberId(1L, 1L);
@@ -116,7 +122,7 @@ class BookmarkServiceTest {
 
             //when
             CustomException exception = assertThrows(CustomException.class,
-                () -> bookmarkService.doBookmark(memberId, noteId));
+                    () -> bookmarkService.doBookmark(memberId, noteId));
 
             //then
             assertEquals(ErrorCode.NOT_FOUND_MEMBER, exception.getErrorCode());
@@ -131,7 +137,7 @@ class BookmarkServiceTest {
 
             //when
             CustomException exception = assertThrows(CustomException.class,
-                () -> bookmarkService.doBookmark(memberId, noteId));
+                    () -> bookmarkService.doBookmark(memberId, noteId));
 
             //then
             assertEquals(ErrorCode.NOT_FOUND_NOTE, exception.getErrorCode());
@@ -139,22 +145,75 @@ class BookmarkServiceTest {
 
     }
 
+    @Nested
+    @DisplayName("북마크 목록 조회")
+    class testGetList {
+
+        private Long memberId;
+        private Note note;
+        private Member member;
+
+        @BeforeEach
+        void setup() {
+            memberId = 1L;
+            note = getNote();
+            member = getMember();
+        }
+
+        @Test
+        @DisplayName("[성공]")
+        void success() {
+            // given
+            member = getMember();
+            note = getNote();
+
+            Bookmark bookmark1 = new Bookmark(1L, member, note);
+            Bookmark bookmark2 = new Bookmark(2L, member, note);
+            List<Bookmark> bookmarks = Arrays.asList(bookmark1, bookmark2);
+
+            when(memberRepository.findById(anyLong())).thenReturn(Optional.of(member));
+            when(bookmarkRepository.findAllByMemberId(any())).thenReturn(bookmarks);
+
+            // when
+            List<BookmarkResDto> resultList = bookmarkService.getList(memberId);
+
+            // then
+            assertEquals(2, resultList.size());
+        }
+
+        @Test
+        @DisplayName("[실패] 유효하지 않은 memberId")
+        void fail_member() {
+            // given
+            when(memberRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+            //when
+            CustomException exception = assertThrows(CustomException.class,
+                    () -> bookmarkService.getList(memberId));
+
+            //then
+            assertEquals(ErrorCode.NOT_FOUND_MEMBER, exception.getErrorCode());
+        }
+
+    }
+
     Note getNote() {
         return Note.builder()
-            .id(1L)
-            .build();
+                .id(1L)
+                .problem(new Problem(1L, "title", 1, 1, 1, new HashSet<>()))
+                .build();
     }
 
     Member getMember() {
         return Member.builder()
-            .id(1L)
-            .build();
+                .id(1L)
+                .build();
     }
 
     Bookmark getBookmark() {
         return Bookmark.builder()
-            .id(1L)
-            .build();
+                .id(1L)
+                .build();
     }
 
 }

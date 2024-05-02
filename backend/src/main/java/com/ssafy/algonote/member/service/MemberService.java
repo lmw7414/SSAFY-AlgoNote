@@ -46,10 +46,18 @@ public class MemberService {
 
     public Long signUp(SignUpReqDto signUpReqDto) {
         log.info("signUp dto : {}", signUpReqDto);
+        if(checkDuplicated(signUpReqDto.email(), "email")){
+            throw new CustomException(ErrorCode.DUPLICATE_EMAIL);
+        }
+
+        if (checkDuplicated(signUpReqDto.nickname(), "nickname")) {
+            throw new CustomException(ErrorCode.DUPLICATE_NICKNAME);
+        }
 
         Member member = Member.builder()
             .email(signUpReqDto.email())
-            .password(passwordEncoder.encode(signUpReqDto.password()))
+//            .password(passwordEncoder.encode(signUpReqDto.password()))
+            .password(signUpReqDto.password())
             .nickname(signUpReqDto.nickname())
             .role(MemberRole.USER)
             .profileImg(prefix+"/defaultProfile.png")
@@ -75,20 +83,24 @@ public class MemberService {
     }
 
     private boolean checkPassword(String password, String encodedPassword) {
-        return passwordEncoder.matches(password, encodedPassword);
+//        return passwordEncoder.matches(password, encodedPassword);
+        return password.equals(encodedPassword);
     }
 
-    public void emailDupCheck(EmailDupCheckReqDto emailDupCheckReqDto) {
-        this.checkDuplicated(emailDupCheckReqDto.email(), ErrorCode.DUPLICATE_EMAIL);
+
+    public boolean emailDupCheck(EmailDupCheckReqDto emailDupCheckReqDto) {
+        return checkDuplicated(emailDupCheckReqDto.email(), "email");
     }
 
-    public void nicknameDupCheck(NicknameDupCheckReqDto nicknameDupCheckReqDto) {
-        this.checkDuplicated(nicknameDupCheckReqDto.nickname(), ErrorCode.DUPLICATE_NICKNAME);
+    public boolean nicknameDupCheck(NicknameDupCheckReqDto nicknameDupCheckReqDto) {
+        return checkDuplicated(nicknameDupCheckReqDto.nickname(), "nickname");
 
     }
 
     public void sendCodeToEmail(String toEmail) {
-        this.checkDuplicated(toEmail, ErrorCode.DUPLICATE_EMAIL);
+        if(checkDuplicated(toEmail, "email")){
+            throw new CustomException(ErrorCode.DUPLICATE_EMAIL);
+        }
         String title = "Algonote 이메일 인증 번호";
         String authCode = createCode();
 
@@ -101,8 +113,10 @@ public class MemberService {
     public EmailAuthResDto verifyCode(EmailAuthReqDto emailAuthReqDto){
         String email = emailAuthReqDto.email();
         String code = emailAuthReqDto.authCode();
+        if (checkDuplicated(email, "email")) {
+            throw new CustomException(ErrorCode.DUPLICATE_EMAIL);
+        }
 
-        this.checkDuplicated(email, ErrorCode.DUPLICATE_EMAIL);
         String redisCode = redisService.getData(AUTH_CODE_PREFIX + email);
         log.info("redisCode : {}", redisCode);
         boolean authenticated = redisCode.equals(code);
@@ -152,8 +166,14 @@ public class MemberService {
         }
     }
 
-    private void checkDuplicated(String target, ErrorCode errorCode){
-        memberRepository.findByEmail(target)
-            .orElseThrow(()-> new CustomException(errorCode));
+    private boolean checkDuplicated(String target,String type){
+        if(type.equals("email")){
+
+            return memberRepository.existsByEmail(target);
+        }else{
+            return memberRepository.existsByNickname(target);
+        }
+
+
     }
 }

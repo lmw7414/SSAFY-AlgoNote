@@ -4,14 +4,16 @@ import com.ssafy.algonote.member.domain.Member;
 import lombok.Builder;
 
 @Builder
-public record MemberResDto(  // TODO: 프로필이미지 컬럼 추가
+public record MemberResDto(
      Long memberId,
-     String nickname
+     String nickname,
+     String profileImg
 ){
     public static MemberResDto from(Member member) {
         return MemberResDto.builder()
             .memberId(member.getId())
             .nickname(member.getNickname())
+            .profileImg(member.getProfileImg())
             .build();
     }
 }
