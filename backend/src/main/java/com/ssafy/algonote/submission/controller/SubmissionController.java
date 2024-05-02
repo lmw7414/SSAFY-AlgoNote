@@ -32,7 +32,6 @@ public class SubmissionController {
                 dto.memorySize(),
                 dto.runningTime(),
                 dto.language()
-
         );
         return ResponseEntity.ok().build();
     }
