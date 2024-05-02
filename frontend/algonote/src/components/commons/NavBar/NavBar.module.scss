@@ -55,3 +55,13 @@
   justify-content: space-around;
   line-height: 1px;
 }
+
+.loginSec {
+  display: flex;
+  justify-content: center;
+  width: 10vw;
+  a {
+    text-decoration: none;
+    color: var(--black);
+  }
+}

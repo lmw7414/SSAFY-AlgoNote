@@ -2,6 +2,7 @@ import Image from 'next/image'
 import s from './writenote.module.scss'
 import SubmitList from '@/components/commons/SubmitList'
 import SubmitListTitle from '@/components/commons/SubmitListTitle'
+import Tabs from '@/components/commons/Tabs'
 
 const WriteNote = () => {
   const buttonClickHanlder = () => {
@@ -50,7 +51,9 @@ const WriteNote = () => {
           </div>
         </div>
       </div>
-      <div className={s.right}>qwerty</div>
+      <div className={s.right}>
+        <Tabs />
+      </div>
     </div>
   )
 }
