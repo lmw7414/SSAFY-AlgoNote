@@ -1,36 +1,29 @@
 'use client'
 
-import { useState } from 'react'
+import React, { useState } from 'react'
 import styles from '@/components/commons/Buttons/Button.module.scss'
 
 export interface SimpleButtonProps {
   text: string
   onClick: (e: React.MouseEvent<HTMLButtonElement>) => void
   className?: string
-  width?: string
-  height?: string
+  style?: React.CSSProperties
 }
 
 const SimpleButton = ({
   text,
   onClick,
   className,
-  width,
-  height,
+  style = {},
 }: SimpleButtonProps) => {
   const buttonClass = `${styles.button} ${className ? styles[className] : ' '}`
-
-  const buttonStyle = {
-    width: width || '100%',
-    height: height || '3rem',
-  }
 
   return (
     <button
       type="button"
       onClick={onClick}
       className={buttonClass}
-      style={buttonStyle}
+      style={style}
     >
       {text}
     </button>
@@ -41,8 +34,7 @@ const FilterButton = ({
   text,
   onClick,
   className,
-  width,
-  height,
+  style,
 }: SimpleButtonProps) => {
   const [isClicked, setIsClicked] = useState(false)
 
@@ -56,8 +48,7 @@ const FilterButton = ({
       text={text}
       onClick={handleClick}
       className={className}
-      width={width}
-      height={height}
+      style={style}
     />
   )
 }

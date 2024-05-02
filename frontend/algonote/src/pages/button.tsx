@@ -17,20 +17,20 @@ const ButtonFunction = () => {
   const [heartIsOff, setHeartIsOff] = useState(false)
 
   return (
-    <div>
+    <div style={{ marginTop: '60px' }}>
       <SimpleButton text="기본버튼" onClick={() => setCount(count + 1)} />
 
       <SimpleButton
         text="돌아가기"
         onClick={() => setCount(count + 1)}
         className="back"
-        width="100px"
-        height="100px"
+        style={{ width: '100px', height: '100px', fontSize: '1rem' }}
       />
       <SimpleButton
         text="추천검색어"
         onClick={() => setCount(count + 1)}
         className="recommend"
+        style={{ fontSize: '1rem' }}
       />
       <FilterButton
         text="검색필터"
