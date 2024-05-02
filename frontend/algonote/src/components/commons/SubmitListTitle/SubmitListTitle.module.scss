@@ -1,0 +1,52 @@
+.wrapper {
+  height: 40px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  div {
+    line-height: 40px;
+    height: 100%;
+    text-align: center;
+    color: rgb(94, 94, 94);
+    font-weight: 400;
+    font-size: 14px;
+  }
+
+  .number {
+    flex: 0.8;
+    // background: blue;
+  }
+
+  .result {
+    flex: 1.5;
+    // background: skyblue;
+  }
+
+  .lang {
+    flex: 1;
+    // background: greenyellow;
+  }
+
+  .lang {
+    flex: 1;
+    // background: yellow;
+  }
+
+  .codeLength {
+    flex: 1;
+    // background: antiquewhite;
+  }
+
+  .submitTime {
+    flex: 1;
+    // background: dodgerblue;
+  }
+}
+
+.bottomHr {
+  border: none;
+  height: 1px;
+  background-color: var(--soft-gray);
+  margin: 0;
+}
