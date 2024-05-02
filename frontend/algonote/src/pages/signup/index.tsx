@@ -95,11 +95,16 @@ const SignUp = () => {
   }
 
   const sendAuthCode = async () => {
+    setEmailState(3)
     try {
       await sendAuthCodeApi(email)
       console.log('인증 코드 전송')
+      window.alert('인증코드가 전송되었습니다.')
+      setEmailState(1)
     } catch (e) {
       console.log('인증코드 전송 실패:', e)
+      window.alert('인증코드 전송에 실패하였습니다.')
+      setEmailState(1)
     }
   }
 
@@ -189,12 +194,20 @@ const SignUp = () => {
                   text="코드 전송"
                   onClick={sendAuthCode}
                   className=""
+                  width="6rem"
+                  height="2rem"
                 />
+              ) : emailState === 3 ? (
+                <div className={s.spinnerCont}>
+                  <div className={s.spinner} />
+                </div>
               ) : (
                 <SimpleButton
                   text="중복 확인"
                   onClick={emailDupCheck}
                   className=""
+                  width="6rem"
+                  height="2rem"
                 />
               )}
             </div>
