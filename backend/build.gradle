@@ -59,6 +59,4 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
-	exclude 'com/ssafy/algonote**'
-
 }
