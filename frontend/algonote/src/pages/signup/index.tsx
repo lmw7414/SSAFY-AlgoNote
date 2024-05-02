@@ -274,7 +274,7 @@ const SignUp = () => {
               />
             </div>
             {passwordState2 === 1 ? (
-              <p className={s.validationSuccess}>비밀번호가 일치합니다.</p>
+              <p className={s.invisible}>비밀번호2를 입력해주세요.</p>
             ) : passwordState2 === 2 ? (
               <p className={s.validationFailed}>
                 비밀번호가 일치하지 않습니다.
