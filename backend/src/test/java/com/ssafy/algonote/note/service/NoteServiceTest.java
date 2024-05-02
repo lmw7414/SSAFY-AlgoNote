@@ -7,7 +7,6 @@ import com.ssafy.algonote.note.domain.Note;
 import com.ssafy.algonote.note.repository.BookmarkRepository;
 import com.ssafy.algonote.note.repository.HeartRepository;
 import com.ssafy.algonote.note.repository.NoteRepository;
-import com.ssafy.algonote.problem.domain.Problem;
 import com.ssafy.algonote.problem.domain.SolvedProblem;
 import com.ssafy.algonote.problem.repository.SolvedProblemRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -20,6 +19,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Optional;
 
+import static com.ssafy.algonote.fixture.MemberFixture.createMember;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -179,16 +179,11 @@ class NoteServiceTest {
         verify(noteRepository).saveAndFlush(any());
     }
 
-    private Member createMember(Long memberId) {
-        Member member = new Member();
-        ReflectionTestUtils.setField(member, "id", memberId);
-        return member;
-    }
-
     private Note createNote(Long noteId, Member member) {
         Note note = new Note();
         ReflectionTestUtils.setField(note, "id", noteId);
         ReflectionTestUtils.setField(note, "member", member);
         return note;
     }
+
 }
