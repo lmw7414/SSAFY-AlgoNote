@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react'
-// import HeartOffSVG from '@public/images/heart.svg'
-// import HeartSVG from '@public/images/redHeart.svg'
+import HeartOffSVG from '@public/images/heart.svg'
+import HeartSVG from '@public/images/redHeart.svg'
 import Tier from '@public/images/tier.svg'
 import Image from 'next/image'
 import styles from './Note.module.scss'
 import bookmarkListApi from '@/apis/bookmarkAxios'
-// import ImageToggle from '@/components/commons/Buttons/ImageToggle'
+import ImageToggle from '@/components/commons/Buttons/ImageToggle'
 
 interface Note {
   id: number
@@ -31,14 +31,13 @@ interface Bookmark {
 }
 
 const Notes = () => {
-  // const [heartIsOff, setHeartIsOff] = useState(dummy.bookmarks.map(() => true))
-  const [bookmarks, setBookmarks] = useState<Bookmark[] | void>([])
+  const [bookmarks, setBookmarks] = useState<Bookmark[]>([])
+  const [heartIsOff, setHeartIsOff] = useState<boolean[]>([])
 
   useEffect(() => {
     const fetchBookmarks = async () => {
       try {
         const response = await bookmarkListApi()
-        console.log('북마크', response)
         setBookmarks(response.data)
       } catch (err) {
         console.log(err)
@@ -46,41 +45,41 @@ const Notes = () => {
     }
 
     fetchBookmarks()
+
+    if (bookmarks.length > 0) {
+      setHeartIsOff(bookmarks.map(() => true))
+    }
   }, [])
 
-  useEffect(() => {
-    console.log('북마크', bookmarks)
-  }, [bookmarks])
+  const handleHeartState = (index: number) => {
+    const newHeartState = [...heartIsOff]
+    newHeartState[index] = !heartIsOff[index]
+    setHeartIsOff(newHeartState)
 
-  // const handleHeartState = (index: number) => {
-  //   const newHeartState = [...heartIsOff]
-  //   newHeartState[index] = !heartIsOff[index]
-  //   setHeartIsOff(newHeartState)
+    // hearCnt 증가
 
-  //   hearCnt 증가
+    const updatedDummy = bookmarks.map((bookmark, idx) => {
+      if (index === idx) {
+        if (heartIsOff[index]) {
+          return {
+            ...bookmark,
+            note: { ...bookmark.note, heartCnt: bookmark.note.heartCnt + 1 },
+          }
+        }
 
-  //   const updatedDummy = bookmarks.map((bookmark, idx) => {
-  //     if (index === idx) {
-  //       if (heartIsOff[index]) {
-  //         return {
-  //           ...bookmark,
-  //           note: { ...bookmark.note, heartCnt: bookmark.note.heartCnt + 1 },
-  //         }
-  //       }
-
-  //       return {
-  //         ...bookmark,
-  //         note: { ...bookmark.note, heartCnt: bookmark.note.heartCnt - 1 },
-  //       }
-  //     }
-  //     return bookmark
-  //   })
-  //   setBookmarks(updatedDummy)
-  // }
+        return {
+          ...bookmark,
+          note: { ...bookmark.note, heartCnt: bookmark.note.heartCnt - 1 },
+        }
+      }
+      return bookmark
+    })
+    setBookmarks(updatedDummy)
+  }
 
   return (
     <div className={styles.frame}>
-      {bookmarks.map((it, index) => {
+      {bookmarks.map((it, index: number) => {
         const key = `${it.problem.title}-${index}`
 
         return (
@@ -94,14 +93,14 @@ const Notes = () => {
               </div>
               <div className={styles.note_title}>{it.note.title}</div>
               <div className={styles.details}>
-                {/* <ImageToggle
+                <ImageToggle
                   isOff={heartIsOff[index]}
                   onClick={() => handleHeartState(index)}
                   offImg={HeartOffSVG}
                   onImg={HeartSVG}
                   width="1.6rem"
                   height="1.6rem"
-                /> */}
+                />
                 <div className={styles.countNickname}>
                   <div>{it.note.heartCnt}</div>
                   <div className={styles.nickname}>{it.member.nickname}</div>
