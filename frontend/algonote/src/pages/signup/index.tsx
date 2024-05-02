@@ -1,9 +1,11 @@
 import { useState, ChangeEvent } from 'react'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 import s from './signup.module.scss'
 import {
   checkAuthCodeApi,
   emailDupCheckApi,
+  loginApi,
   nicknameDupCheckApi,
   sendAuthCodeApi,
   signUpApi,
@@ -23,6 +25,8 @@ const SignUp = () => {
   const [nickname, setNickname] = useState('')
   const [failedNickname, setFailedNickname] = useState('')
   const [nicknameState, setNicknameState] = useState(0)
+
+  const router = useRouter()
 
   const handleInput = (event: ChangeEvent<HTMLInputElement>, type: string) => {
     const newValue = event.target.value
@@ -54,6 +58,14 @@ const SignUp = () => {
         setPasswordState2(2)
       }
     } else if (type === 'nickname') {
+      const idRegExp = /^.{2,14}$/
+      setNickname(newValue)
+      const check = idRegExp.test(newValue)
+      if (check) {
+        setNicknameState(3)
+      } else {
+        setNicknameState(4)
+      }
       setNickname(newValue)
     }
   }
@@ -142,6 +154,8 @@ const SignUp = () => {
         console.log('회원가입 요청')
         await signUpApi(email, password, nickname) // 로그인 API 호출
         console.log('회원가입 성공!')
+        loginApi(email, password)
+        router.push('/')
       } catch (error) {
         console.error('회원가입 실패:', error)
       }
@@ -276,6 +290,12 @@ const SignUp = () => {
               <p className={s.validationSuccess}>사용 가능한 닉네임입니다.</p>
             ) : nicknameState === 2 ? (
               <p className={s.validationFailed}>이미 사용중인 닉네임입니다.</p>
+            ) : nicknameState === 3 ? (
+              <p className={s.invisible}>닉네임을 입력해주세요.</p>
+            ) : nicknameState === 4 ? (
+              <p className={s.validationFailed}>
+                닉네임은 2-14자이여야 합니다.
+              </p>
             ) : (
               <p className={s.invisible}>닉네임을 입력해주세요.</p>
             )}
