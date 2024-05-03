@@ -1,44 +1,16 @@
-import {
-  KeyboardEvent,
-  SetStateAction,
-  useEffect,
-  useState,
-  useRef,
-} from 'react'
-import Editor from '@toast-ui/editor'
-import '@toast-ui/editor/dist/toastui-editor.css'
+// import ReactMarkdown from 'react-markdown'
+import { KeyboardEvent, SetStateAction, useState } from 'react'
 import Image from 'next/image'
 import s from './Tabs.module.scss'
 
 const Tabs = () => {
   const [activeTab, setActiveTab] = useState(0)
-  const editorRef = useRef(null) // 에디터를 마운트할 DOM 요소를 위한 레퍼런스
-  const [editor, setEditor] = useState(null) // 에디터 인스턴스를 저장하기 위한 상태
 
   const tabs = [
     { keys: 0, title: '새 풀이', content: '#ㅎㅇ' },
     { keys: 1, title: 'BFS 이용한 풀이', content: 'BFS 관련 내용' },
     { keys: 2, title: '메모이제이션', content: '메모이제이션 관련 내용' },
   ]
-
-  useEffect(() => {
-    if (editorRef.current) {
-      // 에디터 인스턴스 생성
-      const newEditor = new Editor({
-        el: editorRef.current,
-        initialEditType: 'markdown',
-        previewStyle: 'vertical',
-        height: '40rem',
-        initialValue: tabs[activeTab].content,
-      })
-      setEditor(newEditor)
-
-      return () => {
-        // 에디터 인스턴스 정리
-        newEditor.destroy()
-      }
-    }
-  }, [editorRef, activeTab])
 
   const handleTabClick = (index: SetStateAction<number>) => {
     setActiveTab(index)
@@ -52,6 +24,8 @@ const Tabs = () => {
       setActiveTab(index)
     }
   }
+
+  // const [input, setInput] = useState()
 
   return (
     <div className={s.wrapper}>
@@ -83,7 +57,14 @@ const Tabs = () => {
           <button type="button">+</button>
         </div>
       </div>
-      <div ref={editorRef} className={s.tabsContent}>
+      <div className={s.tabsContent}>
+        {/* <textarea
+          autoFocus
+          className="textarea"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+        /> */}
+        {/* <ReactMarkdown source={input} className="markdown" /> */}
         {tabs[activeTab].content}
       </div>
     </div>

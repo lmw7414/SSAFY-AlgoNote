@@ -43,4 +43,19 @@
 
 .tabsContent {
   padding: 2rem;
+
+  textarea {
+    width: 45%;
+    height: 80vh;
+    font-size: 2rem;
+    padding: 1.3rem;
+    outline: none;
+  }
+}
+
+.markdown {
+  width: 50%;
+  height: 100vh;
+  padding: 1.3rem;
+  outline: none;
 }
