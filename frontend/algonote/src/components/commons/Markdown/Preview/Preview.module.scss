@@ -1,0 +1,10 @@
+.preview {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.previewScroll {
+  overflow: auto;
+  flex-grow: 1;
+}
