@@ -11,7 +11,9 @@ pipeline{
         stage('Build docker image'){
             steps{
                 dir('frontend/algonote'){
+                    sh 'cp /var/jenkins_home/env/.env .env'
                     script{
+                        
                         dockerImage = docker.build repository
                     }
                 }
