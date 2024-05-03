@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
-import style from './user.module.scss'
+import style from './member.module.scss'
 import myInfo from '@/apis/userInfoAxios'
 import useUserInfo from '@/stores/user-store'
 
