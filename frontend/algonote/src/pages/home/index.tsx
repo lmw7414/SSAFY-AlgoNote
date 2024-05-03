@@ -37,8 +37,8 @@ const Home = () => {
 
       <div className={styles.secondSection}>
         <div className={styles.secondWrapper}>
-          <div className={styles.imageBox}>
-            <Image src="/images/secondMainImage.png" alt="second-image" fill />
+          <div className={styles.imageBoxFirst}>
+            <Image src="/images/firstimg.png" alt="second-image" fill />
           </div>
           <div className={styles.secondTitleBox}>
             <div className={styles.blackTitle}>
@@ -59,7 +59,7 @@ const Home = () => {
       <div className={styles.thirdSection}>
         <div className={styles.secondWrapper}>
           <div className={styles.imageBox}>
-            <Image src="/images/thirdMainImage.png" alt="second-image" fill />
+            <Image src="/images/listimage.png" alt="second-image" fill />
           </div>
           <div className={styles.secondTitleBox}>
             <div className={styles.whiteTitle}>
@@ -95,7 +95,7 @@ const Home = () => {
             </div>
           </div>
           <div className={styles.imageBox}>
-            <Image src="/images/thirdMainImage.png" alt="second-image" fill />
+            <Image src="/images/listimage.png" alt="second-image" fill />
           </div>
         </div>
       </div>
