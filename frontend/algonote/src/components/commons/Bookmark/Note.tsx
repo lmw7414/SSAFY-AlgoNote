@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react'
 // import HeartOffSVG from '@public/images/heart.svg'
 // import HeartSVG from '@public/images/redHeart.svg'
-import Tier from '@public/images/tier.svg'
-import Image from 'next/image'
 import styles from './Note.module.scss'
 import bookmarkListApi from '@/apis/bookmarkAxios'
+import TierImg from '@/components/commons/Tier'
 // import likeAxios from '@/apis/likeAxios'
 // import ImageToggle from '@/components/commons/Buttons/ImageToggle'
 
@@ -84,7 +83,7 @@ const Notes = () => {
             <div className={styles.content}>
               <div className={styles.problem}>
                 <div className={styles.tierImage}>
-                  <Image src={Tier} alt="티어" />
+                  <TierImg tier={it.problem.tier} />
                 </div>
                 <div className={styles.problemTitle}>{it.problem.title}</div>
               </div>
