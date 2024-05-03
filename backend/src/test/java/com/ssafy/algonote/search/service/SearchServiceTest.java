@@ -27,7 +27,7 @@ class SearchServiceTest {
     @Test
     public void problemSearchTest(){
 
-        List<ProblemDocument> problemDocuments = searchRepository.searchByNativeQuery("1022", 1);
+        List<ProblemDocument> problemDocuments = searchRepository.searchByNativeQuery("10", 1);
         assertThat(problemDocuments.size()).isEqualTo(20);
     }
 

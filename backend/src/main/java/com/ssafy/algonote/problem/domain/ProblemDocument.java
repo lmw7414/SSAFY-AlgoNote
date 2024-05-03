@@ -55,7 +55,7 @@ public class ProblemDocument {
     @NoArgsConstructor
     @AllArgsConstructor
     @Builder
-    static class Tag{
+    public static class Tag{
         @Field(type = FieldType.Text,analyzer = "nori_ngram_analyzer", searchAnalyzer = "nori_analyzer")
         private String tag;
     }
