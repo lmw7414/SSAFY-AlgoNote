@@ -13,6 +13,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
@@ -28,9 +29,10 @@ import org.springframework.data.elasticsearch.annotations.Setting;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class ProblemDocument {
     @Id
-    private Long id;
+    private String id;
 
     @Field(type = FieldType.Text, analyzer = "nori")
     private String title;
@@ -54,7 +56,7 @@ public class ProblemDocument {
             .collect(Collectors.toList());
 
         return ProblemDocument.builder()
-            .id(consumerProblemResDto.getProblemId())
+            .id(String.valueOf(consumerProblemResDto.getProblemId()))
             .title(consumerProblemResDto.getTitle())
             .tier(consumerProblemResDto.getLevel())
             .acceptedUserCount(consumerProblemResDto.getAcceptedUserCount())

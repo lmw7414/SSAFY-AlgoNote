@@ -8,8 +8,10 @@ import jakarta.persistence.Id;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
@@ -20,13 +22,15 @@ import org.springframework.data.elasticsearch.annotations.Setting;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
 @Builder
 @Mapping(mappingPath = "elastic/note/es-mapping.json")
 @Setting(settingPath = "elastic/note/es-setting.json")
+@ToString
 public class NoteDocument {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     @Field(type= FieldType.Long)
     private Long problemId;

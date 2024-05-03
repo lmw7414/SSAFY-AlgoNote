@@ -34,7 +34,7 @@ public class ElasticSearchConfig extends ElasticsearchConfiguration {
     @Bean
     public RestClient restClient(){
         String serverUrl = "http://"+hosts[0];
-        log.info("serverUrl: {}", serverUrl);
+
         final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
         credentialsProvider.setCredentials(
             AuthScope.ANY, new UsernamePasswordCredentials(username, password));
