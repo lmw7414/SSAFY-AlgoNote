@@ -37,8 +37,8 @@ const Home = () => {
 
       <div className={styles.secondSection}>
         <div className={styles.secondWrapper}>
-          <div className={styles.imageBoxFirst}>
-            <Image src="/images/firstimg.png" alt="second-image" fill />
+          <div className={styles.imageBox}>
+            <Image src="/images/mynote.png" alt="second-image" fill />
           </div>
           <div className={styles.secondTitleBox}>
             <div className={styles.blackTitle}>

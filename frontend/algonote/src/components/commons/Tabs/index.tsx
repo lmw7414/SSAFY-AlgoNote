@@ -54,6 +54,7 @@ const Tabs = () => {
           <button type="button">+</button>
         </div>
       </div>
+
       <div className={s.tabsContent}>{tabs[activeTab].content}</div>
     </div>
   )
