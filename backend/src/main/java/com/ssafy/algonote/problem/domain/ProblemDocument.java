@@ -32,9 +32,10 @@ import org.springframework.data.elasticsearch.annotations.Setting;
 @ToString
 public class ProblemDocument {
     @Id
+    @Field(type = FieldType.Text,analyzer = "nori_ngram_analyzer", searchAnalyzer = "nori_analyzer")
     private String id;
 
-    @Field(type = FieldType.Text, analyzer = "nori")
+    @Field(type = FieldType.Text,analyzer = "nori_ngram_analyzer", searchAnalyzer = "nori_analyzer")
     private String title;
 
     @Field(type = FieldType.Integer)
@@ -46,15 +47,23 @@ public class ProblemDocument {
     @Field(type = FieldType.Double)
     private double averageTries;
 
-    @Field(type = FieldType.Nested)
-    private List<Map<String, String>> tags;
+    @Field(type = FieldType.Nested, includeInParent = true)
+    private List<Tag> tags;
 
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    static class Tag{
+        @Field(type = FieldType.Text,analyzer = "nori_ngram_analyzer", searchAnalyzer = "nori_analyzer")
+        private String tag;
+    }
 
     public static ProblemDocument from(ConsumerProblemResDto consumerProblemResDto){
-        List<Map<String, String>> tags = consumerProblemResDto.getTags().stream()
-            .map(tag -> Collections.singletonMap("tag", tag))
+        List<Tag> tags = consumerProblemResDto.getTags().stream()
+            .map(Tag::new)
             .collect(Collectors.toList());
-
         return ProblemDocument.builder()
             .id(String.valueOf(consumerProblemResDto.getProblemId()))
             .title(consumerProblemResDto.getTitle())
@@ -65,9 +74,7 @@ public class ProblemDocument {
     }
 
     public void addTags(Collection<String> newTags){
-        newTags.stream()
-            .map(tag -> Collections.singletonMap("tag", tag))
-            .forEach(this.tags::add);
+        newTags.stream().map(Tag::new).forEach(tags::add);
     }
 
 }

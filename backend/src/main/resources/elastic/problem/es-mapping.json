@@ -2,11 +2,14 @@
 
     "properties": {
       "id": {
-        "type": "integer"
+        "type": "text",
+        "analyzer": "nori_ngram_analyzer",
+        "search_analyzer": "nori_analyzer"
       },
       "title": {
         "type": "text",
-        "analyzer": "nori"
+        "analyzer": "nori_ngram_analyzer",
+        "search_analyzer": "nori_analyzer"
       },
       "tier": {
         "type": "integer"
@@ -21,7 +24,9 @@
         "type": "nested",
         "properties": {
           "tag": {
-            "type": "text"
+            "type": "text",
+            "analyzer": "nori_ngram_analyzer",
+            "search_analyzer": "nori_analyzer"
           }
         }
       }

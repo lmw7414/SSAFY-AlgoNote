@@ -32,15 +32,13 @@ public class NoteDocument {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
 
-    @Field(type= FieldType.Long)
-    private Long problemId;
+    @Field(type = FieldType.Text,analyzer = "nori_ngram_analyzer", searchAnalyzer = "nori_analyzer")
+    private String problemId;
 
-    @Field(type= FieldType.Text, analyzer = "nori")
+    @Field(type = FieldType.Text,analyzer = "nori_ngram_analyzer", searchAnalyzer = "nori_analyzer")
     private String noteTitle;
 
-
-
-    @Field(type= FieldType.Text, analyzer = "nori")
+    @Field(type = FieldType.Text,analyzer = "nori_ngram_analyzer", searchAnalyzer = "nori_analyzer")
     private String problemTitle;
 
 
@@ -53,7 +51,7 @@ public class NoteDocument {
     public static NoteDocument of(Member member, Problem problem, String title, String content) {
         return NoteDocument.builder()
             .memberNickname(member.getNickname())
-            .problemId(problem.getId())
+            .problemId(String.valueOf(problem.getId()))
             .problemTitle(problem.getTitle())
             .noteTitle(title)
             .content(content)
