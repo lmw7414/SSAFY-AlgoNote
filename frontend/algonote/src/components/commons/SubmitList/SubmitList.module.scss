@@ -1,11 +1,11 @@
 .wrapper {
-  height: 45px;
+  height: 50px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
 
   div {
-    line-height: 45px;
+    line-height: 50px;
     height: 100%;
     text-align: center;
     font-weight: 400;
@@ -13,25 +13,19 @@
     color: var(--black);
   }
 
-  .level {
-    flex: 1;
-
-    // background: blue;
-  }
-
   .number {
-    flex: 1;
+    flex: 0.8;
     // background: skyblue;
   }
 
   .result {
     color: var(--blue);
-    flex: 1;
+    flex: 1.5;
     // background: greenyellow;
   }
 
   .lang {
-    flex: 2;
+    flex: 1;
     // background: yellow;
   }
 

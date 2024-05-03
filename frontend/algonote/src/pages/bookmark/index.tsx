@@ -25,7 +25,6 @@ const FilterSection = ({ title, items, itemKey }: FilterSectionProps) => {
                 text={it}
                 onClick={() => console.log('눌렸음')}
                 className="search"
-                initialClicked={false}
               />
             </div>
           )
@@ -37,7 +36,7 @@ const FilterSection = ({ title, items, itemKey }: FilterSectionProps) => {
 
 const Bookmark = () => {
   return (
-    <div>
+    <div className={Styles.frame}>
       <SearchInput />
       <FilterSection title="티어" items={tier} itemKey="tier" />
       <FilterSection title="유형" items={category} itemKey="category" />

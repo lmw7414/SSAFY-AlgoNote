@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import s from './writenote.module.scss'
-import SubmitListTitle from '@/components/commons/SubmitListTitle'
 import SubmitList from '@/components/commons/SubmitList'
+import SubmitListTitle from '@/components/commons/SubmitListTitle'
 import Tabs from '@/components/commons/Tabs'
 
 const WriteNote = () => {
@@ -39,6 +39,13 @@ const WriteNote = () => {
                 lang="python3"
                 codeLength="641B"
                 submitTime="3분 전"
+              />
+              <SubmitList
+                number="2"
+                result="맞았습니다!"
+                lang="python3"
+                codeLength="681B"
+                submitTime="19분 전"
               />
             </div>
           </div>

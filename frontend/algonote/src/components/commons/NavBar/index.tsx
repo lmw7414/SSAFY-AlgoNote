@@ -1,8 +1,8 @@
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import styles from './NavBar.module.scss'
 import { getCookie } from '@/utils/cookie'
-import { useState, useEffect } from 'react'
 
 const NavBar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -69,7 +69,7 @@ const NavBar = () => {
         </div>
         {isLoggedIn ? (
           <div className={styles.profileSec}>
-            <Link href="/home">
+            <Link href="/member">
               <Image
                 src="/images/profileImage.png"
                 alt="profileImage"
