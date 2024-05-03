@@ -69,7 +69,7 @@ const NavBar = () => {
         </div>
         {isLoggedIn ? (
           <div className={styles.profileSec}>
-            <Link href="/user">
+            <Link href="/member">
               <Image
                 src="/images/profileImage.png"
                 alt="profileImage"
