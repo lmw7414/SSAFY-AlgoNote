@@ -54,7 +54,7 @@ services:
       - elasticsearch:/usr/share/elasticsearch/data:Z
     ports:
       - 9200:9200
-      - 9300:9300
+      - 9400:9400
     environment:
       node.name: elasticsearch
       ES_JAVA_OPTS: -Xms512m -Xmx512m
