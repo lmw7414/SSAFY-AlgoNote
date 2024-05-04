@@ -1,5 +1,7 @@
-import Styles from './bookmark.module.scss'
-import Note from '@/components/commons/Bookmark/Note'
+'use client'
+
+import styles from './bookmark.module.scss'
+import Notes from '@/components/commons/Bookmark/Note'
 import { FilterButton } from '@/components/commons/Buttons/Button'
 import SearchInput from '@/components/commons/SearchInput'
 
@@ -9,14 +11,14 @@ interface FilterSectionProps {
   itemKey: string
 }
 
-const tier = ['브론즈', '실버', '골드', '플레티넘', '다이아', '루비']
-const category = ['구현', '그리디', '그래프', '플래티넘', 'DP', '자료구조']
+const tier = ['브론즈', '실버', '골드', '플레티넘', '다이아', '루비'] //
+const category = ['구현', '그리디', '그래프', '플래티넘', 'DP', '자료구조'] // note.title
 
 const FilterSection = ({ title, items, itemKey }: FilterSectionProps) => {
   return (
-    <div className={Styles.bookmark}>
+    <div className={styles.bookmark}>
       <div>{title}</div>
-      <div className={Styles.filterButton}>
+      <div className={styles.filterButton}>
         {items.map((it, index) => {
           const tierKey = `${itemKey}-${index}`
           return (
@@ -36,12 +38,12 @@ const FilterSection = ({ title, items, itemKey }: FilterSectionProps) => {
 
 const Bookmark = () => {
   return (
-    <div className={Styles.frame}>
+    <div className={styles.frame}>
       <SearchInput />
       <FilterSection title="티어" items={tier} itemKey="tier" />
       <FilterSection title="유형" items={category} itemKey="category" />
-      <div className={Styles.division_line} />
-      <Note />
+      <div className={styles.division_line} />
+      <Notes />
     </div>
   )
 }
