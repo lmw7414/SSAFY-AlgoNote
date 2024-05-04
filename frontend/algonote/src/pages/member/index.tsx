@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
+import { LuPencil } from 'react-icons/lu'
 import style from './member.module.scss'
-import myInfo from '@/apis/userInfoAxios'
+import change from '@/apis/info-changeAxios'
+import myInfo from '@/apis/user-infoAxios'
+import { SimpleButton } from '@/components/commons/Buttons/Button'
 import useUserInfo from '@/stores/user-store'
 
 interface UserInfo {
@@ -13,15 +16,39 @@ interface UserInfo {
 
 const User = () => {
   const { userInfo } = useUserInfo()
-  // useState를 null 가능한 UserInfo 타입으로 설정합니다. 초기 상태를 null로 설정합니다.
+
   const [userDetails, setUserDetails] = useState<UserInfo | null>(null)
+
+  const [isChangeClicked, setIsChangeClicked] = useState<boolean>(false)
+  const [nickname, setNickName] = useState<string>('')
+
+  const handleNameChange = async () => {
+    try {
+      const response = await change({ nickname, profileImg: null })
+      if (response.status === 200) {
+        setIsChangeClicked(false)
+        setUserDetails((prevState) => {
+          if (prevState) {
+            return {
+              ...prevState,
+              nickname,
+            }
+          }
+          return prevState
+        })
+      }
+    } catch (error) {
+      console.log('닉네임 변경 실패', error)
+    }
+  }
 
   useEffect(() => {
     const fetchMyInfo = async () => {
       if (userInfo.memberId) {
         try {
           const response = await myInfo(userInfo.memberId)
-          // API 응답을 상태에 저장하기 전에 형식이 맞는지 확인합니다.
+          // API 응답을 상태에 저장하기 전에 형식이 맞는지 확인
+          console.log('정보 응답', response)
           if (response && typeof response === 'object') {
             setUserDetails(response.data)
           }
@@ -38,13 +65,32 @@ const User = () => {
     return <div>Loading...</div>
   }
 
-  console.log(userDetails.profileImg)
-
   // 사용자 정보 렌더링 로직
   return (
     <div className={style.info}>
       <p>이메일: {userDetails.email}</p>
-      <p>닉네임: {userDetails.nickname}</p>
+      <div className={style.nickname}>
+        <p>닉네임: {userDetails.nickname}</p>
+
+        {isChangeClicked ? (
+          <>
+            <input
+              type="text"
+              defaultValue={userDetails.nickname}
+              onChange={(e) => setNickName(e.target.value)}
+            />
+            <SimpleButton
+              text="변경"
+              onClick={() => {
+                handleNameChange()
+              }}
+            />
+          </>
+        ) : (
+          <LuPencil onClick={() => setIsChangeClicked(true)} />
+        )}
+      </div>
+
       <Image
         src={userDetails.profileImg}
         alt="프로필 이미지"

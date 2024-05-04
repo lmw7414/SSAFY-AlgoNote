@@ -7,7 +7,6 @@ const likeAxios = (noteId: number) => {
   const config = { headers: { Authorization: `Bearer ${token}` } }
 
   return axios.post(url, null, config).then((response) => {
-    console.log('like 응답', response)
     return response
   })
 }
