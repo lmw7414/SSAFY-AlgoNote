@@ -5,8 +5,7 @@ import lombok.Builder;
 
 @Builder
 public record NoteSearchResDto(
-    String index,
-    Long noteId,
+    String noteId,
     Long problemId,
     String noteTitle,
     String problemTitle,
@@ -16,8 +15,7 @@ public record NoteSearchResDto(
 
     public static NoteSearchResDto from(NoteDocument noteDocument) {
         return NoteSearchResDto.builder()
-            .index("note")
-            .noteId(Long.parseLong(noteDocument.getId()))
+            .noteId(noteDocument.getId())
             .problemId(Long.parseLong(noteDocument.getProblemId()))
             .noteTitle(noteDocument.getNoteTitle())
             .problemTitle(noteDocument.getProblemTitle())

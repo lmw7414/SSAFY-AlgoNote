@@ -52,9 +52,9 @@ dependencies {
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
     implementation 'software.amazon.awssdk:s3:2.17.285'
 
-	// elasticsearch
-	implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
+	// https://mvnrepository.com/artifact/org.springframework.data/spring-data-elasticsearch
 	implementation 'org.springframework.data:spring-data-elasticsearch'
+
 
 }
 

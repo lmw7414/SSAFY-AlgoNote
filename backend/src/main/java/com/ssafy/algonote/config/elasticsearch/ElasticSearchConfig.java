@@ -37,18 +37,19 @@ public class ElasticSearchConfig extends ElasticsearchConfiguration {
 
         final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
         credentialsProvider.setCredentials(
-            AuthScope.ANY, new UsernamePasswordCredentials(username, password));
+                AuthScope.ANY, new UsernamePasswordCredentials(username, password));
 
         return RestClient.builder(HttpHost.create(serverUrl))
-            .setHttpClientConfigCallback(httpClientBuilder -> httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider))
-            .build();
+                .setHttpClientConfigCallback(httpClientBuilder -> httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider))
+                .build();
     }
 
     @Override
     public ClientConfiguration clientConfiguration() {
         return ClientConfiguration.builder()
-            .connectedTo(hosts)
-            .withBasicAuth(username, password)
-            .build();
+                .connectedTo(hosts)
+                .withBasicAuth(username, password)
+                .build();
     }
 }
+
