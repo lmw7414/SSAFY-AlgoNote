@@ -1,0 +1,61 @@
+.wrapper {
+}
+
+.tabsTitle {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  background: rgb(221, 245, 255);
+  color: var(--black);
+  font-weight: 400;
+  font-size: 0.9rem;
+}
+
+.tabs {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 1.5rem;
+  width: 14rem;
+  height: 3.2rem;
+  background: rgb(221, 245, 255);
+  border-top-left-radius: 0.8rem;
+  border-top-right-radius: 0.8rem;
+
+  button {
+    padding-right: 1rem;
+  }
+}
+
+.addTab {
+  button {
+    padding-left: 1rem;
+    opacity: 0.8;
+    font-size: 1.3rem;
+    color: var(--black);
+  }
+}
+
+.active {
+  background: var(--white);
+}
+
+.tabsContent {
+  padding: 2rem;
+
+  textarea {
+    width: 45%;
+    height: 80vh;
+    font-size: 2rem;
+    padding: 1.3rem;
+    outline: none;
+  }
+}
+
+.markdown {
+  width: 50%;
+  height: 100vh;
+  padding: 1.3rem;
+  outline: none;
+}

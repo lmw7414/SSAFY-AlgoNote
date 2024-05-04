@@ -1,19 +1,26 @@
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import styles from './NavBar.module.scss'
+import { getCookie } from '@/utils/cookie'
 
 const NavBar = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+
+  useEffect(() => {
+    const checkLogin = async () => {
+      const accessToken = getCookie('access_token')
+      setIsLoggedIn(!!accessToken)
+    }
+    checkLogin()
+  }, [])
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.navBox}>
         <div className={styles.logoSec}>
           <Link href="/home">
-            <Image
-              src="/images/logo.png" // 이미지 경로
-              alt="logo"
-              width={112}
-              height={20}
-            />
+            <Image src="/images/logo.png" alt="logo" width={112} height={20} />
           </Link>
         </div>
         <div className={styles.menuSec}>
@@ -60,16 +67,24 @@ const NavBar = () => {
             />
           </Link>
         </div>
-        <div className={styles.profileSec}>
-          <Link href="/profile">
-            <Image
-              src="/images/profileImage.png"
-              alt="profileImage"
-              width={30}
-              height={30}
-            />
-          </Link>
-        </div>
+        {isLoggedIn ? (
+          <div className={styles.profileSec}>
+            <Link href="/member">
+              <Image
+                src="/images/profileImage.png"
+                alt="profileImage"
+                width={30}
+                height={30}
+              />
+            </Link>
+          </div>
+        ) : (
+          <div className={styles.loginSec}>
+            <Link href="/login">
+              <p>로그인</p>
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   )
