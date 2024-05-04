@@ -1,7 +1,10 @@
 import s from './mynote.module.scss'
+import mynote from '@/apis/mynote'
 import Folder from '@/components/commons/Folder'
 
 const MyNote = () => {
+  const response = mynote()
+
   const problems = [
     {
       tier: 'GOLD4',
