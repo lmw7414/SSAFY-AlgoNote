@@ -1,10 +1,10 @@
 package com.ssafy.algonote.member.controller;
 
 import com.ssafy.algonote.config.security.SecurityUtil;
-import com.ssafy.algonote.member.dto.request.UpdatedNicknameReqDto;
+import com.ssafy.algonote.member.dto.request.NewNicknameReqDto;
 import com.ssafy.algonote.member.dto.response.ProfileInfoResDto;
 import com.ssafy.algonote.member.dto.response.UpdatedInfoResDto;
-import com.ssafy.algonote.member.dto.response.UpdatedNicknameResDto;
+import com.ssafy.algonote.member.dto.response.NewNicknameResDto;
 import com.ssafy.algonote.member.dto.response.UpdatedProfileImgResDto;
 import com.ssafy.algonote.member.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,7 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Tag(name = "Member API", description = "회원 관련 API")
 @Slf4j
 @RestController
-@RequestMapping("/member")
+@RequestMapping("/members")
 @RequiredArgsConstructor
 public class MemberController {
 
@@ -39,19 +39,19 @@ public class MemberController {
     @Operation(
             summary = "멤버 닉네임 변경"
     )
-    @PatchMapping("/update/nickname")
-    public ResponseEntity<UpdatedNicknameResDto> updateNickname(@RequestBody UpdatedNicknameReqDto updatedNicknameReqDto){
+    @PatchMapping("/nicknames")
+    public ResponseEntity<NewNicknameResDto> updateNickname(@RequestBody NewNicknameReqDto newNicknameReqDto){
         Long memberId = SecurityUtil.getMemberId();
-        log.info("memberId : {}, updatedNickname: {}", memberId, updatedNicknameReqDto.nickname());
-        String updatedNickname = memberService.updateNickname(memberId, updatedNicknameReqDto.nickname());
+        log.info("memberId : {}, updatedNickname: {}", memberId, newNicknameReqDto.nickname());
+        String updatedNickname = memberService.updateNickname(memberId, newNicknameReqDto.nickname());
 
-        return ResponseEntity.ok(UpdatedNicknameResDto.of(updatedNickname));
+        return ResponseEntity.ok(NewNicknameResDto.of(updatedNickname));
     }
 
     @Operation(
             summary = "멤버 프로필 사진 변경"
     )
-    @PatchMapping("/update/profileImg")
+    @PatchMapping("/profileImgs")
     public ResponseEntity<UpdatedProfileImgResDto> updateProfieImg(@RequestPart(value="profileImg", required = false) MultipartFile profileImg){
         Long memberId = SecurityUtil.getMemberId();
         log.info("memberId : {} , profileImg :{}", memberId, profileImg.getOriginalFilename());
@@ -67,14 +67,13 @@ public class MemberController {
             description = "닉네임과 프로필이미지를 수정합니다."
     )
     @PutMapping("/update")
-    public ResponseEntity<UpdatedInfoResDto> updateProfile(@RequestPart(value="nickname", required = false) String updateNickname,
+    public ResponseEntity<UpdatedInfoResDto> updateProfile(@RequestPart(value="nickname", required = false) String newNickname,
                                                            @RequestPart(value="profileImg", required = false) MultipartFile profileImg) {
         Long memberId = SecurityUtil.getMemberId();
         log.info("memberId : {}", memberId);
-        log.info("nickname : {}", updateNickname);
+        log.info("nickname : {}", newNickname);
         log.info("profileImg : {}", profileImg);
-        UpdatedInfoResDto updatedInfoResDto = memberService.update(memberId, updateNickname, profileImg);
-        return ResponseEntity.ok(updatedInfoResDto);
+        return ResponseEntity.ok(memberService.update(memberId, newNickname, profileImg));
     }
 
 }

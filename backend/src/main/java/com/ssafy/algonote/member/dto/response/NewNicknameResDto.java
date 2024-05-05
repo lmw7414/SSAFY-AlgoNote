@@ -3,11 +3,11 @@ package com.ssafy.algonote.member.dto.response;
 import lombok.Builder;
 
 @Builder
-public record UpdatedNicknameResDto (
+public record NewNicknameResDto(
         String updatedNickname
 ){
-    public static UpdatedNicknameResDto of(String updatedNickname) {
-        return UpdatedNicknameResDto.builder()
+    public static NewNicknameResDto of(String updatedNickname) {
+        return NewNicknameResDto.builder()
                 .updatedNickname(updatedNickname)
                 .build();
     }
