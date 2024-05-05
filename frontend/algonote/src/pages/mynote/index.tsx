@@ -40,7 +40,6 @@ const MyNote = () => {
       const response = await getMyNote()
       if (response) {
         setMyNotes(response.data)
-        console.log('응답', response.data)
       }
     }
 
