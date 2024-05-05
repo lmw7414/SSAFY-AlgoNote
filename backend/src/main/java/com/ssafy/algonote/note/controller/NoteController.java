@@ -106,8 +106,7 @@ public class NoteController {
                                                     )
                                             ).toList();
                                     return NoteGroupByProblemResDto.from(
-                                            notes.get(0).getProblem().getId(),
-                                            notes.get(0).getProblem().getTier(),
+                                            notes.get(0).getProblem(),
                                             noteWithoutContentResDtos
                                     );
                                 }
