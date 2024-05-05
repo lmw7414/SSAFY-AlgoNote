@@ -1,15 +1,18 @@
 // import ReactMarkdown from 'react-markdown'
 import { KeyboardEvent, SetStateAction, useState } from 'react'
 import Image from 'next/image'
+import MarkdownEditor from '../MarkdownEditor'
 import s from './Tabs.module.scss'
+import useNoteStore from '@/stores/note-store'
 
 const Tabs = () => {
   const [activeTab, setActiveTab] = useState(0)
+  const { title } = useNoteStore()
 
   const tabs = [
-    { keys: 0, title: '새 풀이', content: '#ㅎㅇ' },
-    { keys: 1, title: 'BFS 이용한 풀이', content: 'BFS 관련 내용' },
-    { keys: 2, title: '메모이제이션', content: '메모이제이션 관련 내용' },
+    { keys: 0, title, content: <MarkdownEditor /> },
+    { keys: 1, title, content: <MarkdownEditor /> },
+    { keys: 2, title, content: <MarkdownEditor /> },
   ]
 
   const handleTabClick = (index: SetStateAction<number>) => {
@@ -57,16 +60,7 @@ const Tabs = () => {
           <button type="button">+</button>
         </div>
       </div>
-      <div className={s.tabsContent}>
-        {/* <textarea
-          autoFocus
-          className="textarea"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-        /> */}
-        {/* <ReactMarkdown source={input} className="markdown" /> */}
-        {tabs[activeTab].content}
-      </div>
+      <div className={s.tabsContent}>{tabs[activeTab].content}</div>
     </div>
   )
 }
