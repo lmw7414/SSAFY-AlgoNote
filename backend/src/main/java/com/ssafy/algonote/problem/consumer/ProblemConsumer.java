@@ -9,7 +9,7 @@ import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Component;
 
 @Slf4j
-@Component
+//@Component
 @RequiredArgsConstructor
 public class ProblemConsumer {
     private final ProblemService problemService;
