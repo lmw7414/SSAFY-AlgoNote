@@ -1,14 +1,10 @@
 import axios from 'axios'
 import { getCookie } from '@/utils/cookie'
 
-interface ChangeProps {
-  nickname: string | null
-}
-
-const nameChange = async ({ nickname }: ChangeProps) => {
+const nameChange = async (nickname: string) => {
   const url = `${process.env.NEXT_PUBLIC_BASE_URL}/api/members/nicknames`
   const token = getCookie('access_token')
-  const data = { nickname }
+  const data = nickname
   const config = { headers: { Authorization: `Bearer ${token}` } }
 
   try {
@@ -20,4 +16,22 @@ const nameChange = async ({ nickname }: ChangeProps) => {
   }
 }
 
-export default nameChange
+const ImageChange = async (profileImg: FormData) => {
+  const url = `${process.env.NEXT_PUBLIC_BASE_URL}/api/members/profileImg`
+  const token = getCookie('access_token')
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'multipart/form-data',
+    },
+  }
+
+  try {
+    const response = axios.patch(url, profileImg, config)
+    console.log('사진 수정 응답', response)
+  } catch (error) {
+    throw error
+  }
+}
+
+export { nameChange, ImageChange }

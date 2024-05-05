@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { LuPencil } from 'react-icons/lu'
 import style from './member.module.scss'
-import nameChange from '@/apis/info-changeAxios'
+import { nameChange, ImageChange } from '@/apis/info-changeAxios'
 import myInfo from '@/apis/user-infoAxios'
 import { SimpleButton } from '@/components/commons/Buttons/Button'
 
@@ -22,7 +22,7 @@ const User = () => {
 
   const handleNameChange = async () => {
     try {
-      const response = await nameChange({ nickname })
+      const response = await nameChange(nickname)
       if (response.status === 200) {
         setIsChangeClicked(false)
         setUserDetails((prevState) => {
