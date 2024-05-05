@@ -30,6 +30,10 @@ const TierImg = ({ tier }: TierImgProps) => {
       folder = 'dia'
       file = 26 - tier
       break
+    case tier <= 30:
+      folder = 'ruby'
+      file = 31 - tier
+      break
     default:
       folder = 'unrated'
   }

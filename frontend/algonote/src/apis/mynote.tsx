@@ -1,13 +1,14 @@
 import axios from 'axios'
-import useUserInfo from '@/stores/user-store'
+import { getCookie } from '@/utils/cookie'
 
 const getMyNote = async () => {
-  const { userInfo } = useUserInfo.getState()
-
-  const apiUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/notes?memberId=${userInfo.memberId}`
+  const memberId = getCookie('memberId')
+  const token = getCookie('access_token')
+  const config = { headers: { Authorization: `Bearer ${token}` } }
+  const apiUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/notes?memberId=${memberId}`
 
   try {
-    const response = await axios.get(apiUrl)
+    const response = await axios.get(apiUrl, config)
     return response
   } catch (error) {
     throw error

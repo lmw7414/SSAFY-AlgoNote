@@ -2,8 +2,9 @@ import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import s from './TextCarousel.module.scss'
+import { Notes } from '@/pages/mynote/index'
 
-const TextCarousel = ({ notes }: { notes: Array<string> }) => {
+const TextCarousel = ({ notes }: { notes: Notes[] }) => {
   const settings = {
     dots: true,
     slidesToShow: 1,
@@ -14,13 +15,13 @@ const TextCarousel = ({ notes }: { notes: Array<string> }) => {
     <div>
       {notes.length === 1 ? (
         <div className={s.noteTitleCon}>
-          <p className={s.noteTitle}>{notes[0]}</p>
+          <p className={s.noteTitle}>{notes[0].noteTitle}</p>
         </div>
       ) : (
         <Slider {...settings}>
-          {notes.map((noteTitle) => (
-            <div key={noteTitle} className={s.noteTitleCon}>
-              <p className={s.noteTitle}>{noteTitle}</p>
+          {notes.map((note) => (
+            <div key={note.noteId} className={s.noteTitleCon}>
+              <p className={s.noteTitle}>{note.noteTitle}</p>
             </div>
           ))}
         </Slider>
