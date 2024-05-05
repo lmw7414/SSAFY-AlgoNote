@@ -135,12 +135,22 @@ public class MemberService {
 
     @Transactional
     public void update(Long memberId, String updateNickname, MultipartFile profileImg) {
+
+        if(this.checkDuplicated(updateNickname, "nickname")){
+            throw new CustomException(ErrorCode.DUPLICATE_NICKNAME);
+        }
         Member member = memberRepository.findById(memberId)
             .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
+
         String imgUrl = member.getProfileImg();
         String nickname = member.getNickname();
 
-        if(profileImg != null){
+        if(profileImg != null ){
+            String originalFilename = profileImg.getOriginalFilename();
+            if(originalFilename == null || originalFilename.isEmpty())   {
+                throw new CustomException(ErrorCode.FILE_NOT_FOUND);
+            }
+
             imgUrl = awsFileService.saveFile(profileImg);
         }
 
