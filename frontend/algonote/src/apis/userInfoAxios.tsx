@@ -1,6 +1,8 @@
 import axios from 'axios'
+import { getCookie } from '@/utils/cookie'
 
-const myInfo = async (memberId: number) => {
+const myInfo = async () => {
+  const memberId = getCookie('memberId')
   const url = `${process.env.NEXT_PUBLIC_BASE_URL}/api/member?memberId=${memberId}`
   return axios
     .get(url)

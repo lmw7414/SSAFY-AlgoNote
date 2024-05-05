@@ -7,6 +7,7 @@ const loginApi = async (email: string, password: string) => {
     .post('/api/auth/login', { email, password })
     .then((response) => {
       setCookie('access_token', response.headers.token, 1) // 1일의 만료기간
+      setCookie('memberId', response.data.memberId, 1)
       return response
       // console.log('loginApi response: ', response)
     })
