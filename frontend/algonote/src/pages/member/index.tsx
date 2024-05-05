@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { LuPencil } from 'react-icons/lu'
 import style from './member.module.scss'
-import change from '@/apis/info-changeAxios'
+import nameChange from '@/apis/info-changeAxios'
 import myInfo from '@/apis/user-infoAxios'
 import { SimpleButton } from '@/components/commons/Buttons/Button'
 
@@ -22,7 +22,7 @@ const User = () => {
 
   const handleNameChange = async () => {
     try {
-      const response = await change({ nickname, profileImg: null })
+      const response = await nameChange({ nickname })
       if (response.status === 200) {
         setIsChangeClicked(false)
         setUserDetails((prevState) => {
@@ -44,7 +44,7 @@ const User = () => {
     const fetchMyInfo = async () => {
       try {
         const response = await myInfo()
-        // API 응답을 상태에 저장하기 전에 형식이 맞는지 확인합니다.
+        // API 응답을 상태에 저장하기 전에 형식이 맞는지 확인
         if (response && typeof response === 'object') {
           setUserDetails(response.data)
         }
