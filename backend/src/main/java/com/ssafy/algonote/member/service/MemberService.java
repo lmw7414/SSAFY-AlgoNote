@@ -145,14 +145,10 @@ public class MemberService {
         String imgUrl = member.getProfileImg();
         String nickname = member.getNickname();
 
-        if(profileImg != null ){
-            String originalFilename = profileImg.getOriginalFilename();
-            if(originalFilename == null || originalFilename.isEmpty())   {
-                throw new CustomException(ErrorCode.FILE_NOT_FOUND);
-            }
-
-            imgUrl = awsFileService.saveFile(profileImg);
+        if(profileImg == null || profileImg.getOriginalFilename() == null || profileImg.getOriginalFilename().isEmpty()){
+            throw new CustomException(ErrorCode.FILE_NOT_FOUND);
         }
+        imgUrl = awsFileService.saveFile(profileImg);
 
         if (updateNickname != null) {
             nickname = updateNickname;
