@@ -12,10 +12,18 @@ export interface Notes {
   modifiedAt: string
 }
 
+interface Problem {
+  id: number
+  title: string
+  tier: string
+  acceptUserCount: number
+  averageTries: number
+  tags: string[]
+}
+
 interface Problems {
   noteCount: number
-  problemId: number
-  tier: string
+  problem: Problem
   notes: Notes[]
 }
 
@@ -32,6 +40,7 @@ const MyNote = () => {
       const response = await getMyNote()
       if (response) {
         setMyNotes(response.data)
+        console.log('응답', response.data)
       }
     }
 
@@ -45,10 +54,10 @@ const MyNote = () => {
           {myNotes &&
             myNotes.problems.map((problem) => (
               <Folder
-                key={problem.problemId}
-                tier={problem.tier}
-                problemId={problem.problemId}
-                problemTitle={problem.tier}
+                key={problem.problem.id}
+                tier={problem.problem.tier}
+                problemId={problem.problem.id}
+                problemTitle={problem.problem.title}
                 notes={problem.notes}
               />
             ))}
