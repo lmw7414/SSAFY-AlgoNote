@@ -1,4 +1,3 @@
-// import ReactMarkdown from 'react-markdown'
 import { KeyboardEvent, SetStateAction, useState } from 'react'
 import Image from 'next/image'
 import s from './Tabs.module.scss'
@@ -24,8 +23,6 @@ const Tabs = () => {
       setActiveTab(index)
     }
   }
-
-  // const [input, setInput] = useState()
 
   return (
     <div className={s.wrapper}>
@@ -57,16 +54,8 @@ const Tabs = () => {
           <button type="button">+</button>
         </div>
       </div>
-      <div className={s.tabsContent}>
-        {/* <textarea
-          autoFocus
-          className="textarea"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-        /> */}
-        {/* <ReactMarkdown source={input} className="markdown" /> */}
-        {tabs[activeTab].content}
-      </div>
+
+      <div className={s.tabsContent}>{tabs[activeTab].content}</div>
     </div>
   )
 }

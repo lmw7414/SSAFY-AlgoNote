@@ -96,11 +96,23 @@
 // image
 .imageBox {
   display: flex;
-  width: 50%;
-  height: 78%;
+  width: 45%;
+  height: 71%;
   padding-right: 1rem;
   // background: skyblue;
 
+  img {
+    width: 30%;
+    height: 30%;
+    position: relative !important;
+  }
+}
+
+.imageBoxFirst {
+  display: flex;
+  width: 42%;
+  height: 71%;
+  padding-right: 1rem;
   img {
     width: 30%;
     height: 30%;
