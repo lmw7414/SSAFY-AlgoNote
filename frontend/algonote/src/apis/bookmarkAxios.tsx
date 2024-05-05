@@ -1,10 +1,10 @@
 import axios from 'axios'
-import useUserInfo from '@/stores/user-store'
+import { getCookie } from '@/utils/cookie'
 
 const bookmarkListApi = async () => {
-  const { userInfo } = useUserInfo.getState()
+  const memberId = getCookie('memberId')
 
-  const apiUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/bookmarks?memberId=${userInfo.memberId}`
+  const apiUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/bookmarks?memberId=${memberId}`
 
   return axios
     .get(apiUrl)

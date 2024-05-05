@@ -5,7 +5,6 @@ import style from './member.module.scss'
 import change from '@/apis/info-changeAxios'
 import myInfo from '@/apis/user-infoAxios'
 import { SimpleButton } from '@/components/commons/Buttons/Button'
-import useUserInfo from '@/stores/user-store'
 
 interface UserInfo {
   memberId: number
@@ -15,8 +14,7 @@ interface UserInfo {
 }
 
 const User = () => {
-  const { userInfo } = useUserInfo()
-
+  // useState를 null 가능한 UserInfo 타입으로 설정합니다. 초기 상태를 null로 설정합니다.
   const [userDetails, setUserDetails] = useState<UserInfo | null>(null)
 
   const [isChangeClicked, setIsChangeClicked] = useState<boolean>(false)
@@ -44,17 +42,14 @@ const User = () => {
 
   useEffect(() => {
     const fetchMyInfo = async () => {
-      if (userInfo.memberId) {
-        try {
-          const response = await myInfo(userInfo.memberId)
-          // API 응답을 상태에 저장하기 전에 형식이 맞는지 확인
-          console.log('정보 응답', response)
-          if (response && typeof response === 'object') {
-            setUserDetails(response.data)
-          }
-        } catch (error) {
-          console.error('내 정보 가져오기 실패:', error)
+      try {
+        const response = await myInfo()
+        // API 응답을 상태에 저장하기 전에 형식이 맞는지 확인합니다.
+        if (response && typeof response === 'object') {
+          setUserDetails(response.data)
         }
+      } catch (error) {
+        console.error('내 정보 가져오기 실패:', error)
       }
     }
 
