@@ -43,7 +43,7 @@ public class Review extends BaseEntity {
     @Column(nullable = false)
     private int endLine;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
     public static Review of(ReviewReqDto req, Member member, Note note) {

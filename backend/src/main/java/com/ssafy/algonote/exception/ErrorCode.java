@@ -27,7 +27,9 @@ public enum ErrorCode {
     FAILED_IMAGE_UPLOAD(HttpStatus.INTERNAL_SERVER_ERROR, "이미지 업로드에 실패했습니다."),
     FILE_NOT_FOUND(HttpStatus.NOT_FOUND, "파일이 없습니다"),
     INVALID_LINE_RANGE(HttpStatus.BAD_REQUEST, "endLine은 startLine보다 작을 수 없습니다."),
-
+    JSON_GENERATING_ERROR(HttpStatus.BAD_REQUEST, "JSON 생성 중 에러가 발생하였습니다."),
+    JSON_PARSING_ERROR(HttpStatus.BAD_REQUEST, "JSON 파싱 중 에러가 발생하였습니다."),
+    NOT_FOUND_SUBMISSION(HttpStatus.NOT_FOUND, "존재하지 않는 제출정보입니다."),
     RUNTIME_EXCEPTION(HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부 오류"),
     NOT_SOLVED(HttpStatus.FORBIDDEN, "아직 풀지 않은 문제입니다.");
 
