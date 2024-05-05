@@ -19,7 +19,7 @@ public class SearchController {
     @Operation(summary = "키워드로 검색하기")
     @GetMapping("/full-text")
     public ResponseEntity<SearchResDto> fullTextSearch(@RequestParam("keyword") String keyword,
-                                                     @RequestParam("page") int page) {
+                                                     @RequestParam(value = "page", required = true) int page) {
 
         log.info("fullTextSearch keyword: {}, page: {}", keyword, page);
 

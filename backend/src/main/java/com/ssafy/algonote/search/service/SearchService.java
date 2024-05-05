@@ -3,7 +3,7 @@ package com.ssafy.algonote.search.service;
 
 import co.elastic.clients.elasticsearch._types.query_dsl.MatchQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.NestedQuery;
-import com.ssafy.algonote.note.domain.Note;
+
 import com.ssafy.algonote.note.domain.NoteDocument;
 import com.ssafy.algonote.problem.domain.ProblemDocument;
 import com.ssafy.algonote.search.dto.response.NoteSearchResDto;
@@ -14,8 +14,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.client.elc.NativeQueryBuilder;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
@@ -41,7 +43,8 @@ public class SearchService {
         return parseSearchHits(problemHits, noteHits);
     }
 
-    private SearchHits<NoteDocument> searchNoteDocument(String keyword, int page){
+    private SearchHits<NoteDocument> searchNoteDocument(String keyword, int page) {
+
 //        MatchQuery problemIdMatch = MatchQuery.of(m -> m.field("problemId").query(keyword));
 //        MatchQuery problemTitleMatch = MatchQuery.of(m -> m.field("problemTitle").query(keyword));
 //        MatchQuery noteTitleMatch = MatchQuery.of(m -> m.field("noteTitle").query(keyword));
@@ -55,6 +58,9 @@ public class SearchService {
 
         CriteriaQuery query = new CriteriaQuery(noteCriteria);
 
+        query.setPageable(PageRequest.of(page, 10));
+
+
         return operations.search(query, NoteDocument.class);
     }
 
@@ -64,6 +70,7 @@ public class SearchService {
         MatchQuery titleMatch = MatchQuery.of(m -> m.field("title").query(keyword));
         NestedQuery tagMatch = NestedQuery.of(n->n.path("tags").query(q->q.match(m->m.field("tags.tag").query(keyword))));
         Query query = createQuery(Arrays.asList(idMatch._toQuery(), titleMatch._toQuery(), tagMatch._toQuery()));
+        query.setPageable(PageRequest.of(page, 10));
 
         return operations.search(query, ProblemDocument.class);
     }
