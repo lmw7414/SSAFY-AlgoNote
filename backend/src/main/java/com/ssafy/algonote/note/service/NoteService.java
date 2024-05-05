@@ -36,7 +36,8 @@ public class NoteService {
         SolvedProblem problem = getSolvedProblemOrException(memberId, problemId);
         noteRepository.save(Note.of(member, problem.getProblem(), title.trim(), content));
         noteDocumentRepository.save(
-            NoteDocument.of(member, problem.getProblem(), title.trim(), content));
+            NoteDocument.of(member, problem.getProblem(), title.trim(), content)
+        );
     }
 
     // 노트 삭제

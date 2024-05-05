@@ -15,6 +15,7 @@ import com.ssafy.algonote.member.dto.request.SignUpReqDto;
 import com.ssafy.algonote.member.dto.response.EmailAuthResDto;
 import com.ssafy.algonote.member.dto.response.LoginReturnDto;
 import com.ssafy.algonote.member.dto.response.ProfileInfoResDto;
+import com.ssafy.algonote.member.dto.response.UpdatedInfoResDto;
 import com.ssafy.algonote.member.repository.MemberRepository;
 import jakarta.transaction.Transactional;
 import java.security.NoSuchAlgorithmException;
@@ -134,27 +135,43 @@ public class MemberService {
     }
 
     @Transactional
-    public void update(Long memberId, String updateNickname, MultipartFile profileImg) {
-
-        if(this.checkDuplicated(updateNickname, "nickname")){
+    public String updateNickname(Long memberId, String updatedNickname) {
+        if(this.checkDuplicated(updatedNickname, "nickname")){
             throw new CustomException(ErrorCode.DUPLICATE_NICKNAME);
         }
+
         Member member = memberRepository.findById(memberId)
-            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
+
+
+        if (updatedNickname != null) {
+            member.updateNickname(updatedNickname);
+        }
+        return member.getNickname();
+    }
+
+    @Transactional
+    public String updateProfileImg(Long memberId, MultipartFile profileImg){
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
 
         String imgUrl = member.getProfileImg();
-        String nickname = member.getNickname();
 
-        if(profileImg == null || profileImg.getOriginalFilename() == null || profileImg.getOriginalFilename().isEmpty()){
-            throw new CustomException(ErrorCode.FILE_NOT_FOUND);
-        }
-        imgUrl = awsFileService.saveFile(profileImg);
-
-        if (updateNickname != null) {
-            nickname = updateNickname;
+        if( !(profileImg == null || profileImg.getOriginalFilename() == null || profileImg.getOriginalFilename().isEmpty()) ){
+            imgUrl = awsFileService.saveFile(profileImg);
         }
 
-        member.update(nickname, imgUrl);
+        member.updateProfileImg(imgUrl);
+
+        return imgUrl;
+    }
+
+    @Transactional
+    public UpdatedInfoResDto update(Long memberId, String updateNickname, MultipartFile profileImg) {
+        updateNickname = this.updateNickname(memberId, updateNickname);
+        String imgUrl = this.updateProfileImg(memberId, profileImg);
+
+        return new UpdatedInfoResDto(updateNickname, imgUrl);
     }
 
     private String createCode(){
