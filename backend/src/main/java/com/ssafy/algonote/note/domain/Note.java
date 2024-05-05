@@ -29,6 +29,7 @@ public class Note extends BaseEntity {
     private String title;
 
     @Setter
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
     public static Note of(Member member, Problem problem, String title, String content) {

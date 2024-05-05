@@ -3,10 +3,14 @@ package com.ssafy.algonote.problem.service;
 import com.ssafy.algonote.exception.CustomException;
 import com.ssafy.algonote.exception.ErrorCode;
 import com.ssafy.algonote.problem.domain.Problem;
+import com.ssafy.algonote.problem.domain.ProblemDocument;
 import com.ssafy.algonote.problem.domain.Tag;
 import com.ssafy.algonote.problem.dto.ConsumerProblemResDto;
+import com.ssafy.algonote.problem.repository.ProblemDocumentRepository;
 import com.ssafy.algonote.problem.repository.ProblemRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,10 +20,13 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class ProblemService {
 
     private final ProblemRepository problemRepository;
     private final TagService tagService;
+    private final ProblemDocumentRepository problemDocumentRepository;
+
 
     @Transactional(readOnly = true)
     public Problem getProblem(Long id) {
@@ -28,17 +35,21 @@ public class ProblemService {
 
     //문제 저장시점에 태그가 태그 레포지토리에 없으면 태그 레포에 저장
     public void saveProblem(ConsumerProblemResDto dto) {
+
+        log.info("Consume the event {}", dto);
         // 저장하려는 문제가 이미 있는 문제인지 확인
         problemRepository.findById(dto.getProblemId()).ifPresent(it -> {
+            problemDocumentRepository.save(ProblemDocument.from(dto));
             throw new CustomException(ErrorCode.DUPLICATE_PROBLEM);
         });
         // 없다면 문제를 저장
         Problem problem = Problem.of(dto.getProblemId(), dto.getTitle(), dto.getLevel(), dto.getAcceptedUserCount(), dto.getAverageTries());
+
         Set<Tag> tagSet = dto.getTags().stream().map(tagService::saveTagIfNotExists).collect(Collectors.toUnmodifiableSet());
         problem.addTags(tagSet);
-        for (Tag tag : problem.getTags())
-            System.out.println(tag);
+
         problemRepository.save(problem);
+        problemDocumentRepository.save(ProblemDocument.from(dto));
     }
 
     //문제 id로 조회하기

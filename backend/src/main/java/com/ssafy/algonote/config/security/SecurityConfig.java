@@ -29,7 +29,10 @@ public class SecurityConfig {
             "/auth/**",
             "/member/**",
             "/problems/search-**",
-            "/bookmarks/**"
+            "/bookmarks/**",
+            "/gpt/**",
+            "/swagger-ui/**",
+            "/v3/api-docs/**"
     };
 
     private final JwtUtil jwtUtil;
@@ -67,6 +70,7 @@ public class SecurityConfig {
         http.exceptionHandling(exceptionHandling -> exceptionHandling
                 .accessDeniedHandler(accessDeniedHandler)
                 .authenticationEntryPoint(authenticationEntryPoint));
+
 
         http.authorizeHttpRequests(
                 authorize -> authorize
