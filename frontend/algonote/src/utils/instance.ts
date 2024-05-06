@@ -1,7 +1,7 @@
 import axios, { AxiosInstance } from 'axios'
 import { setCookie, eraseCookie, getCookie } from './cookie'
 
-const api = 'https://algnote.duckdns.org/'
+const api = process.env.NEXT_PUBLIC_BASE_URL
 
 const expireToken = () => {
   window.alert('로그인이 만료되었습니다. 다시 로그인 해주세요')
