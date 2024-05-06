@@ -2,7 +2,15 @@ import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import s from './TextCarousel.module.scss'
-import { Notes } from '@/pages/mynote/index'
+
+interface Notes {
+  noteId: number
+  noteTitle: string
+  heartCnt: number
+  hearted: boolean
+  createdAt: string
+  modifiedAt: string
+}
 
 const TextCarousel = ({ notes }: { notes: Notes[] }) => {
   const settings = {

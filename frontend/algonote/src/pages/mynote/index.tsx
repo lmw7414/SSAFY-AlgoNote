@@ -3,7 +3,7 @@ import s from './mynote.module.scss'
 import getMyNote from '@/apis/mynote'
 import Folder from '@/components/commons/Folder'
 
-export interface Notes {
+interface Notes {
   noteId: number
   noteTitle: string
   heartCnt: number
