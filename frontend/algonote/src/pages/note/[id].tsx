@@ -48,7 +48,15 @@ const Note = () => {
 
   return (
     <div className={style.frame}>
-      <div>{noteDetail}</div>
+      <div>제목 : {noteDetail?.noteTitle}</div>
+      <div>
+        태그:
+        {noteDetail?.problem.tags.map((tag) => <div key={tag}>{tag}</div>)}
+      </div>
+      <div>
+        작성자:
+        {noteDetail}
+      </div>
     </div>
   )
 }
