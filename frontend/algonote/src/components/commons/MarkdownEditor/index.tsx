@@ -4,6 +4,7 @@ import TestNote2 from '@/pages/testnote2'
 import useNoteStore from '@/stores/note-store'
 
 const MarkdownEditor = () => {
+  // 전역으로 하면 안됨
   const { content } = useNoteStore()
   const { title, setTitle } = useNoteStore()
   // const [title, setTitle] = useState('')
@@ -138,7 +139,7 @@ const MarkdownEditor = () => {
                   style={{
                     fontFamily: 'Pretendard',
                     fontSize: '1rem',
-                    backgroundColor: '#E9ECEF',
+                    background: '#f6f8fa',
                     padding: '4px',
                     borderRadius: '5px',
                     marginRight: '0.3rem',

@@ -12,7 +12,7 @@ const WriteNote = () => {
     console.log('버튼을 클릭했습니다.')
   }
 
-  const rightStyle = isCollapsed ? { flex: 20 } : { flex: 3 } // 예시 너비, 실제 조건에 맞게 조절
+  const rightStyle = isCollapsed ? { flex: 21 } : { flex: 3 } // 예시 너비, 실제 조건에 맞게 조절
   return (
     <div className={s.wrapper}>
       <div className={s.left}>
