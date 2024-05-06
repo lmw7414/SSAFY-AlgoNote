@@ -28,7 +28,7 @@ const TestNote2 = () => {
         '.cm-content': {
           caretColor: 'black',
           fontFamily: 'Pretendard, sans-serif',
-          fontSize: '1rem',
+          fontSize: '1.2rem',
           lineHeight: '1.5',
         },
 
@@ -62,7 +62,7 @@ const TestNote2 = () => {
           width: '4px',
         },
         '::-webkit-scrollbar-thumb': {
-          background: '#ced4da',
+          background: '#212529',
           borderRadius: '4px',
         },
       })}

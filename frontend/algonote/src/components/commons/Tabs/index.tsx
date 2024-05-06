@@ -10,9 +10,21 @@ const Tabs = () => {
   const { title } = useNoteStore()
 
   const tabs = [
-    { keys: 0, title, content: <MarkdownEditor /> },
-    { keys: 1, title, content: <MarkdownEditor /> },
-    { keys: 2, title, content: <MarkdownEditor /> },
+    {
+      keys: 0,
+      title: title.trim().length === 0 ? '새 풀이' : title,
+      content: <MarkdownEditor />,
+    },
+    {
+      keys: 1,
+      title: title.trim().length === 0 ? '새 풀이' : title,
+      content: <MarkdownEditor />,
+    },
+    {
+      keys: 2,
+      title: title.trim().length === 0 ? '새 풀이' : title,
+      content: <MarkdownEditor />,
+    },
   ]
 
   const handleTabClick = (index: SetStateAction<number>) => {

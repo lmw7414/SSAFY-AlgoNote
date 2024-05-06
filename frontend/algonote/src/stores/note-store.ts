@@ -13,25 +13,25 @@ interface NoteStore extends NoteContentType {
 const useNoteStore = create<NoteStore>((set) => ({
   title: '',
   content: `
-### 문제 해석
+## 문제 해석
 
 
 
 
 
-### 풀이 전략
+## 풀이 전략
 
 
 
 
 
-### 코드
+## 코드
 
 
 
 
 
-### 검증 및 회고
+## 검증 및 회고
 `, // 초기 상태
   setContent: (newContent: string) => set({ content: newContent }),
   setTitle: (newTitle: string) => set({ title: newTitle }),

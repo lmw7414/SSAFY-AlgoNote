@@ -5,6 +5,9 @@
 }
 
 .inputSection {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   width: 50%;
   // margin-right: 1rem;
   padding-top: 2rem;
@@ -12,10 +15,26 @@
 
   input {
     border: none;
-    font-size: 1.5rem;
-    font-weight: 500;
+    font-size: 1.7rem;
+    font-weight: 600;
     margin-bottom: 1rem;
     outline: none;
+  }
+
+  input::placeholder {
+    font-size: 1.7rem;
+    color: #ced4da;
+    font-weight: 600;
+  }
+
+  hr {
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+    margin-left: 0;
+    width: 3.5rem;
+    height: 5px;
+    border: none;
+    background-color: rgb(73, 80, 87);
   }
 }
 
@@ -27,12 +46,14 @@
   width: 50%;
   height: 90vh;
   padding: 2rem;
-  background-color: rgb(246, 255, 252);
-  font-size: 1rem;
+  background-color: #fbfdfc;
+  font-size: 1.2rem;
+  line-height: 2rem;
 }
 
 .previewTitleSection {
   margin-bottom: 2rem;
+  padding-bottom: 3rem;
   font-weight: 600;
   font-size: 2rem;
 }

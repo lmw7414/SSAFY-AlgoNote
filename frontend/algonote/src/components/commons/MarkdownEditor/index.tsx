@@ -35,6 +35,7 @@ const MarkdownEditor = () => {
           value={title}
           onChange={handleTitle}
         />
+        <hr />
         <div className={s.content}>
           <TestNote2 />
         </div>
@@ -61,6 +62,7 @@ const MarkdownEditor = () => {
             h2: ({ node, ...props }) => (
               <p
                 style={{
+                  marginTop: '2em',
                   marginBottom: '1em',
                   fontWeight: 'bold',
                   fontSize: '1.5em',
@@ -98,6 +100,53 @@ const MarkdownEditor = () => {
                 {...props}
               />
             ),
+            // 코드 블록을 위한 커스텀 'pre' 컴포넌트
+            pre: ({ node, ...props }) => (
+              <pre
+                style={{
+                  fontFamily: 'Pretendard',
+                  fontSize: '1rem',
+                  background: '#f6f8fa',
+                  padding: '15px',
+                  borderRadius: '10px',
+                  overflowX: 'auto',
+                  marginBottom: '1rem',
+                }}
+                {...props}
+              />
+            ),
+            // 단일 줄 코드를 위한 커스텀 'code' 컴포넌트 (이미 정의되어 있음)
+            code: ({ node, ...props }) => {
+              // 'className' 속성이 있을 경우, 코드 블록으로 처리
+              if (props.className) {
+                return (
+                  <code
+                    style={{
+                      display: 'block', // 블록 요소로 처리
+                      fontFamily: 'Pretendard',
+                      fontSize: '1rem',
+                      padding: '4px',
+                      borderRadius: '5px',
+                    }}
+                    {...props}
+                  />
+                )
+              }
+              // 일반 코드 (단일 줄)에 대한 처리
+              return (
+                <code
+                  style={{
+                    fontFamily: 'Pretendard',
+                    fontSize: '1rem',
+                    backgroundColor: '#E9ECEF',
+                    padding: '4px',
+                    borderRadius: '5px',
+                    marginRight: '0.3rem',
+                  }}
+                  {...props}
+                />
+              )
+            },
             li: ({ node, ...props }) => {
               // 'children'을 직접 렌더링하기 위해 '...props'를 사용
               return <li {...props} />

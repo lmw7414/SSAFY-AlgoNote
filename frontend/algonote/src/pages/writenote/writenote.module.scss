@@ -13,7 +13,8 @@
 }
 
 .right {
-  flex: 2.5;
+  transition: flex 0.5s ease-out;
+  flex: 3;
   height: 100%;
   // background: skyblue;
 }
