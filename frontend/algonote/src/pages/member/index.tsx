@@ -18,6 +18,7 @@ const User = () => {
   const [userDetails, setUserDetails] = useState<UserInfo | null>(null)
 
   const [isChangeClicked, setIsChangeClicked] = useState<boolean>(false)
+  const [isImageClicked, setIsImageClicked] = useState<boolean>(false)
   const [nickname, setNickName] = useState<string>('')
 
   const handleNameChange = async () => {
@@ -63,6 +64,18 @@ const User = () => {
   // 사용자 정보 렌더링 로직
   return (
     <div className={style.info}>
+      <Image
+        src={userDetails.profileImg}
+        alt="프로필 이미지"
+        width={100}
+        height={100}
+      />
+      {isImageClicked ? (
+        <input type="file" accept="image/*. .jpg, .png .jpeg" />
+      ) : (
+        <LuPencil onClick={() => setIsImageClicked(true)} />
+      )}
+
       <p>이메일: {userDetails.email}</p>
       <div className={style.nickname}>
         <p>닉네임: {userDetails.nickname}</p>
@@ -85,13 +98,6 @@ const User = () => {
           <LuPencil onClick={() => setIsChangeClicked(true)} />
         )}
       </div>
-
-      <Image
-        src={userDetails.profileImg}
-        alt="프로필 이미지"
-        width={100}
-        height={100}
-      />
     </div>
   )
 }

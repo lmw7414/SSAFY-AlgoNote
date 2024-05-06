@@ -21,7 +21,7 @@ const nameChange = async (nickname: string) => {
   }
 }
 
-const ImageChange = async (profileImg: FormData) => {
+const ImageChange = async (profileImg: string) => {
   const url = `${process.env.NEXT_PUBLIC_BASE_URL}/api/members/profileImg`
   const token = getCookie('access_token')
   const config = {
@@ -31,8 +31,11 @@ const ImageChange = async (profileImg: FormData) => {
     },
   }
 
+  const form = new FormData()
+  form.append('profileImg', profileImg)
+
   try {
-    const response = axios.patch(url, profileImg, config)
+    const response = axios.patch(url, form, config)
     console.log('사진 수정 응답', response)
   } catch (error) {
     throw error
