@@ -25,8 +25,8 @@ interface NoteData {
   content: string
   heartCnt: number
   hearted: boolean
-  createdAt: Date
-  modifiedAt: Date
+  createdAt: string
+  modifiedAt: string
 }
 
 const Note = () => {
@@ -50,13 +50,34 @@ const Note = () => {
     <div className={style.frame}>
       <div>제목 : {noteDetail?.noteTitle}</div>
       <div>
+        문제 정보:
+        <div>
+          {noteDetail?.problem.id}
+          {noteDetail?.problem.title}
+          티어{noteDetail?.problem.tier}
+          시도횟수{noteDetail?.problem.averageTries}푼 사람
+          {noteDetail?.problem.acceptUserCount}
+        </div>
+      </div>
+      <div>
         태그:
         {noteDetail?.problem.tags.map((tag) => <div key={tag}>{tag}</div>)}
       </div>
       <div>
         작성자:
-        {noteDetail}
+        {noteDetail?.member.nickname}
       </div>
+      <div>
+        내용:
+        {noteDetail?.content}
+      </div>
+      <div>
+        좋아요 수:
+        {noteDetail?.heartCnt}
+      </div>
+      <div>{noteDetail?.hearted ? '좋아요 했음' : '좋아요 안했음'}</div>
+      <div>작성일: {noteDetail?.createdAt}</div>
+      <div>수정일: {noteDetail?.modifiedAt}</div>
     </div>
   )
 }
