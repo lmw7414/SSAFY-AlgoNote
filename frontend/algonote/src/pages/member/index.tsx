@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import Image from 'next/image'
 import { LuPencil } from 'react-icons/lu'
 import style from './member.module.scss'
-import { nameChange, ImageChange } from '@/apis/info-changeAxios'
+import { nameChange, imageChange } from '@/apis/info-changeAxios'
 import myInfo from '@/apis/user-infoAxios'
 import { SimpleButton } from '@/components/commons/Buttons/Button'
 
@@ -18,8 +18,40 @@ const User = () => {
   const [userDetails, setUserDetails] = useState<UserInfo | null>(null)
 
   const [isChangeClicked, setIsChangeClicked] = useState<boolean>(false)
-  const [isImageClicked, setIsImageClicked] = useState<boolean>(false)
   const [nickname, setNickName] = useState<string>('')
+  const fileInput = useRef<HTMLInputElement>(null)
+
+  const handleImgChange = async (file: File) => {
+    if (file instanceof File) {
+      try {
+        const response = await imageChange(file)
+        if (response.status === 200) {
+          const newImg = response.data.profileImgUrl
+
+          setUserDetails((prevState) => {
+            if (prevState) {
+              return {
+                ...prevState,
+                profileImg: newImg,
+              }
+            }
+            return prevState
+          })
+        }
+      } catch (error) {
+        throw error
+      }
+    }
+  }
+
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const file = e.target.files[0]
+      if (file) {
+        handleImgChange(file)
+      }
+    }
+  }
 
   const handleNameChange = async () => {
     try {
@@ -70,11 +102,22 @@ const User = () => {
         width={100}
         height={100}
       />
-      {isImageClicked ? (
-        <input type="file" accept="image/*. .jpg, .png .jpeg" />
-      ) : (
-        <LuPencil onClick={() => setIsImageClicked(true)} />
-      )}
+
+      <input
+        type="file"
+        hidden
+        accept="image/* .jpg, .png, .jpeg"
+        ref={fileInput}
+        onChange={onChange}
+      />
+
+      <LuPencil
+        onClick={() => {
+          if (fileInput.current) {
+            fileInput.current.click()
+          }
+        }}
+      />
 
       <p>이메일: {userDetails.email}</p>
       <div className={style.nickname}>

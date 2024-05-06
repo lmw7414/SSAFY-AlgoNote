@@ -21,8 +21,8 @@ const nameChange = async (nickname: string) => {
   }
 }
 
-const ImageChange = async (profileImg: string) => {
-  const url = `${process.env.NEXT_PUBLIC_BASE_URL}/api/members/profileImg`
+const imageChange = async (file: File) => {
+  const url = `${process.env.NEXT_PUBLIC_BASE_URL}/api/members/profileImgs`
   const token = getCookie('access_token')
   const config = {
     headers: {
@@ -32,14 +32,16 @@ const ImageChange = async (profileImg: string) => {
   }
 
   const form = new FormData()
-  form.append('profileImg', profileImg)
+  form.append('profileImg', file)
+
+  console.log('폼데이터로 변경', form)
 
   try {
-    const response = axios.patch(url, form, config)
-    console.log('사진 수정 응답', response)
+    const response = await axios.patch(url, form, config)
+    return response
   } catch (error) {
     throw error
   }
 }
 
-export { nameChange, ImageChange }
+export { nameChange, imageChange }
