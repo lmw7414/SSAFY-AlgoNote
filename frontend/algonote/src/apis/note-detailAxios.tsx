@@ -1,12 +1,10 @@
 import axios from 'axios'
 import { getCookie } from '@/utils/cookie'
 
-const myInfo = async () => {
-  const memberId = getCookie('memberId')
-
-  const url = `${process.env.NEXT_PUBLIC_BASE_URL}/api/members?memberId=${memberId}`
+const getNoteDetail = (noteId: string) => {
   const token = getCookie('access_token')
   const config = { headers: { Authorization: `Bearer ${token}` } }
+  const url = `${process.env.NEXT_PUBLIC_BASE_URL}/api/notes/${noteId}`
 
   return axios
     .get(url, config)
@@ -18,4 +16,4 @@ const myInfo = async () => {
     })
 }
 
-export default myInfo
+export default getNoteDetail
