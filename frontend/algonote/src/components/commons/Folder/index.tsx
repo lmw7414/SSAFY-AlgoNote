@@ -1,7 +1,15 @@
 import s from './Folder.module.scss'
 import TextCarousel from './TextCarousel'
 import { Bronze, Silver, Gold, Platinum, Diamond, Ruby } from './Tiers'
-import { Notes } from '@/pages/mynote/index'
+
+interface Notes {
+  noteId: number
+  noteTitle: string
+  heartCnt: number
+  hearted: boolean
+  createdAt: string
+  modifiedAt: string
+}
 
 interface FolderProps {
   tier: string
