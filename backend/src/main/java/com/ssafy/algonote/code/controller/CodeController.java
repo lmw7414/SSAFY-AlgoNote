@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/code")
+@RequestMapping("/codes")
 @RequiredArgsConstructor
 public class CodeController {
 
