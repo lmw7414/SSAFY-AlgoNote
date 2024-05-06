@@ -14,7 +14,7 @@ interface UserInfo {
 }
 
 const User = () => {
-  // useState를 null 가능한 UserInfo 타입으로 설정합니다. 초기 상태를 null로 설정합니다.
+  // useState를 null 가능한 UserInfo 타입으로 설정
   const [userDetails, setUserDetails] = useState<UserInfo | null>(null)
 
   const [isChangeClicked, setIsChangeClicked] = useState<boolean>(false)
