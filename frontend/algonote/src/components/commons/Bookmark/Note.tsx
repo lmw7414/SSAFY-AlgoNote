@@ -31,11 +31,11 @@ interface Bookmark {
   member: Member
 }
 
-const handleDetailNote = (noteId: number, router: NextRouter) => {
+export const handleDetailNote = (noteId: number, router: NextRouter) => {
   router.push(`/note/${noteId}`)
 }
 
-const handleKeyPress = (
+export const handleKeyPress = (
   e: React.KeyboardEvent<HTMLDivElement>,
   noteId: number,
   router: NextRouter,

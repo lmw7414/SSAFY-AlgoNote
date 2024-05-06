@@ -1,7 +1,12 @@
+import { useRouter } from 'next/router'
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import s from './TextCarousel.module.scss'
+import {
+  handleDetailNote,
+  handleKeyPress,
+} from '@/components/commons/Bookmark/Note'
 
 interface Notes {
   noteId: number
@@ -13,6 +18,7 @@ interface Notes {
 }
 
 const TextCarousel = ({ notes }: { notes: Notes[] }) => {
+  const router = useRouter()
   const settings = {
     dots: true,
     slidesToShow: 1,
@@ -28,7 +34,14 @@ const TextCarousel = ({ notes }: { notes: Notes[] }) => {
       ) : (
         <Slider {...settings}>
           {notes.map((note) => (
-            <div key={note.noteId} className={s.noteTitleCon}>
+            <div
+              key={note.noteId}
+              className={s.noteTitleCon}
+              onClick={() => handleDetailNote(note.noteId, router)}
+              onKeyDown={(e) => handleKeyPress(e, note.noteId, router)}
+              tabIndex={0}
+              role="button"
+            >
               <p className={s.noteTitle}>{note.noteTitle}</p>
             </div>
           ))}
