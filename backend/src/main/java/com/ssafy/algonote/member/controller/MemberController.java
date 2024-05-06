@@ -42,8 +42,8 @@ public class MemberController {
     @PatchMapping("/nicknames")
     public ResponseEntity<NewNicknameResDto> updateNickname(@RequestBody NewNicknameReqDto newNicknameReqDto){
         Long memberId = SecurityUtil.getMemberId();
-        log.info("memberId : {}, updatedNickname: {}", memberId, newNicknameReqDto.nickname());
-        String updatedNickname = memberService.updateNickname(memberId, newNicknameReqDto.nickname());
+        log.info("memberId : {}, updatedNickname: {}", memberId, newNicknameReqDto.getNickname());
+        String updatedNickname = memberService.updateNickname(memberId, newNicknameReqDto.getNickname());
 
         return ResponseEntity.ok(NewNicknameResDto.of(updatedNickname));
     }
