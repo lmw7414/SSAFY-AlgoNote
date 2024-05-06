@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 // import HeartOffSVG from '@public/images/heart.svg'
 // import HeartSVG from '@public/images/redHeart.svg'
+import { NextRouter, useRouter } from 'next/router'
 import styles from './Note.module.scss'
 import bookmarkListApi from '@/apis/bookmarkAxios'
 import TierImg from '@/components/commons/Tier'
@@ -30,9 +31,25 @@ interface Bookmark {
   member: Member
 }
 
+const handleDetailNote = (noteId: number, router: NextRouter) => {
+  router.push(`/note/${noteId}`)
+}
+
+const handleKeyPress = (
+  e: React.KeyboardEvent<HTMLDivElement>,
+  noteId: number,
+  router: NextRouter,
+) => {
+  if (e.key === 'Enter') {
+    handleDetailNote(noteId, router)
+  }
+}
+
 const Notes = () => {
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([])
   // const [heartIsOff, setHeartIsOff] = useState<boolean[]>([])
+
+  const router = useRouter()
 
   useEffect(() => {
     const fetchBookmarks = async () => {
@@ -79,7 +96,14 @@ const Notes = () => {
         const key = `${it.problem.title}-${index}`
 
         return (
-          <div key={key} className={styles.note}>
+          <div
+            key={key}
+            className={styles.note}
+            onClick={() => handleDetailNote(it.note.id, router)}
+            onKeyDown={(e) => handleKeyPress(e, it.note.id, router)}
+            role="button"
+            tabIndex={0}
+          >
             <div className={styles.content}>
               <div className={styles.problem}>
                 <div className={styles.tierImage}>
