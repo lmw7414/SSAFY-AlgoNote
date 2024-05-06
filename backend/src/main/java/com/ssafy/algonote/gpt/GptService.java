@@ -1,16 +1,16 @@
-package com.ssafy.algonote.utils.gpt;
+package com.ssafy.algonote.gpt;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.algonote.exception.CustomException;
 import com.ssafy.algonote.exception.ErrorCode;
-import com.ssafy.algonote.utils.gpt.dto.GptDto;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -18,11 +18,12 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Slf4j
-@Component
+@Service
+@RequiredArgsConstructor
 public class GptService {
 
     @Value("${gpt.api-key}")
@@ -31,14 +32,16 @@ public class GptService {
     @Value("${gpt.model}")
     private String model;
 
-    public GptDto getTimeComplexity(String userMsg) {
+    private final RestTemplate restTemplate;
+
+    public String getTimeComplexity(String userMsg) {
         String systemMsg = "Calculate the time complexity of the following Java code. Just give me the value, no explanation.";
-        return new GptDto(callChatGpt(systemMsg, userMsg));
+        return callChatGpt(systemMsg, userMsg);
     }
 
-    public GptDto getSpaceComplexity(String userMsg) {
+    public String getSpaceComplexity(String userMsg) {
         String systemMsg = "Calculate the space complexity of the following Java code. Just give me the value, no explanation.";
-        return new GptDto(callChatGpt(systemMsg, userMsg));
+        return callChatGpt(systemMsg, userMsg);
     }
 
     private String callChatGpt(String systemMsg, String userMsg) {
@@ -77,7 +80,6 @@ public class GptService {
 
         HttpEntity<String> request = new HttpEntity<>(body, headers);
 
-        RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, request, String.class);
 
         JsonNode jsonNode;
