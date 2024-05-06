@@ -29,8 +29,7 @@ import org.springframework.data.elasticsearch.annotations.Setting;
 @ToString
 public class NoteDocument {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Long id;
 
     @Field(type = FieldType.Text,analyzer = "nori_ngram_analyzer", searchAnalyzer = "nori_analyzer")
     private String problemId;
@@ -48,13 +47,16 @@ public class NoteDocument {
     @Field(type=FieldType.Text)
     private String content;
 
-    public static NoteDocument of(Member member, Problem problem, String title, String content) {
+    public static NoteDocument of(Long noteId, Member member, Problem problem, String title, String content) {
         return NoteDocument.builder()
-            .memberNickname(member.getNickname())
-            .problemId(String.valueOf(problem.getId()))
-            .problemTitle(problem.getTitle())
-            .noteTitle(title)
-            .content(content)
-            .build();
+                .id(noteId)
+                .memberNickname(member.getNickname())
+                .problemId(String.valueOf(problem.getId()))
+                .problemTitle(problem.getTitle())
+                .noteTitle(title)
+                .content(content)
+                .build();
     }
+
+
 }

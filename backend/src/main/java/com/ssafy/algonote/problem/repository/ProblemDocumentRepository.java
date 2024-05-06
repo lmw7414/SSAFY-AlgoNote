@@ -7,6 +7,6 @@ import org.springframework.data.elasticsearch.repository.ElasticsearchRepository
 
 import java.util.List;
 
-public interface ProblemDocumentRepository extends ElasticsearchRepository<ProblemDocument, Long> {
+public interface ProblemDocumentRepository extends ElasticsearchRepository<ProblemDocument, String> {
 
 }

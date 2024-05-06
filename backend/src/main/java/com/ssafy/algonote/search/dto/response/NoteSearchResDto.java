@@ -5,7 +5,7 @@ import lombok.Builder;
 
 @Builder
 public record NoteSearchResDto(
-    String noteId,
+    Long noteId,
     Long problemId,
     String noteTitle,
     String problemTitle,

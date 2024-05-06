@@ -34,9 +34,10 @@ public class NoteService {
     public void saveNote(Long memberId, Long problemId, String title, String content) {
         Member member = getMemberOrException(memberId);
         SolvedProblem problem = getSolvedProblemOrException(memberId, problemId);
-        noteRepository.save(Note.of(member, problem.getProblem(), title.trim(), content));
+
+        Note note = noteRepository.save(Note.of(member, problem.getProblem(), title.trim(), content));
         noteDocumentRepository.save(
-            NoteDocument.of(member, problem.getProblem(), title.trim(), content)
+            NoteDocument.of(note.getId(), member, problem.getProblem(), title.trim(), content)
         );
     }
 
@@ -69,16 +70,27 @@ public class NoteService {
     }
 
     // 노트 수정
+    @Transactional
     public Note update(Long memberId, Long noteId, String title, String content) {
         Member member = getMemberOrException(memberId);
         Note note = getNoteOrException(noteId);
+        NoteDocument noteDocument = getNoteDocumentOrException(noteId);
+
 
         if (note.getMember() != member) {
             throw new CustomException(ErrorCode.NO_AUTHORITY);
         }
 
-        if (title != null) note.setTitle(title);
-        if (content != null) note.setContent(content);
+        if (title != null) {
+            note.setTitle(title);
+            noteDocument.setNoteTitle(title);
+        }
+
+        if (content != null) {
+            note.setContent(content);
+            noteDocument.setContent(content);
+        }
+        noteDocumentRepository.save(noteDocument);
         return noteRepository.saveAndFlush(note);
     }
 
