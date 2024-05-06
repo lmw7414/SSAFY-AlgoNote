@@ -1,7 +1,9 @@
 package com.ssafy.algonote.code.controller;
 
 import com.ssafy.algonote.code.dto.request.AnalyzeReqDto;
+import com.ssafy.algonote.code.dto.request.ComplexityReqDto;
 import com.ssafy.algonote.code.dto.response.AnalyzeResDto;
+import com.ssafy.algonote.code.dto.response.ComplexityResDto;
 import com.ssafy.algonote.code.service.CodeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,11 @@ public class CodeController {
     @PostMapping("/analyze")
     public ResponseEntity<AnalyzeResDto> analyzeCode(@RequestBody AnalyzeReqDto dto) {
         return ResponseEntity.ok(codeService.analyzeCode(dto));
+    }
+
+    @PostMapping("/complexity")
+    public ResponseEntity<ComplexityResDto> getComplexity(@RequestBody ComplexityReqDto dto) {
+        return ResponseEntity.ok(codeService.getComplexity(dto));
     }
 
 }

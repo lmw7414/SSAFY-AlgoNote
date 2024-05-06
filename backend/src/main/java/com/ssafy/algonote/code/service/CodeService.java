@@ -1,7 +1,10 @@
 package com.ssafy.algonote.code.service;
 
 import com.ssafy.algonote.code.dto.request.AnalyzeReqDto;
+import com.ssafy.algonote.code.dto.request.ComplexityReqDto;
 import com.ssafy.algonote.code.dto.response.AnalyzeResDto;
+import com.ssafy.algonote.code.dto.response.ComplexityResDto;
+import com.ssafy.algonote.gpt.GptService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -15,6 +18,7 @@ import org.springframework.web.client.RestTemplate;
 public class CodeService {
 
     private final RestTemplate restTemplate;
+    private final GptService gptService;
 
     @Value("${analyze.server.url}")
     private String serverUrl;
@@ -27,5 +31,13 @@ public class CodeService {
         HttpEntity<AnalyzeReqDto> requestEntity = new HttpEntity<>(dto, headers);
         return restTemplate.postForObject(serverUrl, requestEntity, AnalyzeResDto.class);
     }
+
+    public ComplexityResDto getComplexity(ComplexityReqDto dto) {
+        return ComplexityResDto.builder()
+            .timeComplexity(gptService.getTimeComplexity(dto.sourceCode()))
+            .spaceComplexity(gptService.getSpaceComplexity(dto.sourceCode()))
+            .build();
+    }
+
 }
 
