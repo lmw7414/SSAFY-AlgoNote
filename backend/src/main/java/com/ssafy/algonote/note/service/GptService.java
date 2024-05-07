@@ -1,4 +1,4 @@
-package com.ssafy.algonote.gpt;
+package com.ssafy.algonote.note.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;

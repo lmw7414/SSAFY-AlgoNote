@@ -1,10 +1,9 @@
-package com.ssafy.algonote.review.domain;
+package com.ssafy.algonote.note.domain;
 
 import com.ssafy.algonote.common.BaseEntity;
 import com.ssafy.algonote.member.domain.Member;
-import com.ssafy.algonote.note.domain.Note;
-import com.ssafy.algonote.review.dto.request.ReviewReqDto;
-import com.ssafy.algonote.review.dto.request.ReviewUpdateReqDto;
+import com.ssafy.algonote.note.dto.request.ReviewReqDto;
+import com.ssafy.algonote.note.dto.request.ReviewUpdateReqDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

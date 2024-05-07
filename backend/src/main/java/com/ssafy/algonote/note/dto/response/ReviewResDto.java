@@ -1,7 +1,7 @@
-package com.ssafy.algonote.review.dto.response;
+package com.ssafy.algonote.note.dto.response;
 
 import com.ssafy.algonote.member.dto.response.MemberResDto;
-import com.ssafy.algonote.review.domain.Review;
+import com.ssafy.algonote.note.domain.Review;
 import java.time.LocalDateTime;
 import lombok.Builder;
 

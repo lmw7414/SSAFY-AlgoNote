@@ -1,4 +1,4 @@
-package com.ssafy.algonote.review.dto.request;
+package com.ssafy.algonote.note.dto.request;
 
 public record ReviewUpdateReqDto(
     String content
