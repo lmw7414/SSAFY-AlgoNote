@@ -18,7 +18,7 @@ const bookmarkListApi = async () => {
 }
 
 const bookmarkButtonApi = async (noteId: string) => {
-  const apiUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/notes/${noteId}/bookmarks`
+  const apiUrl = `/api/notes/${noteId}/bookmarks`
 
   try {
     const response = await axiosAuthApi().post(apiUrl)
