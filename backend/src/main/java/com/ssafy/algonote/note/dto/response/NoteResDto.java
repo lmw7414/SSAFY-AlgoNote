@@ -14,10 +14,11 @@ public record NoteResDto(
         String content,
         long heartCnt,
         boolean hearted,
+        boolean bookmarked,
         LocalDateTime createdAt,
         LocalDateTime modifiedAt
 ) {
-    public static NoteResDto from(Note note, long heartCnt, boolean hearted) {
+    public static NoteResDto from(Note note, long heartCnt, boolean hearted, boolean bookmarked) {
         return new NoteResDto(
                 note.getId(),
                 MemberResDto.from(note.getMember()),
@@ -26,6 +27,7 @@ public record NoteResDto(
                 note.getContent(),
                 heartCnt,
                 hearted,
+                bookmarked,
                 note.getCreatedAt(),
                 note.getModifiedAt()
         );
