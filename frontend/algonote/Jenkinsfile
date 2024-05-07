@@ -34,6 +34,18 @@ pipeline{
         } 
 
 
+
+        stage('Deploy on Deploy Server'){
+            steps{
+                sh '''
+                    ssh -i ~/.ssh/id_rsa ubuntu@k10b203.p.ssafy.io "docker pull tollea1234/algonote-frontend:$BUILD_NUMBER"
+                    ssh -i ~/.ssh/id_rsa ubuntu@k10b203.p.ssafy.io "docker rm frontend-container --force"
+                    ssh -i ~/.ssh/id_rsa ubuntu@k10b203.p.ssafy.io "docker run -p 3000:3000 -d --name frontend-container tollea1234/algonote-frontend:$BUILD_NUMBER"
+                '''
+            }
+        }
+
+        
         stage('Remove previous images') {
             steps {
                 script {
@@ -43,16 +55,6 @@ pipeline{
                         sh "docker rmi $repository:${imagesToRemove}"
                     }
                 }
-            }
-        }
-
-        stage('Deploy on Deploy Server'){
-            steps{
-                sh '''
-                    ssh -i ~/.ssh/id_rsa ubuntu@k10b203.p.ssafy.io "docker pull tollea1234/algonote-frontend:$BUILD_NUMBER"
-                    ssh -i ~/.ssh/id_rsa ubuntu@k10b203.p.ssafy.io "docker rm frontend-container --force"
-                    ssh -i ~/.ssh/id_rsa ubuntu@k10b203.p.ssafy.io "docker run -p 3000:3000 -d --name frontend-container tollea1234/algonote-frontend:$BUILD_NUMBER"
-                '''
             }
         }
     }
