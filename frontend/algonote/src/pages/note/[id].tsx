@@ -1,6 +1,9 @@
 import { ChangeEvent, useEffect, useState } from 'react'
+import BookMarkSVG from '@public/images/bookmark.svg'
+import BookMarkOffSVG from '@public/images/bookmark_off.svg'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
+import { bookmarkButtonApi } from '@/apis/bookmarkAxios'
 import getNoteDetail from '@/apis/note-detailAxios'
 import {
   createReviewApi,
@@ -8,6 +11,7 @@ import {
   readReviewApi,
 } from '@/apis/reviewAxios'
 import { SimpleButton } from '@/components/commons/Buttons/Button'
+import ImageToggle from '@/components/commons/Buttons/ImageToggle'
 import style from '@/pages/note/note.module.scss'
 
 interface Member {
@@ -57,6 +61,14 @@ const Note = () => {
   const [noteDetail, setNoteDetail] = useState<NoteData>()
   const [reviews, setReviews] = useState<ReviewProps>()
   const [comment, setComment] = useState<string>('')
+  const [markIsOff, setMarkIsOff] = useState(false)
+
+  const handleBookmark = async () => {
+    const response = await bookmarkButtonApi(id as string)
+    if (response.status === 200) {
+      setMarkIsOff(!response.data.bookmarked)
+    }
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -148,6 +160,15 @@ const Note = () => {
       <div>
         작성자:
         {noteDetail?.member.nickname}
+      </div>
+      <div>
+        <ImageToggle
+          isOff={markIsOff}
+          onClick={() => handleBookmark()}
+          offImg={BookMarkSVG}
+          onImg={BookMarkOffSVG}
+          width="30px"
+        />
       </div>
       <div>
         내용:
