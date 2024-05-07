@@ -27,7 +27,7 @@ public class BookmarkController {
         description = "북마크를 생성하거나 삭제합니다."
     )
     @PostMapping("/notes/{noteId}/bookmarks")
-    public ResponseEntity<BookmarkStatusResDto> doBookmark(@PathVariable Long noteId) {
+    public ResponseEntity<BookmarkStatusResDto> doBookmark(@PathVariable("noteId") Long noteId) {
         Long memberId = SecurityUtil.getMemberId();
         return ResponseEntity.ok(bookmarkService.doBookmark(memberId, noteId));
     }
