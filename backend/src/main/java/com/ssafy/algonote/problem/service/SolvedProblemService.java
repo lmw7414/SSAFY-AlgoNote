@@ -50,7 +50,7 @@ public class SolvedProblemService {
 
     private Problem getProblemOrException(Long problemId) {
         return problemRepository.findById(problemId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_PROBLEM));
     }
 
     private SolvedProblem getSolvedProblemOrException(Long memberId, Long problemId) {
