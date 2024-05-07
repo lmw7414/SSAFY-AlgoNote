@@ -13,7 +13,6 @@ pipeline{
                 dir('frontend/algonote'){
                     sh 'cp /var/jenkins_home/env/.env .env'
                     script{
-                        
                         dockerImage = docker.build repository + ":$BUILD_NUMBER"
                     }
                 }
@@ -28,7 +27,15 @@ pipeline{
         
         stage('Deploy our image') { 
             steps { 
-            
+                script {
+                    sh "docker push $repository:$BUILD_NUMBER" //docker push
+                } 
+            }
+        } 
+
+
+        stage('Remove previous images') {
+            steps {
                 script {
                     def currentBuildNumber = env.BUILD_NUMBER.toInteger()
                     def imagesToRemove = sh(script: "docker images $repository --format \"{{.Tag}}\" | awk '{if (\$1 < $currentBuildNumber) print \$1}'", returnStdout: true).trim()
@@ -36,14 +43,8 @@ pipeline{
                         sh "docker rmi $repository:${imagesToRemove}"
                     }
                 }
-            
-        } 
-
-        stage('Cleaning up') { 
-            steps { 
-                sh "docker rmi $repository:${BUILD_NUMBER-2}"// docker image 제거
             }
-        } 
+        }
 
         stage('Deploy on Deploy Server'){
             steps{
@@ -51,13 +52,12 @@ pipeline{
                     ssh -i ~/.ssh/id_rsa ubuntu@k10b203.p.ssafy.io "docker pull tollea1234/algonote-frontend:$BUILD_NUMBER"
                     ssh -i ~/.ssh/id_rsa ubuntu@k10b203.p.ssafy.io "docker rm frontend-container --force"
                     ssh -i ~/.ssh/id_rsa ubuntu@k10b203.p.ssafy.io "docker run -p 3000:3000 -d --name frontend-container tollea1234/algonote-frontend:$BUILD_NUMBER"
-
                 '''
             }
         }
     }
 
-        post{
+    post{
         success {
         	script {
                 def Author_ID = sh(script: "git show -s --pretty=%an", returnStdout: true).trim()
