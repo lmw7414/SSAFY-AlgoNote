@@ -4,7 +4,7 @@ import com.ssafy.algonote.code.dto.request.AnalyzeReqDto;
 import com.ssafy.algonote.code.dto.request.ComplexityReqDto;
 import com.ssafy.algonote.code.dto.response.AnalyzeResDto;
 import com.ssafy.algonote.code.dto.response.ComplexityResDto;
-import com.ssafy.algonote.gpt.GptService;
+import com.ssafy.algonote.note.service.GptService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;

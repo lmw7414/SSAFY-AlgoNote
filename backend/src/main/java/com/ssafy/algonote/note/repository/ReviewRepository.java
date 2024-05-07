@@ -1,7 +1,7 @@
-package com.ssafy.algonote.review.repository;
+package com.ssafy.algonote.note.repository;
 
 
-import com.ssafy.algonote.review.domain.Review;
+import com.ssafy.algonote.note.domain.Review;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 

@@ -1,10 +1,10 @@
-package com.ssafy.algonote.review.controller;
+package com.ssafy.algonote.note.controller;
 
 import com.ssafy.algonote.config.security.SecurityUtil;
-import com.ssafy.algonote.review.dto.request.ReviewReqDto;
-import com.ssafy.algonote.review.dto.request.ReviewUpdateReqDto;
-import com.ssafy.algonote.review.dto.response.ReviewResDto;
-import com.ssafy.algonote.review.service.ReviewService;
+import com.ssafy.algonote.note.dto.request.ReviewReqDto;
+import com.ssafy.algonote.note.dto.request.ReviewUpdateReqDto;
+import com.ssafy.algonote.note.dto.response.ReviewResDto;
+import com.ssafy.algonote.note.service.ReviewService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;

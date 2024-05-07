@@ -1,4 +1,4 @@
-package com.ssafy.algonote.review.service;
+package com.ssafy.algonote.note.service;
 
 import com.ssafy.algonote.exception.CustomException;
 import com.ssafy.algonote.exception.ErrorCode;
@@ -6,11 +6,11 @@ import com.ssafy.algonote.member.domain.Member;
 import com.ssafy.algonote.member.repository.MemberRepository;
 import com.ssafy.algonote.note.domain.Note;
 import com.ssafy.algonote.note.repository.NoteRepository;
-import com.ssafy.algonote.review.domain.Review;
-import com.ssafy.algonote.review.dto.request.ReviewReqDto;
-import com.ssafy.algonote.review.dto.request.ReviewUpdateReqDto;
-import com.ssafy.algonote.review.dto.response.ReviewResDto;
-import com.ssafy.algonote.review.repository.ReviewRepository;
+import com.ssafy.algonote.note.domain.Review;
+import com.ssafy.algonote.note.dto.request.ReviewReqDto;
+import com.ssafy.algonote.note.dto.request.ReviewUpdateReqDto;
+import com.ssafy.algonote.note.dto.response.ReviewResDto;
+import com.ssafy.algonote.note.repository.ReviewRepository;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
