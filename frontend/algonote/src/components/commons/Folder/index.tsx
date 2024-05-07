@@ -2,44 +2,54 @@ import s from './Folder.module.scss'
 import TextCarousel from './TextCarousel'
 import { Bronze, Silver, Gold, Platinum, Diamond, Ruby } from './Tiers'
 
+interface Notes {
+  noteId: number
+  noteTitle: string
+  heartCnt: number
+  hearted: boolean
+  createdAt: string
+  modifiedAt: string
+}
+
 interface FolderProps {
   tier: string
   problemId: number
   problemTitle: string
-  notes: Array<string>
+  notes: Notes[]
 }
 const Folder = ({ tier, problemId, problemTitle, notes }: FolderProps) => {
+  const newTier = parseInt(tier, 10)
   return (
     <div className={s.wrapper}>
       <div className={s.tierContainer}>
-        {tier[0] === 'B' ? (
+        {newTier <= 5 ? (
           <>
-            <p className={s.tier}>{tier}</p>
+            <p className={s.tier}>{`BRONZE${6 - newTier}`}</p>
             <Bronze />
           </>
-        ) : tier[0] === 'S' ? (
+        ) : newTier <= 10 ? (
           <>
-            <p className={s.tier}>{tier}</p>
+            <p className={s.tier}>{`SILVER${11 - newTier}`}</p>
             <Silver />
           </>
-        ) : tier[0] === 'G' ? (
+        ) : newTier <= 15 ? (
           <>
-            <p className={s.tierBlack}>{tier}</p>
+            <p className={s.tierBlack}>{`GOLD${16 - newTier}`}</p>
             <Gold />
           </>
-        ) : tier[0] === 'P' ? (
+        ) : newTier <= 20 ? (
           <>
-            <p className={s.tierBlack}>{tier}</p>
+            <p className={s.tierBlack}>{`Platinum${21 - newTier}`}</p>
             <Platinum />
           </>
-        ) : tier[0] === 'D' ? (
+        ) : newTier <= 25 ? (
           <>
-            <p className={s.tier}>{tier}</p>
+            <p className={s.tier}>{`Diamond${26 - newTier}`}</p>
             <Diamond />
           </>
-        ) : tier[0] === 'R' ? (
+        ) : newTier <= 30 ? (
           <>
-            <p className={s.tier}>{tier}</p>
+            <p className={s.tier}>{`Ruby${31 - newTier}`}</p>
             <Ruby />
           </>
         ) : null}
