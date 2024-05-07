@@ -54,112 +54,33 @@ const MarkdownEditor = ({ currentTab }: MarkdownEditorProps) => {
 
         <ReactMarkdown
           components={{
-            p: ({ node, ...props }) => (
-              <p style={{ marginBottom: '1em' }} {...props} />
-            ),
+            p: ({ node, ...props }) => <p className={s.markdownP} {...props} />,
             h1: ({ node, ...props }) => (
-              <p
-                style={{
-                  marginBottom: '1.5em',
-                  fontWeight: 'bold',
-                  fontSize: '2em',
-                }}
-                {...props}
-              />
+              <p className={s.markdownH1} {...props} />
             ),
             h2: ({ node, ...props }) => (
-              <p
-                style={{
-                  marginTop: '2em',
-                  marginBottom: '1em',
-                  fontWeight: 'bold',
-                  fontSize: '1.5em',
-                }}
-                {...props}
-              />
+              <p className={s.markdownH2} {...props} />
             ),
             h3: ({ node, ...props }) => (
-              <p
-                style={{
-                  marginBottom: '1em',
-                  fontWeight: 'bold',
-                  fontSize: '1.17em',
-                }}
-                {...props}
-              />
+              <p className={s.markdownH3} {...props} />
             ),
             h4: ({ node, ...props }) => (
-              <p
-                style={{
-                  marginBottom: '1em',
-                  fontWeight: 'bold',
-                  fontSize: '1em',
-                }}
-                {...props}
-              />
+              <p className={s.markdownH4} {...props} />
             ),
             h5: ({ node, ...props }) => (
-              <p
-                style={{
-                  marginBottom: '1em',
-                  fontWeight: 'bold',
-                  fontSize: '0.83em',
-                }}
-                {...props}
-              />
+              <p className={s.markdownH5} {...props} />
             ),
             pre: ({ node, ...props }) => (
-              <pre
-                style={{
-                  fontFamily: 'Pretendard',
-                  fontSize: '1rem',
-                  background: '#f6f8fa',
-                  padding: '15px',
-                  borderRadius: '10px',
-                  overflowX: 'auto',
-                  marginBottom: '1rem',
-                }}
-                {...props}
-              />
+              <pre className={s.markdownPre} {...props} />
             ),
-            // 단일 줄 코드를 위한 커스텀 'code' 컴포넌트
-            code: ({ node, ...props }) => {
-              // 'className' 속성이 있을 경우, 코드 블록으로 처리
-              if (props.className) {
-                return (
-                  <code
-                    style={{
-                      display: 'block', // 블록 요소로 처리
-                      fontFamily: 'Pretendard',
-                      fontSize: '1rem',
-                      padding: '4px',
-                      borderRadius: '5px',
-                    }}
-                    {...props}
-                  />
-                )
-              }
-              // 일반 코드 (단일 줄)에 대한 처리
-              return (
-                <code
-                  style={{
-                    fontFamily: 'Pretendard',
-                    fontSize: '1rem',
-                    background: '#f6f8fa',
-                    padding: '4px',
-                    borderRadius: '5px',
-                    marginRight: '0.3rem',
-                  }}
-                  {...props}
-                />
-              )
-            },
-            li: ({ node, ...props }) => {
-              return <li {...props} />
-            },
-            ul: ({ node, ...props }) => {
-              return <ul {...props} />
-            },
+            code: ({ node, ...props }) =>
+              props.className ? (
+                <code className={s.markdownCode} {...props} />
+              ) : (
+                <code className={s.markdownInlineCode} {...props} />
+              ),
+            li: ({ node, ...props }) => <li {...props} />,
+            ul: ({ node, ...props }) => <ul {...props} />,
           }}
         >
           {applyMarkdownEnter(currentTab?.content || '')}
