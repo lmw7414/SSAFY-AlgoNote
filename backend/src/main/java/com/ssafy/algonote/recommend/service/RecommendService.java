@@ -4,10 +4,19 @@ import com.ssafy.algonote.exception.CustomException;
 import com.ssafy.algonote.exception.ErrorCode;
 import com.ssafy.algonote.member.domain.Member;
 import com.ssafy.algonote.member.repository.MemberRepository;
+import com.ssafy.algonote.problem.domain.Problem;
+import com.ssafy.algonote.problem.repository.ProblemRepository;
 import com.ssafy.algonote.problem.repository.SolvedProblemRepository;
-import com.ssafy.algonote.recommend.dto.RecommendResDto;
+import com.ssafy.algonote.recommend.dto.RecommendProblemResDto;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,14 +26,14 @@ public class RecommendService {
 
     private final SolvedProblemRepository solvedProblemRepository;
     private final MemberRepository memberRepository;
+    private final ProblemRepository problemRepository;
 
-    public RecommendResDto recommendProblem(Long memberId, String tag) {
+
+    public Page<RecommendProblemResDto> recommendProblem(Long memberId, String tag, Pageable pageable) {
         // SolvedProblemService에 같은 기능을 하고 있는게 있는데 그걸 공통으로 빼서 사용하고 싶습니다.
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(
             ErrorCode.NOT_FOUND_MEMBER));
 
-
-
-        return null;
+        return problemRepository.findProblemsByTag(memberId, tag, pageable);
     }
 }
