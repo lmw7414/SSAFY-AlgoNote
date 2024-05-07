@@ -66,7 +66,7 @@ const Note = () => {
   const handleBookmark = async () => {
     const response = await bookmarkButtonApi(id as string)
     if (response.status === 200) {
-      setMarkIsOff(!response.data.bookmarked)
+      setMarkIsOff(response.data.bookmarked)
     }
   }
 
@@ -78,6 +78,7 @@ const Note = () => {
           const noteResponse = await getNoteDetail(id as string)
           console.log('노트 상세보기 응답:', noteResponse.data)
           setNoteDetail(noteResponse.data)
+          setMarkIsOff(noteResponse.data.bookmarked)
 
           console.log('리뷰 조회 요청')
           const reviewResponse = await readReviewApi(id as string)
