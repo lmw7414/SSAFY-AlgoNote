@@ -48,6 +48,12 @@ public class BookmarkService {
             return new BookmarkStatusResDto(false);
         }
     }
+    // 북마크 여부 확인
+    public boolean bookmarkStatus(Long memberId, Long noteId) {
+        Note note = getNoteOrElseThrow(noteId);
+        Member member = getMemberOrElseThrow(memberId);
+        return bookmarkRepository.existsByMemberAndNote(member, note);
+    }
 
     private Member getMemberOrElseThrow(Long memberId) {
         return memberRepository.findById(memberId)
