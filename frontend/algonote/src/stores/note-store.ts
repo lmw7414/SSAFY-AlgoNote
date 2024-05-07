@@ -16,7 +16,13 @@ interface NoteStore {
 }
 
 const useNoteStore = create<NoteStore>((set) => ({
-  tabs: [],
+  tabs: [
+    {
+      title: '',
+      content: '',
+      idx: 0,
+    },
+  ],
   curSelectedIdx: 0,
   addTab: (tab) =>
     set((state) => ({

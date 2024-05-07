@@ -38,11 +38,11 @@ const Tabs = () => {
     removeTab(key)
 
     if (deletedTabIndex === activeTab && deletedTabIndex >= 1) {
-      setCurSelectedIdx(activeTab - 1)
+      setCurSelectedIdx(curSelectedIdx - 1)
     } else if (deletedTabIndex === 0) {
       setCurSelectedIdx(0)
     } else if (deletedTabIndex < activeTab) {
-      setCurSelectedIdx(activeTab - 1)
+      setCurSelectedIdx(curSelectedIdx - 1)
     }
   }
 

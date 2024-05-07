@@ -1,5 +1,8 @@
+import Image from 'next/image'
+import Link from 'next/link'
 import ReactMarkdown from 'react-markdown'
 import s from './MarkdownEditor.module.scss'
+import { SimpleButton } from '@/components/commons/Buttons/Button'
 import NoteContent from '@/pages/notecontent'
 import useNoteStore from '@/stores/note-store'
 
@@ -11,6 +14,10 @@ interface Tab {
 
 interface MarkdownEditorProps {
   currentTab: Tab
+}
+
+const handleClickButton = () => {
+  console.log('버튼 클릭')
 }
 
 const MarkdownEditor = ({ currentTab }: MarkdownEditorProps) => {
@@ -47,6 +54,32 @@ const MarkdownEditor = ({ currentTab }: MarkdownEditorProps) => {
         <hr />
         <div className={s.content}>
           <NoteContent />
+          <div className={s.buttonSection}>
+            <Link href="/">
+              <div className={s.exitButtonSec}>
+                <Image
+                  src="/images/back.png"
+                  alt="logo"
+                  width={25}
+                  height={25}
+                />
+                <button className={s.exitButton} type="button">
+                  나가기
+                </button>
+              </div>
+            </Link>
+
+            <SimpleButton
+              text="저장하기"
+              onClick={handleClickButton}
+              style={{
+                width: '6.5rem',
+                height: '2.4rem',
+                borderRadius: '6px',
+                fontWeight: '600',
+              }}
+            />
+          </div>
         </div>
       </div>
       <div className={s.previewSection}>
@@ -54,7 +87,6 @@ const MarkdownEditor = ({ currentTab }: MarkdownEditorProps) => {
 
         <ReactMarkdown
           components={{
-            // p 태그에 대한 커스텀 렌더링 정의
             p: ({ node, ...props }) => (
               <p style={{ marginBottom: '1em' }} {...props} />
             ),
@@ -109,7 +141,6 @@ const MarkdownEditor = ({ currentTab }: MarkdownEditorProps) => {
                 {...props}
               />
             ),
-            // 코드 블록을 위한 커스텀 'pre' 컴포넌트
             pre: ({ node, ...props }) => (
               <pre
                 style={{
@@ -124,7 +155,7 @@ const MarkdownEditor = ({ currentTab }: MarkdownEditorProps) => {
                 {...props}
               />
             ),
-            // 단일 줄 코드를 위한 커스텀 'code' 컴포넌트 (이미 정의되어 있음)
+            // 단일 줄 코드를 위한 커스텀 'code' 컴포넌트
             code: ({ node, ...props }) => {
               // 'className' 속성이 있을 경우, 코드 블록으로 처리
               if (props.className) {
@@ -157,10 +188,8 @@ const MarkdownEditor = ({ currentTab }: MarkdownEditorProps) => {
               )
             },
             li: ({ node, ...props }) => {
-              // 'children'을 직접 렌더링하기 위해 '...props'를 사용
               return <li {...props} />
             },
-            // 리스트를 위한 커스텀 'ul' 컴포넌트 (필요한 경우)
             ul: ({ node, ...props }) => {
               return <ul {...props} />
             },

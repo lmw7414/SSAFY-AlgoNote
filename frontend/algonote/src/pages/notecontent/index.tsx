@@ -1,7 +1,7 @@
 import { markdown } from '@codemirror/lang-markdown'
 import { EditorView } from '@codemirror/view'
 import CodeMirror from '@uiw/react-codemirror'
-import useNoteStore from '@/stores/note-store' // 경로는 실제 상황에 맞게 조정해주세요.
+import useNoteStore from '@/stores/note-store'
 
 const NoteContent = () => {
   const { tabs, curSelectedIdx, updateTab } = useNoteStore()
