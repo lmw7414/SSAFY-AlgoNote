@@ -3,9 +3,13 @@ import { getCookie } from '@/utils/cookie'
 
 const myInfo = async () => {
   const memberId = getCookie('memberId')
-  const apiUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/member?memberId=${memberId}`
+
+  const url = `${process.env.NEXT_PUBLIC_BASE_URL}/api/members?memberId=${memberId}`
+  const token = getCookie('access_token')
+  const config = { headers: { Authorization: `Bearer ${token}` } }
+
   return axios
-    .get(apiUrl)
+    .get(url, config)
     .then((response) => {
       return response
     })

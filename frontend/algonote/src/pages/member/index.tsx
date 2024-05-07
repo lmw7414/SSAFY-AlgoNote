@@ -1,7 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import Image from 'next/image'
+import { LuPencil } from 'react-icons/lu'
 import style from './member.module.scss'
-import myInfo from '@/apis/userInfoAxios'
+import { nameChange, imageChange } from '@/apis/info-changeAxios'
+import myInfo from '@/apis/user-infoAxios'
+import { SimpleButton } from '@/components/commons/Buttons/Button'
 
 interface UserInfo {
   memberId: number
@@ -11,14 +14,70 @@ interface UserInfo {
 }
 
 const User = () => {
-  // useState를 null 가능한 UserInfo 타입으로 설정합니다. 초기 상태를 null로 설정합니다.
+  // useState를 null 가능한 UserInfo 타입으로 설정
   const [userDetails, setUserDetails] = useState<UserInfo | null>(null)
+
+  const [isChangeClicked, setIsChangeClicked] = useState<boolean>(false)
+  const [nickname, setNickName] = useState<string>('')
+  const fileInput = useRef<HTMLInputElement>(null)
+
+  const handleImgChange = async (file: File) => {
+    if (file instanceof File) {
+      try {
+        const response = await imageChange(file)
+        if (response.status === 200) {
+          const newImg = response.data.profileImgUrl
+
+          setUserDetails((prevState) => {
+            if (prevState) {
+              return {
+                ...prevState,
+                profileImg: newImg,
+              }
+            }
+            return prevState
+          })
+        }
+      } catch (error) {
+        throw error
+      }
+    }
+  }
+
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const file = e.target.files[0]
+      if (file) {
+        handleImgChange(file)
+      }
+    }
+  }
+
+  const handleNameChange = async () => {
+    try {
+      const response = await nameChange(nickname)
+      if (response.status === 200) {
+        setIsChangeClicked(false)
+        setUserDetails((prevState) => {
+          if (prevState) {
+            return {
+              ...prevState,
+              nickname,
+            }
+          }
+          return prevState
+        })
+      }
+    } catch (error) {
+      console.log('닉네임 변경 실패', error)
+    }
+  }
 
   useEffect(() => {
     const fetchMyInfo = async () => {
       try {
         const response = await myInfo()
-        // API 응답을 상태에 저장하기 전에 형식이 맞는지 확인합니다.
+        // API 응답을 상태에 저장하기 전에 형식이 맞는지 확인
         if (response && typeof response === 'object') {
           setUserDetails(response.data)
         }
@@ -34,19 +93,54 @@ const User = () => {
     return <div>Loading...</div>
   }
 
-  console.log(userDetails.profileImg)
-
   // 사용자 정보 렌더링 로직
   return (
     <div className={style.info}>
-      <p>이메일: {userDetails.email}</p>
-      <p>닉네임: {userDetails.nickname}</p>
       <Image
         src={userDetails.profileImg}
         alt="프로필 이미지"
         width={100}
         height={100}
       />
+
+      <input
+        type="file"
+        hidden
+        accept="image/* .jpg, .png, .jpeg"
+        ref={fileInput}
+        onChange={onChange}
+      />
+
+      <LuPencil
+        onClick={() => {
+          if (fileInput.current) {
+            fileInput.current.click()
+          }
+        }}
+      />
+
+      <p>이메일: {userDetails.email}</p>
+      <div className={style.nickname}>
+        <p>닉네임: {userDetails.nickname}</p>
+
+        {isChangeClicked ? (
+          <>
+            <input
+              type="text"
+              defaultValue={userDetails.nickname}
+              onChange={(e) => setNickName(e.target.value)}
+            />
+            <SimpleButton
+              text="변경"
+              onClick={() => {
+                handleNameChange()
+              }}
+            />
+          </>
+        ) : (
+          <LuPencil onClick={() => setIsChangeClicked(true)} />
+        )}
+      </div>
     </div>
   )
 }
