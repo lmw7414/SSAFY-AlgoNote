@@ -36,6 +36,7 @@ const ButtonFunction = () => {
         text="검색필터"
         onClick={() => setIsClicked(!isClicked)}
         className="search"
+        active
       />
       <ImageToggle
         isOff={markIsOff}
