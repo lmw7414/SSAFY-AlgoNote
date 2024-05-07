@@ -5,8 +5,10 @@ import com.ssafy.algonote.exception.ErrorCode;
 import com.ssafy.algonote.member.domain.Member;
 import com.ssafy.algonote.member.repository.MemberRepository;
 import com.ssafy.algonote.note.domain.Note;
+import com.ssafy.algonote.note.domain.NoteDocument;
 import com.ssafy.algonote.note.repository.BookmarkRepository;
 import com.ssafy.algonote.note.repository.HeartRepository;
+import com.ssafy.algonote.note.repository.NoteDocumentRepository;
 import com.ssafy.algonote.note.repository.NoteRepository;
 import com.ssafy.algonote.problem.domain.SolvedProblem;
 import com.ssafy.algonote.problem.repository.SolvedProblemRepository;
@@ -27,24 +29,30 @@ public class NoteService {
     private final SolvedProblemRepository solvedProblemRepository;
     private final HeartRepository heartRepository;
     private final BookmarkRepository bookmarkRepository;
-
+    private final NoteDocumentRepository noteDocumentRepository;
     // 노트 생성
     public void saveNote(Long memberId, Long problemId, String title, String content) {
         Member member = getMemberOrException(memberId);
         SolvedProblem problem = getSolvedProblemOrException(memberId, problemId);
         noteRepository.save(Note.of(member, problem.getProblem(), title.trim(), content));
+        noteDocumentRepository.save(
+            NoteDocument.of(member, problem.getProblem(), title.trim(), content)
+        );
     }
 
     // 노트 삭제
     public void deleteNote(Long memberId, Long noteId) {
         Member member = getMemberOrException(memberId);
         Note note = getNoteOrException(noteId);
+        NoteDocument noteDocument = getNoteDocumentOrException(noteId);
+
         if (note.getMember() != member) {
             throw new CustomException(ErrorCode.NO_AUTHORITY);
         }
         bookmarkRepository.deleteAllByNote(note);
         heartRepository.deleteAllByNote(note);
         noteRepository.delete(note);
+        noteDocumentRepository.delete(noteDocument);
     }
 
     // 문제별로 노트 조회
@@ -78,6 +86,12 @@ public class NoteService {
         return noteRepository.findById(noteId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_NOTE));
     }
+
+    private NoteDocument getNoteDocumentOrException(Long noteId) {
+        return noteDocumentRepository.findById(noteId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_NOTE));
+    }
+
 
     private Member getMemberOrException(Long memberId) {
         return memberRepository.findById(memberId)

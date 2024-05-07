@@ -29,7 +29,11 @@ public class SecurityConfig {
             "/auth/**",
             "/member/**",
             "/problems/search-**",
-            "/bookmarks/**"
+            "/bookmarks/**",
+            "/gpt/**",
+            "/swagger-ui/**",
+            "/v3/api-docs/**",
+            "/search/**"
     };
 
     private final JwtUtil jwtUtil;

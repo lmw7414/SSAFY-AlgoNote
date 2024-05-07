@@ -47,6 +47,14 @@ public class Member extends BaseEntity {
         this.profileImg = profileImg;
     }
 
+    public void updateNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void updateProfileImg(String imgUrl) {
+        this.profileImg = imgUrl;
+    }
+
     public static Member from(SignUpReqDto signUpReqDto) {
         return Member.builder()
             .email(signUpReqDto.email())

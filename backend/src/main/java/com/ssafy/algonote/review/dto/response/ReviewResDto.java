@@ -7,6 +7,7 @@ import lombok.Builder;
 
 @Builder
 public record ReviewResDto(
+    Long reviewId,
     MemberResDto member,
     int startLine,
     int endLine,
@@ -16,7 +17,8 @@ public record ReviewResDto(
 ) {
     public static ReviewResDto from(Review review) {
         return ReviewResDto.builder()
-            .member(MemberResDto.from(review.getMember()))
+            .reviewId(review.getId())
+            .member(com.ssafy.algonote.member.dto.response.MemberResDto.from(review.getMember()))
             .startLine(review.getStartLine())
             .endLine(review.getEndLine())
             .content(review.getContent())
