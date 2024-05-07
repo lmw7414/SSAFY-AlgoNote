@@ -14,6 +14,7 @@
     "@svgr/webpack": "^8.1.0",
     "@toast-ui/editor": "^3.2.2",
     "axios": "^1.6.8",
+    "chart.js": "^4.4.2",
     "next": "14.2.2",
     "next-mdx-remote": "^4.4.1",
     "react": "^18",
