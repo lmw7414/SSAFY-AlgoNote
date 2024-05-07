@@ -84,7 +84,9 @@ const Tabs = () => {
       <div className={s.tabsContent}>
         {tabs.length > 0 && tabs[curSelectedIdx] ? (
           <MarkdownEditor currentTab={tabs[curSelectedIdx]} />
-        ) : null}
+        ) : (
+          []
+        )}
       </div>
     </div>
   )
