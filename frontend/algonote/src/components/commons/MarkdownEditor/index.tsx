@@ -1,17 +1,25 @@
 import ReactMarkdown from 'react-markdown'
 import s from './MarkdownEditor.module.scss'
-import TestNote2 from '@/pages/testnote2'
+import NoteContent from '@/pages/notecontent'
 import useNoteStore from '@/stores/note-store'
 
-const MarkdownEditor = () => {
-  // 전역으로 하면 안됨
-  const { content } = useNoteStore()
-  const { title, setTitle } = useNoteStore()
-  // const [title, setTitle] = useState('')
+interface Tab {
+  title: string | undefined
+  content: string
+  idx: number
+}
 
+interface MarkdownEditorProps {
+  currentTab: Tab
+}
+
+const MarkdownEditor = ({ currentTab }: MarkdownEditorProps) => {
+  const { curSelectedIdx, updateTab } = useNoteStore()
   const handleTitle = (e: { target: { value: string } }) => {
-    setTitle(e.target.value)
-    console.log(title)
+    updateTab(curSelectedIdx, {
+      title: e.target.value,
+      content: currentTab.content,
+    })
   }
 
   const applyMarkdownEnter = (text: string) => {
@@ -33,16 +41,16 @@ const MarkdownEditor = () => {
       <div className={s.inputSection}>
         <input
           placeholder="제목을 입력하세요"
-          value={title}
+          value={currentTab?.title}
           onChange={handleTitle}
         />
         <hr />
         <div className={s.content}>
-          <TestNote2 />
+          <NoteContent />
         </div>
       </div>
       <div className={s.previewSection}>
-        <div className={s.previewTitleSection}>{title}</div>
+        <div className={s.previewTitleSection}>{currentTab?.title}</div>
 
         <ReactMarkdown
           components={{
@@ -158,7 +166,7 @@ const MarkdownEditor = () => {
             },
           }}
         >
-          {applyMarkdownEnter(content)}
+          {applyMarkdownEnter(currentTab?.content || '')}
         </ReactMarkdown>
       </div>
     </div>

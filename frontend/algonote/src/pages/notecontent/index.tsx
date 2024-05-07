@@ -1,21 +1,20 @@
 import { markdown } from '@codemirror/lang-markdown'
 import { EditorView } from '@codemirror/view'
 import CodeMirror from '@uiw/react-codemirror'
-import useNoteStore from '@/stores/note-store'
+import useNoteStore from '@/stores/note-store' // 경로는 실제 상황에 맞게 조정해주세요.
 
-const TestNote2 = () => {
-  const { content, setContent } = useNoteStore()
+const NoteContent = () => {
+  const { tabs, curSelectedIdx, updateTab } = useNoteStore()
+  const currentTab = tabs.find((tab) => tab.idx === curSelectedIdx)
+  const currentContent = currentTab?.content
   const handleContent = (value: string) => {
-    const transformedValue = value.replace(/- /g, '· ')
-    setContent(transformedValue)
-    console.log(content)
-
-    setContent(value)
+    // const transformedValue = value.replace(/- /g, '· ')
+    updateTab(curSelectedIdx, { title: currentTab?.title, content: value })
   }
 
   return (
     <CodeMirror
-      value={content}
+      value={currentContent}
       width="100%"
       height="500px"
       extensions={[markdown()]}
@@ -31,19 +30,18 @@ const TestNote2 = () => {
           fontSize: '1.2rem',
           lineHeight: '1.5',
         },
-
         '&.cm-focused': {
-          outline: 'none', // 포커스 시 나타나는 점선 테두리 제거
+          outline: 'none',
         },
         '&.cm-focused .cm-cursor': { borderLeftColor: 'black' },
         '&.cm-focused .cm-selectionBackground, ::selection': {
           backgroundColor: '#d9d9d9',
         },
         '.cm-gutters': {
-          display: 'none', // 줄 번호 숨기기
+          display: 'none',
         },
         '.cm-line': {
-          backgroundColor: 'white', // 줄마다 파란색 표시 제거
+          backgroundColor: 'white',
         },
         '.cm-link': {
           color: '#065fd4',
@@ -70,4 +68,4 @@ const TestNote2 = () => {
   )
 }
 
-export default TestNote2
+export default NoteContent
