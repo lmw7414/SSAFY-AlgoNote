@@ -1,5 +1,5 @@
-import type { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
+import type { AppProps } from 'next/app'
 import '@/styles/globals.scss'
 import NavBar from '@/components/commons/NavBar'
 import NoteNavBar from '@/components/commons/NoteNavBar'
