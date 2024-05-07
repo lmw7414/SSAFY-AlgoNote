@@ -1,12 +1,14 @@
 package com.ssafy.algonote.problem.controller;
 
 import com.ssafy.algonote.config.security.SecurityUtil;
+import com.ssafy.algonote.problem.dto.response.AnalysisResDto;
 import com.ssafy.algonote.problem.dto.response.ProblemResDto;
 import com.ssafy.algonote.problem.dto.response.SolvedProblemResDto;
 import com.ssafy.algonote.problem.service.ProblemService;
 import com.ssafy.algonote.problem.service.SolvedProblemService;
 import com.ssafy.algonote.problem.service.TagService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -24,6 +26,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/problems")
 @RequiredArgsConstructor
+@Slf4j
 public class ProblemController {
 
     private final ProblemService problemService;
@@ -64,5 +67,14 @@ public class ProblemController {
     public ResponseEntity<List<String>> findAllTags() {
         return ResponseEntity.of(Optional.ofNullable(tagService.getTagNames()));
     }
+
+
+    @GetMapping("/analysis")
+    public ResponseEntity<AnalysisResDto> analysis() {
+        Long memberId = SecurityUtil.getMemberId();
+        log.info("memberId: {}", memberId);
+        return ResponseEntity.ok().build();
+    }
+
 
 }
