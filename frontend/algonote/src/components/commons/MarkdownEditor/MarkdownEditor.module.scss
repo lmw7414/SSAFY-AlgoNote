@@ -40,7 +40,6 @@
 }
 
 .content {
-  position: relative;
   width: 100%;
 }
 
@@ -48,7 +47,7 @@
   width: 50%;
   height: 100%;
   padding: 2rem;
-  background-color: #fbfdfc;
+  background-color: #faffff;
   font-size: 1.2rem;
   line-height: 2rem;
 }
@@ -58,36 +57,4 @@
   padding-bottom: 3rem;
   font-weight: 600;
   font-size: 2rem;
-}
-
-.buttonSection {
-  position: absolute;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 8px;
-  background: var(--white);
-  padding-left: 1rem;
-  padding-right: 1rem;
-  left: 22.25rem;
-  bottom: 0.01rem;
-  border: none;
-  width: 37.5%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 4rem;
-  position: fixed;
-
-  a {
-    text-decoration: none;
-  }
-}
-
-.exitButtonSec {
-  display: flex;
-  align-items: center;
-}
-
-.exitButton {
-  color: var(--black);
-  font-weight: 500;
-  font-size: 1rem;
 }

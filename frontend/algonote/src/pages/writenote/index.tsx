@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import s from './writenote.module.scss'
 import SubmitList from '@/components/commons/SubmitList'
 import SubmitListTitle from '@/components/commons/SubmitListTitle'
 import Tabs from '@/components/commons/Tabs'
+import { SimpleButton } from '@/components/commons/Buttons/Button'
 
 const WriteNote = () => {
   const [isCollapsed, setIsCollapsed] = useState(false)
@@ -12,7 +14,12 @@ const WriteNote = () => {
     console.log('버튼을 클릭했습니다.')
   }
 
-  const rightStyle = isCollapsed ? { flex: 21 } : { flex: 3 } // 예시 너비, 실제 조건에 맞게 조절
+  const handleClickButton = () => {
+    console.log('버튼 클릭')
+  }
+
+  const rightStyle = isCollapsed ? { flex: 21 } : { flex: 3 }
+  const buttonSecStyle = isCollapsed ? { width: '47.5%' } : { width: '37.5%' }
   return (
     <div className={s.wrapper}>
       <div className={s.left}>
@@ -61,6 +68,27 @@ const WriteNote = () => {
       </div>
       <div className={s.right} style={rightStyle}>
         <Tabs />
+        <div className={s.buttonSection} style={buttonSecStyle}>
+          <Link href="/">
+            <div className={s.exitButtonSec}>
+              <Image src="/images/back.png" alt="logo" width={25} height={25} />
+              <button className={s.exitButton} type="button">
+                나가기
+              </button>
+            </div>
+          </Link>
+
+          <SimpleButton
+            text="저장하기"
+            onClick={handleClickButton}
+            style={{
+              width: '6.5rem',
+              height: '2.4rem',
+              borderRadius: '6px',
+              fontWeight: '600',
+            }}
+          />
+        </div>
       </div>
     </div>
   )

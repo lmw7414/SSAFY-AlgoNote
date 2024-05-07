@@ -1,8 +1,5 @@
-import Image from 'next/image'
-import Link from 'next/link'
 import ReactMarkdown from 'react-markdown'
 import s from './MarkdownEditor.module.scss'
-import { SimpleButton } from '@/components/commons/Buttons/Button'
 import NoteContent from '@/pages/notecontent'
 import useNoteStore from '@/stores/note-store'
 
@@ -14,10 +11,6 @@ interface Tab {
 
 interface MarkdownEditorProps {
   currentTab: Tab
-}
-
-const handleClickButton = () => {
-  console.log('버튼 클릭')
 }
 
 const MarkdownEditor = ({ currentTab }: MarkdownEditorProps) => {
@@ -54,32 +47,6 @@ const MarkdownEditor = ({ currentTab }: MarkdownEditorProps) => {
         <hr />
         <div className={s.content}>
           <NoteContent />
-          <div className={s.buttonSection}>
-            <Link href="/">
-              <div className={s.exitButtonSec}>
-                <Image
-                  src="/images/back.png"
-                  alt="logo"
-                  width={25}
-                  height={25}
-                />
-                <button className={s.exitButton} type="button">
-                  나가기
-                </button>
-              </div>
-            </Link>
-
-            <SimpleButton
-              text="저장하기"
-              onClick={handleClickButton}
-              style={{
-                width: '6.5rem',
-                height: '2.4rem',
-                borderRadius: '6px',
-                fontWeight: '600',
-              }}
-            />
-          </div>
         </div>
       </div>
       <div className={s.previewSection}>
