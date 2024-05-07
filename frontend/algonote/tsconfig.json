@@ -15,9 +15,16 @@
     "incremental": true,
     "paths": {
       "@/*": ["./src/*"],
-      "@public/*":["./public/*"]
+      "@public/*": ["./public/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.scss", "**/*.module.scss", ".eslintrc.js"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.scss",
+    "**/*.module.scss",
+    ".eslintrc.js"
+  ],
   "exclude": ["node_modules"]
 }

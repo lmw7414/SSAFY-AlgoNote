@@ -1,0 +1,124 @@
+.wrapper {
+  width: 100%;
+  height: 90vh;
+  display: flex;
+  justify-content: space-between;
+}
+
+.inputSection {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 50%;
+  // margin-right: 1rem;
+  padding-top: 2rem;
+  padding-left: 2rem;
+
+  input {
+    border: none;
+    font-size: 1.7rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    outline: none;
+  }
+
+  input::placeholder {
+    font-size: 1.7rem;
+    color: #ced4da;
+    font-weight: 600;
+  }
+
+  hr {
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+    margin-left: 0;
+    width: 3.5rem;
+    height: 5px;
+    border: none;
+    background-color: rgb(73, 80, 87);
+  }
+}
+
+.content {
+  width: 100%;
+}
+
+.previewSection {
+  width: 50%;
+  height: 100%;
+  padding: 2rem;
+  background-color: #faffff;
+  font-size: 1.2rem;
+  line-height: 2rem;
+}
+
+.previewTitleSection {
+  margin-bottom: 2rem;
+  padding-bottom: 3rem;
+  font-weight: 600;
+  font-size: 2rem;
+}
+
+// markdown
+
+.markdownP {
+  margin-bottom: 1em;
+}
+
+.markdownH1 {
+  margin-bottom: 1.5em;
+  font-weight: bold;
+  font-size: 2em;
+}
+
+.markdownH2 {
+  margin-top: 2em;
+  margin-bottom: 1em;
+  font-weight: bold;
+  font-size: 1.5em;
+}
+
+.markdownH3 {
+  margin-bottom: 1em;
+  font-weight: bold;
+  font-size: 1.17em;
+}
+
+.markdownH4 {
+  margin-bottom: 1em;
+  font-weight: bold;
+  font-size: 1em;
+}
+
+.markdownH5 {
+  margin-bottom: 1em;
+  font-weight: bold;
+  font-size: 0.83em;
+}
+
+.markdownPre {
+  font-family: 'Pretendard';
+  font-size: 1rem;
+  background: #f6f8fa;
+  padding: 15px;
+  border-radius: 10px;
+  overflow-x: auto;
+  margin-bottom: 1rem;
+}
+
+.markdownCode {
+  display: block;
+  font-family: 'Pretendard';
+  font-size: 1rem;
+  padding: 4px;
+  border-radius: 5px;
+}
+
+.markdownInlineCode {
+  font-family: 'Pretendard';
+  font-size: 1rem;
+  background: #f6f8fa;
+  padding: 4px;
+  border-radius: 5px;
+  margin-right: 0.3rem;
+}
