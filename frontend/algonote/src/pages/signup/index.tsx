@@ -14,8 +14,7 @@ import { SimpleButton } from '@/components/commons/Buttons/Button'
 
 const SignUp = () => {
   const [email, setEmail] = useState('')
-  const [failedEmail, setFailedEmail] = useState('')
-  const [checkedEmail, setCheckedEmail] = useState('')
+  const [dupEmail, setDupEmail] = useState('')
   const [emailState, setEmailState] = useState(0)
   const [authCode, setAuthCode] = useState('')
   const [authCodeState, setAuthCodeState] = useState(0)
@@ -32,13 +31,13 @@ const SignUp = () => {
   const handleInput = (event: ChangeEvent<HTMLInputElement>, type: string) => {
     const newValue = event.target.value
     if (type === 'email') {
-      const idRegExp = /^(?=.*[a-z])(?=.*[@]).+$/
+      const idRegExp = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i
       setEmail(newValue)
       const check = idRegExp.test(newValue)
-      if (!check) {
-        setEmailState(3)
+      if (check) {
+        setEmailState(1)
       } else {
-        setEmailState(0)
+        setEmailState(2)
       }
     } else if (type === 'authCode') {
       setAuthCode(newValue)
@@ -83,11 +82,10 @@ const SignUp = () => {
       const response = await emailDupCheckApi(email)
       if (response) {
         console.log('사용 가능한 이메일입니다.')
-        setEmailState(1)
-        setCheckedEmail(email)
+        setEmailState(3)
       } else {
-        setEmailState(2)
-        setFailedEmail(email)
+        setEmailState(4)
+        setDupEmail(email)
         console.log(emailState)
         console.log('이미 사용중인 이메일입니다.')
       }
@@ -96,24 +94,25 @@ const SignUp = () => {
     }
   }
 
-  if (emailState === 2) {
-    if (email !== failedEmail) {
-      setFailedEmail('')
+  // 중복체크 실패했을 때 email input 값 바꾸면
+  if (emailState === 4) {
+    if (email !== dupEmail) {
+      setDupEmail('')
       setEmailState(0)
     }
   }
 
   const sendAuthCode = async () => {
-    setEmailState(4)
+    setEmailState(5)
     try {
       await sendAuthCodeApi(email)
       console.log('인증 코드 전송')
       window.alert('인증코드가 전송되었습니다.')
-      setEmailState(1)
+      setEmailState(3)
     } catch (e) {
       console.log('인증코드 전송 실패:', e)
       window.alert('인증코드 전송에 실패하였습니다.')
-      setEmailState(1)
+      setEmailState(3)
     }
   }
 
@@ -202,10 +201,10 @@ const SignUp = () => {
                   handleInput(event, 'email')
                 }}
                 className={
-                  emailState === 2 || emailState === 3 ? s.inputFailed : s.input
+                  emailState === 2 || emailState === 4 ? s.inputFailed : s.input
                 }
               />
-              {emailState === 1 ? (
+              {emailState === 3 ? (
                 <SimpleButton
                   text="코드 전송"
                   onClick={sendAuthCode}
@@ -219,7 +218,7 @@ const SignUp = () => {
                     border: 'none',
                   }}
                 />
-              ) : emailState === 4 ? (
+              ) : emailState === 5 ? (
                 <div className={s.spinnerCont}>
                   <div className={s.spinner} />
                 </div>
@@ -238,13 +237,17 @@ const SignUp = () => {
               )}
             </div>
             {emailState === 1 ? (
-              <p className={s.validationSuccess}>사용 가능한 이메일입니다.</p>
+              <p className={s.invisible}>이메일 규칙 통과</p>
             ) : emailState === 2 ? (
-              <p className={s.validationFailed}>이미 사용중인 이메일입니다.</p>
-            ) : emailState === 3 ? (
               <p className={s.validationFailed}>올바르지 않은 형식입니다.</p>
+            ) : emailState === 3 ? (
+              <p className={s.validationSuccess}>사용 가능한 이메일입니다.</p>
+            ) : emailState === 4 ? (
+              <p className={s.validationFailed}>이미 사용 중인 이메일입니다.</p>
+            ) : emailState === 5 ? (
+              <p className={s.validationSuccess}>인증 코드를 전송 중입니다.</p>
             ) : (
-              <p className={s.invisible}>이메일을 입력해주세요.</p>
+              <p className={s.invisible}>이메일 입력</p>
             )}
 
             <div className={s.inputCont}>
