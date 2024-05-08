@@ -1,0 +1,38 @@
+version: '3.8'
+services:
+  grading-server-app-1:
+    container_name: grading-server-app-1
+    build: .
+    ports:
+      - "18081:8080"
+    image: lmw7414/grading-server-app
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: '512m'
+  grading-server-app-2:
+    container_name: grading-server-app-2
+    build: .
+    ports:
+      - "18082:8080"
+    image: lmw7414/grading-server-app
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: '512m'
+  grading-server-app-3:
+    container_name: grading-server-app-3
+    build: .
+    ports:
+      - "18083:8080"
+    image: lmw7414/grading-server-app
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: '512m'
