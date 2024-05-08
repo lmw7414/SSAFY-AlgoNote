@@ -9,10 +9,11 @@ import { eraseCookie, getCookie } from '@/utils/cookie'
 
 const NavBar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const { userInfo, deleteUserInfo } = useUserInfo()
-  console.log(userInfo.nickname)
+  const { deleteUserInfo } = useUserInfo()
 
   const router = useRouter()
+
+  const url = router.pathname
 
   useEffect(() => {
     const checkLogin = async () => {
@@ -20,7 +21,7 @@ const NavBar = () => {
       setIsLoggedIn(!!accessToken)
     }
     checkLogin()
-  }, [])
+  }, [url])
 
   const logout = async () => {
     await eraseCookie('access_token')
