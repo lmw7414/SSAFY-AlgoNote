@@ -1,6 +1,5 @@
 package com.ssafy.algonote.note.dto.response;
 
-import com.ssafy.algonote.note.domain.NoteDocument;
 import lombok.Builder;
 
 @Builder
@@ -16,7 +15,7 @@ public record NoteSearchResDto(
     boolean hearted
 ) {
 
-    public static NoteSearchResDto of(NoteSearchTempDto tempDto, long heartCnt, boolean bookmarked, boolean hearted) {
+    public static NoteSearchResDto of(NoteSearchDto tempDto, long heartCnt, boolean bookmarked, boolean hearted) {
         return NoteSearchResDto.builder()
             .noteId(tempDto.noteId())
             .problemId(tempDto.problemId())

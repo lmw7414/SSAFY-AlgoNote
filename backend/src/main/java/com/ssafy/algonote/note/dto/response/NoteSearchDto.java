@@ -4,7 +4,7 @@ import com.ssafy.algonote.note.domain.NoteDocument;
 import lombok.Builder;
 
 @Builder
-public record NoteSearchTempDto(
+public record NoteSearchDto(
     Long noteId,
     Long problemId,
     String noteTitle,
@@ -13,8 +13,8 @@ public record NoteSearchTempDto(
     String memberNickname
 ) {
 
-    public static NoteSearchTempDto of(NoteDocument noteDocument, int tier) {
-        return NoteSearchTempDto.builder()
+    public static NoteSearchDto of(NoteDocument noteDocument, int tier) {
+        return NoteSearchDto.builder()
             .noteId(noteDocument.getId())
             .problemId(Long.parseLong(noteDocument.getProblemId()))
             .problemTier(tier)

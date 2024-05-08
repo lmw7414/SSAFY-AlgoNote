@@ -6,7 +6,7 @@ import com.ssafy.algonote.member.domain.Member;
 import com.ssafy.algonote.member.repository.MemberRepository;
 import com.ssafy.algonote.note.domain.Note;
 import com.ssafy.algonote.note.domain.NoteDocument;
-import com.ssafy.algonote.note.dto.response.NoteSearchTempDto;
+import com.ssafy.algonote.note.dto.response.NoteSearchDto;
 import com.ssafy.algonote.note.repository.BookmarkRepository;
 import com.ssafy.algonote.note.repository.HeartRepository;
 import com.ssafy.algonote.note.repository.NoteDocumentRepository;
@@ -131,7 +131,7 @@ public class NoteService {
 
 
 
-    public List<NoteSearchTempDto> fulltextNoteSearch(String keyword, int page) {
+    public List<NoteSearchDto> fulltextNoteSearch(String keyword, int page) {
 
         SearchHits<NoteDocument> noteHits = searchNoteDocument(keyword, page);
         return parseSearchHits(noteHits);
@@ -160,8 +160,8 @@ public class NoteService {
     }
 
     @Transactional
-    public List<NoteSearchTempDto> parseSearchHits(SearchHits<NoteDocument> noteHits) {
-        List<NoteSearchTempDto> noteSearchResults = new ArrayList<>();
+    public List<NoteSearchDto> parseSearchHits(SearchHits<NoteDocument> noteHits) {
+        List<NoteSearchDto> noteSearchResults = new ArrayList<>();
 
         for(SearchHit<NoteDocument> hit : noteHits){
             NoteDocument noteDocument = hit.getContent();
@@ -169,7 +169,7 @@ public class NoteService {
                 noteDocument.getProblemId()).orElse(null);
             int tier = problemDocument.getTier();
 
-            noteSearchResults.add(NoteSearchTempDto.of(
+            noteSearchResults.add(NoteSearchDto.of(
                 noteDocument,
                 tier
             ));

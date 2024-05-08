@@ -8,7 +8,7 @@ import com.ssafy.algonote.note.dto.request.NoteUpdateReqDto;
 import com.ssafy.algonote.note.dto.response.NoteGroupByProblemResDto;
 import com.ssafy.algonote.note.dto.response.NoteResDto;
 import com.ssafy.algonote.note.dto.response.NoteSearchResDto;
-import com.ssafy.algonote.note.dto.response.NoteSearchTempDto;
+import com.ssafy.algonote.note.dto.response.NoteSearchDto;
 import com.ssafy.algonote.note.dto.response.NoteWithoutContentResDto;
 import com.ssafy.algonote.note.dto.response.SearchResDto;
 import com.ssafy.algonote.note.service.BookmarkService;
@@ -129,7 +129,7 @@ public class NoteController {
         Long memberId = SecurityUtil.getMemberId();
         log.info("fullTextSearch keyword: {}, page: {}", keyword, page);
 
-        List<NoteSearchTempDto> noteSearchResults = noteService.fulltextNoteSearch(keyword, page);
+        List<NoteSearchDto> noteSearchResults = noteService.fulltextNoteSearch(keyword, page);
         List<NoteSearchResDto> resDtos = noteSearchResults.stream().map(result->{
             return NoteSearchResDto.of(result,
                 heartService.heartCnt(result.noteId()),
