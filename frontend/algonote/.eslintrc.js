@@ -26,6 +26,7 @@ module.exports = {
   ],
   rules: {
     'react/react-in-jsx-scope': 'off',
+    'react/no-unstable-nested-components': 'off',
     'react/jsx-filename-extension': ['warn', { extensions: ['.ts', '.tsx'] }],
     'no-useless-catch': 'off',
     'react/jsx-props-no-spreading': 'off',
@@ -64,9 +65,9 @@ module.exports = {
       },
     ],
     // 'import/extensions': ['error', 'ignorePackages'],
-    "import/extensions": "off",
+    'import/extensions': 'off',
     'import/no-unresolved': 'off',
     'react/react-in-jsx-scope': 'off',
-    "no-nested-ternary": "off",
+    'no-nested-ternary': 'off',
   },
 }
