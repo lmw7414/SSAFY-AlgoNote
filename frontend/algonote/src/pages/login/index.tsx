@@ -19,11 +19,7 @@ const Login = () => {
   useEffect(() => {
     const accessToken = getCookie('access_token')
     if (accessToken) {
-<<<<<<< Updated upstream
       router.push('/')
-=======
-      router.push('./')
->>>>>>> Stashed changes
     }
   }, [])
 
