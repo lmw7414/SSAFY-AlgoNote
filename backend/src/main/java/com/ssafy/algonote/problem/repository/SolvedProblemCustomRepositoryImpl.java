@@ -7,6 +7,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.algonote.problem.dto.SolvedProblemDto;
 import com.ssafy.algonote.problem.dto.response.AnalysisResDto;
 import com.ssafy.algonote.problem.dto.response.AnaylsisDto;
+import com.ssafy.algonote.problem.dto.response.AnaylsisDto.AnaylsisDtoBuilder;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import java.util.ArrayList;
@@ -57,7 +58,6 @@ public class SolvedProblemCustomRepositoryImpl implements SolvedProblemCustomRep
         for (SolvedProblemDto dto : solvedProblemDtos) {
             for (String group : dto.getGroups()) {
 
-
                 if(!problemIdMap.get(group).contains(dto.getProblemId())){
                     problemIdMap.get(group).add(dto.getProblemId());
                     scoreMap.put(group, scoreMap.get(group) + dto.getTier());
@@ -69,25 +69,20 @@ public class SolvedProblemCustomRepositoryImpl implements SolvedProblemCustomRep
             }
         }
 
-//        for (String s : map.keySet()) {
-//            System.out.println("group = " + s);
-//            System.out.println("scoreMap = " + scoreMap.get(s));
-//            map.get(s).forEach(dto->{
-//
-//                System.out.println("dto.getProblemId() = " + dto.getProblemId());
-//                System.out.println("dto.getProblemTitle() = " + dto.getProblemTitle());
-//                System.out.println("-----");
-//            });
-//        }
 
         List<AnaylsisDto> groups = new ArrayList<>();
         for(String group : this.groups) {
-            AnaylsisDto anaylsisDto = AnaylsisDto.builder()
-                .group(group)
-                .problemCount(problemIdMap.get(group).size())
-                .score(scoreMap.get(group))
-                .lastSolvedDate(map.get(group).get(0).getUploadedAt())
-                .build();
+            AnaylsisDtoBuilder group1 = AnaylsisDto.builder()
+                .group(group);
+
+            if(problemIdMap.containsKey(group))
+                group1.problemCount(problemIdMap.get(group).size());
+            if(scoreMap.containsKey(group))
+                group1.score(scoreMap.get(group));
+            if(map.containsKey(group) && !map.get(group).isEmpty())
+                group1.lastSolvedDate(map.get(group).get(0).getUploadedAt());
+
+            groups.add(group1.build());
         }
 
 

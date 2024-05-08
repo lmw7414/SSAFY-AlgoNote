@@ -73,7 +73,8 @@ public class ProblemController {
     public ResponseEntity<AnalysisResDto> analysis() {
         Long memberId = SecurityUtil.getMemberId();
         log.info("memberId: {}", memberId);
-        return ResponseEntity.ok().build();
+
+        return ResponseEntity.ok(solvedProblemService.getAnalysis(memberId));
     }
 
 
