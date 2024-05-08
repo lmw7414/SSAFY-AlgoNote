@@ -57,12 +57,14 @@ const SignUp = () => {
       }
     } else if (type === 'password2') {
       setPassword2(newValue)
-      if (newValue === password) {
+      if (passwordState === 1 && newValue === password) {
         setPasswordState2(1)
       } else if (!newValue.length) {
         setPasswordState2(0)
-      } else {
+      } else if (newValue === password) {
         setPasswordState2(2)
+      } else {
+        setPasswordState2(3)
       }
     } else if (type === 'nickname') {
       const idRegExp = /^.{2,14}$/
@@ -318,8 +320,10 @@ const SignUp = () => {
               <p className={s.validationSuccess}>비밀번호가 일치합니다.</p>
             ) : passwordState2 === 2 ? (
               <p className={s.validationFailed}>
-                비밀번호가 일치하지 않습니다.
+                비밀번호는 영문, 숫자 조합 8-20자이여야 합니다.
               </p>
+            ) : passwordState2 === 3 ? (
+              <p className={s.validationFailed}>비밀번호 일치하지 않습니다.</p>
             ) : (
               <p className={s.invisible}>비밀번호2를 입력해주세요.</p>
             )}
