@@ -155,7 +155,6 @@ public class NoteService {
 
         query.setPageable(PageRequest.of(page, 10));
 
-
         return operations.search(query, NoteDocument.class);
     }
 
