@@ -1,9 +1,12 @@
 'use client'
 
+import { useEffect } from 'react'
 import styles from './bookmark.module.scss'
 import Notes from '@/components/commons/Bookmark/Note'
+import ResultNote from '@/components/commons/Bookmark/ResultNote'
 import { FilterButton } from '@/components/commons/Buttons/Button'
 import SearchInput from '@/components/commons/SearchInput'
+import useSearchResult from '@/stores/search-store'
 
 interface FilterSectionProps {
   title: string
@@ -37,13 +40,19 @@ const FilterSection = ({ title, items, itemKey }: FilterSectionProps) => {
 }
 
 const Bookmark = () => {
+  const { isSearched, resetSearch } = useSearchResult()
+
+  useEffect(() => {
+    resetSearch()
+  }, [])
+
   return (
     <div className={styles.frame}>
       <SearchInput />
       <FilterSection title="티어" items={tier} itemKey="tier" />
       <FilterSection title="유형" items={category} itemKey="category" />
       <div className={styles.division_line} />
-      <Notes />
+      {isSearched ? <ResultNote /> : <Notes />}
     </div>
   )
 }

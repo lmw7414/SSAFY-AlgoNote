@@ -3,14 +3,16 @@ import Magnifier from '@public/images/magnifier.png'
 import Image from 'next/image'
 import styles from './SearchInput.module.scss'
 import getSearchResult from '@/apis/searchAxios'
+import useSearchResult from '@/stores/search-store'
 
 const handleSearchResult = async (
   e: React.KeyboardEvent<HTMLInputElement>,
   input: HTMLInputElement | null,
 ) => {
   if (e.key === 'Enter' && input) {
-    const response = await getSearchResult(input.value, 1)
-    console.log('검색결과', response.data)
+    const { setSearchResult } = useSearchResult.getState()
+    const response = await getSearchResult(input.value, 0)
+    setSearchResult(response.data)
   }
 }
 
