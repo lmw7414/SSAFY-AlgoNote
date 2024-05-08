@@ -14,6 +14,7 @@ import { SimpleButton } from '@/components/commons/Buttons/Button'
 
 const SignUp = () => {
   const [email, setEmail] = useState('')
+  const [checkedEmail, setCheckedEmail] = useState('')
   const [dupEmail, setDupEmail] = useState('')
   const [emailState, setEmailState] = useState(0)
   const [authCode, setAuthCode] = useState('')
@@ -25,6 +26,7 @@ const SignUp = () => {
   const [nickname, setNickname] = useState('')
   const [failedNickname, setFailedNickname] = useState('')
   const [nicknameState, setNicknameState] = useState(0)
+  const [checkedNickname, setCheckedNickname] = useState('')
 
   const router = useRouter()
 
@@ -123,6 +125,7 @@ const SignUp = () => {
       const response = await checkAuthCodeApi(email, authCode)
       if (response) {
         setAuthCodeState(1)
+        setCheckedEmail(email)
         console.log('인증 성공')
       } else {
         setAuthCodeState(2)
@@ -140,6 +143,7 @@ const SignUp = () => {
         if (response) {
           console.log('사용 가능한 닉네임입니다.')
           setNicknameState(1)
+          setCheckedNickname(nickname)
         } else {
           setNicknameState(2)
           setFailedNickname(nickname)
@@ -169,7 +173,8 @@ const SignUp = () => {
     ) {
       try {
         console.log('회원가입 요청')
-        await signUpApi(email, password, nickname) // 로그인 API 호출
+        console.log(checkedEmail, password, checkedNickname)
+        await signUpApi(checkedEmail, password, checkedNickname) // 로그인 API 호출
         console.log('회원가입 성공!')
         loginApi(email, password)
         router.push('/')
