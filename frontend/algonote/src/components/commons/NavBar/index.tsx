@@ -93,7 +93,7 @@ const NavBar = () => {
             </Link>
             <SimpleButton
               text="L-O"
-              style={{ width: '4rem', height: '4rem' }}
+              style={{ width: '4rem', height: '2rem' }}
               onClick={logout}
             />
           </div>
