@@ -32,8 +32,7 @@ public class SecurityConfig {
             "/bookmarks/**",
             "/gpt/**",
             "/swagger-ui/**",
-            "/v3/api-docs/**",
-            "/search/**"
+            "/v3/api-docs/**"
     };
 
     private final JwtUtil jwtUtil;

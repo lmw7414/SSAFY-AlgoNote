@@ -1,5 +1,6 @@
 package com.ssafy.algonote.search.controller;
 
+import com.ssafy.algonote.config.security.SecurityUtil;
 import com.ssafy.algonote.search.dto.response.SearchResDto;
 import com.ssafy.algonote.search.service.SearchService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -20,10 +21,10 @@ public class SearchController {
     @GetMapping("/full-text")
     public ResponseEntity<SearchResDto> fullTextSearch(@RequestParam("keyword") String keyword,
                                                      @RequestParam(value = "page", required = true) int page) {
-
+        Long memberId = SecurityUtil.getMemberId();
         log.info("fullTextSearch keyword: {}, page: {}", keyword, page);
 
-        return ResponseEntity.ok(searchService.fullTextSearch(keyword, page));
+        return ResponseEntity.ok(searchService.fullTextSearch(memberId, keyword, page));
     }
 
 }
