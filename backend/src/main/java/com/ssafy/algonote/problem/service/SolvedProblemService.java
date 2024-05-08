@@ -8,7 +8,6 @@ import com.ssafy.algonote.note.repository.NoteRepository;
 import com.ssafy.algonote.problem.domain.Problem;
 import com.ssafy.algonote.problem.domain.SolvedProblem;
 import com.ssafy.algonote.problem.domain.WritingStatus;
-import com.ssafy.algonote.problem.dto.SolvedProblemDto;
 import com.ssafy.algonote.problem.dto.response.AnalysisResDto;
 import com.ssafy.algonote.problem.dto.response.NotedProblemResDto;
 import com.ssafy.algonote.problem.dto.response.NotedProblemResDto.NotedProblemResDtoBuilder;
@@ -48,7 +47,8 @@ public class SolvedProblemService {
 
     @Transactional
     public NotedProblemResDto getNotedProblem(Long memberId) {
-        List<SolvedProblem> solvedProblems = solvedProblemRepository.findAllByMemberId(memberId);
+        Member member = getMemberOrException(memberId);
+        List<SolvedProblem> solvedProblems = solvedProblemRepository.findAllByMember(member);
         NotedProblemResDtoBuilder builder = NotedProblemResDto.builder()
             .solvedProblemCnt(solvedProblems.size());
 

@@ -39,8 +39,6 @@ public class SolvedProblemCustomRepositoryImpl implements SolvedProblemCustomRep
             problemIdMap.put(group, new HashSet<>());
             scoreMap.put(group, 0);
         }
-
-
     }
 
     @Override
@@ -85,10 +83,6 @@ public class SolvedProblemCustomRepositoryImpl implements SolvedProblemCustomRep
             groups.add(group1.build());
         }
 
-
-
-
         return new AnalysisResDto(solvedProblemDtos.size(), groups);
-
     }
 }
