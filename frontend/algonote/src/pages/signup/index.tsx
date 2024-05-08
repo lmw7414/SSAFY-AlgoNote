@@ -37,9 +37,9 @@ const SignUp = () => {
       setEmail(newValue)
       const check = idRegExp.test(newValue)
       if (check) {
-        setEmailState(1)
+        setEmailState(3)
       } else {
-        setEmailState(2)
+        setEmailState(4)
       }
     } else if (type === 'authCode') {
       setAuthCode(newValue)
@@ -69,7 +69,7 @@ const SignUp = () => {
         setPasswordState2(3)
       }
     } else if (type === 'nickname') {
-      const idRegExp = /^.{2,14}$/
+      const idRegExp = /^[^\s]{2,14}$/
       setNickname(newValue)
       const check = idRegExp.test(newValue)
       if (check) {
@@ -86,9 +86,9 @@ const SignUp = () => {
       const response = await emailDupCheckApi(email)
       if (response) {
         console.log('사용 가능한 이메일입니다.')
-        setEmailState(3)
+        setEmailState(1)
       } else {
-        setEmailState(4)
+        setEmailState(2)
         setDupEmail(email)
         console.log(emailState)
         console.log('이미 사용중인 이메일입니다.')
@@ -99,7 +99,7 @@ const SignUp = () => {
   }
 
   // 중복체크 실패했을 때 email input 값 바꾸면
-  if (emailState === 4) {
+  if (emailState === 2) {
     if (email !== dupEmail) {
       setDupEmail('')
       setEmailState(0)
@@ -112,11 +112,11 @@ const SignUp = () => {
       await sendAuthCodeApi(email)
       console.log('인증 코드 전송')
       window.alert('인증코드가 전송되었습니다.')
-      setEmailState(3)
+      setEmailState(1)
     } catch (e) {
       console.log('인증코드 전송 실패:', e)
       window.alert('인증코드 전송에 실패하였습니다.')
-      setEmailState(3)
+      setEmailState(1)
     }
   }
 
@@ -211,7 +211,7 @@ const SignUp = () => {
                   emailState === 2 || emailState === 4 ? s.inputFailed : s.input
                 }
               />
-              {emailState === 3 ? (
+              {emailState === 1 ? (
                 <SimpleButton
                   text="코드 전송"
                   onClick={sendAuthCode}
@@ -244,13 +244,13 @@ const SignUp = () => {
               )}
             </div>
             {emailState === 1 ? (
-              <p className={s.invisible}>이메일 규칙 통과</p>
-            ) : emailState === 2 ? (
-              <p className={s.validationFailed}>올바르지 않은 형식입니다.</p>
-            ) : emailState === 3 ? (
               <p className={s.validationSuccess}>사용 가능한 이메일입니다.</p>
-            ) : emailState === 4 ? (
+            ) : emailState === 2 ? (
               <p className={s.validationFailed}>이미 사용 중인 이메일입니다.</p>
+            ) : emailState === 3 ? (
+              <p className={s.invisible}>이메일 규칙 통과</p>
+            ) : emailState === 4 ? (
+              <p className={s.validationFailed}>올바르지 않은 형식입니다.</p>
             ) : emailState === 5 ? (
               <p className={s.validationSuccess}>인증 코드를 전송 중입니다.</p>
             ) : (
