@@ -40,8 +40,6 @@ public class SearchService {
     private final HeartService heartService;
 
     public SearchResDto fullTextSearch(Long memberId, String keyword, int page) {
-
-
         SearchHits<ProblemDocument> problemHits = searchProblemDocument(keyword, page);
         SearchHits<NoteDocument> noteHits = searchNoteDocument(keyword, page);
         return parseSearchHits(memberId, problemHits, noteHits);
@@ -103,7 +101,7 @@ public class SearchService {
         for(SearchHit<NoteDocument> hit : noteHits){
             NoteDocument noteDocument = hit.getContent();
 
-            noteSearchResults.add(NoteSearchResDto.from(noteDocument,
+            noteSearchResults.add(NoteSearchResDto.of(noteDocument,
                 heartService.heartCnt(noteDocument.getId()),
                 heartService.heartStatus(memberId, noteDocument.getId()),
                 bookmarkService.bookmarkStatus(memberId, noteDocument.getId())

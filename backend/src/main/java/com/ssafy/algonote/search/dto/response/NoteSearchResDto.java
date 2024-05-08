@@ -16,7 +16,7 @@ public record NoteSearchResDto(
 
 ) {
 
-    public static NoteSearchResDto from(NoteDocument noteDocument, long heartCnt, boolean hearted, boolean bookmarked) {
+    public static NoteSearchResDto of(NoteDocument noteDocument, long heartCnt, boolean hearted, boolean bookmarked) {
         return NoteSearchResDto.builder()
             .noteId(noteDocument.getId())
             .problemId(Long.parseLong(noteDocument.getProblemId()))
