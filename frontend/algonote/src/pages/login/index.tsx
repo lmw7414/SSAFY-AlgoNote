@@ -1,4 +1,4 @@
-import { useState, useEffect, ChangeEvent, FormEvent } from 'react'
+import { useState, useEffect, ChangeEvent } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import s from './login.module.scss'
@@ -34,8 +34,7 @@ const Login = () => {
     setPassword(newValue)
   }
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault() // 기본 폼 제출 방지
+  const handleSubmit = async () => {
     try {
       console.log('로그인 요청')
       const response = await loginApi(email, password) // 로그인 API 호출
@@ -47,8 +46,14 @@ const Login = () => {
       console.error('로그인 실패:', e)
       setIsUserValid(false)
       setFailedPassword(password)
-
       // 로그인 실패 처리
+    }
+  }
+
+  // 엔터키로 로그인
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleSubmit()
     }
   }
 
@@ -71,34 +76,33 @@ const Login = () => {
             height={112.5}
             className={s.logo}
           />
-          <form onSubmit={handleSubmit}>
-            <div className={s.inputsCont}>
-              <div className={s.inputCont}>
-                <input
-                  type="email"
-                  placeholder="이메일"
-                  value={email}
-                  onChange={handleEmail}
-                  className={s.input}
-                />
-              </div>
-              <div className={s.inputCont}>
-                <input
-                  type="password"
-                  placeholder="비밀번호"
-                  value={password}
-                  onChange={handlePassword}
-                  className={isUserValid ? s.input : s.inputFailed}
-                />
-                <p className={isUserValid ? s.invisible : s.validation}>
-                  이메일 또는 비밀번호가 잘못되었습니다.
-                </p>
-              </div>
+          <div className={s.inputsCont}>
+            <div className={s.inputCont}>
+              <input
+                type="email"
+                placeholder="이메일"
+                value={email}
+                onChange={handleEmail}
+                className={s.input}
+              />
             </div>
-            <div className={s.btnCont}>
-              <SimpleButton text="로그인" />
+            <div className={s.inputCont}>
+              <input
+                type="password"
+                placeholder="비밀번호"
+                value={password}
+                onChange={handlePassword}
+                onKeyDown={(event) => handleKeyDown(event)}
+                className={isUserValid ? s.input : s.inputFailed}
+              />
+              <p className={isUserValid ? s.invisible : s.validation}>
+                이메일 또는 비밀번호가 잘못되었습니다.
+              </p>
             </div>
-          </form>
+          </div>
+          <div className={s.btnCont}>
+            <SimpleButton text="로그인" onClick={handleSubmit} />
+          </div>
           <div className={s.bottom}>
             <p>아직 회원이 아니신가요?</p>
             <a href="./signup">회원가입하기</a>
