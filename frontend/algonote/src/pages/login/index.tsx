@@ -1,11 +1,11 @@
-import { useState, useEffect, ChangeEvent } from 'react'
+import { useState, ChangeEvent } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import s from './login.module.scss'
 import { loginApi } from '@/apis/userAxios'
 import { SimpleButton } from '@/components/commons/Buttons/Button'
 import useUserInfo from '@/stores/user-store'
-import { getCookie } from '@/utils/cookie'
+// import { getCookie } from '@/utils/cookie'
 
 const Login = () => {
   const [email, setEmail] = useState('')
@@ -16,12 +16,12 @@ const Login = () => {
 
   const router = useRouter()
 
-  useEffect(() => {
-    const accessToken = getCookie('access_token')
-    if (accessToken) {
-      router.push('/')
-    }
-  }, [])
+  // useEffect(() => {
+  //   const accessToken = getCookie('access_token')
+  //   if (accessToken) {
+  //     router.push('/')
+  //   }
+  // }, [])
 
   const handleEmail = (event: ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value
@@ -37,8 +37,9 @@ const Login = () => {
   const handleSubmit = async () => {
     try {
       console.log('로그인 요청')
-      const response = await loginApi(email, password) // 로그인 API 호출
-      setUserInfo(response.data)
+      const userInfo = await loginApi(email, password) // 로그인 API 호출
+      console.log('로그인시', userInfo)
+      setUserInfo(userInfo)
       console.log('로그인 성공!')
       router.push('/')
       // 로그인 성공 후 필요한 작업 수행 (예: 페이지 이동 등)

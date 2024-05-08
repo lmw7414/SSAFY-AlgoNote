@@ -26,15 +26,15 @@ const defaultState = {
 const useUserInfo = create<UserInfoState & UserInfoActions>((set) => ({
   userInfo: defaultState,
   setUserInfo: (userInfo: UserInfoType) => {
-    console.log(userInfo)
+    console.log('user-store', userInfo)
 
     set({ userInfo })
-    console.log('set')
-    console.log(userInfo)
+    // console.log('set')
+    // console.log(userInfo)
   },
   deleteUserInfo: () => {
     set({ userInfo: defaultState })
-    console.log('delete')
+    // console.log('delete')
   },
 }))
 
