@@ -9,17 +9,23 @@ public record NoteSearchResDto(
     Long problemId,
     String noteTitle,
     String problemTitle,
-    String memberNickname
+    String memberNickname,
+    long heartCnt,
+    boolean hearted,
+    boolean bookmarked
 
 ) {
 
-    public static NoteSearchResDto from(NoteDocument noteDocument) {
+    public static NoteSearchResDto from(NoteDocument noteDocument, long heartCnt, boolean hearted, boolean bookmarked) {
         return NoteSearchResDto.builder()
             .noteId(noteDocument.getId())
             .problemId(Long.parseLong(noteDocument.getProblemId()))
             .noteTitle(noteDocument.getNoteTitle())
             .problemTitle(noteDocument.getProblemTitle())
             .memberNickname(noteDocument.getMemberNickname())
+            .heartCnt(heartCnt)
+            .hearted(hearted)
+            .bookmarked(bookmarked)
             .build();
     }
 }

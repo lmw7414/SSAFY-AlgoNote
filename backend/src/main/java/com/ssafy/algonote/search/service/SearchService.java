@@ -5,6 +5,8 @@ import co.elastic.clients.elasticsearch._types.query_dsl.MatchQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.NestedQuery;
 
 import com.ssafy.algonote.note.domain.NoteDocument;
+import com.ssafy.algonote.note.service.BookmarkService;
+import com.ssafy.algonote.note.service.HeartService;
 import com.ssafy.algonote.problem.domain.ProblemDocument;
 import com.ssafy.algonote.search.dto.response.NoteSearchResDto;
 import com.ssafy.algonote.search.dto.response.ProblemSearchResDto;
@@ -34,13 +36,15 @@ import org.springframework.stereotype.Service;
 public class SearchService {
 
     private final ElasticsearchOperations operations;
+    private final BookmarkService bookmarkService;
+    private final HeartService heartService;
 
-    public SearchResDto fullTextSearch(String keyword, int page) {
+    public SearchResDto fullTextSearch(Long memberId, String keyword, int page) {
 
 
         SearchHits<ProblemDocument> problemHits = searchProblemDocument(keyword, page);
         SearchHits<NoteDocument> noteHits = searchNoteDocument(keyword, page);
-        return parseSearchHits(problemHits, noteHits);
+        return parseSearchHits(memberId, problemHits, noteHits);
     }
 
     private SearchHits<NoteDocument> searchNoteDocument(String keyword, int page) {
@@ -86,7 +90,7 @@ public class SearchService {
 
     }
 
-    private SearchResDto parseSearchHits(SearchHits<ProblemDocument> problemHits, SearchHits<NoteDocument> noteHits) {
+    private SearchResDto parseSearchHits(Long memberId, SearchHits<ProblemDocument> problemHits, SearchHits<NoteDocument> noteHits) {
         List<NoteSearchResDto> noteSearchResults = new ArrayList<>();
         List<ProblemSearchResDto> problemSearchResults = new ArrayList<>();
 
@@ -99,7 +103,11 @@ public class SearchService {
         for(SearchHit<NoteDocument> hit : noteHits){
             NoteDocument noteDocument = hit.getContent();
 
-            noteSearchResults.add(NoteSearchResDto.from(noteDocument));
+            noteSearchResults.add(NoteSearchResDto.from(noteDocument,
+                heartService.heartCnt(noteDocument.getId()),
+                heartService.heartStatus(memberId, noteDocument.getId()),
+                bookmarkService.bookmarkStatus(memberId, noteDocument.getId())
+            ));
         }
 
         return SearchResDto.from(noteSearchResults, problemSearchResults);
