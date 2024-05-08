@@ -12,11 +12,16 @@ import java.util.Comparator;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static com.ssafy.grading.util.CodeInputVerification.*;
+
 @Service
 public class JavaExecutorService {
 
     private static final String JAVA_COMPILER = "javac";
     private static final String JAVA_RUNNER = "java";
+
+    //TODO : 에러 커스텀 핸들링
+    //TODO : 최대 시간 설정
 
     public ExecutionResult compileAndExecute(String code, String input, String expected) {
         String dirPath = UUID.randomUUID() + "/";
@@ -41,10 +46,10 @@ public class JavaExecutorService {
 
             // .class 파일 실행
             String output = run(dirPath, className, inputFileName);
-            String result = getActualOutput(output);
+            String result = normalizeNewlines(getActualOutput(output));
             double executionTime = getUsedTime(output);
             double memoryUsage = getUsedMemory(output);
-            boolean isCorrect = result.trim().equals(expected.trim());
+            boolean isCorrect = result.trim().equals(normalizeNewlines(expected.trim()));
 
             return new ExecutionResult(result, executionTime, memoryUsage, isCorrect);
         } catch (Exception e) {

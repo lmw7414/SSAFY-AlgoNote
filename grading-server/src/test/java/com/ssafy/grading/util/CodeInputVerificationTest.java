@@ -1,23 +1,33 @@
 package com.ssafy.grading.util;
 
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CodeInputVerificationTest {
 
-    // 띄어쓰기 테스트
-
-    @Test
-    void test() {
-        String input ="1 \n 2\n 3\n4 \n";
-        String correct = "1\n2\n3\n4\n";
-        assertEquals(correct,normalizeNewlines(input));
+    @ParameterizedTest
+    @MethodSource("provideStringsForNormalization")
+    void test(String input, String expected) {
+        assertEquals(expected, normalizeNewlines(input));
     }
 
     private static String normalizeNewlines(String input) {
-        // 정규 표현식으로 개행 주변의 공백(스페이스, 탭 포함)을 찾아서 개행으로만 대체
-        return input.replaceAll("(?m)^[ \t]*\n[ \t]*|[ \t]*\n[ \t]*$", "\n");
+        return input.replaceAll("[ \t]*\n[ \t]*", "\n").replaceAll("\n+", "\n");
+    }
+
+    static Stream<Arguments> provideStringsForNormalization() {
+        return Stream.of(
+                Arguments.of("Hello \n     World \n this is \n a test \n    ", "Hello\nWorld\nthis is\na test\n"),
+                Arguments.of("Hello\t\n\t\tWorld\t\n\tthis is\t\n\ta test\t\n\t\t", "Hello\nWorld\nthis is\na test\n"),
+                Arguments.of("Hello \t\n \t   World \t \n \tthis is \t \n \ta test \t \n \t   ", "Hello\nWorld\nthis is\na test\n"),
+                Arguments.of("\n     World \n this is \n a test \n    ", "\nWorld\nthis is\na test\n"),
+                Arguments.of("Hello\nWorld\nthis is\na test\n", "Hello\nWorld\nthis is\na test\n")
+        );
     }
 
 }
