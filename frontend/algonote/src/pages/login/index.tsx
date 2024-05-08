@@ -36,10 +36,6 @@ const Login = () => {
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault() // 기본 폼 제출 방지
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
     try {
       console.log('로그인 요청')
       const response = await loginApi(email, password) // 로그인 API 호출
