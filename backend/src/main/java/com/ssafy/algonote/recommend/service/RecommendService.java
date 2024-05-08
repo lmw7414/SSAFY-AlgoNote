@@ -30,7 +30,7 @@ public class RecommendService {
 
 
     public Page<RecommendProblemResDto> recommendProblem(Long memberId, String tag, Pageable pageable) {
-        // SolvedProblemService에 같은 기능을 하고 있는게 있는데 그걸 공통으로 빼서 사용하고 싶습니다.
+
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(
             ErrorCode.NOT_FOUND_MEMBER));
 
