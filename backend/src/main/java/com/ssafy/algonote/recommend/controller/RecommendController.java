@@ -5,6 +5,7 @@ import com.ssafy.algonote.recommend.dto.RecommendProblemResDto;
 
 import com.ssafy.algonote.recommend.service.RecommendService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/recommend")
+@Tag(name = "추천", description = "문제 추천 API")
 public class RecommendController {
 
     private final RecommendService recommendService;
