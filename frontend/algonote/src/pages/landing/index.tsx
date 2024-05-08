@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import styles from './home.module.scss'
+import styles from './landing.module.scss'
 import NavBar from '@/components/commons/NavBar'
 
 const Home = () => {

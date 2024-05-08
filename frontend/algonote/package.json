@@ -29,6 +29,7 @@
     "@uiw/react-markdown-preview": "^5.1.1",
     "@uiw/react-md-editor": "^3.6.0",
     "axios": "^1.6.8",
+    "chart.js": "^4.4.2",
     "codemirror": "^6.0.1",
     "lodash": "^4.17.21",
     "marked": "^12.0.2",

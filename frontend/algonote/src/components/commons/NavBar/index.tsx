@@ -19,7 +19,7 @@ const NavBar = () => {
     <div className={styles.wrapper}>
       <div className={styles.navBox}>
         <div className={styles.logoSec}>
-          <Link href="/home">
+          <Link href="/">
             <Image src="/images/logo.png" alt="logo" width={112} height={20} />
           </Link>
         </div>
