@@ -37,9 +37,10 @@ public class ProblemService {
     public void saveProblem(ConsumerProblemResDto dto) {
 
         log.info("Consume the event {}", dto);
+        problemDocumentRepository.save(ProblemDocument.from(dto));
         // 저장하려는 문제가 이미 있는 문제인지 확인
         problemRepository.findById(dto.getProblemId()).ifPresent(it -> {
-            problemDocumentRepository.save(ProblemDocument.from(dto));
+
             throw new CustomException(ErrorCode.DUPLICATE_PROBLEM);
         });
         // 없다면 문제를 저장
@@ -49,7 +50,6 @@ public class ProblemService {
         problem.addTags(tagSet);
 
         problemRepository.save(problem);
-        problemDocumentRepository.save(ProblemDocument.from(dto));
     }
 
     //문제 id로 조회하기

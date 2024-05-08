@@ -21,6 +21,8 @@ public class Tag {
     private Integer id;
     private String nameEn;
 
+    private String group;
+
     @ToString.Exclude
     @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
     private Set<Problem> problems = new TreeSet<>(Comparator.comparingLong(Problem::getId));  // id 기준 오름차순 정렬

@@ -6,14 +6,25 @@ import com.ssafy.algonote.member.domain.Member;
 import com.ssafy.algonote.member.repository.MemberRepository;
 import com.ssafy.algonote.note.domain.Note;
 import com.ssafy.algonote.note.domain.NoteDocument;
+import com.ssafy.algonote.note.dto.response.NoteSearchDto;
 import com.ssafy.algonote.note.repository.BookmarkRepository;
 import com.ssafy.algonote.note.repository.HeartRepository;
 import com.ssafy.algonote.note.repository.NoteDocumentRepository;
 import com.ssafy.algonote.note.repository.NoteRepository;
+import com.ssafy.algonote.problem.domain.ProblemDocument;
 import com.ssafy.algonote.problem.domain.SolvedProblem;
+import com.ssafy.algonote.problem.repository.ProblemDocumentRepository;
 import com.ssafy.algonote.problem.repository.SolvedProblemRepository;
+import java.util.ArrayList;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.elasticsearch.client.elc.NativeQueryBuilder;
+import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.SearchHit;
+import org.springframework.data.elasticsearch.core.SearchHits;
+import org.springframework.data.elasticsearch.core.query.Criteria;
+import org.springframework.data.elasticsearch.core.query.CriteriaQuery;
+import org.springframework.data.elasticsearch.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +41,9 @@ public class NoteService {
     private final HeartRepository heartRepository;
     private final BookmarkRepository bookmarkRepository;
     private final NoteDocumentRepository noteDocumentRepository;
+    private final ProblemDocumentRepository problemDocumentRepository;
+
+    private final ElasticsearchOperations operations;
     // 노트 생성
     public void saveNote(Long memberId, Long problemId, String title, String content) {
         Member member = getMemberOrException(memberId);
@@ -115,4 +129,63 @@ public class NoteService {
                 .orElseThrow(() -> new CustomException((ErrorCode.NOT_SOLVED)));
     }
 
+
+
+    public List<NoteSearchDto> fulltextNoteSearch(String keyword, int page) {
+
+        SearchHits<NoteDocument> noteHits = searchNoteDocument(keyword, page);
+        return parseSearchHits(noteHits);
+    }
+
+    private SearchHits<NoteDocument> searchNoteDocument(String keyword, int page) {
+
+//        MatchQuery problemIdMatch = MatchQuery.of(m -> m.field("problemId").query(keyword));
+//        MatchQuery problemTitleMatch = MatchQuery.of(m -> m.field("problemTitle").query(keyword));
+//        MatchQuery noteTitleMatch = MatchQuery.of(m -> m.field("noteTitle").query(keyword));
+//
+//        Query query = createQuery(Arrays.asList(problemIdMatch._toQuery(), problemTitleMatch._toQuery(), noteTitleMatch._toQuery()));
+
+        Criteria noteCriteria = new Criteria().or()
+            .subCriteria(new Criteria("problemId").matches(keyword))
+            .subCriteria(new Criteria("noteTitle").matches(keyword))
+            .subCriteria(new Criteria("problemTitle").matches(keyword))
+            .subCriteria(new Criteria("memberNickname").matches(keyword));
+
+        CriteriaQuery query = new CriteriaQuery(noteCriteria);
+
+        query.setPageable(PageRequest.of(page, 10));
+
+        return operations.search(query, NoteDocument.class);
+    }
+
+    @Transactional
+    public List<NoteSearchDto> parseSearchHits(SearchHits<NoteDocument> noteHits) {
+        List<NoteSearchDto> noteSearchResults = new ArrayList<>();
+
+        for(SearchHit<NoteDocument> hit : noteHits){
+            NoteDocument noteDocument = hit.getContent();
+            ProblemDocument problemDocument = problemDocumentRepository.findById(
+                noteDocument.getProblemId()).orElse(null);
+            int tier = problemDocument.getTier();
+
+            noteSearchResults.add(NoteSearchDto.of(
+                noteDocument,
+                tier
+            ));
+        }
+
+        return noteSearchResults;
+
+    }
+
+    private Query createQuery(List<co.elastic.clients.elasticsearch._types.query_dsl.Query> queries){
+        return new NativeQueryBuilder()
+            .withQuery(
+                q -> q.bool(
+                    b -> b.should(
+                        queries
+                    )))
+            .build();
+
+    }
 }

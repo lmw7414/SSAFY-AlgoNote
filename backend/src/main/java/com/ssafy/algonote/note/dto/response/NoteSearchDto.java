@@ -1,31 +1,26 @@
-package com.ssafy.algonote.search.dto.response;
+package com.ssafy.algonote.note.dto.response;
 
 import com.ssafy.algonote.note.domain.NoteDocument;
 import lombok.Builder;
 
 @Builder
-public record NoteSearchResDto(
+public record NoteSearchDto(
     Long noteId,
     Long problemId,
     String noteTitle,
     String problemTitle,
-    String memberNickname,
-    long heartCnt,
-    boolean hearted,
-    boolean bookmarked
-
+    int problemTier,
+    String memberNickname
 ) {
 
-    public static NoteSearchResDto of(NoteDocument noteDocument, long heartCnt, boolean hearted, boolean bookmarked) {
-        return NoteSearchResDto.builder()
+    public static NoteSearchDto of(NoteDocument noteDocument, int tier) {
+        return NoteSearchDto.builder()
             .noteId(noteDocument.getId())
             .problemId(Long.parseLong(noteDocument.getProblemId()))
+            .problemTier(tier)
             .noteTitle(noteDocument.getNoteTitle())
             .problemTitle(noteDocument.getProblemTitle())
             .memberNickname(noteDocument.getMemberNickname())
-            .heartCnt(heartCnt)
-            .hearted(hearted)
-            .bookmarked(bookmarked)
             .build();
     }
 }

@@ -12,12 +12,12 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface SolvedProblemRepository extends JpaRepository<SolvedProblem, Long> {
+public interface SolvedProblemRepository extends JpaRepository<SolvedProblem, Long>, SolvedProblemCustomRepository {
     // 멤버와 문제로 풀었는지 체크
     Optional<SolvedProblem> findByMember_IdAndProblem_Id(Long memberId, Long problemId);
 
     // 멤버로 푼 문제 조회
     Page<SolvedProblem> findAllByMember(Pageable pageable, Member member);
 
-
+    List<SolvedProblem> findAllByMember(Member member);
 }
