@@ -6,7 +6,7 @@ import lombok.Builder;
 @Builder
 public record AnalysisResDto(
     int totalProblemCount,
-    List<AnalysisResDto> tags
+    List<AnaylsisDto> groups
 ) {
 
 }

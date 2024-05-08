@@ -5,6 +5,8 @@ import static com.ssafy.algonote.problem.domain.QSolvedProblem.solvedProblem;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.algonote.problem.dto.SolvedProblemDto;
+import com.ssafy.algonote.problem.dto.response.AnalysisResDto;
+import com.ssafy.algonote.problem.dto.response.AnaylsisDto;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import java.util.ArrayList;
@@ -42,22 +44,19 @@ public class SolvedProblemCustomRepositoryImpl implements SolvedProblemCustomRep
 
     @Override
     @Transactional
-    public List<SolvedProblemDto> analyzeSolvedProblem(Long memberId) {
+    public AnalysisResDto analyzeSolvedProblem(Long memberId) {
+
         List<SolvedProblemDto> solvedProblemDtos = queryFactory.selectFrom(solvedProblem)
             .where(solvedProblem.member.id.eq(memberId))
+            .orderBy(solvedProblem.uploadedAt.desc())
             .fetch()
             .stream()
             .map(SolvedProblemDto::of).toList();
 
-        Set<Long> scoreSet = new HashSet<>();
 
         for (SolvedProblemDto dto : solvedProblemDtos) {
             for (String group : dto.getGroups()) {
-//                if (!scoreSet.contains(dto.getProblemId())) {
-//                    scoreSet.add(dto.getProblemId());
-//                    scoreMap.put(group, scoreMap.get(group) + dto.getTier());
-//
-//                }
+
 
                 if(!problemIdMap.get(group).contains(dto.getProblemId())){
                     problemIdMap.get(group).add(dto.getProblemId());
@@ -81,14 +80,20 @@ public class SolvedProblemCustomRepositoryImpl implements SolvedProblemCustomRep
 //            });
 //        }
 
+        List<AnaylsisDto> groups = new ArrayList<>();
+        for(String group : this.groups) {
+            AnaylsisDto anaylsisDto = AnaylsisDto.builder()
+                .group(group)
+                .problemCount(problemIdMap.get(group).size())
+                .score(scoreMap.get(group))
+                .lastSolvedDate(map.get(group).get(0).getUploadedAt())
+                .build();
+        }
 
 
 
 
-
-
-
-        return solvedProblemDtos;
+        return new AnalysisResDto(solvedProblemDtos.size(), groups);
 
     }
 }

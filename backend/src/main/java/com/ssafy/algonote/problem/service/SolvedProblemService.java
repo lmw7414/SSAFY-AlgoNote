@@ -7,6 +7,7 @@ import com.ssafy.algonote.member.repository.MemberRepository;
 import com.ssafy.algonote.problem.domain.Problem;
 import com.ssafy.algonote.problem.domain.SolvedProblem;
 import com.ssafy.algonote.problem.dto.SolvedProblemDto;
+import com.ssafy.algonote.problem.dto.response.AnalysisResDto;
 import com.ssafy.algonote.problem.repository.ProblemRepository;
 import com.ssafy.algonote.problem.repository.SolvedProblemRepository;
 import java.util.List;
@@ -45,7 +46,7 @@ public class SolvedProblemService {
         return solvedProblemRepository.findAllByMember(pageable, member);
     }
 
-    public List<SolvedProblemDto> getAnalysis(Long memberId) {
+    public AnalysisResDto getAnalysis(Long memberId) {
         return solvedProblemRepository.analyzeSolvedProblem(memberId);
     }
 
