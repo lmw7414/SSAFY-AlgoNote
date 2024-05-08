@@ -7,7 +7,10 @@ import com.ssafy.algonote.note.dto.request.NoteSaveReqDto;
 import com.ssafy.algonote.note.dto.request.NoteUpdateReqDto;
 import com.ssafy.algonote.note.dto.response.NoteGroupByProblemResDto;
 import com.ssafy.algonote.note.dto.response.NoteResDto;
+import com.ssafy.algonote.note.dto.response.NoteSearchResDto;
+import com.ssafy.algonote.note.dto.response.NoteSearchTempDto;
 import com.ssafy.algonote.note.dto.response.NoteWithoutContentResDto;
+import com.ssafy.algonote.note.dto.response.SearchResDto;
 import com.ssafy.algonote.note.service.BookmarkService;
 import com.ssafy.algonote.note.service.HeartService;
 import com.ssafy.algonote.note.service.NoteService;
@@ -118,6 +121,24 @@ public class NoteController {
                         .toList()
                 )
         );
+    }
+
+    @GetMapping("/full-text")
+    public ResponseEntity<SearchResDto> fullTextSearch(@RequestParam("keyword") String keyword,
+                                                     @RequestParam(value = "page", required = true) int page) {
+        Long memberId = SecurityUtil.getMemberId();
+        log.info("fullTextSearch keyword: {}, page: {}", keyword, page);
+
+        List<NoteSearchTempDto> noteSearchResults = noteService.fulltextNoteSearch(keyword, page);
+        List<NoteSearchResDto> resDtos = noteSearchResults.stream().map(result->{
+            return NoteSearchResDto.of(result,
+                heartService.heartCnt(result.noteId()),
+                heartService.heartStatus(memberId, result.noteId()),
+                bookmarkService.bookmarkStatus(memberId, result.noteId()));
+        }).toList();
+
+
+        return ResponseEntity.ok(SearchResDto.from(resDtos));
     }
 
 }
