@@ -8,6 +8,7 @@ import com.ssafy.algonote.note.dto.request.NoteUpdateReqDto;
 import com.ssafy.algonote.note.dto.response.NoteGroupByProblemResDto;
 import com.ssafy.algonote.note.dto.response.NoteResDto;
 import com.ssafy.algonote.note.dto.response.NoteWithoutContentResDto;
+import com.ssafy.algonote.note.service.BookmarkService;
 import com.ssafy.algonote.note.service.HeartService;
 import com.ssafy.algonote.note.service.NoteService;
 import com.ssafy.algonote.problem.dto.response.ProblemWithNoteResDto;
@@ -27,6 +28,7 @@ import java.util.stream.Collectors;
 public class NoteController {
     private final NoteService noteService;
     private final HeartService heartService;
+    private final BookmarkService bookmarkService;
 
     @PostMapping("/{noteId}/hearts")
     public ResponseEntity<HeartResDto> heart(@PathVariable("noteId") Long noteId) {
@@ -54,7 +56,8 @@ public class NoteController {
                 NoteResDto.from(
                         updatedNote,
                         heartService.heartCnt(noteId),
-                        heartService.heartStatus(memberId, noteId)
+                        heartService.heartStatus(memberId, noteId),
+                        bookmarkService.bookmarkStatus(memberId, noteId)
                 )
         );
     }
@@ -75,7 +78,8 @@ public class NoteController {
         return ResponseEntity.ok(NoteResDto.from(
                         noteService.getNoteById(noteId),
                         heartService.heartCnt(result.getId()),
-                        heartService.heartStatus(memberId, result.getId())
+                        heartService.heartStatus(memberId, result.getId()),
+                        bookmarkService.bookmarkStatus(memberId, noteId)
                 )
         );
     }

@@ -30,7 +30,7 @@ public class ReviewController {
         description = "리뷰를 생성합니다."
     )
     @PostMapping("/notes/{noteId}/reviews")
-    public ResponseEntity<Void> create(@PathVariable Long noteId, @RequestBody ReviewReqDto req) {
+    public ResponseEntity<Void> create(@PathVariable("noteId") Long noteId, @RequestBody ReviewReqDto req) {
         Long memberId = SecurityUtil.getMemberId();
         reviewService.create( req, memberId, noteId);
         return ResponseEntity.ok().build();
@@ -41,7 +41,7 @@ public class ReviewController {
         description = "특정 노트에 연관된 리뷰 목록을 조회합니다."
     )
     @GetMapping("/notes/{noteId}/reviews")
-    public ResponseEntity<List<ReviewResDto>> readList(@PathVariable Long noteId) {
+    public ResponseEntity<List<ReviewResDto>> readList(@PathVariable("noteId") Long noteId) {
         return ResponseEntity.ok(reviewService.readList(noteId));
     }
 
@@ -51,7 +51,7 @@ public class ReviewController {
     )
     @PatchMapping("/notes/{noteId}/reviews/{reviewId}")
     public ResponseEntity<Void> update(
-        @RequestBody ReviewUpdateReqDto req, @PathVariable Long noteId, @PathVariable Long reviewId) {
+        @RequestBody ReviewUpdateReqDto req, @PathVariable("noteId") Long noteId, @PathVariable("noteId") Long reviewId) {
         Long memberId = SecurityUtil.getMemberId();
         reviewService.update(req, memberId, noteId, reviewId);
         return ResponseEntity.ok().build();
@@ -62,7 +62,7 @@ public class ReviewController {
         description = "리뷰를 삭제합니다."
     )
     @DeleteMapping("/notes/{noteId}/reviews/{reviewId}")
-    public ResponseEntity<Void> delete(@PathVariable Long noteId, @PathVariable Long reviewId) {
+    public ResponseEntity<Void> delete(@PathVariable("noteId") Long noteId, @PathVariable("noteId") Long reviewId) {
         Long memberId = SecurityUtil.getMemberId();
         reviewService.delete(memberId, noteId, reviewId);
         return ResponseEntity.ok().build();
