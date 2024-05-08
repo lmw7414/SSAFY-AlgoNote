@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 
 interface NoteTab {
-  title: string | undefined
+  title: string
   content: string
   idx: number
 }

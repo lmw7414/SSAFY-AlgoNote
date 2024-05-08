@@ -1,23 +1,36 @@
+.pageWrapper {
+  position: relative;
+}
+
 .wrapper {
   display: flex;
   justify-content: center;
   width: 100%;
   height: 95vh;
+  max-height: 100vh;
+  position: fixed;
+  overflow: auto;
 }
 
 .left {
+  max-width: 356.5px;
   height: 100%;
   flex: 1;
   border-right: 1px solid var(--soft-gray);
 }
 
 .right {
+  overflow: auto;
+  min-width: 1066.5px;
   transition: flex 0.4s ease-out;
   flex: 3;
   height: 100%;
+  
 }
 
 .submitTitleBox {
+  margin: 0;
+  padding-right: 0.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -29,7 +42,7 @@
   font-size: 1rem;
   color: var(--blue);
   img {
-    padding-right: 1rem;
+    // padding-right: 1rem;
   }
 }
 
@@ -60,6 +73,18 @@
 
 .exitButton {
   color: var(--black);
+  font-family: 'Pretendard';
   font-weight: 500;
-  font-size: 1rem;
+  font-size: 1.1rem;
+}
+
+.chatGpt {
+  position: fixed;
+  right: 1.6rem;
+  bottom: 1.6rem;
+}
+
+.saveButtonSection {
+  display: flex;
+  justify-content: space-between;
 }

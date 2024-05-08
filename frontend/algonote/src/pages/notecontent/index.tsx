@@ -8,16 +8,17 @@ const NoteContent = () => {
   const currentTab = tabs.find((tab) => tab.idx === curSelectedIdx)
   const currentContent = currentTab?.content
   const handleContent = (value: string) => {
-    // const transformedValue = value.replace(/- /g, '· ')
-    updateTab(curSelectedIdx, { title: currentTab?.title, content: value })
+    if (currentTab) {
+      updateTab(curSelectedIdx, { title: currentTab?.title, content: value })
+    }
   }
 
   return (
     <CodeMirror
       value={currentContent}
       width="100%"
-      height="500px"
-      extensions={[markdown()]}
+      height="100%"
+      extensions={[markdown(), EditorView.lineWrapping]}
       onChange={handleContent}
       theme={EditorView.theme({
         '&': {
@@ -58,6 +59,7 @@ const NoteContent = () => {
         },
         '::-webkit-scrollbar': {
           width: '4px',
+          height: '4px',
         },
         '::-webkit-scrollbar-thumb': {
           background: '#212529',
