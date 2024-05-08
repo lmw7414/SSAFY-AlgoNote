@@ -15,7 +15,11 @@ const registNote = async (
         content,
       })
       .then((res) => {
-        console.log(res)
+        if (res.status === 200) {
+          return res.data
+        }
+        console.log('노트 저장 실패')
+        return 'fail'
       })
   } catch (e) {
     console.log(e)
@@ -23,15 +27,18 @@ const registNote = async (
 }
 
 // 제출 번호로 제출 이력 조회 (로그인 후 노트 작성 페이지 진입 시 호출, 현재 임시 번호 넣어놓음)
-const getSubmissionListByMemberIdAndProblemId = async (problemId: number) => {
+const getSubmissionList = async (problemId: number) => {
   try {
     const memberId = getCookie('memberId')
 
     return await axiosAuthApi()
       .get(`/api/submissions?memberId=${memberId}&problemId=${problemId}`)
       .then((res) => {
-        console.log(res.data)
-        return res.data
+        if (res.status === 200) {
+          console.log(res.data)
+          return res.data
+        }
+        return []
       })
   } catch (e) {
     console.log(e)
@@ -39,4 +46,4 @@ const getSubmissionListByMemberIdAndProblemId = async (problemId: number) => {
   }
 }
 
-export { registNote, getSubmissionListByMemberIdAndProblemId }
+export { registNote, getSubmissionList }
