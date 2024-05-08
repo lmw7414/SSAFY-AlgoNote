@@ -1,11 +1,18 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { SimpleButton } from '../Buttons/Button'
 import styles from './NavBar.module.scss'
-import { getCookie } from '@/utils/cookie'
+import useUserInfo from '@/stores/user-store'
+import { eraseCookie, getCookie } from '@/utils/cookie'
 
 const NavBar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const { userInfo, deleteUserInfo } = useUserInfo()
+  console.log(userInfo.nickname)
+
+  const router = useRouter()
 
   useEffect(() => {
     const checkLogin = async () => {
@@ -14,6 +21,13 @@ const NavBar = () => {
     }
     checkLogin()
   }, [])
+
+  const logout = async () => {
+    await eraseCookie('access_token')
+    await eraseCookie('memberId')
+    deleteUserInfo()
+    router.replace('/')
+  }
 
   return (
     <div className={styles.wrapper}>
@@ -77,6 +91,11 @@ const NavBar = () => {
                 height={30}
               />
             </Link>
+            <SimpleButton
+              text="L-O"
+              style={{ width: '4rem', height: '4rem' }}
+              onClick={logout}
+            />
           </div>
         ) : (
           <div className={styles.loginSec}>
