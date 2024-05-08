@@ -13,7 +13,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
-public class CodeExecutorService {
+public class JavaExecutorService {
 
     private static final String JAVA_COMPILER = "javac";
     private static final String JAVA_RUNNER = "java";
