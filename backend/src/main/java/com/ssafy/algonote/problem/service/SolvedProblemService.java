@@ -6,9 +6,10 @@ import com.ssafy.algonote.member.domain.Member;
 import com.ssafy.algonote.member.repository.MemberRepository;
 import com.ssafy.algonote.problem.domain.Problem;
 import com.ssafy.algonote.problem.domain.SolvedProblem;
-import com.ssafy.algonote.problem.dto.response.AnalysisResDto;
+import com.ssafy.algonote.problem.dto.SolvedProblemDto;
 import com.ssafy.algonote.problem.repository.ProblemRepository;
 import com.ssafy.algonote.problem.repository.SolvedProblemRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -43,10 +44,10 @@ public class SolvedProblemService {
         Member member = getMemberOrException(memberId);
         return solvedProblemRepository.findAllByMember(pageable, member);
     }
-//
-//    public AnalysisResDto getAnalysis(Long memberId) {
-//        return solvedProblemRepository.analyzeSolvedProblem(memberId);
-//    }
+
+    public List<SolvedProblemDto> getAnalysis(Long memberId) {
+        return solvedProblemRepository.analyzeSolvedProblem(memberId);
+    }
 
 
     private Member getMemberOrException(Long memberId) {

@@ -29,6 +29,7 @@ public class Tag {
 
     private Tag(String nameEn) {
         this.nameEn = nameEn;
+
     }
 
     public static Tag of(String nameEn) {
