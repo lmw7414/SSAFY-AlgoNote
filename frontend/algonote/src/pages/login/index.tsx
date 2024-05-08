@@ -41,7 +41,7 @@ const Login = () => {
       console.log('로그인시', userInfo)
       setUserInfo(userInfo)
       console.log('로그인 성공!')
-      router.push('/')
+      router.replace('/')
       // 로그인 성공 후 필요한 작업 수행 (예: 페이지 이동 등)
     } catch (e) {
       console.error('로그인 실패:', e)
