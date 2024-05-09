@@ -157,6 +157,7 @@ class Data(object):
         print('refresh negative pools', time() - t1)
 
     def sample(self):
+        print("exist_users: ", len(self.exist_users))
         if self.batch_size <= self.n_users:
             users = rd.sample(self.exist_users, self.batch_size)
         else:
