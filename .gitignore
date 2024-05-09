@@ -8,6 +8,13 @@ backend/database/**
 backend/docker-compose.yml
 backend/redis/**
 backend/recommender/solved_problem_history.csv
-/recommender/**/*.csv
-/recommender/**/*.txt
-/recommender/**/*.pyc
+
+
+
+
+
+# /recommender/Data/*
+# /recommender/rank/*
+# /recommender/rank2/*
+# /recommender/divide/*
+# /recommender/tag/*
