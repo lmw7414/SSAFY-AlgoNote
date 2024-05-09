@@ -1,4 +1,4 @@
-import s from './PageHeader.module.scss'
+import s from './index.module.scss'
 
 interface PageHeaderProps {
   title: string

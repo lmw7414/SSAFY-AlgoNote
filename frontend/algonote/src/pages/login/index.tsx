@@ -13,6 +13,15 @@ const Login = () => {
   const [failedPassword, setFailedPassword] = useState('')
   const { setUserInfo } = useUserInfo()
 
+  const router = useRouter()
+
+  // useEffect(() => {
+  //   const accessToken = getCookie('access_token')
+  //   if (accessToken) {
+  //     router.push('/')
+  //   }
+  // }, [])
+
   const handleEmail = (event: ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value
 
@@ -24,22 +33,27 @@ const Login = () => {
     setPassword(newValue)
   }
 
-  const router = useRouter()
-
   const handleSubmit = async () => {
     try {
       console.log('로그인 요청')
-      const response = await loginApi(email, password) // 로그인 API 호출
-      setUserInfo(response.data)
+      const userInfo = await loginApi(email, password) // 로그인 API 호출
+      console.log('로그인시', userInfo)
+      setUserInfo(userInfo)
       console.log('로그인 성공!')
-      router.push('/')
+      router.replace('/')
       // 로그인 성공 후 필요한 작업 수행 (예: 페이지 이동 등)
     } catch (e) {
       console.error('로그인 실패:', e)
       setIsUserValid(false)
       setFailedPassword(password)
-
       // 로그인 실패 처리
+    }
+  }
+
+  // 엔터키로 로그인
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleSubmit()
     }
   }
 
@@ -78,6 +92,7 @@ const Login = () => {
                 placeholder="비밀번호"
                 value={password}
                 onChange={handlePassword}
+                onKeyDown={(event) => handleKeyDown(event)}
                 className={isUserValid ? s.input : s.inputFailed}
               />
               <p className={isUserValid ? s.invisible : s.validation}>
@@ -86,7 +101,7 @@ const Login = () => {
             </div>
           </div>
           <div className={s.btnCont}>
-            <SimpleButton text="로그인" onClick={handleSubmit} className="" />
+            <SimpleButton text="로그인" onClick={handleSubmit} />
           </div>
           <div className={s.bottom}>
             <p>아직 회원이 아니신가요?</p>
