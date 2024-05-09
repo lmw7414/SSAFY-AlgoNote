@@ -13,8 +13,8 @@ backend/recommender/solved_problem_history.csv
 
 
 
-# /recommender/Data/*
-# /recommender/rank/*
-# /recommender/rank2/*
-# /recommender/divide/*
-# /recommender/tag/*
+/recommender/Data/*
+/recommender/rank/*
+/recommender/rank2/*
+/recommender/divide/*
+/recommender/tag/*
