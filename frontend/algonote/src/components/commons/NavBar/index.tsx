@@ -1,11 +1,19 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { SimpleButton } from '../Buttons/Button'
 import styles from './NavBar.module.scss'
-import { getCookie } from '@/utils/cookie'
+import useUserInfo from '@/stores/user-store'
+import { eraseCookie, getCookie } from '@/utils/cookie'
 
 const NavBar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const { deleteUserInfo } = useUserInfo()
+
+  const router = useRouter()
+
+  const url = router.pathname
 
   useEffect(() => {
     const checkLogin = async () => {
@@ -13,13 +21,20 @@ const NavBar = () => {
       setIsLoggedIn(!!accessToken)
     }
     checkLogin()
-  }, [])
+  }, [url])
+
+  const logout = async () => {
+    await eraseCookie('access_token')
+    await eraseCookie('memberId')
+    deleteUserInfo()
+    router.replace('/')
+  }
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.navBox}>
         <div className={styles.logoSec}>
-          <Link href="/home">
+          <Link href="/">
             <Image src="/images/logo.png" alt="logo" width={112} height={20} />
           </Link>
         </div>
@@ -77,6 +92,11 @@ const NavBar = () => {
                 height={30}
               />
             </Link>
+            <SimpleButton
+              text="L-O"
+              style={{ width: '4rem', height: '2rem' }}
+              onClick={logout}
+            />
           </div>
         ) : (
           <div className={styles.loginSec}>

@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import styles from './home.module.scss'
+import styles from './landing.module.scss'
 import NavBar from '@/components/commons/NavBar'
 
 const Home = () => {
@@ -25,7 +25,7 @@ const Home = () => {
             </p>
             <p>
               · 혼자 풀기 심심할 땐
-              <span className={styles.emphasis}> 1: 1 코드 배틀</span>
+              <span className={styles.emphasis}> 1:1 코드 배틀</span>
             </p>
           </div>
           <div className={styles.startButton}>지금 알고노트 시작하기</div>
