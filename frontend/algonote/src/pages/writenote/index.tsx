@@ -25,6 +25,7 @@ const WriteNote = () => {
   const currentDate = new Date()
   const [chatBotState, setChatBotState] = useState(false)
   const [submissionList, setSubmissionList] = useState<SubmissionHistory[]>([]) // 제출 이력
+
   useEffect(() => {
     const fetchData = async () => {
       const list = await getSubmissionList(1012)
