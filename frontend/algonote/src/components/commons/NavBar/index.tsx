@@ -6,10 +6,29 @@ import { SimpleButton } from '../Buttons/Button'
 import styles from './NavBar.module.scss'
 import useUserInfo from '@/stores/user-store'
 import { eraseCookie, getCookie } from '@/utils/cookie'
+import myInfo from '@/apis/user-infoAxios'
 
 const NavBar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const { deleteUserInfo } = useUserInfo()
+  const [userProfile, setUserProfile] = useState('/images/basicprofileimg')
+
+  // 프로필 이미지 불러오기
+  useEffect(() => {
+    myInfo()
+      .then((res) => {
+        if (res.status === 200) {
+          setUserProfile(res.data.profileImg)
+        } else {
+          console.log('유저 정보 불러오기 실패')
+        }
+      })
+      .catch((e) => {
+        console.log('API 통신 오류')
+
+        console.log(e)
+      })
+  }, [userProfile])
 
   const router = useRouter()
 
@@ -85,12 +104,7 @@ const NavBar = () => {
         {isLoggedIn ? (
           <div className={styles.profileSec}>
             <Link href="/member">
-              <Image
-                src="/images/profileImage.png"
-                alt="profileImage"
-                width={30}
-                height={30}
-              />
+              <Image src={userProfile} alt="Img" width={30} height={30} />
             </Link>
             <SimpleButton
               text="로그아웃"
