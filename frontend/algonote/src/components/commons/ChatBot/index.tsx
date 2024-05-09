@@ -20,7 +20,6 @@ const ChatBot = () => {
       model: 'gpt-4-turbo',
     })
 
-    console.log(completion.choices[0].message.content)
     setOutputMsg(completion.choices[0].message.content)
     setSending(false)
   }
