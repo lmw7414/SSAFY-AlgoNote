@@ -4,6 +4,7 @@ import Link from 'next/link'
 import s from './writenote.module.scss'
 import { getSubmissionList, registNote } from '@/apis/regist-noteAxios'
 import { SimpleButton } from '@/components/commons/Buttons/Button'
+import ChatBot from '@/components/commons/ChatBot'
 import SubmitList from '@/components/commons/SubmitList'
 import SubmitListTitle from '@/components/commons/SubmitListTitle'
 import Tabs from '@/components/commons/Tabs'
@@ -22,7 +23,7 @@ interface SubmissionHistory {
 
 const WriteNote = () => {
   const currentDate = new Date()
-
+  const [chatBotState, setChatBotState] = useState(false)
   const [submissionList, setSubmissionList] = useState<SubmissionHistory[]>([]) // 제출 이력
   useEffect(() => {
     const fetchData = async () => {
@@ -177,6 +178,7 @@ const WriteNote = () => {
           </div>
         </div>
       </div>
+      {chatBotState ? <ChatBot /> : null}
       <div className={s.chatGpt}>
         <button type="button">
           <Image
@@ -185,6 +187,7 @@ const WriteNote = () => {
             width={50}
             height={50}
             layout="fixed"
+            onClick={() => setChatBotState(!chatBotState)}
           />
         </button>
       </div>
