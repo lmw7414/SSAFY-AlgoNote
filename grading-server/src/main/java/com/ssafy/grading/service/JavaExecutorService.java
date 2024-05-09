@@ -13,6 +13,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.UUID;
+import java.util.concurrent.*;
 import java.util.stream.Collectors;
 
 import static com.ssafy.grading.util.CodeInputVerification.normalizeNewlines;
@@ -24,7 +25,7 @@ public class JavaExecutorService {
     private static final String JAVA_COMPILER = "javac";
     private static final String JAVA_RUNNER = "java";
 
-    //TODO : 최대 시간 설정
+    //TODO : 시간 초과 발생 시 txt 파일이 삭제 안됨.
 
     public ExecutionResult compileAndExecute(String code, String input, String expected) {
         String dirPath = UUID.randomUUID() + "/";
@@ -43,17 +44,13 @@ public class JavaExecutorService {
             code = addMeasureCode(code, firstBrace, lastBrace);
             Files.write(Paths.get(javaFile), code.getBytes());
             Files.write(Paths.get(inputFileName), input.getBytes());
-            
-            // .java 컴파일
-            compile(javaFile);
 
-            // .class 파일 실행
+            compile(javaFile); // .java 컴파일
             String output = run(dirPath, className, inputFileName);
             String result = normalizeNewlines(getActualOutput(output));
             double executionTime = getUsedTime(output);
             double memoryUsage = getUsedMemory(output);
             boolean isCorrect = result.trim().equals(normalizeNewlines(expected.trim()));
-
             return new ExecutionResult(result, executionTime, memoryUsage, isCorrect);
         } catch (Exception e) {
             return new ExecutionResult(e.getMessage(), null, null, null);
@@ -85,28 +82,39 @@ public class JavaExecutorService {
         }
     }
 
-    private String run(String dirPath, String className, String inputFileName) throws IOException, InterruptedException {
+    private String run(String dirPath, String className, String inputFileName) throws IOException, InterruptedException, ExecutionException, TimeoutException {
         if (!new File(dirPath + className + ".class").exists())
             throw new FileNotFoundException("Main.class 파일이 생성되지 않았습니다.");
-        ProcessBuilder runBuilder = new ProcessBuilder(JAVA_RUNNER, "-cp", dirPath, className);
-        runBuilder.redirectErrorStream(true);  //표준 에러를 표준 출력에 합치기 위함
-        runBuilder.redirectInput(ProcessBuilder.Redirect.from(new File(inputFileName)));
-        try {
-            Process runProcess = runBuilder.start();
-            // 실행 결과 읽기
-            String actualOutput = new BufferedReader(new InputStreamReader(runProcess.getInputStream()))
-                    .lines().collect(Collectors.joining("\n"));
 
-            int exitCode = runProcess.waitFor();
-            if (exitCode != 0) {
-                throw new GradeApplicationException(ErrorCode.CODE_ERROR, actualOutput);
-            }
-            return actualOutput;
-        } catch (IOException e) {
-            throw new IOException(e.getMessage());
+        ProcessBuilder runBuilder = new ProcessBuilder(JAVA_RUNNER, "-cp", dirPath, className);
+        runBuilder.redirectErrorStream(true);  // 표준 에러를 표준 출력에 합치기 위함
+        runBuilder.redirectInput(ProcessBuilder.Redirect.from(new File(inputFileName)));
+
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Future<String> future = null;
+        Process runProcess = runBuilder.start();
+        try {
+            future = executor.submit(() -> {
+
+                // 실행 결과 읽기
+                String actualOutput = new BufferedReader(new InputStreamReader(runProcess.getInputStream()))
+                        .lines().collect(Collectors.joining("\n"));
+                int exitCode = runProcess.waitFor();
+                if (exitCode != 0) {
+                    throw new GradeApplicationException(ErrorCode.CODE_ERROR, actualOutput);
+                }
+                return actualOutput;
+            });
+            // 최대 10초 동안 기다리고, 시간 초과시 TimeoutException 발생
+            return future.get(10, TimeUnit.SECONDS);
+
+        } catch (TimeoutException e) {
+            future.cancel(true);  // 작업을 취소하고 프로세스를 종료하기
+            throw new TimeoutException("실행 시간 초과");
         } catch (InterruptedException e) {
-            Thread.currentThread().interrupt(); // 현재 스레드의 인터럽트 상태를 다시 설정
-            throw new InterruptedException("프로세스 실행이 중단되었습니다: " + e.getMessage());
+            throw e;
+        } finally {
+            executor.shutdownNow();  // 자원 회수
         }
     }
 
