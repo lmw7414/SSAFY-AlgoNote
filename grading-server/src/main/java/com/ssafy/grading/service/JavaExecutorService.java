@@ -1,6 +1,9 @@
 package com.ssafy.grading.service;
 
 import com.ssafy.grading.dto.ExecutionResult;
+import com.ssafy.grading.exception.ErrorCode;
+import com.ssafy.grading.exception.GradeApplicationException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -12,15 +15,15 @@ import java.util.Comparator;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static com.ssafy.grading.util.CodeInputVerification.*;
+import static com.ssafy.grading.util.CodeInputVerification.normalizeNewlines;
 
+@Slf4j
 @Service
 public class JavaExecutorService {
 
     private static final String JAVA_COMPILER = "javac";
     private static final String JAVA_RUNNER = "java";
 
-    //TODO : 에러 커스텀 핸들링
     //TODO : 최대 시간 설정
 
     public ExecutionResult compileAndExecute(String code, String input, String expected) {
@@ -40,7 +43,7 @@ public class JavaExecutorService {
             code = addMeasureCode(code, firstBrace, lastBrace);
             Files.write(Paths.get(javaFile), code.getBytes());
             Files.write(Paths.get(inputFileName), input.getBytes());
-
+            
             // .java 컴파일
             compile(javaFile);
 
@@ -60,11 +63,20 @@ public class JavaExecutorService {
     }
 
     private void compile(String javaFile) throws IOException, InterruptedException {
+        // Java 파일 컴파일하기
+        ProcessBuilder compileBuilder = new ProcessBuilder(JAVA_COMPILER, "-encoding", "UTF-8", javaFile);
+        compileBuilder.redirectErrorStream(true);
         try {
-            // Java 파일 컴파일하기
-            ProcessBuilder compileBuilder = new ProcessBuilder(JAVA_COMPILER, "-encoding", "UTF-8", javaFile);
             Process compileProcess = compileBuilder.start();
-            compileProcess.waitFor();
+            String output = new BufferedReader(new InputStreamReader(compileProcess.getInputStream()))
+                    .lines().collect(Collectors.joining("\n"));
+
+            int exitCode = compileProcess.waitFor();
+            if (exitCode != 0) {
+                throw new GradeApplicationException(ErrorCode.COMPILE_EXCEPTION,
+                        String.format("%s", output.split("error: ")[1])
+                );
+            }
         } catch (IOException e) {
             throw new IOException("파일을 읽거나 쓰는 중 문제가 발생했습니다: " + e.getMessage(), e);
         } catch (InterruptedException e) {
@@ -74,18 +86,21 @@ public class JavaExecutorService {
     }
 
     private String run(String dirPath, String className, String inputFileName) throws IOException, InterruptedException {
+        if (!new File(dirPath + className + ".class").exists())
+            throw new FileNotFoundException("Main.class 파일이 생성되지 않았습니다.");
+        ProcessBuilder runBuilder = new ProcessBuilder(JAVA_RUNNER, "-cp", dirPath, className);
+        runBuilder.redirectErrorStream(true);  //표준 에러를 표준 출력에 합치기 위함
+        runBuilder.redirectInput(ProcessBuilder.Redirect.from(new File(inputFileName)));
         try {
-            if (!new File(dirPath + className + ".class").exists())
-                throw new FileNotFoundException("Main.class 파일이 생성되지 않았습니다.");
-            ProcessBuilder runBuilder = new ProcessBuilder(JAVA_RUNNER, "-cp", dirPath, className);
-            runBuilder.redirectErrorStream(true);
-            runBuilder.redirectInput(ProcessBuilder.Redirect.from(new File(inputFileName)));
             Process runProcess = runBuilder.start();
-
             // 실행 결과 읽기
             String actualOutput = new BufferedReader(new InputStreamReader(runProcess.getInputStream()))
                     .lines().collect(Collectors.joining("\n"));
-            runProcess.waitFor();
+
+            int exitCode = runProcess.waitFor();
+            if (exitCode != 0) {
+                throw new GradeApplicationException(ErrorCode.CODE_ERROR, actualOutput);
+            }
             return actualOutput;
         } catch (IOException e) {
             throw new IOException(e.getMessage());
