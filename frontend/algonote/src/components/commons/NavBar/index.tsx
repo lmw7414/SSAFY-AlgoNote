@@ -58,7 +58,7 @@ const NavBar = () => {
           </Link>
         </div>
         <div className={styles.menuSec}>
-          <Link href="/writenote">
+          <Link href="/solvedproblems">
             <p>새 노트 작성</p>
           </Link>
 
