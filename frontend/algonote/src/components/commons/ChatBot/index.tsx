@@ -7,9 +7,8 @@ const ChatBot = () => {
   const [inputMsg, setInputMsg] = useState('')
   const [outputMsg, setOutputMsg] = useState<string | null>('')
   const [sending, setSending] = useState(false)
-
   const openai = new OpenAI({
-    apiKey: 'sk-proj-JDtiHGMrXx8dG0RLnghtT3BlbkFJgW1Bu0oiqNvKfKMrKuNh',
+    apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
     dangerouslyAllowBrowser: true,
   })
 
