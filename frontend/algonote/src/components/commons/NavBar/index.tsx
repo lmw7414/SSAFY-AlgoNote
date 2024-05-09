@@ -11,7 +11,7 @@ import myInfo from '@/apis/user-infoAxios'
 const NavBar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const { deleteUserInfo } = useUserInfo()
-  const [userProfile, setUserProfile] = useState('')
+  const [userProfile, setUserProfile] = useState('/images/basicprofileimg')
 
   // 프로필 이미지 불러오기
   useEffect(() => {
@@ -104,12 +104,7 @@ const NavBar = () => {
         {isLoggedIn ? (
           <div className={styles.profileSec}>
             <Link href="/member">
-              <Image
-                src={userProfile}
-                alt="profileImage"
-                width={30}
-                height={30}
-              />
+              <Image src={userProfile} alt="Img" width={30} height={30} />
             </Link>
             <SimpleButton
               text="로그아웃"
