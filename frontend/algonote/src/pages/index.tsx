@@ -7,12 +7,11 @@ import Radar from '@/components/commons/Main/Radar'
 import Wave from '@/components/commons/Main/Wave'
 import { getCookie } from '@/utils/cookie'
 
-const Home = () => {
+const Main = () => {
   const router = useRouter()
 
   useEffect(() => {
     const accessToken = getCookie('access_token')
-    console.log(accessToken)
     if (!accessToken) {
       router.replace('/landing') // 사용자를 '/landing' 페이지로 리다이렉트합니다.
     }
@@ -116,4 +115,4 @@ const Home = () => {
   )
 }
 
-export default Home
+export default Main

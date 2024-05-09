@@ -1,0 +1,58 @@
+.container {
+    margin: 1rem 0;
+    border-radius: 1rem;
+    width: 36%;
+    height: 600px;
+    background-color: var(--soft-gray);
+    border: 1px solid var(--blue);
+    position: absolute;
+    right: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1rem;
+
+    .answerCont {
+        border-radius: 0.5rem;
+        min-height: 4rem;
+        background-color: var(--white);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    input {
+        width: 100%;
+        box-sizing: border-box;
+        margin-bottom: 1rem;
+        border: none;
+        border-radius: 0.4rem;
+        height: 2rem;
+        font-size: 1rem;
+    }
+}
+
+.spinnerCont {
+    width: 6rem;
+    height: 2rem;
+    display: flex;
+    justify-content: center;
+}
+
+.spinner {
+    border: 3px solid rgba(0, 0, 0, 0.1);
+    border-left-color: #3498db;
+    border-radius: 50%;
+    width: 1.6rem;
+    height: 1.6rem;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }

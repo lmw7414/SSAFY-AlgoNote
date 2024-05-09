@@ -1,4 +1,4 @@
-import { useState, ChangeEvent } from 'react'
+import { useState, useEffect, ChangeEvent } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import s from './signup.module.scss'
@@ -11,6 +11,7 @@ import {
   signUpApi,
 } from '@/apis/userAxios'
 import { SimpleButton } from '@/components/commons/Buttons/Button'
+import { getCookie } from '@/utils/cookie'
 
 const SignUp = () => {
   const [email, setEmail] = useState('')
@@ -29,6 +30,13 @@ const SignUp = () => {
   const [checkedNickname, setCheckedNickname] = useState('')
 
   const router = useRouter()
+
+  useEffect(() => {
+    const accessToken = getCookie('access_token')
+    if (accessToken) {
+      router.push('/')
+    }
+  }, [])
 
   const handleInput = (event: ChangeEvent<HTMLInputElement>, type: string) => {
     const newValue = event.target.value
