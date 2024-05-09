@@ -1,4 +1,9 @@
+import { css } from '@codemirror/lang-css'
+import { html } from '@codemirror/lang-html'
+import { java } from '@codemirror/lang-java'
+import { javascript } from '@codemirror/lang-javascript'
 import { markdown } from '@codemirror/lang-markdown'
+import { python } from '@codemirror/lang-python'
 import { EditorView } from '@codemirror/view'
 import CodeMirror from '@uiw/react-codemirror'
 import useNoteStore from '@/stores/note-store'
@@ -18,7 +23,16 @@ const NoteContent = () => {
       value={currentContent}
       width="100%"
       height="100%"
-      extensions={[markdown(), EditorView.lineWrapping]}
+      extensions={[
+        markdown({
+          defaultCodeLanguage: python(),
+        }),
+        java(),
+        javascript(),
+        css(),
+        html(),
+        EditorView.lineWrapping,
+      ]}
       onChange={handleContent}
       theme={EditorView.theme({
         '&': {

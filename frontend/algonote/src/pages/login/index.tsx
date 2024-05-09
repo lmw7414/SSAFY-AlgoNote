@@ -1,11 +1,10 @@
 import { useState, ChangeEvent } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import s from './login.module.scss'
 import { loginApi } from '@/apis/userAxios'
 import { SimpleButton } from '@/components/commons/Buttons/Button'
 import useUserInfo from '@/stores/user-store'
-// import { getCookie } from '@/utils/cookie'
+import s from './login.module.scss'
 
 const Login = () => {
   const [email, setEmail] = useState('')
