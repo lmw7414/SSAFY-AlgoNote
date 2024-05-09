@@ -6,10 +6,29 @@ import { SimpleButton } from '../Buttons/Button'
 import styles from './NavBar.module.scss'
 import useUserInfo from '@/stores/user-store'
 import { eraseCookie, getCookie } from '@/utils/cookie'
+import myInfo from '@/apis/user-infoAxios'
 
 const NavBar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const { userInfo, deleteUserInfo } = useUserInfo()
+  const { deleteUserInfo } = useUserInfo()
+  const [userProfile, setUserProfile] = useState('')
+
+  // 프로필 이미지 불러오기
+  useEffect(() => {
+    myInfo()
+      .then((res) => {
+        if (res.status === 200) {
+          setUserProfile(res.data.profileImg)
+        } else {
+          console.log('유저 정보 불러오기 실패')
+        }
+      })
+      .catch((e) => {
+        console.log('API 통신 오류')
+
+        console.log(e)
+      })
+  }, [userProfile])
 
   const router = useRouter()
 
@@ -86,7 +105,7 @@ const NavBar = () => {
           <div className={styles.profileSec}>
             <Link href="/member">
               <Image
-                src={userInfo.profileImg}
+                src={userProfile}
                 alt="profileImage"
                 width={30}
                 height={30}
