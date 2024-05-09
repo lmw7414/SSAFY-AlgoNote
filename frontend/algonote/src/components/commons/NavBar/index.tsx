@@ -9,7 +9,7 @@ import { eraseCookie, getCookie } from '@/utils/cookie'
 
 const NavBar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const { deleteUserInfo } = useUserInfo()
+  const { userInfo, deleteUserInfo } = useUserInfo()
 
   const router = useRouter()
 
@@ -86,7 +86,7 @@ const NavBar = () => {
           <div className={styles.profileSec}>
             <Link href="/member">
               <Image
-                src="/images/profileImage.png"
+                src={userInfo.profileImg}
                 alt="profileImage"
                 width={30}
                 height={30}
