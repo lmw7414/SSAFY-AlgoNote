@@ -1,10 +1,7 @@
 package com.ssafy.algonote.submission.dto.request;
 
-import lombok.Data;
-
 import java.time.LocalDateTime;
 
-@Data
 public record SubmissionReqDto(
         Long submissionId,
         Long problemId,
