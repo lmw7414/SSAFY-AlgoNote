@@ -1,8 +1,20 @@
+import { useEffect } from 'react'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 import styles from './landing.module.scss'
 import NavBar from '@/components/commons/NavBar'
+import { getCookie } from '@/utils/cookie'
 
 const Home = () => {
+  const router = useRouter()
+
+  useEffect(() => {
+    const accessToken = getCookie('access_token')
+    if (accessToken) {
+      router.push('/')
+    }
+  }, [])
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.firstSection}>
