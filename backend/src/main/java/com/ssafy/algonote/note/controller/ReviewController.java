@@ -51,7 +51,7 @@ public class ReviewController {
     )
     @PatchMapping("/notes/{noteId}/reviews/{reviewId}")
     public ResponseEntity<Void> update(
-        @RequestBody ReviewUpdateReqDto req, @PathVariable("noteId") Long noteId, @PathVariable("noteId") Long reviewId) {
+        @RequestBody ReviewUpdateReqDto req, @PathVariable("noteId") Long noteId, @PathVariable("reviewId") Long reviewId) {
         Long memberId = SecurityUtil.getMemberId();
         reviewService.update(req, memberId, noteId, reviewId);
         return ResponseEntity.ok().build();
@@ -62,7 +62,7 @@ public class ReviewController {
         description = "리뷰를 삭제합니다."
     )
     @DeleteMapping("/notes/{noteId}/reviews/{reviewId}")
-    public ResponseEntity<Void> delete(@PathVariable("noteId") Long noteId, @PathVariable("noteId") Long reviewId) {
+    public ResponseEntity<Void> delete(@PathVariable("noteId") Long noteId, @PathVariable("reviewId") Long reviewId) {
         Long memberId = SecurityUtil.getMemberId();
         reviewService.delete(memberId, noteId, reviewId);
         return ResponseEntity.ok().build();
