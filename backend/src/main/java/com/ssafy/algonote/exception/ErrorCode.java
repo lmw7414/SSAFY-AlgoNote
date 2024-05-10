@@ -31,6 +31,7 @@ public enum ErrorCode {
     JSON_PARSING_ERROR(HttpStatus.BAD_REQUEST, "JSON 파싱 중 에러가 발생하였습니다."),
     NOT_FOUND_SUBMISSION(HttpStatus.NOT_FOUND, "존재하지 않는 제출정보입니다."),
     RUNTIME_EXCEPTION(HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부 오류"),
+    JSON_MAPPING_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "FastAPI 서버 오류"),
     NOT_SOLVED(HttpStatus.FORBIDDEN, "아직 풀지 않은 문제입니다.");
 
     private final HttpStatus httpStatus;
