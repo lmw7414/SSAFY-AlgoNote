@@ -21,21 +21,22 @@ public class SubmissionController {
     private final SubmissionService submissionService;
 
     @PostMapping
-    public ResponseEntity<Void> saveSubmission(@RequestBody SubmissionReqDto dto) {
-        log.info("사용자 제출 정보: {}", dto);
+    public ResponseEntity<Void> saveSubmission(@RequestBody List<SubmissionReqDto> dtos) {
+        log.info("사용자 제출 정보: {}", dtos);
         Long memberId = SecurityUtil.getMemberId();
-        submissionService.saveSubmission(
-                dto.submissionId(),
-                memberId,
-                dto.problemId(),
-                dto.code(),
-                dto.result(),
-                dto.length(),
-                dto.submissionTime(),
-                dto.memorySize(),
-                dto.runningTime(),
-                dto.language()
-        );
+        dtos.stream()
+                .forEach(dto -> submissionService.saveSubmission(
+                        dto.submissionId(),
+                        memberId,
+                        dto.problemId(),
+                        dto.code(),
+                        dto.result(),
+                        dto.length(),
+                        dto.submissionTime(),
+                        dto.memorySize(),
+                        dto.runningTime(),
+                        dto.language()
+                ));
         return ResponseEntity.ok().build();
     }
 
