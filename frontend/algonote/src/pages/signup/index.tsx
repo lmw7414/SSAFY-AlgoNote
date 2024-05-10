@@ -204,16 +204,7 @@ const SignUp = () => {
     }
   }
 
-  if (
-    emailState === 1 &&
-    authCodeState === 1 &&
-    passwordState === 1 &&
-    passwordState2 === 1 &&
-    nicknameState === 1
-  ) {
-    setSignupUnable(true)
-  }
-  const signUp = async () => {
+  useEffect(() => {
     if (
       emailState === 1 &&
       authCodeState === 1 &&
@@ -222,6 +213,11 @@ const SignUp = () => {
       nicknameState === 1
     ) {
       setSignupUnable(true)
+    }
+  }, [emailState, authCodeState, passwordState, passwordState2, nicknameState])
+
+  const signUp = async () => {
+    if (signupUnable) {
       try {
         console.log('회원가입 요청')
         console.log(checkedEmail, password, checkedNickname)

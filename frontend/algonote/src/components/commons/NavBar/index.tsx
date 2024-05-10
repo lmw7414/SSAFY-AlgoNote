@@ -4,9 +4,9 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { SimpleButton } from '../Buttons/Button'
 import styles from './NavBar.module.scss'
+import myInfo from '@/apis/user-infoAxios'
 import useUserInfo from '@/stores/user-store'
 import { eraseCookie, getCookie } from '@/utils/cookie'
-import myInfo from '@/apis/user-infoAxios'
 
 const NavBar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -25,7 +25,6 @@ const NavBar = () => {
       })
       .catch((e) => {
         console.log('API 통신 오류')
-
         console.log(e)
       })
   }, [userProfile])
