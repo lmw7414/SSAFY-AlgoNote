@@ -4,6 +4,7 @@ import { LuPencil } from 'react-icons/lu'
 import style from './member.module.scss'
 import { nameChange, imageChange } from '@/apis/info-changeAxios'
 import myInfo from '@/apis/user-infoAxios'
+import { nicknameDupCheckApi } from '@/apis/userAxios'
 import { SimpleButton } from '@/components/commons/Buttons/Button'
 
 interface UserInfo {
@@ -16,7 +17,7 @@ interface UserInfo {
 const User = () => {
   // useState를 null 가능한 UserInfo 타입으로 설정
   const [userDetails, setUserDetails] = useState<UserInfo | null>(null)
-
+  const [isNicknameDup, setIsNicknameDup] = useState<string>('')
   const [isChangeClicked, setIsChangeClicked] = useState<boolean>(false)
   const [nickname, setNickName] = useState<string>('')
   const fileInput = useRef<HTMLInputElement>(null)
@@ -57,6 +58,7 @@ const User = () => {
     try {
       const response = await nameChange(nickname)
       if (response.status === 200) {
+        setIsNicknameDup('')
         setIsChangeClicked(false)
         setUserDetails((prevState) => {
           if (prevState) {
@@ -70,6 +72,15 @@ const User = () => {
       }
     } catch (error) {
       console.log('닉네임 변경 실패', error)
+    }
+  }
+
+  const nicknameCheck = async () => {
+    const response = await nicknameDupCheckApi(nickname)
+    if (response) {
+      handleNameChange()
+    } else {
+      setIsNicknameDup('이미 사용중인 닉네임입니다.')
     }
   }
 
@@ -133,9 +144,10 @@ const User = () => {
             <SimpleButton
               text="변경"
               onClick={() => {
-                handleNameChange()
+                nicknameCheck()
               }}
             />
+            {isNicknameDup && <div>{isNicknameDup}</div>}
           </>
         ) : (
           <LuPencil onClick={() => setIsChangeClicked(true)} />
