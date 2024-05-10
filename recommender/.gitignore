@@ -4,3 +4,5 @@
 /divide/*
 /tag/*
 *.pkl
+*.pyc
+__pycache__/
