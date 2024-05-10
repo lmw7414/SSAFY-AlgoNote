@@ -1,13 +1,31 @@
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import s from './main.module.scss'
+import readUserRecordApi from '@/apis/analysisAxios'
+import myInfo from '@/apis/user-infoAxios'
 import { SimpleButton } from '@/components/commons/Buttons/Button'
 import Radar from '@/components/commons/Main/Radar'
 import Wave from '@/components/commons/Main/Wave'
 import { getCookie } from '@/utils/cookie'
 
+interface RecordProps {
+  noteCnt: number
+  notedProblemCnt: number
+  solvedProblemCnt: number
+}
+
+interface UserInfo {
+  memberId: number
+  email: string
+  nickname: string
+  profileImg: string
+}
+
 const Main = () => {
+  const [info, setInfo] = useState<UserInfo | null>(null)
+  const [record, setRecord] = useState<RecordProps | null>(null)
+
   const router = useRouter()
 
   useEffect(() => {
@@ -17,6 +35,15 @@ const Main = () => {
     }
   }, [router])
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const userRecord = await readUserRecordApi()
+      const userInfo = await myInfo()
+      setRecord(userRecord)
+      setInfo(userInfo.data)
+    }
+    fetchData()
+  }, [])
   return (
     <>
       <Head>
@@ -48,25 +75,25 @@ const Main = () => {
             </div>
             <div className={s.right}>
               <div className={s.textCont}>
-                <a href="./member">상당히느긋한사람</a>
+                <a href="./member">{info?.nickname}</a>
                 <p>님은 알고노트에 가입한 이후로,</p>
               </div>
               <div className={s.sentenceCont}>
                 <div className={s.textCont}>
                   <div className={s.numCont}>
-                    <a href="./solvedproblems">24</a>
+                    <a href="./solvedproblems">{record?.solvedProblemCnt}</a>
                   </div>
                   <p>개의 문제를 풀었어요</p>
                 </div>
                 <div className={s.textCont}>
                   <div className={s.numCont}>
-                    <a href="./mynote">7</a>
+                    <a href="./mynote">{record?.notedProblemCnt}</a>
                   </div>
                   <p>개의 문제에 대해</p>
                 </div>
                 <div className={s.textCont}>
                   <div className={s.numCont}>
-                    <a href="./mynote">12</a>
+                    <a href="./mynote">{record?.noteCnt}</a>
                   </div>
                   <p>개의 노트를 작성했어요</p>
                 </div>
