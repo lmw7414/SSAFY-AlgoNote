@@ -1,5 +1,7 @@
 package com.ssafy.algonote.notification.service;
 
+import com.ssafy.algonote.notification.domain.Notification;
+import com.ssafy.algonote.notification.dto.response.NotificationResDto;
 import com.ssafy.algonote.notification.repository.EmitterRepository;
 import java.io.IOException;
 import java.util.Map;
@@ -15,35 +17,33 @@ public class NotificationService {
 
     private final EmitterRepository emitterRepository;
 
-    /**
-     * 클라이언트가 구독을 위해 호출하는 메서드
-     *
-     * @param memberId - 구독하는 클라이언트의 사용자 아이디
-     * @return SseEmitter - 서버에서 보낸 이벤트 Emitter
-     */
-    public SseEmitter subscribe(Long memberId) {
-        String id = memberId + "_" + System.currentTimeMillis();  // 데이터가 유실된 시점을 파악할 수 있으므로 저장된 key값 비교를 통해 유실된 데이터만 재전송한다
-        SseEmitter emitter = createEmitter(id);
-        sendToClient(emitter, id, "EventStream Created. [memberId=" + memberId + "]");
+    public SseEmitter subscribe(Long memberId, String lastEventId) {
+        String emitterId = memberId + "_" + System.currentTimeMillis();  // 데이터가 유실된 시점을 파악할 수 있으므로 저장된 key값 비교를 통해 유실된 데이터만 재전송한다
+        SseEmitter emitter = new SseEmitter(DEFAULT_TIMEOUT);
+        emitterRepository.save(emitterId, emitter);
+
+        emitter.onCompletion(() -> emitterRepository.deleteById(emitterId));
+        emitter.onTimeout(() -> emitterRepository.deleteById(emitterId));
+
+        sendToClient(emitter, emitterId, "EventStream Created. [memberId=" + memberId + "]");
+
+        if (!lastEventId.isEmpty()) {
+            Map<String, Object> events = emitterRepository.findAllEventCacheStartWithId(String.valueOf(memberId));
+            events.entrySet().stream()
+                .filter(entry -> lastEventId.compareTo(entry.getKey()) < 0)
+                .forEach(entry -> sendToClient(emitter, entry.getKey(), entry.getValue()));
+        }
+
         return emitter;
     }
 
-    /**
-     * 서버의 이벤트를 클라이언트에게 보내는 메서드
-     * 다른 서비스 로직에서 이 메서드를 사용해 데이터를 Object event에 넣고 전송하면 된다.
-     *
-     * @param memberId - 메세지를 전송할 사용자의 아이디
-     * @param event  - 전송할 이벤트 객체
-     */
-    public void notify(Long memberId, Object event) {
-        // 로그인 한 유저의 SseEmitter 모두 가져오기
+    public void notify(Long memberId, String content) {
+        Notification notification = Notification.of(memberId, content);
         Map<String, SseEmitter> sseEmitters = emitterRepository.findAllStartWithById(String.valueOf(memberId));
         sseEmitters.forEach(
             (key, emitter) -> {
-                // 알람 데이터 캐시 저장(유실된 데이터 처리하기 위함)
-//                notificationRepository.save(key, notification);
-                // 데이터 전송
-                sendToClient(emitter, key, "Let's go");
+                emitterRepository.saveEventCache(key, notification);
+                sendToClient(emitter, key, NotificationResDto.from(notification));
             }
         );
     }
@@ -51,37 +51,18 @@ public class NotificationService {
     /**
      * 클라이언트에게 데이터를 전송
      *
-     * @param id   - 데이터를 받을 사용자의 아이디
+     * @param emitterId   - 데이터를 받을 사용자의 아이디
      * @param data - 전송할 데이터
      */
-    private void sendToClient(SseEmitter emitter, String id, Object data) {
-//        SseEmitter emitter = emitterRepository.get(id);
+    private void sendToClient(SseEmitter emitter, String emitterId, Object data) {
         if (emitter != null) {
             try {
-                emitter.send(SseEmitter.event().id(String.valueOf(id)).name("sse").data(data));
+                emitter.send(SseEmitter.event().id(String.valueOf(emitterId)).name("sse").data(data));
             } catch (IOException exception) {
-                emitterRepository.deleteById(id);
+                emitterRepository.deleteById(emitterId);
                 emitter.completeWithError(exception);
             }
         }
-    }
-
-    /**
-     * 사용자 아이디를 기반으로 이벤트 Emitter를 생성
-     *
-     * @param id - 사용자 아이디
-     * @return SseEmitter - 생성된 이벤트 Emitter
-     */
-    private SseEmitter createEmitter(String id) {
-        SseEmitter emitter = new SseEmitter(DEFAULT_TIMEOUT);
-        emitterRepository.save(id, emitter);
-
-        // Emitter가 완료될 때(모든 데이터가 성공적으로 전송된 상태) Emitter를 삭제한다.
-        emitter.onCompletion(() -> emitterRepository.deleteById(id));
-        // Emitter가 타임아웃 되었을 때(지정된 시간동안 어떠한 이벤트도 전송되지 않았을 때) Emitter를 삭제한다.
-        emitter.onTimeout(() -> emitterRepository.deleteById(id));
-
-        return emitter;
     }
 
 }

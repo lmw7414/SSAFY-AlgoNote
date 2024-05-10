@@ -25,16 +25,29 @@ public class NotificationController {
         summary = "서버 구독 요청",
         description = "SseEmitter를 반환합니다."
     )
+//    @GetMapping(value = "/subscribe", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+//    public SseEmitter subscribe(@RequestHeader(value = "Last-Event-ID", required = false, defaultValue = "") String lastEventId) {
+//        Long memberId = SecurityUtil.getMemberId();
+//        return notificationService.subscribe(memberId, lastEventId);
+//    }
     @GetMapping(value = "/subscribe/{memberId}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public SseEmitter subscribe(
-        @PathVariable("memberId") Long memberId,
-        @RequestHeader(value = "Last-Event-ID", required = false, defaultValue = "") String lastEventId) {
-        return notificationService.subscribe(memberId);
+    public SseEmitter subscribe(@RequestHeader(value = "Last-Event-ID", required = false, defaultValue = "") String lastEventId
+    , @PathVariable Long memberId) {
+        return notificationService.subscribe(memberId, lastEventId);
     }
 
+    @Operation(
+        summary = "알림 전송",
+        description = "현재 로그인한 사용자가 구독한 SseEmitter로 알림을 보냅니다."
+    )
+//    @PostMapping("/send-data")
+//    public void sendData() {
+//        Long memberId = SecurityUtil.getMemberId();
+//        notificationService.notify(memberId, "Test Event");
+//    }
     @PostMapping("/send-data/{memberId}")
     public void sendData(@PathVariable Long memberId) {
-        notificationService.notify(memberId, "data");
+        notificationService.notify(memberId, "Test Event");
     }
 
 }
