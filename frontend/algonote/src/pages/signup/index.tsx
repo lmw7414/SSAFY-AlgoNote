@@ -70,8 +70,13 @@ const SignUp = () => {
       } else {
         setEmailState(4)
       }
+      if (newValue === '') {
+        setEmailState(0)
+      }
     } else if (type === 'authCode') {
-      setAuthCode(newValue)
+      if (newValue.length <= 6) {
+        setAuthCode(newValue)
+      }
     } else if (type === 'password') {
       // 영문, 숫자 조합 8자 이상 20자 이하 여부 확인
       const idRegExp = /^(?=.*?[a-z])(?=.*?[0-9]).{8,20}$/
@@ -106,24 +111,28 @@ const SignUp = () => {
       } else {
         setNicknameState(4)
       }
-      setNickname(newValue)
+      if (newValue === '') {
+        setNicknameState(0)
+      }
     }
   }
 
   const emailDupCheck = async () => {
-    try {
-      const response = await emailDupCheckApi(email)
-      if (response) {
-        console.log('사용 가능한 이메일입니다.')
-        setEmailState(1)
-      } else {
-        setEmailState(2)
-        setDupEmail(email)
-        console.log(emailState)
-        console.log('이미 사용중인 이메일입니다.')
+    if (emailState === 3) {
+      try {
+        const response = await emailDupCheckApi(email)
+        if (response) {
+          console.log('사용 가능한 이메일입니다.')
+          setEmailState(1)
+        } else {
+          setEmailState(2)
+          setDupEmail(email)
+          console.log(emailState)
+          console.log('이미 사용중인 이메일입니다.')
+        }
+      } catch (e) {
+        console.log('이메일 중복체크 실패:', e)
       }
-    } catch (e) {
-      console.log('이메일 중복체크 실패:', e)
     }
   }
 
@@ -347,7 +356,7 @@ const SignUp = () => {
               <p className={s.validationSuccess}>사용 가능한 비밀번호입니다.</p>
             ) : passwordState === 2 ? (
               <p className={s.validationFailed}>
-                비밀번호는 영문, 숫자 조합 8-20자이여야 합니다.
+                비밀번호는 영문, 숫자 필수 8-20자이여야 합니다.
               </p>
             ) : (
               <p className={s.invisible}>비밀번호를 입력해주세요.</p>
