@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { SimpleButton } from '../Buttons/Button'
 import TierImg from '../Tier'
