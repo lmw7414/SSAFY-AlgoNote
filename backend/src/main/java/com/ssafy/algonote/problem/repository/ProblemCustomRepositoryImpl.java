@@ -23,8 +23,6 @@ public class ProblemCustomRepositoryImpl implements ProblemCustomRepository {
         this.queryFactory = new JPAQueryFactory(em);
     }
 
-
-
     @Override
     public List<Long> findSolvedProblemIdByTag(Long memberId, String tag) {
         return queryFactory.select(solvedProblem.problem.id)
@@ -48,6 +46,7 @@ public class ProblemCustomRepositoryImpl implements ProblemCustomRepository {
             .where(problem.id.in(ids))
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
+            .orderBy(problem.acceptedUserCount.desc())
             .fetch();
 
         long totalCount = queryFactory
