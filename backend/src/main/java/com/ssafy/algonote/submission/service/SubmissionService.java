@@ -26,6 +26,7 @@ public class SubmissionService {
     private final MemberRepository memberRepository;
     private final ProblemRepository problemRepository;
     private final SolvedProblemService solvedProblemService;
+
     // 제출 이력 저장
     public void saveSubmission(Long submissionId,
                                Long memberId,
@@ -37,27 +38,28 @@ public class SubmissionService {
                                Long memorySize,
                                Integer runningTime,
                                String language) {
-
-        Member member = getMemberOrException(memberId);
-        Problem problem = getProblemOrException(problemId);
-
-        if(result.equals("맞았습니다!!")) {
-            solvedProblemService.saveSolvedProblem(memberId, problemId, submissionTime);
+        if(!submissionRepository.findById(submissionId).isPresent()) {
+            Member member = getMemberOrException(memberId);
+            Problem problem = getProblemOrException(problemId);
+            if(result.equals("맞았습니다!!")) {
+                solvedProblemService.saveSolvedProblem(member, problem, submissionTime);
+            }
+            submissionRepository.save(Submission.of(
+                    new SubmissionDto(
+                            submissionId,
+                            problem,
+                            member,
+                            code,
+                            result,
+                            length,
+                            submissionTime,
+                            memorySize,
+                            runningTime,
+                            language
+                    ))
+            );
         }
-        submissionRepository.save(Submission.of(
-                new SubmissionDto(
-                        submissionId,
-                        problem,
-                        member,
-                        code,
-                        result,
-                        length,
-                        submissionTime,
-                        memorySize,
-                        runningTime,
-                        language
-                ))
-        );
+
 
     }
 
