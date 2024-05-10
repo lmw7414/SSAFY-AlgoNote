@@ -1,17 +1,10 @@
-import NavBar from '@/components/commons/NavBar/index'
-import NoteNavBar from '@/components/commons/NoteNavBar'
-import Pagination from '@/components/commons/Pagination'
-import QuestionListTitle from '@/components/commons/QuestionListTitle'
-import styles from './test.module.scss'
 import QuestionList from '@/components/commons/QuestionList'
+import QuestionListTitle from '@/components/commons/QuestionListTitle'
 
 const Test = () => {
   return (
-    <>
-      <NavBar />
-      <NoteNavBar />
-      <Pagination />
-      <div className={styles.questionListTitleWrapper}>
+    <div>
+      <div>
         <QuestionListTitle />
         <QuestionList
           title="성현이의 5만원"
@@ -30,7 +23,7 @@ const Test = () => {
           src="test"
         />
       </div>
-    </>
+    </div>
   )
 }
 

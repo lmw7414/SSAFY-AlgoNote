@@ -1,0 +1,40 @@
+.main {
+  padding-top: 60px;
+}
+
+.header {
+  width: 100%;
+  padding: 2.4rem 12.5%;
+  background: linear-gradient(45deg, var(--color-start), var(--color-end));
+  p {
+    margin: 0.1rem 0;
+  }
+  .headerSentence {
+    display: flex;
+    width: 100%;
+    .headerLight {
+      font-size: 1.8rem;
+      font-weight: 300;
+      color: var(--white);
+    }
+    .headerBold {
+      margin-left: 0.4rem;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--white);
+    }
+    .contentLight {
+      padding-top: 0.4rem;
+      margin-left: 0.4rem;
+      font-size: 1.2rem;
+      font-weight: 300;
+      color: var(--white);
+    }
+  }
+}
+
+.wrapper {
+  padding-top: 5rem;
+  width: 80vw;
+  margin: 0 auto;
+}

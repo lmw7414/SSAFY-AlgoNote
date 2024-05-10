@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import s from './writenote.module.scss'
 import { getSubmissionList, registNote } from '@/apis/regist-noteAxios'
 import { SimpleButton } from '@/components/commons/Buttons/Button'
@@ -22,13 +23,15 @@ interface SubmissionHistory {
 }
 
 const WriteNote = () => {
+  const router = useRouter()
+  const { id } = router.query // 쿼리에서 id(선택한 문제 번호)를 추출
   const currentDate = new Date()
   const [chatBotState, setChatBotState] = useState(false)
   const [submissionList, setSubmissionList] = useState<SubmissionHistory[]>([]) // 제출 이력
 
   useEffect(() => {
     const fetchData = async () => {
-      const list = await getSubmissionList(1012)
+      const list = await getSubmissionList(Number(id))
       setSubmissionList(() => list)
     }
     fetchData()
