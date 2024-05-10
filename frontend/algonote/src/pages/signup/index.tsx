@@ -28,6 +28,9 @@ const SignUp = () => {
   const [failedNickname, setFailedNickname] = useState('')
   const [nicknameState, setNicknameState] = useState(0)
   const [checkedNickname, setCheckedNickname] = useState('')
+  const [signupUnable, setSignupUnable] = useState(false)
+  const [timeRemaining, setTimeRemaining] = useState(300) // 5분은 300초
+  const [isAuthCodeActive, setIsAuthCodeActive] = useState(false)
 
   const router = useRouter()
 
@@ -37,6 +40,24 @@ const SignUp = () => {
       router.push('/')
     }
   }, [])
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout
+
+    if (isAuthCodeActive && timeRemaining > 0) {
+      interval = setInterval(() => {
+        setTimeRemaining((prevTime) => prevTime - 1)
+      }, 1000)
+    }
+
+    return () => clearInterval(interval)
+  }, [isAuthCodeActive, timeRemaining])
+
+  const formatTime = (seconds: number): string => {
+    const mins = Math.floor(seconds / 60)
+    const secs = seconds % 60
+    return `${mins}:${secs < 10 ? '0' : ''}${secs}`
+  }
 
   const handleInput = (event: ChangeEvent<HTMLInputElement>, type: string) => {
     const newValue = event.target.value
@@ -121,6 +142,7 @@ const SignUp = () => {
       console.log('인증 코드 전송')
       window.alert('인증코드가 전송되었습니다.')
       setEmailState(1)
+      setIsAuthCodeActive(true) // 타이머 시작
     } catch (e) {
       console.log('인증코드 전송 실패:', e)
       window.alert('인증코드 전송에 실패하였습니다.')
@@ -142,6 +164,8 @@ const SignUp = () => {
     } catch (e) {
       console.log('인증 코드 체크 실패:', e)
     }
+    setIsAuthCodeActive(false) // 타이머 멈추기
+    setTimeRemaining(300) // 타이머 리셋
   }
 
   const nicknameDupCheck = async () => {
@@ -275,17 +299,28 @@ const SignUp = () => {
                 }}
                 className={s.input}
               />
-              <SimpleButton
-                text="인증"
-                onClick={checkAuthCode}
-                style={{
-                  width: '6rem',
-                  height: '2rem',
-                  fontSize: '0.8rem',
-                  fontWeight: '500',
-                  padding: '0',
-                }}
-              />
+              <div className={s.timerCont}>
+                {isAuthCodeActive ? (
+                  <p className={s.timer}>{formatTime(timeRemaining)}</p>
+                ) : (
+                  <p className={s.noTimer}>{formatTime(timeRemaining)}</p>
+                )}
+              </div>
+              <div>
+                <SimpleButton
+                  text="인증하기"
+                  onClick={checkAuthCode}
+                  style={{
+                    width: '4.6rem',
+                    height: '2rem',
+                    fontSize: '0.8rem',
+                    fontWeight: '500',
+                    padding: '0',
+                    borderRadius: '0.5rem',
+                    marginLeft: '0.4rem',
+                  }}
+                />
+              </div>
             </div>
             {authCodeState === 1 ? (
               <p className={s.validationSuccess}>인증되었습니다.</p>

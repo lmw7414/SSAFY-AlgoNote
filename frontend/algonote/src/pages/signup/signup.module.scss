@@ -150,3 +150,20 @@
       transform: rotate(360deg);
     }
   }
+
+.timerCont {
+display: flex;
+justify-content: center;
+align-items: center;
+margin: 0 0.4rem;
+width: 5rem;
+
+    .timer {
+        font-size: 0.9rem;
+        color: var(--blue);
+    }
+    .noTimer {
+        opacity: 0;
+    }
+}
+
