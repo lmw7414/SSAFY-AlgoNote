@@ -10,7 +10,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @EnableJpaAuditing
 
 public class AlgonoteApplication {
-
 	@PostConstruct
 	void started(){
 		TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));

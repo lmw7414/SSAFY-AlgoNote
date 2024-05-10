@@ -3,6 +3,7 @@ package com.ssafy.algonote.problem.repository;
 
 import static com.ssafy.algonote.problem.domain.QSolvedProblem.solvedProblem;
 
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.algonote.problem.dto.SolvedProblemDto;
 import com.ssafy.algonote.problem.dto.response.AnalysisResDto;
@@ -85,4 +86,6 @@ public class SolvedProblemCustomRepositoryImpl implements SolvedProblemCustomRep
 
         return new AnalysisResDto(solvedProblemDtos.size(), groups);
     }
+
+
 }
