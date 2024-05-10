@@ -7,7 +7,7 @@ def inference(validation, tag):
         model = pickle.load(f)
     
     solved = validation["itemID"].unique()
-    
+    print("solved", solved)
 
     prediction = predict_ranking(model, validation, usercol='userID', itemcol='itemID', remove_seen=True)
     prediction = prediction.sort_values("prediction", ascending=False).drop_duplicates(subset="itemID")

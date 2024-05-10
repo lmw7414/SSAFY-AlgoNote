@@ -11,12 +11,15 @@ import com.ssafy.algonote.problem.repository.ProblemRepository;
 import com.ssafy.algonote.problem.repository.SolvedProblemRepository;
 import com.ssafy.algonote.recommend.dto.RecommendDto;
 import com.ssafy.algonote.recommend.dto.response.RecommendProblemResDto;
+import com.ssafy.algonote.recommend.dto.response.RecommendResDto;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -30,7 +33,6 @@ import org.springframework.web.client.RestTemplate;
 @RequiredArgsConstructor
 public class RecommendService {
 
-    private final SolvedProblemRepository solvedProblemRepository;
     private final MemberRepository memberRepository;
     private final ProblemRepository problemRepository;
 
@@ -38,18 +40,31 @@ public class RecommendService {
     @Value("${fastapi.url}")
     private String fastApiUrl;
 
-    public Page<RecommendProblemResDto> recommendProblem(Long memberId, String tag, Pageable pageable) {
+    public void test(){
+        String url = fastApiUrl + "/python/recommend/test";
+        RestTemplate restTemplate = new RestTemplate();
+        String response = restTemplate.getForObject(url, String.class);
+        log.info("response: {}", response);
 
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(
-            ErrorCode.NOT_FOUND_MEMBER));
-
-        return problemRepository.findProblemsByTag(memberId, tag, pageable);
     }
 
 
     @Transactional
-    public void recommendUnsolvedProblem(Long memberId, String tag)  {
+    public Page<RecommendProblemResDto> recommendUnsolvedProblem(Long memberId, String tag, int page, int size){
 
+        JsonNode node = getResponseJsonNode(memberId, tag);
+        List<Long> list = new ArrayList<>();
+        JsonNode  unsolvedProblemIds = node.get("recommendedProblemIds");
+
+        for(JsonNode id : unsolvedProblemIds){
+            list.add(id.asLong());
+        }
+
+        Pageable pageable = PageRequest.of(page, size);
+        return problemRepository.findByIds(list, pageable);
+    }
+
+    private JsonNode getResponseJsonNode(Long memberId, String tag){
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(
             ErrorCode.NOT_FOUND_MEMBER));
 
@@ -69,18 +84,14 @@ public class RecommendService {
 
 
         String response = restTemplate.postForObject(url, requestEntity, String.class);
-
         ObjectMapper objectMapper = new ObjectMapper();
 
         try{
-            JsonNode node = objectMapper.readTree(response);
+            return objectMapper.readTree(response);
         }catch (IOException e){
             log.error("error: {}", e.getMessage());
             throw new CustomException(ErrorCode.JSON_MAPPING_ERROR);
         }
-
-
-
-
     }
+
 }

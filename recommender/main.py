@@ -35,6 +35,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.get("/python/recommend/test")
+async def test():
+    return {"message": "Hello World"}
+
 @app.post("/python/recommend")
 async def recommend(recommendDto : RecommendReqDto):
 

@@ -6,6 +6,7 @@ import static com.ssafy.algonote.problem.domain.QSolvedProblem.solvedProblem;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.ssafy.algonote.problem.domain.Problem;
 import com.ssafy.algonote.recommend.dto.response.RecommendProblemResDto;
 import jakarta.persistence.EntityManager;
 import java.util.List;
@@ -23,41 +24,6 @@ public class ProblemCustomRepositoryImpl implements ProblemCustomRepository {
     }
 
 
-    @Override
-    public Page<RecommendProblemResDto> findProblemsByTag(Long memberId, String tag, Pageable pageable) {
-        log.info("memberId: {}, tag: {}, page: {}, size:{}", memberId, tag, pageable.getPageNumber(), pageable.getPageSize());
-
-        List<RecommendProblemResDto> results = queryFactory
-            .select(Projections.constructor(RecommendProblemResDto.class,
-                problem.id,
-                problem.tier,
-                problem.title
-            ))
-            .from(problem)
-            .where(
-                problem.notIn(
-                JPAExpressions.select(solvedProblem.problem)
-                    .from(solvedProblem)
-                    .where(solvedProblem.member.id.eq(memberId)))
-                .and(problem.tier.gt(0))
-                    .and(problem.tags.any().nameEn.eq(tag))
-            )
-            .offset(pageable.getOffset())
-            .orderBy(problem.tier.asc())
-            .limit(pageable.getPageSize())
-            .fetch();
-
-        long totalCount = queryFactory
-            .select(problem.count())
-            .from(problem)
-            .where(problem.notIn(
-                JPAExpressions.select(solvedProblem.problem)
-                    .from(solvedProblem)
-                    .where(solvedProblem.member.id.eq(memberId))
-            )).fetchOne();
-        log.info("totalCount: {}", totalCount);
-        return new PageImpl<>(results, pageable, totalCount);
-    }
 
     @Override
     public List<Long> findSolvedProblemIdByTag(Long memberId, String tag) {
@@ -67,5 +33,28 @@ public class ProblemCustomRepositoryImpl implements ProblemCustomRepository {
             .join(solvedProblem.problem)
             .where(solvedProblem.problem.tags.any().nameEn.eq(tag))
             .fetch();
+    }
+
+
+    @Override
+    public Page<RecommendProblemResDto> findByIds(List<Long> ids, Pageable pageable) {
+        List<RecommendProblemResDto> results = queryFactory
+            .select(Projections.constructor(RecommendProblemResDto.class,
+                problem.id,
+                problem.tier,
+                problem.title
+            ))
+            .from(problem)
+            .where(problem.id.in(ids))
+            .offset(pageable.getOffset())
+            .limit(pageable.getPageSize())
+            .fetch();
+
+        long totalCount = queryFactory
+            .select(problem.count())
+            .from(problem)
+            .where(problem.id.in(ids))
+            .fetchOne();
+        return new PageImpl<>(results, pageable, totalCount);
     }
 }
