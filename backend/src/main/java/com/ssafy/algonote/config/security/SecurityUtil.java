@@ -24,4 +24,6 @@ public class SecurityUtil {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         return userDetails.getMemberInfoDto().getUserId();
     }
+
+
 }

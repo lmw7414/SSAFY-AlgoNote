@@ -17,7 +17,7 @@ public interface SolvedProblemRepository extends JpaRepository<SolvedProblem, Lo
     Optional<SolvedProblem> findByMember_IdAndProblem_Id(Long memberId, Long problemId);
 
     // 멤버로 푼 문제 조회
-    Page<SolvedProblem> findAllByMember(Pageable pageable, Member member);
 
+    Page<SolvedProblem> findAllByMember(Pageable pageable, Member member);
     List<SolvedProblem> findAllByMember(Member member);
 }
