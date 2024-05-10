@@ -26,7 +26,7 @@ const Tabs = () => {
       title: title.trim().length === 0 ? '' : title,
       content: '',
     })
-
+    setCurSelectedIdx(tabs.length)
     setActiveTab(tabs.length)
   }
 
@@ -37,12 +37,15 @@ const Tabs = () => {
 
     removeTab(key)
 
-    if (deletedTabIndex === activeTab && deletedTabIndex >= 1) {
+    if (deletedTabIndex === curSelectedIdx && deletedTabIndex >= 1) {
       setCurSelectedIdx(curSelectedIdx - 1)
+      setActiveTab(curSelectedIdx - 1)
     } else if (deletedTabIndex === 0) {
       setCurSelectedIdx(0)
-    } else if (deletedTabIndex < activeTab) {
+      setActiveTab(0)
+    } else if (deletedTabIndex < curSelectedIdx) {
       setCurSelectedIdx(curSelectedIdx - 1)
+      setActiveTab(curSelectedIdx - 1)
     }
   }
 

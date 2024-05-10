@@ -26,7 +26,7 @@ const QuestionList = ({
     const problemId = id
     router.push({
       pathname: '/writenote',
-      query: { id: problemId },
+      query: { id: problemId, title },
     })
   }
 
@@ -40,9 +40,7 @@ const QuestionList = ({
           <p>{id}</p>
         </div>
         <div className={styles.title}>
-          <Link href={`/${title}`}>
-            <p>{title}</p>
-          </Link>
+          <p>{title}</p>
         </div>
         <div className={styles.type}>
           <p>#{tags.join(' #')}</p>
