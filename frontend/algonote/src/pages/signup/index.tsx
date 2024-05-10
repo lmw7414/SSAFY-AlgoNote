@@ -248,9 +248,7 @@ const SignUp = () => {
             height={75}
             className={s.logo}
           />
-          <div className={s.title}>
-            <h1>알고노트 회원가입</h1>
-          </div>
+          <div className={s.title} />
           <div className={s.inputsCont}>
             <p className={s.label}>이메일</p>
             <div className={s.inputCont}>
@@ -265,35 +263,43 @@ const SignUp = () => {
                 }
               />
               {emailState === 1 ? (
-                <SimpleButton
-                  text="코드 전송"
-                  onClick={sendAuthCode}
-                  style={{
-                    width: '6rem',
-                    height: '2rem',
-                    fontSize: '0.8rem',
-                    fontWeight: '500',
-                    padding: '0',
-                    backgroundColor: `orange`,
-                    border: 'none',
-                  }}
-                />
+                <div>
+                  <SimpleButton
+                    text="코드 전송"
+                    onClick={sendAuthCode}
+                    style={{
+                      width: '4.6rem',
+                      height: '2rem',
+                      fontSize: '0.8rem',
+                      fontWeight: '500',
+                      padding: '0',
+                      backgroundColor: `orange`,
+                      border: 'none',
+                      borderRadius: '0.5rem',
+                      marginLeft: '0.4rem',
+                    }}
+                  />
+                </div>
               ) : emailState === 5 ? (
                 <div className={s.spinnerCont}>
                   <div className={s.spinner} />
                 </div>
               ) : (
-                <SimpleButton
-                  text="중복 확인"
-                  onClick={emailDupCheck}
-                  style={{
-                    width: '6rem',
-                    height: '2rem',
-                    fontSize: '0.8rem',
-                    fontWeight: '500',
-                    padding: '0',
-                  }}
-                />
+                <div>
+                  <SimpleButton
+                    text="중복 확인"
+                    onClick={emailDupCheck}
+                    style={{
+                      width: '4.6rem',
+                      height: '2rem',
+                      fontSize: '0.8rem',
+                      fontWeight: '500',
+                      padding: '0',
+                      borderRadius: '0.5rem',
+                      marginLeft: '0.4rem',
+                    }}
+                  />
+                </div>
               )}
             </div>
             {emailState === 1 ? (
@@ -407,17 +413,21 @@ const SignUp = () => {
                 }}
                 className={nicknameState === 2 ? s.inputFailed : s.input}
               />
-              <SimpleButton
-                text="중복 확인"
-                onClick={nicknameDupCheck}
-                style={{
-                  width: '6rem',
-                  height: '2rem',
-                  fontSize: '0.8rem',
-                  fontWeight: '500',
-                  padding: '0',
-                }}
-              />
+              <div>
+                <SimpleButton
+                  text="중복 확인"
+                  onClick={nicknameDupCheck}
+                  style={{
+                    width: '4.6rem',
+                    height: '2rem',
+                    fontSize: '0.8rem',
+                    fontWeight: '500',
+                    padding: '0',
+                    borderRadius: '0.5rem',
+                    marginLeft: '0.4rem',
+                  }}
+                />
+              </div>
             </div>
             {nicknameState === 1 ? (
               <p className={s.validationSuccess}>사용 가능한 닉네임입니다.</p>
@@ -435,13 +445,25 @@ const SignUp = () => {
           </div>
 
           <div className={s.btnCont}>
-            <SimpleButton
-              text="회원가입"
-              onClick={signUp}
-              style={{
-                fontWeight: '500',
-              }}
-            />
+            {signupUnable ? (
+              <SimpleButton
+                text="회원가입"
+                onClick={signUp}
+                style={{
+                  fontWeight: '500',
+                }}
+              />
+            ) : (
+              <SimpleButton
+                text="회원가입"
+                onClick={signUp}
+                style={{
+                  fontWeight: '600',
+                  opacity: '0.6',
+                  cursor: 'not-allowed',
+                }}
+              />
+            )}
           </div>
         </div>
       </div>
