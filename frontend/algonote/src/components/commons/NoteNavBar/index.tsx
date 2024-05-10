@@ -1,8 +1,11 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import styles from './NoteNavBar.module.scss'
 
 const NoteNavBar = () => {
+  const router = useRouter()
+  const { title } = router.query // 쿼리에서 id(선택한 문제 번호)를 추출
   return (
     <div className={styles.wrapper}>
       <div>
@@ -16,7 +19,7 @@ const NoteNavBar = () => {
         </Link>
       </div>
       <div className={styles.myCategory}>
-        <Link href="/test">
+        <Link href="/solvedproblems">
           <span>내가 푼 문제</span>
         </Link>
       </div>
@@ -30,8 +33,8 @@ const NoteNavBar = () => {
         />
       </div>
       <div className={styles.questionName}>
-        <Link href="/test">
-          <span>성현이의 5만원</span>
+        <Link href="/solvedproblems">
+          <span>{title}</span>
         </Link>
       </div>
     </div>
