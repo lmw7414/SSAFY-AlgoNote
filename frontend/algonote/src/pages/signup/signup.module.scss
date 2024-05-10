@@ -38,7 +38,7 @@
 
 .inputsCont {
     width: 100%;
-    margin-top: 2rem;
+    margin-top: 1rem;
 }
 
 .inputCont {
@@ -87,24 +87,27 @@
 .input::placeholder {
     font-size: 0.9rem;
     font-weight: 500;
-    color: var(--medium-sky-gray); /* 플레이스홀더 텍스트의 글자색 지정 */
+    color: var(--soft-sky-gray); /* 플레이스홀더 텍스트의 글자색 지정 */
 }
 
 .validationSuccess {
     font-size: 0.85rem;
     color: var(--blue);
     margin-top: 0.4rem;
+    margin-bottom: 0.4rem;
 }
 
 .validationFailed {
     font-size: 0.85rem;
     color: var(--red);
     margin-top: 0.4rem;
+    margin-bottom: 0.4rem;
 }
 
 .invisible {
     font-size: 0.85rem;
     margin-top: 0.4rem;
+    margin-bottom: 0.4rem;
     visibility: hidden;
 }
 
@@ -150,3 +153,20 @@
       transform: rotate(360deg);
     }
   }
+
+.timerCont {
+display: flex;
+justify-content: center;
+align-items: center;
+margin: 0 0.4rem;
+width: 5rem;
+
+    .timer {
+        font-size: 0.9rem;
+        color: var(--blue);
+    }
+    .noTimer {
+        opacity: 0;
+    }
+}
+
