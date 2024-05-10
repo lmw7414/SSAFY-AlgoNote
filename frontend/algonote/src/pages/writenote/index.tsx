@@ -28,17 +28,25 @@ const WriteNote = () => {
   const currentDate = new Date()
   const [chatBotState, setChatBotState] = useState(false)
   const [submissionList, setSubmissionList] = useState<SubmissionHistory[]>([]) // 제출 이력
+  const [isCollapsed, setIsCollapsed] = useState(false)
+  const { tabs, setTabs, curSelectedIdx } = useNoteStore()
 
   useEffect(() => {
     const fetchData = async () => {
       const list = await getSubmissionList(Number(id))
       setSubmissionList(() => list)
+
+      // 노트, 탭 초기화
+      setTabs([
+        {
+          title: '',
+          content: '',
+        },
+      ])
     }
     fetchData()
-  }, [])
+  }, [id, setTabs])
 
-  const [isCollapsed, setIsCollapsed] = useState(false)
-  const { tabs, curSelectedIdx } = useNoteStore()
   const buttonClickHandler = () => {
     setIsCollapsed(!isCollapsed)
   }
