@@ -9,21 +9,23 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/execute")
 @RequiredArgsConstructor
 public class ExecutionController {
     private final JavaExecutorService javaExecutorService;
     private final PythonExecutorService pythonExecutorService;
 
-    @PostMapping("/execute")
-    public ResponseEntity<ExecutionResult> execute(@RequestBody Request request) {
+    @PostMapping("/java")
+    public ResponseEntity<ExecutionResult> executeJava(@RequestBody Request request) {
         return ResponseEntity.ok(javaExecutorService.compileAndExecute(request.sourceCode(), request.inputData(), request.expectedOutput()));
     }
 
-    @PostMapping("/execute/py")
-    public ResponseEntity<ExecutionResult> execute1(@RequestBody Request request) {
+    @PostMapping("/py")
+    public ResponseEntity<ExecutionResult> executePython(@RequestBody Request request) {
         return ResponseEntity.ok(pythonExecutorService.compileAndExecute(request.sourceCode(), request.inputData(), request.expectedOutput()));
     }
 

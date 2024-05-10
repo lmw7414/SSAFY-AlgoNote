@@ -32,7 +32,6 @@ public class PythonExecutorService {
                 directory.mkdir();
             // 파이썬 코드를 파일로 저장
             code = addMeasureCode(code);
-            System.out.println(code);
             Files.write(Paths.get(pythonFile), code.getBytes());
             Files.write(Paths.get(inputFileName), input.getBytes());
 
@@ -111,7 +110,7 @@ public class PythonExecutorService {
         // 종료 시간과 메모리 측정 코드, 그리고 출력
         String endCode = "\n\nend_time = time.time()\n" +
                 "end_memory = memory_usage(max_usage=True)\n" +
-                "execution_time = (end_time - start_time) * 1000\n" +
+                "execution_time = (end_time - start_time) * 10\n" +
                 "used_memory = (end_memory - start_memory) * 1024\n" +
                 "print(execution_time)\n" +
                 "print(used_memory)\n";
