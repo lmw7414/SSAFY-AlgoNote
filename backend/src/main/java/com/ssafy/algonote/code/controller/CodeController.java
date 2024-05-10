@@ -9,10 +9,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Code API", description = "코드 분석 관련 API")
 @RestController
@@ -22,9 +19,13 @@ public class CodeController {
 
     private final CodeService codeService;
 
+    @Operation(
+            summary = "코드 분석 ",
+            description = "코드에 대한 실행시간 및 메모리 사용량을 보여줍니다. 쿼리 파라미터는 lang=java / lang=py 둘 중에 하나 넣어주면 됩니다."
+    )
     @PostMapping("/analyze")
-    public ResponseEntity<AnalyzeResDto> analyzeCode(@RequestBody AnalyzeReqDto dto) {
-        return ResponseEntity.ok(codeService.analyzeCode(dto));
+    public ResponseEntity<AnalyzeResDto> analyzeCode(@RequestBody AnalyzeReqDto dto, @RequestParam("lang") String lang) {
+        return ResponseEntity.ok(codeService.analyzeCode(lang, dto));
     }
 
     @Operation(
