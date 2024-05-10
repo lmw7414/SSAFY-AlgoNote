@@ -18,3 +18,4 @@ backend/recommender/solved_problem_history.csv
 /recommender/rank2/*
 /recommender/divide/*
 /recommender/tag/*
+backend/src/main/generated/**

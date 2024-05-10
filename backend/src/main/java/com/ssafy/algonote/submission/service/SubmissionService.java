@@ -6,6 +6,7 @@ import com.ssafy.algonote.member.domain.Member;
 import com.ssafy.algonote.member.repository.MemberRepository;
 import com.ssafy.algonote.problem.domain.Problem;
 import com.ssafy.algonote.problem.repository.ProblemRepository;
+import com.ssafy.algonote.problem.service.SolvedProblemService;
 import com.ssafy.algonote.submission.domain.Submission;
 import com.ssafy.algonote.submission.dto.SubmissionDto;
 import com.ssafy.algonote.submission.repository.SubmissionRepository;
@@ -24,9 +25,8 @@ public class SubmissionService {
     private final SubmissionRepository submissionRepository;
     private final MemberRepository memberRepository;
     private final ProblemRepository problemRepository;
-
+    private final SolvedProblemService solvedProblemService;
     // 제출 이력 저장
-    // TODO: 백준에는 있다면 api에서 받아와 새로운 문제 저장
     public void saveSubmission(Long submissionId,
                                Long memberId,
                                Long problemId,
@@ -41,6 +41,9 @@ public class SubmissionService {
         Member member = getMemberOrException(memberId);
         Problem problem = getProblemOrException(problemId);
 
+        if(result.equals("맞았습니다!!")) {
+            solvedProblemService.saveSolvedProblem(memberId, problemId, submissionTime);
+        }
         submissionRepository.save(Submission.of(
                 new SubmissionDto(
                         submissionId,

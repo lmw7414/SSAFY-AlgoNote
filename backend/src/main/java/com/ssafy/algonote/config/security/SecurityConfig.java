@@ -50,7 +50,7 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable());
         http.cors(cors -> cors.configurationSource(request -> {
             CorsConfiguration config = new CorsConfiguration();
-            config.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://k10b203.p.ssafy.io:3000", "https://algnote.duckdns.org"));
+            config.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://k10b203.p.ssafy.io:3000", "https://algnote.duckdns.org", "chrome-extension://nniojlfmhlicjobgkkhghjfmhocemhoj/", "chrome-extension://ckiokomocdleklhfhlnnfgofidkejgco/"));
             config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH")); // 허용할 HTTP 메소드
             config.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization", "token")); // 허용할 헤더
             config.setExposedHeaders(Arrays.asList("token")); // 클라이언트에 노출할 헤더
