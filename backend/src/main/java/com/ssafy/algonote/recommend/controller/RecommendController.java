@@ -1,7 +1,7 @@
 package com.ssafy.algonote.recommend.controller;
 
 import com.ssafy.algonote.config.security.SecurityUtil;
-import com.ssafy.algonote.recommend.dto.RecommendProblemResDto;
+import com.ssafy.algonote.recommend.dto.response.RecommendProblemResDto;
 
 import com.ssafy.algonote.recommend.service.RecommendService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -16,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -39,4 +38,11 @@ public class RecommendController {
 
         return ResponseEntity.ok(recommendService.recommendProblem(memberId, tag, pageable));
     }
+
+//    @GetMapping("/{tag}")
+//    public ResponseEntity<Page<RecommendProblemResDto>> recommendProblem(@PathVariable("tag") String tag) {
+//        Long memberId = SecurityUtil.getMemberId();
+//
+//        return ResponseEntity.ok(recommendService.recommendProblem(memberId, tag));
+//    }
 }
