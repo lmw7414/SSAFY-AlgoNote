@@ -79,9 +79,7 @@ const Note = () => {
 
   const handleBookmark = async () => {
     const response = await bookmarkButtonApi(id as string)
-    if (response.status === 200) {
-      setMarkIsOff(response.data.bookmarked)
-    }
+    setMarkIsOff(response.data.bookmarked)
   }
 
   useEffect(() => {
