@@ -59,3 +59,8 @@
     background-color: #3170d5;
     border-color: #3170d5;
   }
+
+  .button:disabled{
+    background-color: var(--gray);
+    border-color: var(--gray);
+  }
