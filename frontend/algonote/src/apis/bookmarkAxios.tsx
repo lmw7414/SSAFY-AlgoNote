@@ -22,7 +22,6 @@ const bookmarkButtonApi = async (noteId: string) => {
 
   try {
     const response = await axiosAuthApi().post(apiUrl)
-    console.log('북마크 버튼 응답', response)
     return response
   } catch (error) {
     throw error
