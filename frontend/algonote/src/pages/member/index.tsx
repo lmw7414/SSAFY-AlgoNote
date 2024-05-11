@@ -24,7 +24,7 @@ const User = () => {
   const [userDetails, setUserDetails] = useState<UserInfo | null>(null)
   const [nicknameState, setNicknameState] = useState<NicknameValidation>({
     value: '',
-    status: true,
+    status: false,
   })
   const [isChangeClicked, setIsChangeClicked] = useState<boolean>(false)
   const [nickname, setNickName] = useState<string>('')
@@ -84,14 +84,18 @@ const User = () => {
   }
 
   const nicknameCheck = async () => {
-    const response = await nicknameDupCheckApi(nickname)
-    if (response) {
-      handleNameChange()
-    } else {
-      setNicknameState((prevData) => ({
-        ...prevData,
-        value: '이미 사용중인 닉네임입니다.',
-      }))
+    try {
+      const response = await nicknameDupCheckApi(nickname)
+      if (response) {
+        handleNameChange()
+      } else {
+        setNicknameState((prevData) => ({
+          ...prevData,
+          value: '이미 사용중인 닉네임입니다.',
+        }))
+      }
+    } catch (error) {
+      throw error
     }
   }
 
@@ -113,17 +117,17 @@ const User = () => {
 
   useEffect(() => {
     const idRegExp = /^[^\s]{2,14}$/
-    const isLengthLimited = !idRegExp.test(nickname)
+    const isLengthLimited = nickname && !idRegExp.test(nickname)
 
     if (isLengthLimited) {
       setNicknameState({
-        value: '닉네임은 2-14자이여야 합니다.',
-        status: false,
+        value: '닉네임은 공백없는 2-14자이여야 합니다.',
+        status: true,
       })
     } else {
-      setNicknameState({ value: '', status: true })
+      setNicknameState({ value: '', status: false })
     }
-  }, [nicknameState.value])
+  }, [nickname])
 
   if (!userDetails) {
     return <div>Loading...</div>
@@ -169,9 +173,7 @@ const User = () => {
             />
             <SimpleButton
               text="변경"
-              onClick={() => {
-                nicknameCheck()
-              }}
+              onClick={nicknameCheck}
               isDisabled={nicknameState.status}
             />
             {nicknameState.value && <div>{nicknameState.value}</div>}
