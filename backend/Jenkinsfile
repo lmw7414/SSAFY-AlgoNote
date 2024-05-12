@@ -29,7 +29,7 @@ pipeline{
             steps{
                 dir('backend'){
                     script{
-                        dockerImage = docker.build repository + "$BUILD_NUMBER"
+                        dockerImage = docker.build repository + ":$BUILD_NUMBER"
                     }
                 }
             }
