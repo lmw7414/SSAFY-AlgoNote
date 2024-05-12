@@ -38,7 +38,7 @@ public class Submission extends BaseEntity {
     private Integer runningTime;
     private String language;
 
-    public static Submission of(SubmissionDto dto) {
+    public static Submission fromDto(SubmissionDto dto) {
         return Submission.builder()
                 .id(dto.submissionId())
                 .problem(dto.problem())

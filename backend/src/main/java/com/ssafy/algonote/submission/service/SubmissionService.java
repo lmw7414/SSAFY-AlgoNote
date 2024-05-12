@@ -9,11 +9,11 @@ import com.ssafy.algonote.problem.repository.ProblemRepository;
 import com.ssafy.algonote.problem.service.SolvedProblemService;
 import com.ssafy.algonote.submission.domain.Submission;
 import com.ssafy.algonote.submission.dto.SubmissionDto;
+import com.ssafy.algonote.submission.dto.request.SubmissionReqDto;
 import com.ssafy.algonote.submission.repository.SubmissionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,42 +22,24 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class SubmissionService {
 
+    private final SolvedProblemService solvedProblemService;
     private final SubmissionRepository submissionRepository;
     private final MemberRepository memberRepository;
     private final ProblemRepository problemRepository;
-    private final SolvedProblemService solvedProblemService;
+
     // 제출 이력 저장
-    public void saveSubmission(Long submissionId,
-                               Long memberId,
-                               Long problemId,
-                               String code,
-                               String result,
-                               Integer length,
-                               LocalDateTime submissionTime,
-                               Long memorySize,
-                               Integer runningTime,
-                               String language) {
-
-        Member member = getMemberOrException(memberId);
-        Problem problem = getProblemOrException(problemId);
-
-        if(result.equals("맞았습니다!!")) {
-            solvedProblemService.saveSolvedProblem(memberId, problemId, submissionTime);
+    public void saveSubmission(SubmissionReqDto dto, Long memberId) {
+        if (!submissionRepository.findById(dto.submissionId()).isPresent()) {
+            Member member = getMemberOrException(memberId);
+            Problem problem = getProblemOrException(dto.problemId());
+            if (dto.result().equals("맞았습니다!!")) {
+                solvedProblemService.saveSolvedProblem(member, problem, dto.submissionTime());
+            }
+            submissionRepository.save(Submission.fromDto(
+                            SubmissionDto.fromReq(dto, problem, member)
+                    )
+            );
         }
-        submissionRepository.save(Submission.of(
-                new SubmissionDto(
-                        submissionId,
-                        problem,
-                        member,
-                        code,
-                        result,
-                        length,
-                        submissionTime,
-                        memorySize,
-                        runningTime,
-                        language
-                ))
-        );
 
     }
 

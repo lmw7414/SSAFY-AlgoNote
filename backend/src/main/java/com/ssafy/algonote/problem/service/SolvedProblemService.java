@@ -11,9 +11,7 @@ import com.ssafy.algonote.problem.domain.WritingStatus;
 import com.ssafy.algonote.problem.dto.response.AnalysisResDto;
 import com.ssafy.algonote.problem.dto.response.NotedProblemResDto;
 import com.ssafy.algonote.problem.dto.response.NotedProblemResDto.NotedProblemResDtoBuilder;
-import com.ssafy.algonote.problem.repository.ProblemRepository;
 import com.ssafy.algonote.problem.repository.SolvedProblemRepository;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @Transactional
@@ -29,32 +28,30 @@ public class SolvedProblemService {
 
     private final SolvedProblemRepository solvedProblemRepository;
     private final MemberRepository memberRepository;
-    private final ProblemRepository problemRepository;
     private final NoteRepository noteRepository;
 
-    //TODO: submission 등록(맞았습니다) 시점에 저장
-    public void saveSolvedProblem(Long memberId, Long problemId, LocalDateTime uploadedAt) {
-        Member member = getMemberOrException(memberId);
-        Problem problem = getProblemOrException(problemId);
-        solvedProblemRepository.findByMember_IdAndProblem_Id(memberId, problemId).ifPresentOrElse(
-                it -> {
-                    it.setUploadedAt(uploadedAt);
+    // 제출이력에서 정답일 때 Solved Problem 등록
+    public void saveSolvedProblem(Member member, Problem problem, LocalDateTime uploadedAt) {
+        solvedProblemRepository.findByMemberAndProblem(member, problem).ifPresentOrElse(
+                it -> {  // 존재한다면
+                    it.setUploadedAt(uploadedAt);  //최근에 푼 날짜 수정
                     solvedProblemRepository.save(it);
                 },
                 () -> solvedProblemRepository.save(SolvedProblem.of(member, problem, uploadedAt))
         );
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public NotedProblemResDto getNotedProblem(Long memberId) {
         Member member = getMemberOrException(memberId);
         List<SolvedProblem> solvedProblems = solvedProblemRepository.findAllByMember(member);
         NotedProblemResDtoBuilder builder = NotedProblemResDto.builder()
-            .solvedProblemCnt(solvedProblems.size());
+                .solvedProblemCnt(solvedProblems.size());
 
-        List<SolvedProblem> notedSolvedProblems = solvedProblems.stream().filter(solvedProblem -> {
-            return solvedProblem.getComplete().equals(WritingStatus.DONE);
-        }).toList();
+        List<SolvedProblem> notedSolvedProblems = solvedProblems
+                .stream()
+                .filter(solvedProblem -> solvedProblem.getComplete().equals(WritingStatus.DONE))
+                .toList();
 
         builder.notedProblemCnt(notedSolvedProblems.size());
 
@@ -78,19 +75,9 @@ public class SolvedProblemService {
         return solvedProblemRepository.analyzeSolvedProblem(memberId);
     }
 
-
     private Member getMemberOrException(Long memberId) {
         return memberRepository.findById(memberId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
     }
 
-    private Problem getProblemOrException(Long problemId) {
-        return problemRepository.findById(problemId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_PROBLEM));
-    }
-
-    private SolvedProblem getSolvedProblemOrException(Long memberId, Long problemId) {
-        return solvedProblemRepository.findByMember_IdAndProblem_Id(memberId, problemId)
-                .orElseThrow(() -> new CustomException((ErrorCode.NOT_SOLVED)));
-    }
 }

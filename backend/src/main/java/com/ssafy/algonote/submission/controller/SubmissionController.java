@@ -24,19 +24,7 @@ public class SubmissionController {
     public ResponseEntity<Void> saveSubmission(@RequestBody List<SubmissionReqDto> dtos) {
         log.info("사용자 제출 정보: {}", dtos);
         Long memberId = SecurityUtil.getMemberId();
-        dtos.stream()
-                .forEach(dto -> submissionService.saveSubmission(
-                        dto.submissionId(),
-                        memberId,
-                        dto.problemId(),
-                        dto.code(),
-                        dto.result(),
-                        dto.length(),
-                        dto.submissionTime(),
-                        dto.memorySize(),
-                        dto.runningTime(),
-                        dto.language()
-                ));
+        dtos.stream().forEach(dto -> submissionService.saveSubmission(dto, memberId));
         return ResponseEntity.ok().build();
     }
 
