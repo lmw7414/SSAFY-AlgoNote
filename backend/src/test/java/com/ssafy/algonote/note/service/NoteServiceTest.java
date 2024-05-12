@@ -9,6 +9,7 @@ import com.ssafy.algonote.note.repository.BookmarkRepository;
 import com.ssafy.algonote.note.repository.HeartRepository;
 import com.ssafy.algonote.note.repository.NoteDocumentRepository;
 import com.ssafy.algonote.note.repository.NoteRepository;
+import com.ssafy.algonote.problem.domain.Problem;
 import com.ssafy.algonote.problem.domain.SolvedProblem;
 import com.ssafy.algonote.problem.repository.SolvedProblemRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -25,8 +26,7 @@ import static com.ssafy.algonote.fixture.MemberFixture.createMember;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class NoteServiceTest {
@@ -57,9 +57,15 @@ class NoteServiceTest {
         Long memberId = 1L;
         Long problemId = 1000L;
 
+        Problem mockProblem = mock(Problem.class);
+        SolvedProblem mockSolvedProblem = mock(SolvedProblem.class);
+
+        when(mockProblem.getId()).thenReturn(problemId);
+        when(mockSolvedProblem.getProblem()).thenReturn(mockProblem);
+
         //mocking
         given(memberRepository.findById(memberId)).willReturn(Optional.of(mock(Member.class)));
-        given(solvedProblemRepository.findByMember_IdAndProblem_Id(memberId, problemId)).willReturn(Optional.of(mock(SolvedProblem.class)));
+        given(solvedProblemRepository.findByMember_IdAndProblem_Id(memberId, problemId)).willReturn(Optional.of(mockSolvedProblem));
         given(noteRepository.save(any())).willReturn(mock(Note.class));
         given(noteDocumentRepository.save(any())).willReturn(mock(NoteDocument.class));
 
@@ -68,6 +74,7 @@ class NoteServiceTest {
 
         //then
         verify(noteRepository).save(any());
+        verify(noteDocumentRepository).save(any());
     }
 
     @Test
@@ -89,7 +96,7 @@ class NoteServiceTest {
 
     @Test
     @DisplayName("[생성] 노트 작성 시 풀지 않은 문제를 등록한 경우")
-    void givenNoteAndMemberInfo_whenSaveNotewithNonExistProblem_thenThrowException() {
+    void givenNoteAndMemberInfo_whenSaveNoteWithNonExistProblem_thenThrowException() {
         // given
         String title = "title";
         String content = "content";
@@ -105,8 +112,6 @@ class NoteServiceTest {
         });
     }
 
-    //TODO : [생성] 푼 적이 없는 문제를 오답노트로 작성하려고 했을 때
-
     // 노트 삭제
     @Test
     @DisplayName("[삭제] 내가 작성한 노트 삭제")
@@ -115,9 +120,11 @@ class NoteServiceTest {
         Long noteId = 1000L;
         Member member = createMember(memberId);
         Note note = createNote(noteId, member);
-
+        NoteDocument noteDocument = createNoteDoc(noteId);
+        // mocking
         given(memberRepository.findById(memberId)).willReturn(Optional.of(member));
         given(noteRepository.findById(noteId)).willReturn(Optional.of(note));
+        given(noteDocumentRepository.findById(noteId)).willReturn(Optional.of(noteDocument));
 
         sut.deleteNote(memberId, noteId);
         verify(noteRepository).delete(any());
@@ -164,7 +171,7 @@ class NoteServiceTest {
 
     // 노트 업데이트
     @Test
-    @DisplayName("노트 수정 성공")
+    @DisplayName("[수정] 노트 수정이 성공하는 경우")
     void givenTitleAndContent_whenUpdateNote_thenNothing() {
         // given
         Long memberId = 1L;
@@ -174,14 +181,18 @@ class NoteServiceTest {
 
         Member member = createMember(memberId);
         Note note = createNote(noteId, member);
+        NoteDocument noteDocument = createNoteDoc(noteId);
 
+        // mocking
         given(memberRepository.findById(memberId)).willReturn(Optional.of(member));
         given(noteRepository.findById(noteId)).willReturn(Optional.of(note));
+        given(noteDocumentRepository.findById(noteId)).willReturn(Optional.of(noteDocument));
 
         // when
         sut.update(memberId, noteId, title, content);
 
         //then
+        verify(noteDocumentRepository).save(any());
         verify(noteRepository).saveAndFlush(any());
     }
 
@@ -190,6 +201,12 @@ class NoteServiceTest {
         ReflectionTestUtils.setField(note, "id", noteId);
         ReflectionTestUtils.setField(note, "member", member);
         return note;
+    }
+
+    private NoteDocument createNoteDoc(Long noteId) {
+        NoteDocument noteDocument = new NoteDocument();
+        ReflectionTestUtils.setField(noteDocument, "id", noteId);
+        return noteDocument;
     }
 
 }
