@@ -65,31 +65,6 @@ const Notes = () => {
     fetchBookmarks()
   }, [])
 
-  // const handleHeartState = async (index: number, id: number) => {
-  //   const response = await likeAxios(id)
-
-  //   const newHeartState = [...heartIsOff]
-  //   newHeartState[index] = response.data.hearted
-  //   setHeartIsOff(newHeartState)
-
-  //   // hearCnt 증가
-
-  //   const updatedBookmarks = bookmarks.map(async (bookmark, idx) => {
-  //     if (index === idx) {
-  //       const newHeartCount = newHeartState[index]
-  //         ? bookmark.note.heartCnt + 1
-  //         : bookmark.note.heartCnt - 1
-  //       return {
-  //         ...bookmark,
-  //         note: { ...bookmark.note, heartCnt: newHeartCount },
-  //       }
-  //     }
-  //     return bookmark
-  //   })
-  //   const resolvedBookmarks = await Promise.all(updatedBookmarks)
-  //   setBookmarks(resolvedBookmarks)
-  // }
-
   return (
     <div className={styles.frame}>
       {bookmarks.map((it, index: number) => {
