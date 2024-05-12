@@ -33,7 +33,7 @@ public class MailService {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(toEmail);
         message.setSubject(title);
-        message.setText(text);
+        message.setText("Algonote 인증번호입니다: "+text);
 
         return message;
     }

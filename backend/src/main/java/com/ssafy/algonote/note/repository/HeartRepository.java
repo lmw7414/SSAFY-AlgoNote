@@ -6,7 +6,7 @@ import com.ssafy.algonote.note.domain.Note;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface HeartRepository extends JpaRepository<Heart, Long> {
-    Heart findOneByMemberIdAndNoteId(Long memberId, Long noteId);
+    Heart findByMemberAndNote(Member member, Note note);
 
     // 노트의 좋아요 전체 삭제
     void deleteAllByNote(Note note);

@@ -2,7 +2,6 @@ package com.ssafy.algonote.submission.dto.request;
 
 import java.time.LocalDateTime;
 
-
 public record SubmissionReqDto(
         Long submissionId,
         Long problemId,

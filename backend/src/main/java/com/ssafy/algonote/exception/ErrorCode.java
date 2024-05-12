@@ -10,6 +10,7 @@ public enum ErrorCode {
 
     NOT_FOUND_MEMBER(HttpStatus.NOT_FOUND, "해당 멤버를 찾을 수 없습니다."),
     NOT_FOUND_NOTE(HttpStatus.NOT_FOUND, "해당 노트를 찾을 수 없습니다."),
+    NOT_FOUND_TEMP_NOTE(HttpStatus.NOT_FOUND, "해당 임시 노트를 찾을 수 없습니다."),
     NOT_FOUND_REVIEW(HttpStatus.NOT_FOUND, "해당 리뷰를 찾을 수 없습니다."),
     INVALID_PATH(HttpStatus.NOT_FOUND, "유효하지 않은 경로입니다."),
     NO_AUTHORITY(HttpStatus.UNAUTHORIZED, "해당 요청에 대한 권한이 없습니다."),
@@ -33,7 +34,9 @@ public enum ErrorCode {
     RUNTIME_EXCEPTION(HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부 오류"),
     NOTIFICATION_CONNECTION_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "SSE 연결 중 에러가 발생하였습니다."),
     NOTIFICATION_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "알람 전송 중 에러가 발생하였습니다."),
-    NOT_SOLVED(HttpStatus.FORBIDDEN, "아직 풀지 않은 문제입니다.");
+    JSON_MAPPING_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "FastAPI 서버 오류"),
+    NOT_SOLVED(HttpStatus.FORBIDDEN, "아직 풀지 않은 문제입니다."),
+    INVALID_QUERY_PARAM(HttpStatus.BAD_REQUEST, "잘못된 요청 URL입니다.");
 
     private final HttpStatus httpStatus;
     private final String detail;

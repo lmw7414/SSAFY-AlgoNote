@@ -2,6 +2,7 @@ package com.ssafy.algonote.code.service;
 
 import com.ssafy.algonote.code.dto.request.AnalyzeReqDto;
 import com.ssafy.algonote.code.dto.response.AnalyzeResDto;
+import com.ssafy.algonote.note.service.GptService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
@@ -23,6 +24,8 @@ class CodeServiceTest {
     private CodeService codeService;
     @MockBean
     private RestTemplate restTemplate;
+    @MockBean
+    private GptService gptService;
 
     @Test
     @DisplayName("[Rest Template] 응답 테스트")
@@ -31,6 +34,7 @@ class CodeServiceTest {
         String expected = "60";
         Double executionTime = 0d;
         Double memoryUsage = 0d;
+        String lang = "java";
         AnalyzeReqDto reqDto = getAnalyzeReqDto(expected);
         AnalyzeResDto expectedResponse = getAnalyzeResDto(expected, executionTime, memoryUsage, true);
 
@@ -39,7 +43,7 @@ class CodeServiceTest {
                 .thenReturn(expectedResponse);
 
         // When
-        AnalyzeResDto actualResponseDto = codeService.analyzeCode(reqDto);
+        AnalyzeResDto actualResponseDto = codeService.analyzeCode(lang, reqDto);
 
         // Then
         assertEquals(expectedResponse, actualResponseDto);

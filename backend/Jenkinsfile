@@ -1,17 +1,14 @@
 pipeline{
-    agent any
-
-    parameters{
-        string(name: 'NAME', defaultValue: 'springtest')
+ 
+    environment{
+        repository = 'tollea1234/algonote-backend'
+        DOCKERHUB_CREDENTIALS = credentials('docker') // jenkins에 등록해 놓은 docker hub credentials 이름
+        dockerImage = '' 
     }
 
+    agent any
+
     stages{
-        stage('SCM'){
-            steps{
-                sh "echo SCM..."
-                checkout scm
-            }
-        }
 
         stage('Springboot build'){
             steps{
@@ -27,26 +24,56 @@ pipeline{
             }
         }
 
-        stage('Send JAR File to Deploy Server'){
+
+        stage('Build docker image'){
             steps{
                 dir('backend'){
-                    sh '''
-                        echo 'Send JAR File to Deploy Server...'
-                        scp -i ~/.ssh/id_rsa ./build/libs/algonote-0.0.1-SNAPSHOT.jar ubuntu@k10b203.p.ssafy.io:/home/ubuntu/spring/algonote-0.0.1-SNAPSHOT.jar
-                        scp -i ~/.ssh/id_rsa ./Dockerfile ubuntu@k10b203.p.ssafy.io:/home/ubuntu/spring/Dockerfile
-                        scp -i ~/.ssh/id_rsa ./init.sh ubuntu@k10b203.p.ssafy.io:/home/ubuntu/spring/init.sh
-                    '''
+                    script{
+                        dockerImage = docker.build repository + ":$BUILD_NUMBER"
+                    }
                 }
             }
         }
 
-        stage('Docker build'){
+        stage("Docker Hub Login"){
             steps{
-                dir('backend'){
-                    sh 'ssh -i ~/.ssh/id_rsa ubuntu@k10b203.p.ssafy.io "cd /home/ubuntu/spring && sh init.sh"  ' 
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin' // docker hub 로그인 sh ''
+            }
+        }
+
+        stage("Push our image"){
+            steps{
+                script{
+                    sh "docker push $repository:$BUILD_NUMBER"
                 }
             }
         }
+
+         stage('Deploy on Deploy Server'){
+            steps{
+                sh '''
+                    ssh -i ~/.ssh/id_rsa ubuntu@k10b203.p.ssafy.io "docker pull tollea1234/algonote-backend:$BUILD_NUMBER"
+                    ssh -i ~/.ssh/id_rsa ubuntu@k10b203.p.ssafy.io "docker rm backend-container --force"
+                    ssh -i ~/.ssh/id_rsa ubuntu@k10b203.p.ssafy.io "docker run -p 8080:8080 -d --name backend-container tollea1234/algonote-backend:$BUILD_NUMBER"
+                '''
+            }
+        }
+
+
+        stage('Remove previous images') {
+            steps {
+                script {
+                    def currentBuildNumber = env.BUILD_NUMBER.toInteger()
+                    def imagesToRemove = sh(script: "docker images $repository --format \"{{.Tag}}\" | awk '{if (\$1 < $currentBuildNumber) print \$1}'", returnStdout: true).trim()
+                    if (imagesToRemove) {
+                        sh "docker rmi $repository:${imagesToRemove}"
+                    }
+                }
+            }
+        }
+
+
+
     }
 
     post{

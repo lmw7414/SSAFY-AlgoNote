@@ -4,10 +4,7 @@ import com.ssafy.algonote.common.BaseEntity;
 import com.ssafy.algonote.member.domain.Member;
 import com.ssafy.algonote.problem.domain.Problem;
 import com.ssafy.algonote.submission.dto.SubmissionDto;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -32,6 +29,7 @@ public class Submission extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String code;
     private String result;
     private Integer length;
@@ -40,7 +38,7 @@ public class Submission extends BaseEntity {
     private Integer runningTime;
     private String language;
 
-    public static Submission of(SubmissionDto dto) {
+    public static Submission fromDto(SubmissionDto dto) {
         return Submission.builder()
                 .id(dto.submissionId())
                 .problem(dto.problem())
