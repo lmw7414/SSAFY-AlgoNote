@@ -1,13 +1,39 @@
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import s from './main.module.scss'
+import { getRecentSolvedApi, getUserRecordApi } from '@/apis/analysisAxios'
+import myInfo from '@/apis/user-infoAxios'
 import { SimpleButton } from '@/components/commons/Buttons/Button'
 import Radar from '@/components/commons/Main/Radar'
 import Wave from '@/components/commons/Main/Wave'
 import { getCookie } from '@/utils/cookie'
 
+interface RecordProps {
+  noteCnt: number
+  notedProblemCnt: number
+  solvedProblemCnt: number
+}
+
+interface UserInfo {
+  memberId: number
+  email: string
+  nickname: string
+  profileImg: string
+}
+
+interface Group {
+  group: string
+  score: number
+  lastSolvedDate: string
+  problemCount: number
+}
+
 const Main = () => {
+  const [info, setInfo] = useState<UserInfo | null>(null)
+  const [record, setRecord] = useState<RecordProps | null>(null)
+  const [recentSolved, setRecentSolved] = useState<Group[]>([])
+
   const router = useRouter()
 
   useEffect(() => {
@@ -16,6 +42,18 @@ const Main = () => {
       router.replace('/landing') // 사용자를 '/landing' 페이지로 리다이렉트합니다.
     }
   }, [router])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const userRecord = await getUserRecordApi()
+      const userInfo = await myInfo()
+      const userRecentSolved = await getRecentSolvedApi()
+      setRecord(userRecord)
+      setInfo(userInfo.data)
+      setRecentSolved(userRecentSolved.groups)
+    }
+    fetchData()
+  }, [])
 
   return (
     <>
@@ -38,35 +76,45 @@ const Main = () => {
           </div>
         </div>
         <div className={s.container}>
-          <h2 className={s.title}>내 알고리즘 실력 분석</h2>
+          <h2 className={s.title}>내 기록</h2>
           <div className={s.analysis}>
             <div className={s.radarCont}>
               <p className={s.graphTitle}>종합점수</p>
               <div className={s.radarBox}>
-                <Radar data={[]} labels={[]} />
+                <Radar
+                  data={recentSolved.map((item) => item.score)}
+                  labels={[
+                    '수학',
+                    '그래프',
+                    '자료구조',
+                    '최적화',
+                    '구현',
+                    '문자열',
+                  ]}
+                />
               </div>
             </div>
             <div className={s.right}>
               <div className={s.textCont}>
-                <a href="./member">상당히느긋한사람</a>
+                <a href="./member">{info?.nickname}</a>
                 <p>님은 알고노트에 가입한 이후로,</p>
               </div>
               <div className={s.sentenceCont}>
                 <div className={s.textCont}>
                   <div className={s.numCont}>
-                    <a href="./solvedproblems">24</a>
+                    <a href="./solvedproblems">{record?.solvedProblemCnt}</a>
                   </div>
                   <p>개의 문제를 풀었어요</p>
                 </div>
                 <div className={s.textCont}>
                   <div className={s.numCont}>
-                    <a href="./mynote">7</a>
+                    <a href="./mynote">{record?.notedProblemCnt}</a>
                   </div>
                   <p>개의 문제에 대해</p>
                 </div>
                 <div className={s.textCont}>
                   <div className={s.numCont}>
-                    <a href="./mynote">12</a>
+                    <a href="./mynote">{record?.noteCnt}</a>
                   </div>
                   <p>개의 노트를 작성했어요</p>
                 </div>
@@ -83,25 +131,17 @@ const Main = () => {
         <hr className={s.divide} />
 
         <div className={s.container}>
-          <h2 className={s.title}>문제 추천</h2>
+          <h2 className={s.title}>취약 알고리즘 공략하기</h2>
           <div className={s.recommendCont}>
-            <div className={s.wave}>
-              <Wave type="수학" score={34} />
-            </div>
-            <div className={s.wave}>
-              <Wave type="그래프" score={75} />
-            </div>
-            <div className={s.wave}>
-              <Wave type="자료구조" score={54} />
-            </div>
-            <div className={s.wave}>
-              <Wave type="자료구조" score={67} />
-            </div>
-            <div className={s.wave}>
-              <Wave type="자료구조" score={3} />
-            </div>
-            <div className={s.wave}>
-              <Wave type="자료구조" score={14} />
+            <p className={s.recommendDesc}>
+              감이 떨어진 알고리즘 유형 문제를 추천해드려요
+            </p>
+            <div className={s.waveCont}>
+              {recentSolved?.map((group) => (
+                <div key={group.group}>
+                  <Wave type={group.group} date={group.lastSolvedDate} />
+                </div>
+              ))}
             </div>
           </div>
           <SimpleButton
