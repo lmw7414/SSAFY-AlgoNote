@@ -23,6 +23,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import java.util.Optional;
 
 import static com.ssafy.algonote.fixture.MemberFixture.createMember;
+import static com.ssafy.algonote.fixture.NoteFixture.createNote;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -194,13 +195,6 @@ class NoteServiceTest {
         //then
         verify(noteDocumentRepository).save(any());
         verify(noteRepository).saveAndFlush(any());
-    }
-
-    private Note createNote(Long noteId, Member member) {
-        Note note = new Note();
-        ReflectionTestUtils.setField(note, "id", noteId);
-        ReflectionTestUtils.setField(note, "member", member);
-        return note;
     }
 
     private NoteDocument createNoteDoc(Long noteId) {
