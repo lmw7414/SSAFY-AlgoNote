@@ -13,9 +13,9 @@ import com.ssafy.algonote.note.repository.NoteDocumentRepository;
 import com.ssafy.algonote.note.repository.NoteRepository;
 import com.ssafy.algonote.problem.domain.ProblemDocument;
 import com.ssafy.algonote.problem.domain.SolvedProblem;
+import com.ssafy.algonote.problem.domain.WritingStatus;
 import com.ssafy.algonote.problem.repository.ProblemDocumentRepository;
 import com.ssafy.algonote.problem.repository.SolvedProblemRepository;
-import java.util.ArrayList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.client.elc.NativeQueryBuilder;
@@ -28,6 +28,7 @@ import org.springframework.data.elasticsearch.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -44,15 +45,25 @@ public class NoteService {
     private final ProblemDocumentRepository problemDocumentRepository;
 
     private final ElasticsearchOperations operations;
+
     // 노트 생성
     public void saveNote(Long memberId, Long problemId, String title, String content) {
         Member member = getMemberOrException(memberId);
-        SolvedProblem problem = getSolvedProblemOrException(memberId, problemId);
+        SolvedProblem solvedProblem = getSolvedProblemOrException(memberId, problemId);
 
-        Note note = noteRepository.save(Note.of(member, problem.getProblem(), title.trim(), content));
-        noteDocumentRepository.save(
-            NoteDocument.of(note.getId(), member, problem.getProblem(), title.trim(), content)
-        );
+        Note note = noteRepository.save(Note.of(member, solvedProblem.getProblem(), title.trim(), content));
+        noteDocumentRepository.save(NoteDocument.of(
+                note.getId(),
+                member.getNickname(),
+                String.valueOf(solvedProblem.getProblem().getId()),
+                solvedProblem.getProblem().getTitle(),
+                title.trim(),
+                content
+        ));
+        // solved_problem 노트 작성 상태 수정
+        if(solvedProblem.getComplete() == WritingStatus.NOT_YET) {
+            solvedProblem.setComplete(WritingStatus.DONE);
+        }
     }
 
     // 노트 삭제
@@ -90,7 +101,6 @@ public class NoteService {
         Note note = getNoteOrException(noteId);
         NoteDocument noteDocument = getNoteDocumentOrException(noteId);
 
-
         if (note.getMember() != member) {
             throw new CustomException(ErrorCode.NO_AUTHORITY);
         }
@@ -108,29 +118,6 @@ public class NoteService {
         return noteRepository.saveAndFlush(note);
     }
 
-    private Note getNoteOrException(Long noteId) {
-        return noteRepository.findById(noteId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_NOTE));
-    }
-
-    private NoteDocument getNoteDocumentOrException(Long noteId) {
-        return noteDocumentRepository.findById(noteId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_NOTE));
-    }
-
-
-    private Member getMemberOrException(Long memberId) {
-        return memberRepository.findById(memberId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
-    }
-
-    private SolvedProblem getSolvedProblemOrException(Long memberId, Long problemId) {
-        return solvedProblemRepository.findByMember_IdAndProblem_Id(memberId, problemId)
-                .orElseThrow(() -> new CustomException((ErrorCode.NOT_SOLVED)));
-    }
-
-
-
     public List<NoteSearchDto> fulltextNoteSearch(String keyword, int page) {
 
         SearchHits<NoteDocument> noteHits = searchNoteDocument(keyword, page);
@@ -142,7 +129,6 @@ public class NoteService {
 //        MatchQuery problemIdMatch = MatchQuery.of(m -> m.field("problemId").query(keyword));
 //        MatchQuery problemTitleMatch = MatchQuery.of(m -> m.field("problemTitle").query(keyword));
 //        MatchQuery noteTitleMatch = MatchQuery.of(m -> m.field("noteTitle").query(keyword));
-//
 //        Query query = createQuery(Arrays.asList(problemIdMatch._toQuery(), problemTitleMatch._toQuery(), noteTitleMatch._toQuery()));
 
         Criteria noteCriteria = new Criteria().or()
@@ -187,5 +173,25 @@ public class NoteService {
                     )))
             .build();
 
+    }
+
+    private Note getNoteOrException(Long noteId) {
+        return noteRepository.findById(noteId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_NOTE));
+    }
+
+    private NoteDocument getNoteDocumentOrException(Long noteId) {
+        return noteDocumentRepository.findById(noteId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_NOTE));
+    }
+
+    private Member getMemberOrException(Long memberId) {
+        return memberRepository.findById(memberId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
+    }
+
+    private SolvedProblem getSolvedProblemOrException(Long memberId, Long problemId) {
+        return solvedProblemRepository.findByMember_IdAndProblem_Id(memberId, problemId)
+                .orElseThrow(() -> new CustomException((ErrorCode.NOT_SOLVED)));
     }
 }
