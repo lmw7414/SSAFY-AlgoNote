@@ -5,7 +5,8 @@ import com.ssafy.algonote.member.domain.Member;
 import com.ssafy.algonote.member.repository.MemberRepository;
 import com.ssafy.algonote.problem.domain.Problem;
 import com.ssafy.algonote.problem.repository.ProblemRepository;
-import com.ssafy.algonote.submission.domain.Submission;
+import com.ssafy.algonote.problem.service.SolvedProblemService;
+import com.ssafy.algonote.submission.dto.request.SubmissionReqDto;
 import com.ssafy.algonote.submission.repository.SubmissionRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,7 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static com.ssafy.algonote.fixture.SubmissionFixture.createSuccess;
+import static com.ssafy.algonote.fixture.SubmissionReqFixture.createSuccess;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -35,6 +36,8 @@ class SubmissionServiceTest {
     private MemberRepository memberRepository;
     @Mock
     private ProblemRepository problemRepository;
+    @Mock
+    private SolvedProblemService solvedProblemService;
 
     @Test
     @DisplayName("[성공] 성공 제출이력 정상적으로 저장")
@@ -43,27 +46,17 @@ class SubmissionServiceTest {
         Long submissionId = 100000L;
         Long problemId = 1000L;
         Long memberId = 1L;
-        Submission submission = createSuccess(submissionId, memberId);
+        SubmissionReqDto req = createSuccess(submissionId, problemId);
 
         given(memberRepository.findById(memberId)).willReturn(Optional.of(mock(Member.class)));
         given(problemRepository.findById(problemId)).willReturn(Optional.of(mock(Problem.class)));
 
         // When
-        sut.saveSubmission(
-                submission.getId(),
-                memberId,
-                problemId,
-                submission.getCode(),
-                submission.getResult(),
-                submission.getLength(),
-                submission.getSubmissionTime(),
-                submission.getMemorySize(),
-                submission.getRunningTime(),
-                submission.getLanguage()
-        );
+        sut.saveSubmission(req, memberId);
 
         // Then
         verify(submissionRepository).save(any());
+        verify(solvedProblemService).saveSolvedProblem(any(), any(), any());
     }
 
     @Test
@@ -73,25 +66,12 @@ class SubmissionServiceTest {
         Long submissionId = 100000L;
         Long problemId = 1000L;
         Long memberId = 1L;
-        Submission submission = createSuccess(submissionId, memberId);
+        SubmissionReqDto req = createSuccess(submissionId, problemId);
 
         given(memberRepository.findById(memberId)).willReturn(Optional.empty());
 
         // When & Then
-        assertThrows(CustomException.class, () -> {
-            sut.saveSubmission(
-                    submission.getId(),
-                    memberId,
-                    problemId,
-                    submission.getCode(),
-                    submission.getResult(),
-                    submission.getLength(),
-                    submission.getSubmissionTime(),
-                    submission.getMemorySize(),
-                    submission.getRunningTime(),
-                    submission.getLanguage()
-            );
-        });
+        assertThrows(CustomException.class, () -> sut.saveSubmission(req, memberId));
     }
 
     @Test
@@ -101,25 +81,13 @@ class SubmissionServiceTest {
         Long submissionId = 100000L;
         Long problemId = 1000L;
         Long memberId = 1L;
-        Submission submission = createSuccess(submissionId, memberId);
+        SubmissionReqDto req = createSuccess(submissionId, problemId);
 
         given(memberRepository.findById(memberId)).willReturn(Optional.of(mock(Member.class)));
         given(problemRepository.findById(problemId)).willReturn(Optional.empty());
+
         // When & Then
-        assertThrows(CustomException.class, () -> {
-            sut.saveSubmission(
-                    submission.getId(),
-                    memberId,
-                    problemId,
-                    submission.getCode(),
-                    submission.getResult(),
-                    submission.getLength(),
-                    submission.getSubmissionTime(),
-                    submission.getMemorySize(),
-                    submission.getRunningTime(),
-                    submission.getLanguage()
-            );
-        });
+        assertThrows(CustomException.class, () -> sut.saveSubmission(req, memberId));
     }
 
 }
