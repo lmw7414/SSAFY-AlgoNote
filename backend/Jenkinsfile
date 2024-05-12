@@ -38,8 +38,8 @@ pipeline{
             steps{
                 sh '''
                     ssh -i ~/.ssh/id_rsa ubuntu@k10b203.p.ssafy.io "docker pull tollea1234/algonote-backend:$BUILD_NUMBER"
-                    ssh -i ~/.ssh/id_rsa ubuntu@k10b203.p.ssafy.io "docker rm spring-container --force"
-                    ssh -i ~/.ssh/id_rsa ubuntu@k10b203.p.ssafy.io "docker run -p 8080:8081 -d --name spring-container tollea1234/algonote-backend:$BUILD_NUMBER"
+                    ssh -i ~/.ssh/id_rsa ubuntu@k10b203.p.ssafy.io "docker rm backend-container --force"
+                    ssh -i ~/.ssh/id_rsa ubuntu@k10b203.p.ssafy.io "docker run -p 8080:8081 -d --name backend-container tollea1234/algonote-backend:$BUILD_NUMBER"
                 '''
             }
         }
