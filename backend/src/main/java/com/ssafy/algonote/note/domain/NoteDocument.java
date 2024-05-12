@@ -47,12 +47,12 @@ public class NoteDocument {
     @Field(type=FieldType.Text)
     private String content;
 
-    public static NoteDocument of(Long noteId, Member member, Problem problem, String title, String content) {
+    public static NoteDocument of(Long noteId, String nickname, String problemId, String problemTitle, String title, String content) {
         return NoteDocument.builder()
                 .id(noteId)
-                .memberNickname(member.getNickname())
-                .problemId(String.valueOf(problem.getId()))
-                .problemTitle(problem.getTitle())
+                .memberNickname(nickname)
+                .problemId(problemId)
+                .problemTitle(problemTitle)
                 .noteTitle(title)
                 .content(content)
                 .build();
