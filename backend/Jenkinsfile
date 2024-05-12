@@ -9,10 +9,25 @@ pipeline{
     agent any
 
     stages{
+
+        stage('Springboot build'){
+            steps{
+                dir('backend'){
+                    sh '''
+                        echo 'Springboot build...'
+                        mkdir -p src/main/resources
+                        cp /var/jenkins_home/env/application.yml ./src/main/resources/application.yml
+                        chmod +x gradlew
+                        ./gradlew clean bootJar
+                    '''
+                }
+            }
+        }
+
+
         stage('Build docker image'){
             steps{
                 dir('backend'){
-                    sh 'cp /var/jenkins_home/env/application.yml ./src/main/resources/application.yml'
                     script{
                         dockerImage = docker.build repository + "$BUILD_NUMBER"
                     }
