@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, KeyboardEvent } from 'react'
 import style from './compare.module.scss'
 import { getAllMySolvedList } from '@/apis/problemAxios'
 import CodeView from '@/components/commons/CodeView'
 import Modal from '@/components/commons/Modal'
 import cStyle from '@/components/commons/Modal/Modal.module.scss'
+import SubmissionList from '@/components/commons/Modal/SubmissionList'
 import TierImg from '@/components/commons/Tier'
 
 interface Problem {
@@ -19,10 +20,18 @@ interface ProblemData {
   uploadDate: Date
 }
 
+interface DetailProblemType {
+  modalStatus: boolean
+  problemId: number
+}
+
 const ComparePage = () => {
   const [isModalOpened, setIsModalOpened] = useState<boolean>(false)
   const [myProblems, setMyProblems] = useState<ProblemData[]>([])
-  const [detailProblems, setDetailProblems] = useState<boolean>(false)
+  const [detailProblems, setDetailProblems] = useState<DetailProblemType>({
+    modalStatus: false,
+    problemId: 0,
+  })
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,8 +42,13 @@ const ComparePage = () => {
     fetchData()
   }, [])
 
-  const handleDetailProblems = () => {
-    setDetailProblems(true)
+  const handleDetailProblems = (
+    e: KeyboardEvent<HTMLDivElement>,
+    problemId: number,
+  ) => {
+    if (e.key === 'Enter') {
+      setDetailProblems({ modalStatus: true, problemId })
+    }
   }
 
   return (
@@ -50,9 +64,16 @@ const ComparePage = () => {
       </div>
       <div>
         {isModalOpened && (
-          <Modal onClose={() => setIsModalOpened(false)}>
-            {detailProblems === true ? (
-              <div />
+          <Modal
+            onClose={() => {
+              setIsModalOpened(false)
+              setDetailProblems({ modalStatus: false, problemId: 0 })
+            }}
+          >
+            {detailProblems.modalStatus === true ? (
+              <div>
+                <SubmissionList problemId={detailProblems.problemId} />
+              </div>
             ) : (
               <div>
                 <div className={cStyle.title}>가져올 코드를 선택하세요</div>
@@ -63,8 +84,13 @@ const ComparePage = () => {
                       tabIndex={0}
                       key={it.problem.id}
                       className={cStyle.problem}
-                      onClick={() => setDetailProblems(true)}
-                      onKeyDown={() => handleDetailProblems()}
+                      onClick={() =>
+                        setDetailProblems({
+                          modalStatus: true,
+                          problemId: it.problem.id,
+                        })
+                      }
+                      onKeyDown={(e) => handleDetailProblems(e, it.problem.id)}
                     >
                       <div>{it.problem.title}</div>
                       <div>
