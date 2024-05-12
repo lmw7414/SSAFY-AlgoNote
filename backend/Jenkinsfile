@@ -44,7 +44,7 @@ pipeline{
         stage("Push our image"){
             steps{
                 script{
-                    sh "docker pu $repository:$BUILD_NUMBER"
+                    sh "docker push $repository:$BUILD_NUMBER"
                 }
             }
         }
