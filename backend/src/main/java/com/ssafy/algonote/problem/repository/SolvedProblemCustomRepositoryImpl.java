@@ -28,7 +28,7 @@ public class SolvedProblemCustomRepositoryImpl implements SolvedProblemCustomRep
     private Map<String, Integer> scoreMap;
     private Map<String, Set<Long>> problemIdMap;
 
-    private String groups[] = {"math_theory", "graph_theory", "data_structure", "optimization", "implementation"};
+    private String groups[] = {"math_theory", "graph_theory", "data_structure", "optimization", "implementation", "string"};
 
     public SolvedProblemCustomRepositoryImpl(EntityManager em){
         this.queryFactory = new JPAQueryFactory(em);
