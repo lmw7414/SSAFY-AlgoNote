@@ -24,32 +24,14 @@ public class HeartService {
 
     @Transactional
     public HeartResDto heart(Long memberId, Long noteId) {
-        Member member = memberRepository.findById(memberId).orElseThrow(
-                () -> new CustomException(ErrorCode.NOT_FOUND_MEMBER)
-        );
+        Member member = getMemberOrException(memberId);
+        Note note = getNoteOrException(noteId);
 
-        Note note = noteRepository.findById(noteId).orElseThrow(
-                () -> new CustomException(ErrorCode.NOT_FOUND_NOTE)
-        );
-
-        Heart heart = heartRepository.findOneByMemberIdAndNoteId(memberId, noteId);
+        Heart heart = heartRepository.findByMemberAndNote(member, note);
 
         if (heart == null) {
             log.info("ADD HEART userId: {}, noteId: {}", memberId, noteId);
-            member = Member.builder()
-                    .id(memberId)
-                    .build();
-
-            note = Note.builder()
-                    .id(noteId)
-                    .build();
-
-            heart = Heart.builder()
-                    .member(member)
-                    .note(note)
-                    .build();
-
-            heartRepository.save(heart);
+            heartRepository.save(Heart.of(member, note));
             return new HeartResDto(true);
         } else {
             log.info("DELETE HEART userId: {}, noteId: {}", memberId, noteId);
@@ -58,7 +40,7 @@ public class HeartService {
         }
     }
 
-    // 좋아요 개수 카운트
+    // 노트의 좋아요 개수 카운트
     public long heartCnt(Long noteId) {
         Note note = getNoteOrException(noteId);
         return heartRepository.countByNote(note);
