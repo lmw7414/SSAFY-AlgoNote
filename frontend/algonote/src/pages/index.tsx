@@ -76,7 +76,7 @@ const Main = () => {
           </div>
         </div>
         <div className={s.container}>
-          <h2 className={s.title}>내 알고리즘 실력 분석</h2>
+          <h2 className={s.title}>내 기록</h2>
           <div className={s.analysis}>
             <div className={s.radarCont}>
               <p className={s.graphTitle}>종합점수</p>
@@ -131,10 +131,10 @@ const Main = () => {
         <hr className={s.divide} />
 
         <div className={s.container}>
-          <h2 className={s.title}>문제 추천</h2>
+          <h2 className={s.title}>취약 알고리즘 공략하기</h2>
           <div className={s.recommendCont}>
             <p className={s.recommendDesc}>
-              문제를 풀어서 해당 유형의 어항을 꽉 채워보세요
+              감이 떨어진 알고리즘 유형 문제를 추천해드려요
             </p>
             <div className={s.waveCont}>
               {recentSolved?.map((group) => (
