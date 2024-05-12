@@ -33,4 +33,10 @@ public class Heart extends BaseEntity {
     @JoinColumn(name = "note_id")
     private Note note;
 
+    public static Heart of(Member member, Note note) {
+        return Heart.builder()
+                .member(member)
+                .note(note)
+                .build();
+    }
 }

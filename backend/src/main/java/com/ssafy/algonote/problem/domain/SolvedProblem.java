@@ -27,6 +27,7 @@ public class SolvedProblem extends BaseEntity {
     @JoinColumn(name = "problem_id")
     private Problem problem;
 
+    @Setter
     @Enumerated(EnumType.STRING)
     private WritingStatus complete;
 
