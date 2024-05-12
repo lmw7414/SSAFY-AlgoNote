@@ -5,10 +5,8 @@ import com.ssafy.algonote.member.domain.Member;
 import com.ssafy.algonote.member.repository.MemberRepository;
 import com.ssafy.algonote.note.domain.Note;
 import com.ssafy.algonote.note.domain.NoteDocument;
-import com.ssafy.algonote.note.repository.BookmarkRepository;
-import com.ssafy.algonote.note.repository.HeartRepository;
-import com.ssafy.algonote.note.repository.NoteDocumentRepository;
-import com.ssafy.algonote.note.repository.NoteRepository;
+import com.ssafy.algonote.note.domain.TempNote;
+import com.ssafy.algonote.note.repository.*;
 import com.ssafy.algonote.problem.domain.Problem;
 import com.ssafy.algonote.problem.domain.SolvedProblem;
 import com.ssafy.algonote.problem.repository.SolvedProblemRepository;
@@ -24,6 +22,7 @@ import java.util.Optional;
 
 import static com.ssafy.algonote.fixture.MemberFixture.createMember;
 import static com.ssafy.algonote.fixture.NoteFixture.createNote;
+import static com.ssafy.algonote.fixture.NoteFixture.createTempNote;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -37,6 +36,8 @@ class NoteServiceTest {
     @Mock
     private NoteRepository noteRepository;
     @Mock
+    private TempNoteRepository tempNoteRepository;
+    @Mock
     private MemberRepository memberRepository;
     @Mock
     private HeartRepository heartRepository;
@@ -44,7 +45,6 @@ class NoteServiceTest {
     private BookmarkRepository bookmarkRepository;
     @Mock
     private SolvedProblemRepository solvedProblemRepository;
-
     @Mock
     private NoteDocumentRepository noteDocumentRepository;
 
@@ -113,7 +113,6 @@ class NoteServiceTest {
         });
     }
 
-    // 노트 삭제
     @Test
     @DisplayName("[삭제] 내가 작성한 노트 삭제")
     void givenUserId_whenDeleteNote_thenNothing() {
@@ -170,7 +169,6 @@ class NoteServiceTest {
     }
 
 
-    // 노트 업데이트
     @Test
     @DisplayName("[수정] 노트 수정이 성공하는 경우")
     void givenTitleAndContent_whenUpdateNote_thenNothing() {
@@ -195,6 +193,74 @@ class NoteServiceTest {
         //then
         verify(noteDocumentRepository).save(any());
         verify(noteRepository).saveAndFlush(any());
+    }
+
+    @Test
+    @DisplayName("[생성] 임시 노트 작성이 성공한 경우")
+    void givenNoteData_whenSaveTempNote_thenNothing() {
+        //given
+        String title = "title";
+        String content = "content";
+        Long memberId = 1L;
+        Long problemId = 1000L;
+
+        //mocking
+        Member mockMember = mock(Member.class);
+        TempNote mockTempNote = mock(TempNote.class);
+        SolvedProblem mockSolvedProblem = mock(SolvedProblem.class);
+        when(mockTempNote.getMember()).thenReturn(mockMember);
+        when(mockTempNote.getProblem()).thenReturn(mock(Problem.class));
+        when(mockMember.getId()).thenReturn(memberId);
+        given(memberRepository.findById(memberId)).willReturn(Optional.of(mockMember));
+        given(solvedProblemRepository.findByMember_IdAndProblem_Id(memberId, problemId)).willReturn(Optional.of(mockSolvedProblem));
+        given(tempNoteRepository.save(any())).willReturn(mockTempNote);
+
+        //when
+        sut.saveTempNote(memberId, problemId, title, content);
+
+        //then
+        verify(tempNoteRepository).save(any());
+    }
+
+    @Test
+    @DisplayName("[수정] 임시노트 수정이 성공하는 경우")
+    void givenTitleAndContent_whenUpdateTempNote_thenNothing() {
+        // given
+        Long memberId = 1L;
+        Long tempNoteId = 1000L;
+        String title = "updatedTitle";
+        String content = "updatedContent";
+
+        // mocking
+        Member mockMember = mock(Member.class);
+        TempNote mockTempNote = mock(TempNote.class);
+        when(mockTempNote.getId()).thenReturn(tempNoteId);
+        when(mockTempNote.getMember()).thenReturn(mockMember);
+        when(mockTempNote.getProblem()).thenReturn(mock(Problem.class));
+        given(memberRepository.findById(memberId)).willReturn(Optional.of(mockMember));
+        given(tempNoteRepository.findById(tempNoteId)).willReturn(Optional.of(mockTempNote));
+        given(tempNoteRepository.saveAndFlush(any())).willReturn(mockTempNote);
+        // when
+        sut.updateTempNote(memberId, tempNoteId, title, content);
+
+        //then
+        verify(tempNoteRepository).saveAndFlush(any());
+    }
+
+
+    @Test
+    @DisplayName("[삭제] 내가 작성한 임시노트 삭제")
+    void givenUserId_whenDeleteTempNote_thenNothing() {
+        Long memberId = 1L;
+        Long tempNoteId = 1000L;
+        Member member = createMember(memberId);
+        TempNote tempNote = createTempNote(tempNoteId, member);
+        // mocking
+        given(memberRepository.findById(memberId)).willReturn(Optional.of(member));
+        given(tempNoteRepository.findById(tempNoteId)).willReturn(Optional.of(tempNote));
+
+        sut.deleteTempNote(memberId, tempNoteId);
+        verify(tempNoteRepository).delete(any());
     }
 
     private NoteDocument createNoteDoc(Long noteId) {
