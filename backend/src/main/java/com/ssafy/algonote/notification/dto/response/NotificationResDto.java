@@ -5,13 +5,13 @@ import lombok.Builder;
 
 @Builder
 public record NotificationResDto(
-    Long memberId,
+    Long receiverId,
     String content,
     boolean isRead
 ) {
     public static NotificationResDto from(Notification entity) {
         return NotificationResDto.builder()
-            .memberId(entity.getMemberId())
+            .receiverId(entity.getReciever().getId())
             .content(entity.getContent())
             .build();
     }

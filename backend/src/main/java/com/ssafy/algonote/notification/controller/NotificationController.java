@@ -36,18 +36,18 @@ public class NotificationController {
         return notificationService.subscribe(memberId, lastEventId);
     }
 
-    @Operation(
-        summary = "알림 전송",
-        description = "현재 로그인한 사용자가 구독한 SseEmitter로 알림을 보냅니다."
-    )
-//    @PostMapping("/send-data")
-//    public void sendData() {
-//        Long memberId = SecurityUtil.getMemberId();
+//    @Operation(
+//        summary = "알림 전송",
+//        description = "현재 로그인한 사용자가 구독한 SseEmitter로 알림을 보냅니다."
+//    )
+////    @PostMapping("/send-data")
+////    public void sendData() {
+////        Long memberId = SecurityUtil.getMemberId();
+////        notificationService.notify(memberId, "Test Event");
+////    }
+//    @PostMapping("/send-data/{memberId}")
+//    public void sendData(@PathVariable Long memberId) {
 //        notificationService.notify(memberId, "Test Event");
 //    }
-    @PostMapping("/send-data/{memberId}")
-    public void sendData(@PathVariable Long memberId) {
-        notificationService.notify(memberId, "Test Event");
-    }
 
 }

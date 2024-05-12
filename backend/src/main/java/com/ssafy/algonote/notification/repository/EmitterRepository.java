@@ -14,8 +14,9 @@ public class EmitterRepository {
     private final Map<String, SseEmitter> emitters = new ConcurrentHashMap<>();
     private final Map<String, Object> eventCache = new ConcurrentHashMap<>();  // key는 EmitterId
 
-    public void save(String id, SseEmitter emitter) {
-        emitters.put(id, emitter);
+    public SseEmitter save(String id, SseEmitter sseEmitter) {
+        emitters.put(id, sseEmitter);
+        return sseEmitter;
     }
 
     public void deleteById(String id) {
