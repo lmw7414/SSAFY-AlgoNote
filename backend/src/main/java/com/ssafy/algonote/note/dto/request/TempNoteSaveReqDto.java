@@ -1,9 +1,8 @@
 package com.ssafy.algonote.note.dto.request;
 
-public record NoteSaveReqDto(
+public record TempNoteSaveReqDto(
         Long problemId,
         String title,
-        String content,
-        Long tempNoteId
+        String content
 ) {
 }

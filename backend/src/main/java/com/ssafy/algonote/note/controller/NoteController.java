@@ -5,6 +5,7 @@ import com.ssafy.algonote.note.domain.Note;
 import com.ssafy.algonote.note.dto.HeartResDto;
 import com.ssafy.algonote.note.dto.request.NoteSaveReqDto;
 import com.ssafy.algonote.note.dto.request.NoteUpdateReqDto;
+import com.ssafy.algonote.note.dto.request.TempNoteSaveReqDto;
 import com.ssafy.algonote.note.dto.response.*;
 import com.ssafy.algonote.note.service.BookmarkService;
 import com.ssafy.algonote.note.service.HeartService;
@@ -50,7 +51,7 @@ public class NoteController {
     @PostMapping
     public ResponseEntity<Void> saveNote(@RequestBody NoteSaveReqDto req) {
         Long memberId = SecurityUtil.getMemberId();
-        noteService.saveNote(memberId, req.problemId(), req.title(), req.content());
+        noteService.saveNote(memberId, req.problemId(), req.title(), req.content(), req.tempNoteId());
         return ResponseEntity.ok().build();
     }
 
@@ -60,7 +61,6 @@ public class NoteController {
     )
     @PatchMapping("/{noteId}")
     public ResponseEntity<NoteResDto> updateNote(@PathVariable("noteId") Long noteId, @RequestBody NoteUpdateReqDto req) {
-        log.info("노트 수정 api 요청");
         Long memberId = SecurityUtil.getMemberId();
         Note updatedNote = noteService.update(memberId, noteId, req.title(), req.content());
         return ResponseEntity.ok(
@@ -138,6 +138,44 @@ public class NoteController {
                         .toList()
                 )
         );
+    }
+
+    @Operation(
+            summary = "임시 노트 저장",
+            description = "임시저장 버튼을 누르면 임시 저장하고, 저장된 데이터를 반환한다."
+    )
+    @PostMapping("/temp")
+    public ResponseEntity<TempNoteResDto> saveTempNote(@RequestBody TempNoteSaveReqDto req) {
+        Long memberId = SecurityUtil.getMemberId();
+        return ResponseEntity.ok(noteService.saveTempNote(memberId, req.problemId(), req.title(), req.content()));
+    }
+    @Operation(
+            summary = "임시 노트 삭제",
+            description = "임시노트를 삭제한다."
+    )
+    @DeleteMapping("/{tempNoteId}/temp")
+    public ResponseEntity<Void> deleteTempNote(@PathVariable("tempNoteId") Long tempNoteId) {
+        Long memberId = SecurityUtil.getMemberId();
+        noteService.deleteTempNote(memberId, tempNoteId);
+        return ResponseEntity.ok().build();
+    }
+    @Operation(
+            summary = "임시 노트 조회",
+            description = "내가 해당 문제에 대해 작성했던 임시노트를 전체 조회한다."
+    )
+    @GetMapping("/temp")
+    public ResponseEntity<List<TempNoteResDto>> getListByProblem(@RequestParam("problemId") Long problemId) {
+        Long memberId = SecurityUtil.getMemberId();
+        return ResponseEntity.ok(noteService.getTempNoteList(memberId, problemId));
+    }
+    @Operation(
+            summary = "임시 노트 수정",
+            description = "임시저장 버튼을 누르면 임시 저장하고, 저장된 데이터를 반환한다."
+    )
+    @PatchMapping("/{tempNoteId}/temp")
+    public ResponseEntity<TempNoteResDto> updateTempNote(@PathVariable("tempNoteId") Long tempNoteId, @RequestBody NoteUpdateReqDto req) {
+        Long memberId = SecurityUtil.getMemberId();
+        return ResponseEntity.ok(noteService.updateTempNote(memberId, tempNoteId, req.title(), req.content()));
     }
 
     @Operation(

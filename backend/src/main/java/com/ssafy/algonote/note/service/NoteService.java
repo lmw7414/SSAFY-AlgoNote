@@ -6,11 +6,10 @@ import com.ssafy.algonote.member.domain.Member;
 import com.ssafy.algonote.member.repository.MemberRepository;
 import com.ssafy.algonote.note.domain.Note;
 import com.ssafy.algonote.note.domain.NoteDocument;
+import com.ssafy.algonote.note.domain.TempNote;
 import com.ssafy.algonote.note.dto.response.NoteSearchDto;
-import com.ssafy.algonote.note.repository.BookmarkRepository;
-import com.ssafy.algonote.note.repository.HeartRepository;
-import com.ssafy.algonote.note.repository.NoteDocumentRepository;
-import com.ssafy.algonote.note.repository.NoteRepository;
+import com.ssafy.algonote.note.dto.response.TempNoteResDto;
+import com.ssafy.algonote.note.repository.*;
 import com.ssafy.algonote.problem.domain.ProblemDocument;
 import com.ssafy.algonote.problem.domain.SolvedProblem;
 import com.ssafy.algonote.problem.domain.WritingStatus;
@@ -30,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -43,13 +43,17 @@ public class NoteService {
     private final BookmarkRepository bookmarkRepository;
     private final NoteDocumentRepository noteDocumentRepository;
     private final ProblemDocumentRepository problemDocumentRepository;
-
+    private final TempNoteRepository tempNoteRepository;
     private final ElasticsearchOperations operations;
 
     // 노트 생성
-    public void saveNote(Long memberId, Long problemId, String title, String content) {
+    public void saveNote(Long memberId, Long problemId, String title, String content, Long tempNoteId) {
         Member member = getMemberOrException(memberId);
         SolvedProblem solvedProblem = getSolvedProblemOrException(memberId, problemId);
+        if (tempNoteId != null) {
+            TempNote tempNote = getTempNoteOrException(tempNoteId);
+            tempNoteRepository.delete(tempNote);
+        }
 
         Note note = noteRepository.save(Note.of(member, solvedProblem.getProblem(), title.trim(), content));
         noteDocumentRepository.save(NoteDocument.of(
@@ -61,10 +65,11 @@ public class NoteService {
                 content
         ));
         // solved_problem 노트 작성 상태 수정
-        if(solvedProblem.getComplete() == WritingStatus.NOT_YET) {
+        if (solvedProblem.getComplete() == WritingStatus.NOT_YET) {
             solvedProblem.setComplete(WritingStatus.DONE);
         }
     }
+
 
     // 노트 삭제
     public void deleteNote(Long memberId, Long noteId) {
@@ -81,7 +86,7 @@ public class NoteService {
         noteDocumentRepository.delete(noteDocument);
     }
 
-    // 문제별로 노트 조회
+    // 노트 id로 조회
     @Transactional(readOnly = true)
     public Note getNoteById(Long noteId) {
         return getNoteOrException(noteId);
@@ -132,10 +137,10 @@ public class NoteService {
 //        Query query = createQuery(Arrays.asList(problemIdMatch._toQuery(), problemTitleMatch._toQuery(), noteTitleMatch._toQuery()));
 
         Criteria noteCriteria = new Criteria().or()
-            .subCriteria(new Criteria("problemId").matches(keyword))
-            .subCriteria(new Criteria("noteTitle").matches(keyword))
-            .subCriteria(new Criteria("problemTitle").matches(keyword))
-            .subCriteria(new Criteria("memberNickname").matches(keyword));
+                .subCriteria(new Criteria("problemId").matches(keyword))
+                .subCriteria(new Criteria("noteTitle").matches(keyword))
+                .subCriteria(new Criteria("problemTitle").matches(keyword))
+                .subCriteria(new Criteria("memberNickname").matches(keyword));
 
         CriteriaQuery query = new CriteriaQuery(noteCriteria);
 
@@ -148,15 +153,15 @@ public class NoteService {
     public List<NoteSearchDto> parseSearchHits(SearchHits<NoteDocument> noteHits) {
         List<NoteSearchDto> noteSearchResults = new ArrayList<>();
 
-        for(SearchHit<NoteDocument> hit : noteHits){
+        for (SearchHit<NoteDocument> hit : noteHits) {
             NoteDocument noteDocument = hit.getContent();
             ProblemDocument problemDocument = problemDocumentRepository.findById(
-                noteDocument.getProblemId()).orElse(null);
+                    noteDocument.getProblemId()).orElse(null);
             int tier = problemDocument.getTier();
 
             noteSearchResults.add(NoteSearchDto.of(
-                noteDocument,
-                tier
+                    noteDocument,
+                    tier
             ));
         }
 
@@ -164,20 +169,71 @@ public class NoteService {
 
     }
 
-    private Query createQuery(List<co.elastic.clients.elasticsearch._types.query_dsl.Query> queries){
+    private Query createQuery(List<co.elastic.clients.elasticsearch._types.query_dsl.Query> queries) {
         return new NativeQueryBuilder()
-            .withQuery(
-                q -> q.bool(
-                    b -> b.should(
-                        queries
-                    )))
-            .build();
+                .withQuery(
+                        q -> q.bool(
+                                b -> b.should(
+                                        queries
+                                )))
+                .build();
 
     }
+
+    // 임시 노트 저장(리턴 있음)
+    public TempNoteResDto saveTempNote(Long memberId, Long problemId, String title, String content) {
+        Member member = getMemberOrException(memberId);
+        SolvedProblem solvedProblem = getSolvedProblemOrException(memberId, problemId);
+        return TempNoteResDto.from(tempNoteRepository.save(TempNote.of(member, solvedProblem.getProblem(), title.trim(), content)));
+    }
+
+    // 임시 노트 수정
+    public TempNoteResDto updateTempNote(Long memberId, Long tempNoteId, String title, String content) {
+        Member member = getMemberOrException(memberId);
+        TempNote tempNote = getTempNoteOrException(tempNoteId);
+
+        if (tempNote.getMember() != member) {
+            throw new CustomException(ErrorCode.NO_AUTHORITY);
+        }
+        if (title != null) {
+            tempNote.setTitle(title);
+        }
+        if (content != null) {
+            tempNote.setContent(content);
+        }
+        return TempNoteResDto.from(tempNoteRepository.saveAndFlush(tempNote));
+
+    }
+
+    // 임시 노트 삭제
+    public void deleteTempNote(Long memberId, Long tempNoteId) {
+        Member member = getMemberOrException(memberId);
+        TempNote note = getTempNoteOrException(tempNoteId);
+
+        if (note.getMember() != member) {
+            throw new CustomException(ErrorCode.NO_AUTHORITY);
+        }
+        tempNoteRepository.delete(note);
+    }
+
+    // 문제에 해당하는 임시 노트 전체 조회(해당 문제에 존재하는)
+    public List<TempNoteResDto> getTempNoteList(Long memberId, Long problemId) {
+        getMemberOrException(memberId);
+        return tempNoteRepository.findAllByMember_IdAndProblem_Id(memberId, problemId)
+                .stream()
+                .map(TempNoteResDto::from)
+                .collect(Collectors.toList());
+    }
+
 
     private Note getNoteOrException(Long noteId) {
         return noteRepository.findById(noteId)
                 .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_NOTE));
+    }
+
+    private TempNote getTempNoteOrException(Long tempNoteId) {
+        return tempNoteRepository.findById(tempNoteId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_TEMP_NOTE));
     }
 
     private NoteDocument getNoteDocumentOrException(Long noteId) {
