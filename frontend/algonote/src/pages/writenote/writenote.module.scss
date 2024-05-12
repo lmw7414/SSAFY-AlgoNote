@@ -88,3 +88,19 @@
   display: flex;
   justify-content: space-between;
 }
+
+.detailModal{
+  display: flex;
+  width: 100%;
+  border: 1px solid red;
+}
+
+.selectedCode{
+  margin-left: 1rem;
+  width: 45rem;
+  height: 35rem;
+  height: inherit;
+  overflow-x: hidden;
+  overflow-y: auto;
+  border: 1px solid blue;
+}

@@ -20,7 +20,7 @@ interface ProblemData {
   uploadDate: Date
 }
 
-interface DetailProblemType {
+export interface DetailProblemType {
   modalStatus: boolean
   problemId: number
 }
@@ -72,7 +72,11 @@ const ComparePage = () => {
           >
             {detailProblems.modalStatus === true ? (
               <div>
-                <SubmissionList problemId={detailProblems.problemId} />
+                <SubmissionList
+                  problemId={detailProblems.problemId}
+                  setIsModalOpened={setIsModalOpened}
+                  setDetailProblems={setDetailProblems}
+                />
               </div>
             ) : (
               <div>

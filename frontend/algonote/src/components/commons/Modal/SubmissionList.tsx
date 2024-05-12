@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react'
+import { SimpleButton } from '../Buttons/Button'
 import WrapperComponent from './WrapperComponent'
 import { getSubmissionList } from '@/apis/regist-noteAxios'
 import SubmitListTitle from '@/components/commons/SubmitListTitle'
+import { DetailProblemType } from '@/pages/compare'
 import style from '@/pages/writenote/writenote.module.scss'
+import useCodeInfo from '@/stores/code-store'
 
 interface SubmissionHistory {
   code: string
@@ -17,9 +20,15 @@ interface SubmissionHistory {
 
 interface SubmissionListProps {
   problemId: number
+  setIsModalOpened: React.Dispatch<React.SetStateAction<boolean>>
+  setDetailProblems: React.Dispatch<React.SetStateAction<DetailProblemType>>
 }
 
-const SubmissionList = ({ problemId }: SubmissionListProps) => {
+const SubmissionList = ({
+  problemId,
+  setIsModalOpened,
+  setDetailProblems,
+}: SubmissionListProps) => {
   const [submission, setSubmission] = useState<SubmissionHistory[]>([])
   const [selectedCode, setSelectedCode] = useState('')
   const currentDate = new Date()
@@ -52,9 +61,17 @@ const SubmissionList = ({ problemId }: SubmissionListProps) => {
     }
   }
 
+  // 업로드 버튼 클릭시 코드 저장하고 모달 닫음, 세부 정보 모달도 닫음
+  const handleUploadCode = (code: string) => {
+    const { setCodeInfo } = useCodeInfo.getState()
+    setCodeInfo(code)
+    setIsModalOpened(false)
+    setDetailProblems({ modalStatus: false, problemId: 0 })
+  }
+
   return (
     <div>
-      <div>
+      <div className={style.detailModal}>
         <div className={style.submitListBox} style={{ width: '25rem' }}>
           <div className={style.submitListTitle}>
             <SubmitListTitle />
@@ -105,9 +122,16 @@ const SubmissionList = ({ problemId }: SubmissionListProps) => {
             })}
           </div>
         </div>
-        {selectedCode && (
-          <div className={style.selectedCode}>{selectedCode}</div>
-        )}
+        <div className={style.selectedCode}>
+          {selectedCode && <div>{selectedCode}</div>}
+        </div>
+      </div>
+      <div>
+        <SimpleButton
+          text="업로드"
+          style={{ width: '5rem', height: '2.5rem' }}
+          onClick={() => handleUploadCode(selectedCode)}
+        />
       </div>
     </div>
   )
