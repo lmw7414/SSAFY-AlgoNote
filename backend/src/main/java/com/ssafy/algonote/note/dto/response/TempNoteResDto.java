@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 public record TempNoteResDto(
         Long tempNoteId,
         MemberResDto member,
-        ProblemResDto problemResDto,
+        ProblemResDto problem,
         String noteTitle,
         String content,
         LocalDateTime createdAt,

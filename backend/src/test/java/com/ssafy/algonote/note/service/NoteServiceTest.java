@@ -50,14 +50,44 @@ class NoteServiceTest {
 
     // 노트 생성
     @Test
-    @DisplayName("[생성] 노트 작성이 성공한 경우")
-    void givenNoteData_whenSaveNote_thenNothing() {
+    @DisplayName("[생성] 노트 작성이 성공한 경우 - 작성한 임시노트 없음")
+    void givenNoteDataFromTempNote_whenSaveNote_thenNothing() {
         //given
         String title = "title";
         String content = "content";
         Long memberId = 1L;
         Long problemId = 1000L;
+        Long tempNoteId = 2L;
+        Problem mockProblem = mock(Problem.class);
+        SolvedProblem mockSolvedProblem = mock(SolvedProblem.class);
 
+        when(mockProblem.getId()).thenReturn(problemId);
+        when(mockSolvedProblem.getProblem()).thenReturn(mockProblem);
+
+        //mocking
+        given(memberRepository.findById(memberId)).willReturn(Optional.of(mock(Member.class)));
+        given(solvedProblemRepository.findByMember_IdAndProblem_Id(memberId, problemId)).willReturn(Optional.of(mockSolvedProblem));
+        given(noteRepository.save(any())).willReturn(mock(Note.class));
+        given(tempNoteRepository.findById(any())).willReturn(Optional.of(mock(TempNote.class)));
+        given(noteDocumentRepository.save(any())).willReturn(mock(NoteDocument.class));
+
+        //when
+        sut.saveNote(memberId, problemId, title, content, tempNoteId);
+
+        //then
+        verify(noteRepository).save(any());
+        verify(tempNoteRepository).delete(any());
+        verify(noteDocumentRepository).save(any());
+    }
+
+    @Test
+    @DisplayName("[생성] 노트 작성이 성공한 경우 - 임시노트는 삭제")
+    void givenNoteData_whenSaveNoteFromTempNote_thenNothing() {
+        //given
+        String title = "title";
+        String content = "content";
+        Long memberId = 1L;
+        Long problemId = 1000L;
         Problem mockProblem = mock(Problem.class);
         SolvedProblem mockSolvedProblem = mock(SolvedProblem.class);
 
@@ -71,12 +101,13 @@ class NoteServiceTest {
         given(noteDocumentRepository.save(any())).willReturn(mock(NoteDocument.class));
 
         //when
-        sut.saveNote(memberId, problemId, title, content);
+        sut.saveNote(memberId, problemId, title, content, null);
 
         //then
         verify(noteRepository).save(any());
         verify(noteDocumentRepository).save(any());
     }
+
 
     @Test
     @DisplayName("[생성] 노트 작성 시 요청한 유저가 존재하지 않는 경우")
@@ -91,7 +122,7 @@ class NoteServiceTest {
 
         //when & then
         assertThrows(CustomException.class, () -> {
-            sut.saveNote(memberId, problemId, title, content);
+            sut.saveNote(memberId, problemId, title, content, null);
         });
     }
 
@@ -109,7 +140,7 @@ class NoteServiceTest {
 
         // when & then
         assertThrows(CustomException.class, () -> {
-            sut.saveNote(memberId, problemId, title, content);
+            sut.saveNote(memberId, problemId, title, content, null);
         });
     }
 

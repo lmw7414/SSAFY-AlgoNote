@@ -47,9 +47,13 @@ public class NoteService {
     private final ElasticsearchOperations operations;
 
     // 노트 생성
-    public void saveNote(Long memberId, Long problemId, String title, String content) {
+    public void saveNote(Long memberId, Long problemId, String title, String content, Long tempNoteId) {
         Member member = getMemberOrException(memberId);
         SolvedProblem solvedProblem = getSolvedProblemOrException(memberId, problemId);
+        if (tempNoteId != null) {
+            TempNote tempNote = getTempNoteOrException(tempNoteId);
+            tempNoteRepository.delete(tempNote);
+        }
 
         Note note = noteRepository.save(Note.of(member, solvedProblem.getProblem(), title.trim(), content));
         noteDocumentRepository.save(NoteDocument.of(
@@ -61,11 +65,10 @@ public class NoteService {
                 content
         ));
         // solved_problem 노트 작성 상태 수정
-        if(solvedProblem.getComplete() == WritingStatus.NOT_YET) {
+        if (solvedProblem.getComplete() == WritingStatus.NOT_YET) {
             solvedProblem.setComplete(WritingStatus.DONE);
         }
     }
-
 
 
     // 노트 삭제
@@ -134,10 +137,10 @@ public class NoteService {
 //        Query query = createQuery(Arrays.asList(problemIdMatch._toQuery(), problemTitleMatch._toQuery(), noteTitleMatch._toQuery()));
 
         Criteria noteCriteria = new Criteria().or()
-            .subCriteria(new Criteria("problemId").matches(keyword))
-            .subCriteria(new Criteria("noteTitle").matches(keyword))
-            .subCriteria(new Criteria("problemTitle").matches(keyword))
-            .subCriteria(new Criteria("memberNickname").matches(keyword));
+                .subCriteria(new Criteria("problemId").matches(keyword))
+                .subCriteria(new Criteria("noteTitle").matches(keyword))
+                .subCriteria(new Criteria("problemTitle").matches(keyword))
+                .subCriteria(new Criteria("memberNickname").matches(keyword));
 
         CriteriaQuery query = new CriteriaQuery(noteCriteria);
 
@@ -150,15 +153,15 @@ public class NoteService {
     public List<NoteSearchDto> parseSearchHits(SearchHits<NoteDocument> noteHits) {
         List<NoteSearchDto> noteSearchResults = new ArrayList<>();
 
-        for(SearchHit<NoteDocument> hit : noteHits){
+        for (SearchHit<NoteDocument> hit : noteHits) {
             NoteDocument noteDocument = hit.getContent();
             ProblemDocument problemDocument = problemDocumentRepository.findById(
-                noteDocument.getProblemId()).orElse(null);
+                    noteDocument.getProblemId()).orElse(null);
             int tier = problemDocument.getTier();
 
             noteSearchResults.add(NoteSearchDto.of(
-                noteDocument,
-                tier
+                    noteDocument,
+                    tier
             ));
         }
 
@@ -166,14 +169,14 @@ public class NoteService {
 
     }
 
-    private Query createQuery(List<co.elastic.clients.elasticsearch._types.query_dsl.Query> queries){
+    private Query createQuery(List<co.elastic.clients.elasticsearch._types.query_dsl.Query> queries) {
         return new NativeQueryBuilder()
-            .withQuery(
-                q -> q.bool(
-                    b -> b.should(
-                        queries
-                    )))
-            .build();
+                .withQuery(
+                        q -> q.bool(
+                                b -> b.should(
+                                        queries
+                                )))
+                .build();
 
     }
 
@@ -201,6 +204,7 @@ public class NoteService {
         return TempNoteResDto.from(tempNoteRepository.saveAndFlush(tempNote));
 
     }
+
     // 임시 노트 삭제
     public void deleteTempNote(Long memberId, Long tempNoteId) {
         Member member = getMemberOrException(memberId);
