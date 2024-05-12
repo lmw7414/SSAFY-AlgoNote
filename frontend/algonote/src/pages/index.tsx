@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import s from './main.module.scss'
-import readUserRecordApi from '@/apis/analysisAxios'
+import { getRecentSolvedApi, getUserRecordApi } from '@/apis/analysisAxios'
 import myInfo from '@/apis/user-infoAxios'
 import { SimpleButton } from '@/components/commons/Buttons/Button'
 import Radar from '@/components/commons/Main/Radar'
@@ -22,9 +22,17 @@ interface UserInfo {
   profileImg: string
 }
 
+interface Group {
+  group: string
+  score: number
+  lastSolvedDate: string
+  problemCount: number
+}
+
 const Main = () => {
   const [info, setInfo] = useState<UserInfo | null>(null)
   const [record, setRecord] = useState<RecordProps | null>(null)
+  const [recentSolved, setRecentSolved] = useState<Group[]>([])
 
   const router = useRouter()
 
@@ -37,13 +45,16 @@ const Main = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const userRecord = await readUserRecordApi()
+      const userRecord = await getUserRecordApi()
       const userInfo = await myInfo()
+      const userRecentSolved = await getRecentSolvedApi()
       setRecord(userRecord)
       setInfo(userInfo.data)
+      setRecentSolved(userRecentSolved.groups)
     }
     fetchData()
   }, [])
+
   return (
     <>
       <Head>
@@ -70,7 +81,17 @@ const Main = () => {
             <div className={s.radarCont}>
               <p className={s.graphTitle}>종합점수</p>
               <div className={s.radarBox}>
-                <Radar data={[]} labels={[]} />
+                <Radar
+                  data={recentSolved.map((item) => item.score)}
+                  labels={[
+                    '수학',
+                    '그래프',
+                    '자료구조',
+                    '최적화',
+                    '구현',
+                    '문자열',
+                  ]}
+                />
               </div>
             </div>
             <div className={s.right}>
@@ -112,23 +133,15 @@ const Main = () => {
         <div className={s.container}>
           <h2 className={s.title}>문제 추천</h2>
           <div className={s.recommendCont}>
-            <div className={s.wave}>
-              <Wave type="수학" score={34} />
-            </div>
-            <div className={s.wave}>
-              <Wave type="그래프" score={75} />
-            </div>
-            <div className={s.wave}>
-              <Wave type="자료구조" score={54} />
-            </div>
-            <div className={s.wave}>
-              <Wave type="자료구조" score={67} />
-            </div>
-            <div className={s.wave}>
-              <Wave type="자료구조" score={3} />
-            </div>
-            <div className={s.wave}>
-              <Wave type="자료구조" score={14} />
+            <p className={s.recommendDesc}>
+              문제를 풀어서 해당 유형의 어항을 꽉 채워보세요
+            </p>
+            <div className={s.waveCont}>
+              {recentSolved?.map((group) => (
+                <div key={group.group}>
+                  <Wave type={group.group} date={group.lastSolvedDate} />
+                </div>
+              ))}
             </div>
           </div>
           <SimpleButton
