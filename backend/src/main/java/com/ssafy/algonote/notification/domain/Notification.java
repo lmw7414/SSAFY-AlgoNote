@@ -1,5 +1,6 @@
 package com.ssafy.algonote.notification.domain;
 
+import com.ssafy.algonote.common.BaseEntity;
 import com.ssafy.algonote.member.domain.Member;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -19,7 +20,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Notification {
+public class Notification extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
