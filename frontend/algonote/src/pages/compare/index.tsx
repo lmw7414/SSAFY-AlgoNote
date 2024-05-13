@@ -1,7 +1,8 @@
 import { useState, useEffect, KeyboardEvent } from 'react'
+import ReactDiffViewer, { DiffMethod } from 'react-diff-viewer-continued'
 import style from './compare.module.scss'
 import { getAllMySolvedList } from '@/apis/problemAxios'
-import CodeView from '@/components/commons/CodeView'
+import CodeSelectButton from '@/components/commons/CodeSelectButton'
 import Modal from '@/components/commons/Modal'
 import cStyle from '@/components/commons/Modal/Modal.module.scss'
 import SubmissionList from '@/components/commons/Modal/SubmissionList'
@@ -58,16 +59,19 @@ const ComparePage = () => {
       <div>코드를 비교하세요</div>
       <div>
         <div className={style.element}>
-          {codes.map((code, index) => (
-            // eslint-disable-next-line react/no-array-index-key
-            <div key={index}>
-              <CodeView
-                setIsModalOpened={setIsModalOpened}
-                code={code}
-                index={index}
-              />
-            </div>
-          ))}
+          <ReactDiffViewer
+            oldValue={codes[0]}
+            newValue={codes[1]}
+            compareMethod={DiffMethod.WORDS}
+          />
+        </div>
+        <div className={style.compareButtons}>
+          <div className={style.compareButton}>
+            <CodeSelectButton setIsModalOpened={setIsModalOpened} index={0} />
+          </div>
+          <div className={style.compareButton}>
+            <CodeSelectButton setIsModalOpened={setIsModalOpened} index={1} />
+          </div>
         </div>
       </div>
       <div>
