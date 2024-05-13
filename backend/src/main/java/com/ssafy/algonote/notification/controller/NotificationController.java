@@ -5,6 +5,7 @@ import com.ssafy.algonote.notification.service.NotificationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 @RestController
 @RequestMapping("/notifications")
 @RequiredArgsConstructor
+@Slf4j
 public class NotificationController {
 
     private final NotificationService notificationService;
@@ -27,7 +29,7 @@ public class NotificationController {
     @GetMapping(value = "/subscribe", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public SseEmitter subscribe(@RequestHeader(value = "Last-Event-ID", required = false, defaultValue = "") String lastEventId) {
         Long memberId = SecurityUtil.getMemberId();
-        
+        log.info("subscribe memberId: {}, lastEventId: {}", memberId, lastEventId);
         return notificationService.subscribe(memberId, lastEventId);
     }
 
