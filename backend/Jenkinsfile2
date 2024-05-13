@@ -1,7 +1,7 @@
 pipeline{
  
     environment{
-        repository = 'tollea1234/backend-app'
+        repository = 'tollea1234/algonote-backend'
         DOCKERHUB_CREDENTIALS = credentials('docker') // jenkins에 등록해 놓은 docker hub credentials 이름
         dockerImage = '' 
     }
@@ -51,14 +51,28 @@ pipeline{
 
          stage('Deploy on Deploy Server'){
             steps{
-                dir('backend'){
-                    echo "$BUILD_NUMBER"
-                    sh "BUILD_NUMBER=$BUILD_NUMBER envsubst < deployment-backend-app.yaml.template | kubectl apply -f -"
-                    sh 'kubectl apply -f service-backend-app.yaml'
+                sh '''
+                    ssh -i ~/.ssh/id_rsa ubuntu@k10b203.p.ssafy.io "docker pull tollea1234/algonote-backend:$BUILD_NUMBER"
+                    ssh -i ~/.ssh/id_rsa ubuntu@k10b203.p.ssafy.io "docker rm backend-container --force"
+                    ssh -i ~/.ssh/id_rsa ubuntu@k10b203.p.ssafy.io "docker run -p 8080:8080 -d --name backend-container tollea1234/algonote-backend:$BUILD_NUMBER"
+                '''
+            }
+        }
+
+
+        stage('Remove previous images') {
+            steps {
+                script {
+                    def currentBuildNumber = env.BUILD_NUMBER.toInteger()
+                    def imagesToRemove = sh(script: "docker images $repository --format \"{{.Tag}}\" | awk '{if (\$1 < $currentBuildNumber) print \$1}'", returnStdout: true).trim()
+                    if (imagesToRemove) {
+                        sh "docker rmi $repository:${imagesToRemove}"
+                    }
                 }
             }
         }
-    
+
+
 
     }
 
