@@ -10,30 +10,29 @@ interface ExecuteDataProps extends ComplexityProps {
   expectedOutput: string
 }
 
-const executeCode = async ({
-  language,
-  sourceCode,
-  inputData,
-  expectedOutput,
-}: ExecuteDataProps) => {
+const executeCode = async (props: ExecuteDataProps) => {
+  const { language, sourceCode, inputData, expectedOutput } = props
   const apiUrl = `/api/codes/analyze?lang=${language}`
   const data = { sourceCode, inputData, expectedOutput }
 
   try {
     const response = await axiosAuthApi().post(apiUrl, data)
+    console.log('실행 결과 응답', response.data)
     return response.data
   } catch (error) {
+    console.error('executeCode 호출 중 오류 발생:', error)
     throw error
   }
 }
 
-const getComplexityCode = async ({ sourceCode }: ComplexityProps) => {
+const getComplexityCode = async (sourceCode: ComplexityProps) => {
   const apiUrl = '/api/code/gpt'
 
   try {
     const response = await axiosAuthApi().post(apiUrl, sourceCode)
-    return response
+    return response.data
   } catch (error) {
+    console.error('getComplexityCode 호출 중 오류 발생:', error)
     throw error
   }
 }
