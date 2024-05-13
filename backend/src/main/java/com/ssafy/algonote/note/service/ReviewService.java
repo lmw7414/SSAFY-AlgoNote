@@ -39,10 +39,10 @@ public class ReviewService {
             throw new CustomException(ErrorCode.INVALID_LINE_RANGE);
         }
 
-        eventPublisher.publishEvent(new NotificationReqDto(note.getMember(), "새로운 댓글이 달렸습니다!"));
-
         Review review = Review.of(req, member, note);
         reviewRepository.save(review);
+
+        eventPublisher.publishEvent(new NotificationReqDto(note.getMember(), "새로운 댓글이 달렸습니다!"));
     }
 
     private Note getNoteOrElseThrow(Long noteId) {
