@@ -66,14 +66,25 @@ pipeline{
                 dir('backend'){
                     
                     sh '''
-                        ssh -i ~/.ssh/id_rsa ubuntu@k10b203.p.ssafy.io "docker pull tollea1234/backend-app:$BUILD_NUMBER"
+                        ssh -i ~/.ssh/id_rsa ubuntu@k10b203.p.ssafy.io "docker pull $repository:$BUILD_NUMBER"
                         ssh -i ~/.ssh/id_rsa ubuntu@k10b203.p.ssafy.io "docker rm backend-container --force"
-                        ssh -i ~/.ssh/id_rsa ubuntu@k10b203.p.ssafy.io "docker run -p 8080:8080 -d --name backend-container tollea1234/backend-app:$BUILD_NUMBER"
+                        ssh -i ~/.ssh/id_rsa ubuntu@k10b203.p.ssafy.io "docker run -p 8080:8080 -d --name backend-container $repository:$BUILD_NUMBER"
                      '''
                 }
             }
         }
-    
+        
+        stage('Remove previous images') {
+            steps {
+                script {
+                    def currentBuildNumber = env.BUILD_NUMBER.toInteger()
+                    def imagesToRemove = sh(script: "docker images $repository --format \"{{.Tag}}\" | awk '{if (\$1 < $currentBuildNumber) print \$1}'", returnStdout: true).trim()
+                    if (imagesToRemove) {
+                        sh "docker rmi $repository:${imagesToRemove}"
+                    }
+                }
+            }
+        }
 
     }
 
