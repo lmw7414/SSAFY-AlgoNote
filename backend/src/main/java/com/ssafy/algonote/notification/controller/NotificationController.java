@@ -1,11 +1,14 @@
 package com.ssafy.algonote.notification.controller;
 
 import com.ssafy.algonote.config.security.SecurityUtil;
+import com.ssafy.algonote.notification.dto.response.NotificationResDto;
 import com.ssafy.algonote.notification.service.NotificationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +31,16 @@ public class NotificationController {
     public SseEmitter subscribe(@RequestHeader(value = "Last-Event-ID", required = false, defaultValue = "") String lastEventId) {
         Long memberId = SecurityUtil.getMemberId();
         return notificationService.subscribe(memberId, lastEventId);
+    }
+
+    @Operation(
+        summary = "알림 목록 조회",
+        description = "알림 목록을 최신순으로 조회합니다."
+    )
+    @GetMapping
+    public ResponseEntity<List<NotificationResDto>> getList() {
+        Long memberId = SecurityUtil.getMemberId();
+        return ResponseEntity.ok(notificationService.getList(memberId));
     }
 
 }
