@@ -5,14 +5,19 @@ import com.ssafy.algonote.notification.domain.Notification;
 import com.ssafy.algonote.notification.dto.response.NotificationResDto;
 import com.ssafy.algonote.notification.repository.EmitterRepository;
 import com.ssafy.algonote.notification.repository.NotificationRepository;
+import jakarta.transaction.Transactional.TxType;
+import jakarta.transaction.Transactional;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-@Service
+@Slf4j
 @RequiredArgsConstructor
+@Service
 public class NotificationService {
 
     private static final Long DEFAULT_TIMEOUT = 60L * 1000 * 60;
@@ -105,6 +110,7 @@ public class NotificationService {
      * @param receiver 알림을 받을 회원
      * @param content 알림 내용
      */
+    @Transactional(TxType.REQUIRES_NEW)
     public void notify(Member receiver, String content) {
         Notification notification = notificationRepository.save(Notification.of(receiver, content));
 
@@ -118,6 +124,19 @@ public class NotificationService {
                 sendEvent(emitter, eventId, key, NotificationResDto.from(notification));
             }
         );
+    }
+
+    /**
+     * 특정 회원에게 전송된 알람 목록을 반환한다.
+     *
+     * @param memberId 회원 id
+     * @return 알람 목록
+     */
+    public List<NotificationResDto> getList(Long memberId) {
+        return notificationRepository.findAllByRecieverIdOrderByCreatedAtDesc(memberId)
+            .stream()
+            .map(NotificationResDto::from)
+            .toList();
     }
 
 }
