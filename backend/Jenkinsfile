@@ -55,6 +55,8 @@ pipeline{
                     echo "$BUILD_NUMBER"
                     sh "BUILD_NUMBER=$BUILD_NUMBER envsubst < deployment-backend-app.yaml.template | kubectl apply -f -"
                     sh 'kubectl apply -f service-backend-app.yaml'
+
+                    
                 }
             }
         }
