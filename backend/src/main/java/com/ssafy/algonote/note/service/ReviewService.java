@@ -11,6 +11,7 @@ import com.ssafy.algonote.note.dto.request.ReviewReqDto;
 import com.ssafy.algonote.note.dto.request.ReviewUpdateReqDto;
 import com.ssafy.algonote.note.dto.response.ReviewResDto;
 import com.ssafy.algonote.note.repository.ReviewRepository;
+import com.ssafy.algonote.notification.domain.NotificationType;
 import com.ssafy.algonote.notification.dto.request.NotificationReqDto;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -42,7 +43,8 @@ public class ReviewService {
         Review review = Review.of(req, member, note);
         reviewRepository.save(review);
 
-        eventPublisher.publishEvent(new NotificationReqDto(note.getMember(), "새로운 댓글이 달렸습니다!"));
+        eventPublisher.publishEvent(
+            new NotificationReqDto(NotificationType.REVIEW, note.getMember(), note.getTitle(), "/api/notes/"+noteId));
     }
 
     private Note getNoteOrElseThrow(Long noteId) {
