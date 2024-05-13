@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -47,11 +48,20 @@ public class NotificationController {
         return ResponseEntity.ok(notificationService.getList(memberId));
     }
 
-
     @GetMapping(value = "/subscribe/{memberId}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public SseEmitter subscribe(@PathVariable("memberId") Long memberId) {
+    public SseEmitter subscribeForTest(@PathVariable("memberId") Long memberId) {
         String lastEventId = "";
         return notificationService.subscribe(memberId, lastEventId);
+    }
+
+    @Operation(
+        summary = "알림 읽음 처리",
+        description = "알림을 읽음 처리합니다."
+    )
+    @PostMapping("/{notificationId}/mark-as-read")
+    public ResponseEntity<Void> markNotificationAsRead(@PathVariable("notificationId") Long notificationId) {
+        notificationService.markNotificationAsRead(notificationId);
+        return ResponseEntity.ok().build();
     }
 
 }
