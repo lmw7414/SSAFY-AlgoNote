@@ -1,5 +1,3 @@
-'use client'
-
 import {
   UndoRedo,
   BoldItalicUnderlineToggles,
@@ -12,6 +10,7 @@ import {
   ShowSandpackInfo,
   InsertSandpack,
 } from '@mdxeditor/editor'
+import useNoteStore from '@/stores/note-store'
 import '@mdxeditor/editor/style.css'
 
 const {
@@ -26,7 +25,8 @@ const {
   toolbarPlugin,
 } = await import('@mdxeditor/editor')
 
-const defaultSnippetContent = `
+const Editor = () => {
+  const defaultSnippetContent = `
 export default function App() {
   return (
     <div className="App">
@@ -37,26 +37,39 @@ export default function App() {
 }
 `.trim()
 
-const simpleSandpackConfig: SandpackConfig = {
-  defaultPreset: 'react',
-  presets: [
-    {
-      label: 'React',
-      name: 'react',
-      meta: 'live react',
-      sandpackTemplate: 'react',
-      sandpackTheme: 'light',
-      snippetFileName: '/App.js',
-      snippetLanguage: 'jsx',
-      initialSnippetContent: defaultSnippetContent,
-    },
-  ],
-}
+  const simpleSandpackConfig: SandpackConfig = {
+    defaultPreset: 'react',
+    presets: [
+      {
+        label: 'React',
+        name: 'react',
+        meta: 'live react',
+        sandpackTemplate: 'react',
+        sandpackTheme: 'light',
+        snippetFileName: '/App.js',
+        snippetLanguage: 'jsx',
+        initialSnippetContent: defaultSnippetContent,
+      },
+    ],
+  }
 
-const Editor = () => {
+  const { tabs, curSelectedIdx, updateTab } = useNoteStore()
+  const currentTab = tabs.find((tab) => tab.idx === curSelectedIdx)
+
+  const handleContent = (value: string) => {
+    console.log(value)
+
+    if (currentTab) {
+      updateTab(curSelectedIdx, {
+        title: currentTab?.title,
+        content: value,
+      })
+    }
+  }
+
   return (
     <MDXEditor
-      onChange={console.log}
+      onChange={handleContent}
       placeholder="당신의 풀이를 기록해보세요..."
       markdown=""
       plugins={[
@@ -106,4 +119,5 @@ const Editor = () => {
     />
   )
 }
+
 export default Editor

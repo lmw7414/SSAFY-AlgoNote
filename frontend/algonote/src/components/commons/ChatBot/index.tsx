@@ -1,7 +1,7 @@
 import { ChangeEvent, useState } from 'react'
+import Image from 'next/image'
 import OpenAI from 'openai'
 import s from './ChatBot.module.scss'
-import { SimpleButton } from '@/components/commons/Buttons/Button'
 
 const ChatBot = () => {
   const [inputMsg, setInputMsg] = useState('')
@@ -37,9 +37,8 @@ const ChatBot = () => {
 
   return (
     <div className={s.container}>
-      <h1>임시 챗봇</h1>
+      <h3>AlgoBot</h3>
       <div>
-        <p>답변: </p>
         <div className={s.answerCont}>
           {sending ? (
             <div className={s.spinnerCont}>
@@ -50,14 +49,21 @@ const ChatBot = () => {
           )}
         </div>
       </div>
-      <div>
+      <div className={s.gptInputBox}>
         <input
-          placeholder="질문을 입력하세요"
+          placeholder="알고봇에게 무엇이든 물어보세요"
           value={inputMsg}
           onChange={handleInput}
           onKeyDown={(event) => handleKeyDown(event)}
         />
-        <SimpleButton text="전송" onClick={() => openAI(inputMsg)} />
+        <button type="button" onClick={() => openAI(inputMsg)}>
+          <Image
+            src="/images/gptsubmmitbtn.png"
+            alt="gptsubmmitbtn"
+            width={50}
+            height={50}
+          />
+        </button>
       </div>
     </div>
   )
