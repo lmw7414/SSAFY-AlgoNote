@@ -6,6 +6,7 @@ import Modal from '@/components/commons/Modal'
 import cStyle from '@/components/commons/Modal/Modal.module.scss'
 import SubmissionList from '@/components/commons/Modal/SubmissionList'
 import TierImg from '@/components/commons/Tier'
+import useCodeInfo from '@/stores/code-store'
 
 interface Problem {
   id: number
@@ -32,6 +33,7 @@ const ComparePage = () => {
     modalStatus: false,
     problemId: 0,
   })
+  const codes = useCodeInfo((state) => state.codes)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -54,12 +56,18 @@ const ComparePage = () => {
   return (
     <div className={style.container}>
       <div>코드를 비교하세요</div>
-      <div className={style.element}>
-        <div>
-          <CodeView setIsModalOpened={setIsModalOpened} />
-        </div>
-        <div>
-          <CodeView setIsModalOpened={setIsModalOpened} />
+      <div>
+        <div className={style.element}>
+          {codes.map((code, index) => (
+            // eslint-disable-next-line react/no-array-index-key
+            <div key={index}>
+              <CodeView
+                setIsModalOpened={setIsModalOpened}
+                code={code}
+                index={index}
+              />
+            </div>
+          ))}
         </div>
       </div>
       <div>

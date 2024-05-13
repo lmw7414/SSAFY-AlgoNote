@@ -1,13 +1,22 @@
 import { create } from 'zustand'
 
 interface CodeType {
-  setCodeInfo: (code: string) => void
-  code: string
+  codes: string[]
+  updateIndex: number
+  updateCodes: (index: number, newCode: string) => void
+  setUpdateIndex: (index: number) => void
 }
 
 const useCodeInfo = create<CodeType>((set) => ({
-  code: '',
-  setCodeInfo: (code) => set(() => ({ code })),
+  codes: [' ', ' '],
+  updateIndex: 0,
+  updateCodes: (index, newCode) =>
+    set((state) => {
+      const newCodes = [...state.codes]
+      newCodes[index] = newCode
+      return { codes: newCodes }
+    }),
+  setUpdateIndex: (index) => set({ updateIndex: index }),
 }))
 
 export default useCodeInfo

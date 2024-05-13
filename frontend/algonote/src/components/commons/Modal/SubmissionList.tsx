@@ -63,8 +63,9 @@ const SubmissionList = ({
 
   // 업로드 버튼 클릭시 코드 저장하고 모달 닫음, 세부 정보 모달도 닫음
   const handleUploadCode = (code: string) => {
-    const { setCodeInfo } = useCodeInfo.getState()
-    setCodeInfo(code)
+    const { updateCodes, updateIndex } = useCodeInfo.getState()
+    console.log('업로드 버튼 클릭, 인덱스, 코드', updateIndex, code)
+    updateCodes(updateIndex, code)
     setIsModalOpened(false)
     setDetailProblems({ modalStatus: false, problemId: 0 })
   }
