@@ -3,7 +3,6 @@ import { SimpleButton } from '../Buttons/Button'
 import WrapperComponent from './WrapperComponent'
 import { getSubmissionList } from '@/apis/regist-noteAxios'
 import SubmitListTitle from '@/components/commons/SubmitListTitle'
-import { DetailProblemType } from '@/pages/compare'
 import style from '@/pages/writenote/writenote.module.scss'
 import useCodeInfo from '@/stores/code-store'
 
@@ -22,6 +21,11 @@ interface SubmissionListProps {
   problemId: number
   setIsModalOpened: React.Dispatch<React.SetStateAction<boolean>>
   setDetailProblems: React.Dispatch<React.SetStateAction<DetailProblemType>>
+}
+
+interface DetailProblemType {
+  modalStatus: boolean
+  problemId: number
 }
 
 const SubmissionList = ({
