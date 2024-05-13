@@ -27,6 +27,7 @@ public class NotificationController {
     @GetMapping(value = "/subscribe", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public SseEmitter subscribe(@RequestHeader(value = "Last-Event-ID", required = false, defaultValue = "") String lastEventId) {
         Long memberId = SecurityUtil.getMemberId();
+        
         return notificationService.subscribe(memberId, lastEventId);
     }
 
