@@ -11,9 +11,11 @@ import com.ssafy.algonote.note.dto.request.ReviewReqDto;
 import com.ssafy.algonote.note.dto.request.ReviewUpdateReqDto;
 import com.ssafy.algonote.note.dto.response.ReviewResDto;
 import com.ssafy.algonote.note.repository.ReviewRepository;
+import com.ssafy.algonote.notification.dto.request.NotificationReqDto;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +24,8 @@ import org.springframework.transaction.annotation.Transactional;
 @AllArgsConstructor
 @Service
 public class ReviewService {
+
+    private final ApplicationEventPublisher eventPublisher;
 
     private final ReviewRepository reviewRepository;
     private final NoteRepository noteRepository;
@@ -37,6 +41,8 @@ public class ReviewService {
 
         Review review = Review.of(req, member, note);
         reviewRepository.save(review);
+
+        eventPublisher.publishEvent(new NotificationReqDto(note.getMember(), "새로운 댓글이 달렸습니다!"));
     }
 
     private Note getNoteOrElseThrow(Long noteId) {
