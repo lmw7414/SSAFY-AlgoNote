@@ -8,10 +8,8 @@ import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.UUID;
 import java.util.concurrent.*;
 import java.util.stream.Collectors;
@@ -20,13 +18,14 @@ import static com.ssafy.grading.util.CodeInputVerification.normalizeNewlines;
 
 @Slf4j
 @Service
-public class CppExecutorService {
+public class CppExecutorService implements LanguageExecutorService {
 
     private static final String C_COMPILER = "g++";
     private static final String FILE_EXTENSION = ".out";
     private static final String C_EXTENSION = ".c";
 
-    public ExecutionResult compileAndExecute(String code, String input, String expected) {
+    @Override
+    public ExecutionResult execute(String code, String input, String expected) {
         String dirPath = UUID.randomUUID() + "/";
         String fileName = "main";
         String cFile = dirPath + fileName;
@@ -114,13 +113,15 @@ public class CppExecutorService {
         }
     }
 
-    private String getActualOutput(String output) {
+    @Override
+    public String getActualOutput(String output) {
         String[] outputToArray = output.split("\n");
         String[] result = Arrays.copyOfRange(outputToArray, 0, outputToArray.length - 23);
         return String.join("\n", result);
     }
 
-    private double getUsedTime(String output) {
+    @Override
+    public double getUsedTime(String output) {
         String[] outputToArray = output.split("\n");
         String target = outputToArray[outputToArray.length - 19];
         target.replace("Elapsed (wall clock) time (h:mm:ss or m:ss): ", "");
@@ -140,7 +141,8 @@ public class CppExecutorService {
         return milliseconds;
     }
 
-    private double getUsedMemory(String output) {
+    @Override
+    public double getUsedMemory(String output) {
         String[] outputToArray = output.split("\n");
         String target = outputToArray[outputToArray.length - 14];
         target.replace("Maximum resident set size (kbytes)", "");
@@ -148,15 +150,4 @@ public class CppExecutorService {
         return Double.parseDouble(parts[1]);
     }
 
-    // 파일 제거
-    private void deleteFiles(Path path) {
-        try (var paths = Files.walk(path)) {
-            // 내부 요소부터 외부 요소 순으로 정렬 후 삭제
-            paths.sorted(Comparator.reverseOrder())
-                    .map(Path::toFile)
-                    .forEach(File::delete);
-        } catch (IOException e) {
-            throw new RuntimeException("파일 삭제 중 문제 발생");
-        }
-    }
 }

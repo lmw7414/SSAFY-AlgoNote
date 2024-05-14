@@ -8,10 +8,8 @@ import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.UUID;
 import java.util.concurrent.*;
 import java.util.stream.Collectors;
@@ -20,18 +18,18 @@ import static com.ssafy.grading.util.CodeInputVerification.normalizeNewlines;
 
 @Slf4j
 @Service
-public class CExecutorService {
+public class CExecutorService implements LanguageExecutorService {
 
     private static final String C_COMPILER = "gcc";
     private static final String FILE_EXTENSION = ".out";
     private static final String C_EXTENSION = ".c";
 
-    public ExecutionResult compileAndExecute(String code, String input, String expected) {
+    @Override
+    public ExecutionResult execute(String code, String input, String expected) {
         String dirPath = UUID.randomUUID() + "/";
         String fileName = "main";
         String cFile = dirPath + fileName;
         String inputFileName = dirPath + fileName + "Input.txt";
-
         try {
             File directory = new File(dirPath);
             if (!directory.exists())
@@ -55,7 +53,6 @@ public class CExecutorService {
 
     private void compile(String cFile) throws IOException, InterruptedException {
         // Java 파일 컴파일하기
-        log.info(cFile);
         ProcessBuilder compileBuilder = new ProcessBuilder(C_COMPILER, cFile + C_EXTENSION, "-o", cFile + FILE_EXTENSION);
         log.info("{}", compileBuilder.command());
         compileBuilder.redirectErrorStream(true);
@@ -114,13 +111,15 @@ public class CExecutorService {
         }
     }
 
-    private String getActualOutput(String output) {
+    @Override
+    public String getActualOutput(String output) {
         String[] outputToArray = output.split("\n");
         String[] result = Arrays.copyOfRange(outputToArray, 0, outputToArray.length - 23);
         return String.join("\n", result);
     }
 
-    private double getUsedTime(String output) {
+    @Override
+    public double getUsedTime(String output) {
         String[] outputToArray = output.split("\n");
         String target = outputToArray[outputToArray.length - 19];
         target.replace("Elapsed (wall clock) time (h:mm:ss or m:ss): ", "");
@@ -140,7 +139,8 @@ public class CExecutorService {
         return milliseconds;
     }
 
-    private double getUsedMemory(String output) {
+    @Override
+    public double getUsedMemory(String output) {
         String[] outputToArray = output.split("\n");
         String target = outputToArray[outputToArray.length - 14];
         target.replace("Maximum resident set size (kbytes)", "");
@@ -148,15 +148,4 @@ public class CExecutorService {
         return Double.parseDouble(parts[1]);
     }
 
-    // 파일 제거
-    private void deleteFiles(Path path) {
-        try (var paths = Files.walk(path)) {
-            // 내부 요소부터 외부 요소 순으로 정렬 후 삭제
-            paths.sorted(Comparator.reverseOrder())
-                    .map(Path::toFile)
-                    .forEach(File::delete);
-        } catch (IOException e) {
-            throw new RuntimeException("파일 삭제 중 문제 발생");
-        }
-    }
 }

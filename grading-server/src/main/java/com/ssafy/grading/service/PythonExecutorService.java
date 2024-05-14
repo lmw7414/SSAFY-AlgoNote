@@ -3,26 +3,27 @@ package com.ssafy.grading.service;
 import com.ssafy.grading.dto.ExecutionResult;
 import com.ssafy.grading.exception.ErrorCode;
 import com.ssafy.grading.exception.GradeApplicationException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.UUID;
 import java.util.concurrent.*;
 import java.util.stream.Collectors;
 
 import static com.ssafy.grading.util.CodeInputVerification.normalizeNewlines;
 
+@Slf4j
 @Service
-public class PythonExecutorService {
+public class PythonExecutorService implements LanguageExecutorService {
 
     private static final String PYTHON_RUNNER = "python3";
 
-    public ExecutionResult compileAndExecute(String code, String input, String expected) {
+    @Override
+    public ExecutionResult execute(String code, String input, String expected) {
         String dirPath = UUID.randomUUID() + "/";
         String pythonFile = dirPath + "script.py";
         String inputFileName = dirPath + "input.txt";
@@ -84,18 +85,21 @@ public class PythonExecutorService {
         }
     }
 
-    private String getActualOutput(String output) {
+    @Override
+    public String getActualOutput(String output) {
         String[] outputToArray = output.split("\n");
         String[] result = Arrays.copyOfRange(outputToArray, 0, outputToArray.length - 2);
         return String.join("\n", result);
     }
 
-    private double getUsedTime(String output) {
+    @Override
+    public double getUsedTime(String output) {
         String[] outputToArray = output.split("\n");
         return Double.parseDouble(outputToArray[outputToArray.length - 2]);
     }
 
-    private double getUsedMemory(String output) {
+    @Override
+    public double getUsedMemory(String output) {
         String[] outputToArray = output.split("\n");
         return Double.parseDouble(outputToArray[outputToArray.length - 1]);
     }
@@ -103,15 +107,20 @@ public class PythonExecutorService {
     private String addMeasureCode(String code) {
         // 시작 시간과 메모리 측정 코드
         String startCode = "import time\n" +
-                "from memory_profiler import memory_usage\n" +
+                "import psutil\n" +
+                "import os\n" +
                 "start_time = time.time()\n" +
-                "start_memory = memory_usage(max_usage=True)\n\n";
+                "def memory_usage():\n" +
+                "    process = psutil.Process(os.getpid())\n" +
+                "    mem_info = process.memory_info()\n" +
+                "    return mem_info.rss / 1024  # KB 단위로 변환\n" +
+                "initial_memory = memory_usage()\n";
 
         // 종료 시간과 메모리 측정 코드, 그리고 출력
         String endCode = "\n\nend_time = time.time()\n" +
-                "end_memory = memory_usage(max_usage=True)\n" +
-                "execution_time = (end_time - start_time) * 10\n" +
-                "used_memory = (end_memory - start_memory) * 1024\n" +
+                "final_memory = memory_usage()\n" +
+                "execution_time = (end_time - start_time) * 100\n" +
+                "used_memory = (final_memory - initial_memory)\n" +
                 "print(execution_time)\n" +
                 "print(used_memory)\n";
 
@@ -122,15 +131,4 @@ public class PythonExecutorService {
         return builder.toString();
     }
 
-    // 파일 제거
-    private void deleteFiles(Path path) {
-        try (var paths = Files.walk(path)) {
-            // 내부 요소부터 외부 요소 순으로 정렬 후 삭제
-            paths.sorted(Comparator.reverseOrder())
-                    .map(Path::toFile)
-                    .forEach(File::delete);
-        } catch (IOException e) {
-            throw new RuntimeException("파일 삭제 중 문제 발생");
-        }
-    }
 }
