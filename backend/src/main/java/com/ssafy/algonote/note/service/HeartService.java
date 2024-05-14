@@ -9,15 +9,21 @@ import com.ssafy.algonote.note.domain.Note;
 import com.ssafy.algonote.note.dto.HeartResDto;
 import com.ssafy.algonote.note.repository.HeartRepository;
 import com.ssafy.algonote.note.repository.NoteRepository;
+import com.ssafy.algonote.notification.domain.NotificationType;
+import com.ssafy.algonote.notification.dto.request.NotificationReqDto;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class HeartService {
+
+    private final ApplicationEventPublisher eventPublisher;
+
     private final HeartRepository heartRepository;
     private final MemberRepository memberRepository;
     private final NoteRepository noteRepository;
@@ -32,6 +38,14 @@ public class HeartService {
         if (heart == null) {
             log.info("ADD HEART userId: {}, noteId: {}", memberId, noteId);
             heartRepository.save(Heart.of(member, note));
+
+            eventPublisher.publishEvent(
+                new NotificationReqDto(
+                    NotificationType.HEART,
+                    note.getMember(),
+                    member,
+                    note.getTitle() + "에 좋아요가 추가되었습니다."));
+
             return new HeartResDto(true);
         } else {
             log.info("DELETE HEART userId: {}, noteId: {}", memberId, noteId);
