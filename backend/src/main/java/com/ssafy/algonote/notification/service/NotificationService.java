@@ -4,6 +4,7 @@ import com.ssafy.algonote.exception.CustomException;
 import com.ssafy.algonote.exception.ErrorCode;
 import com.ssafy.algonote.member.domain.Member;
 import com.ssafy.algonote.notification.domain.Notification;
+import com.ssafy.algonote.notification.domain.NotificationType;
 import com.ssafy.algonote.notification.dto.response.NotificationResDto;
 import com.ssafy.algonote.notification.repository.EmitterRepository;
 import com.ssafy.algonote.notification.repository.NotificationRepository;
@@ -113,8 +114,8 @@ public class NotificationService {
      * @param content 알림 내용
      */
     @Transactional(TxType.REQUIRES_NEW)
-    public void notify(Member receiver, String content) {
-        Notification notification = notificationRepository.save(Notification.of(receiver, content));
+    public void notify(NotificationType notificationType, Member receiver, String content) {
+        Notification notification = notificationRepository.save(Notification.of(notificationType, receiver, content));
 
         String receiverId = String.valueOf(receiver.getId());
         String eventId = receiverId + "_" + System.currentTimeMillis();
