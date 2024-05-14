@@ -1,12 +1,17 @@
 .wrapper {
   position: relative;
+  display: inline-block;
   padding: 1rem;
-  width: 13rem;
-  min-height: 5rem;
+  // max-width: 97%;
+  // min-width: 1rem;
+  width: auto;
+  min-height: 3rem;
   background: var(--white);
   color: var(--black);
+  font-size: 1.1rem;
   border: none;
   border-radius: 1rem;
+  line-height: 1.75rem;
 }
 
 .wrapper::after {

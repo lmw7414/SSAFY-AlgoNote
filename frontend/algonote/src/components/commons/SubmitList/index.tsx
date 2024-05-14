@@ -22,14 +22,15 @@ const SubmitList = ({
 }: SubmitListProps) => {
   const { curSelectedIdx, tabs, updateTab } = useNoteStore()
 
-  const submissionCode = `#### 내 코드 \n\`\`\`${lang}\n${code}\n\`\`\``
+  const submissionCode = `\`\`\`${lang} ${code}\n\`\`\``
 
   const handleSubmissionButtonClick = () => {
     console.log(code)
     updateTab(curSelectedIdx, {
       title: tabs[curSelectedIdx].title,
-      content: submissionCode,
+      content: tabs[curSelectedIdx] + submissionCode,
     })
+    console.log('업뎃 후 현재 content: ', tabs[curSelectedIdx])
   }
 
   return (

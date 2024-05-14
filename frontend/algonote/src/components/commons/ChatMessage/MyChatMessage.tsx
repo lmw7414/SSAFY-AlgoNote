@@ -1,12 +1,16 @@
+import ReactMarkdown from 'react-markdown'
 import s from './MyChatMessage.module.scss'
-// import useNoteStore from '@/stores/note-store'
 
 interface MessageProps {
   message: string
 }
 
 const MyChatMessage = ({ message }: MessageProps) => {
-  return <div className={s.wrapper}>{message}</div>
+  return (
+    <div className={s.wrapper}>
+      <ReactMarkdown>{message}</ReactMarkdown>
+    </div>
+  )
 }
 
 export default MyChatMessage

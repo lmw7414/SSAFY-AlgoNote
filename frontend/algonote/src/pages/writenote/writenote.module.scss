@@ -27,6 +27,23 @@
   height: 100%;
 }
 
+.right::-webkit-scrollbar {
+  width: 10px; /* 스크롤바의 너비 */
+}
+
+.right::-webkit-scrollbar-track {
+  background: #f1f1f1; /* 스크롤바 트랙의 배경색 */
+}
+
+.right::-webkit-scrollbar-thumb {
+  background: var(--gray); /* 스크롤바 자체의 배경색 */
+  border-radius: 1rem;
+}
+
+.right::-webkit-scrollbar-thumb:hover {
+  background: #555; /* 스크롤바를 호버했을 때의 배경색 */
+}
+
 .submitTitleBox {
   margin: 0;
   padding-right: 0.5rem;
