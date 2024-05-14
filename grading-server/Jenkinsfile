@@ -16,7 +16,7 @@ pipeline{
                         echo 'Springboot build...'
                         chmod +x gradlew
                         ./gradlew clean bootJar
-                        rm .env
+                        rm -f .env
                         echo version=$BUILD_NUMBER > .env
                     '''
                 }
