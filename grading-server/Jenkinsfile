@@ -1,11 +1,11 @@
 pipeline{
-    agent any
 
-        environment{
+    environment{
         repository = 'tollea1234/grading-server-app'
         DOCKERHUB_CREDENTIALS = credentials('docker') // jenkins에 등록해 놓은 docker hub credentials 이름
         dockerImage = '' 
     }
+    agent any
 
     stages{
 
