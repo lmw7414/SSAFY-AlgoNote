@@ -1,9 +1,12 @@
 import { ChangeEvent, useEffect, useState } from 'react'
 import BookMarkSVG from '@public/images/bookmark.svg'
 import BookMarkOffSVG from '@public/images/bookmark_off.svg'
+import HeartOffSVG from '@public/images/heart.svg'
+import HeartSVG from '@public/images/redHeart.svg'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { bookmarkButtonApi } from '@/apis/bookmarkAxios'
+import likeApi from '@/apis/likeAxios'
 import getNoteDetail from '@/apis/note-detailAxios'
 import {
   createReviewApi,
@@ -15,6 +18,7 @@ import myInfo from '@/apis/user-infoAxios'
 import { SimpleButton } from '@/components/commons/Buttons/Button'
 import ImageToggle from '@/components/commons/Buttons/ImageToggle'
 import style from '@/pages/note/note.module.scss'
+
 // import { getCookie } from '@/utils/cookie'
 
 interface Member {
@@ -73,14 +77,20 @@ const Note = () => {
   const [comment, setComment] = useState<string>('')
   const [newComment, setNewComment] = useState<string>('')
   const [markIsOff, setMarkIsOff] = useState(false)
+  const [likeIsOff, setLikeIsOff] = useState(false)
   const [userDetails, setUserDetails] = useState<UserInfo | null>(null)
   const [updateId, setUpdateId] = useState<number | null>(null)
   const [updating, setUpdating] = useState(false)
 
   const handleBookmark = async () => {
     const response = await bookmarkButtonApi(id as string)
+    setMarkIsOff(response.data.bookmarked)
+  }
+
+  const handleLike = async () => {
+    const response = await likeApi(id as string)
     if (response.status === 200) {
-      setMarkIsOff(response.data.bookmarked)
+      setLikeIsOff(response.data.hearted)
     }
   }
 
@@ -93,6 +103,7 @@ const Note = () => {
           console.log('노트 상세보기 응답:', noteResponse.data)
           setNoteDetail(noteResponse.data)
           setMarkIsOff(noteResponse.data.bookmarked)
+          setLikeIsOff(noteResponse.data.hearted)
 
           console.log('리뷰 조회 요청')
           const reviewResponse = await readReviewApi(id as string)
@@ -221,6 +232,15 @@ const Note = () => {
           onClick={() => handleBookmark()}
           offImg={BookMarkSVG}
           onImg={BookMarkOffSVG}
+          width="30px"
+        />
+      </div>
+      <div>
+        <ImageToggle
+          isOff={likeIsOff}
+          onClick={() => handleLike()}
+          offImg={HeartSVG}
+          onImg={HeartOffSVG}
           width="30px"
         />
       </div>

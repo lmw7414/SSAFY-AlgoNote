@@ -8,6 +8,7 @@ export interface SimpleButtonProps {
   onClick: (e: React.MouseEvent<HTMLButtonElement>) => void
   className?: string
   style?: React.CSSProperties
+  isDisabled?: boolean
 }
 
 const SimpleButton = ({
@@ -15,8 +16,11 @@ const SimpleButton = ({
   onClick,
   className,
   style = {},
+  isDisabled,
 }: SimpleButtonProps) => {
   const buttonClass = `${styles.button} ${className ? styles[className] : ' '}`
+
+  console.log('버튼 응답', isDisabled)
 
   return (
     <button
@@ -24,6 +28,7 @@ const SimpleButton = ({
       onClick={onClick}
       className={buttonClass}
       style={style}
+      disabled={isDisabled}
     >
       {text}
     </button>
