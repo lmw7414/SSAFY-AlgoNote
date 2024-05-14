@@ -1,5 +1,7 @@
 package com.ssafy.algonote.notification.service;
 
+import com.ssafy.algonote.exception.CustomException;
+import com.ssafy.algonote.exception.ErrorCode;
 import com.ssafy.algonote.member.domain.Member;
 import com.ssafy.algonote.notification.domain.Notification;
 import com.ssafy.algonote.notification.dto.response.NotificationResDto;
@@ -137,6 +139,13 @@ public class NotificationService {
             .stream()
             .map(NotificationResDto::from)
             .toList();
+    }
+
+    @Transactional
+    public void markNotificationAsRead(Long notificationId) {
+        Notification notification = notificationRepository.findById(notificationId)
+            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_NOTIFICATION));
+        notification.updateIsRead();
     }
 
 }
