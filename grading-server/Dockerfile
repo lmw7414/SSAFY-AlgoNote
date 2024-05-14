@@ -5,7 +5,9 @@ FROM openjdk:17-slim
 RUN apt-get update && apt-get install -y \
     python3 \
     python3-pip \
-    libpython3-dev
+    libpython3-dev \
+    build-essential \
+    time
 
 RUN pip3 install memory_profiler
 
