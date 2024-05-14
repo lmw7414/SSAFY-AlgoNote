@@ -20,8 +20,6 @@ const SimpleButton = ({
 }: SimpleButtonProps) => {
   const buttonClass = `${styles.button} ${className ? styles[className] : ' '}`
 
-  console.log('버튼 응답', isDisabled)
-
   return (
     <button
       type="button"
