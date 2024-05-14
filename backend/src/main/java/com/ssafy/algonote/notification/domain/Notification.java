@@ -34,16 +34,21 @@ public class Notification extends BaseEntity {
     private NotificationType notificationType;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "reciever_id")
     private Member reciever;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "provider_id")
+    private Member provider;
 
     private String content;
     private boolean isRead;
 
-    public static Notification of(NotificationType notificationType, Member reciever, String content) {
+    public static Notification of(NotificationType notificationType, Member reciever, Member provider, String content) {
         return Notification.builder()
             .notificationType(notificationType)
             .reciever(reciever)
+            .provider(provider)
             .content(content)
             .build();
     }
