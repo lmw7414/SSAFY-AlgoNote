@@ -1,45 +1,28 @@
 package com.ssafy.grading.controller;
 
-
 import com.ssafy.grading.dto.ExecutionResult;
-import com.ssafy.grading.dto.request.Request;
-import com.ssafy.grading.service.CExecutorService;
-import com.ssafy.grading.service.CppExecutorService;
-import com.ssafy.grading.service.JavaExecutorService;
-import com.ssafy.grading.service.PythonExecutorService;
-import lombok.RequiredArgsConstructor;
+import com.ssafy.grading.dto.request.ExecutionReqDto;
+import com.ssafy.grading.service.LanguageExecutorService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/execute")
-@RequiredArgsConstructor
 public class ExecutionController {
-    private final JavaExecutorService javaExecutorService;
-    private final PythonExecutorService pythonExecutorService;
-    private final CExecutorService cExecutorService;
-    private final CppExecutorService cppExecutorService;
-    @PostMapping("/java")
-    public ResponseEntity<ExecutionResult> executeJava(@RequestBody Request request) {
-        return ResponseEntity.ok(javaExecutorService.compileAndExecute(request.sourceCode(), request.inputData(), request.expectedOutput()));
+    private final Map<String, LanguageExecutorService> executorServiceMap;
+
+    @Autowired
+    public ExecutionController(@Qualifier("executorServiceMap") Map<String, LanguageExecutorService> executorServiceMap) {
+        this.executorServiceMap = executorServiceMap;
     }
 
-    @PostMapping("/py")
-    public ResponseEntity<ExecutionResult> executePython(@RequestBody Request request) {
-        return ResponseEntity.ok(pythonExecutorService.compileAndExecute(request.sourceCode(), request.inputData(), request.expectedOutput()));
-    }
-
-    @PostMapping("/c")
-    public ResponseEntity<ExecutionResult> executeC(@RequestBody Request request) {
-        return ResponseEntity.ok(cExecutorService.compileAndExecute(request.sourceCode(), request.inputData(), request.expectedOutput()));
-    }
-
-    @PostMapping("/cpp")
-    public ResponseEntity<ExecutionResult> executeCpp(@RequestBody Request request) {
-        return ResponseEntity.ok(cppExecutorService.compileAndExecute(request.sourceCode(), request.inputData(), request.expectedOutput()));
+    @PostMapping("/{language}")
+    public ResponseEntity<ExecutionResult> execute(@PathVariable("language") String language, @RequestBody ExecutionReqDto request) {
+        return ResponseEntity.ok(executorServiceMap.get(language).execute(request.sourceCode(), request.inputData(), request.expectedOutput()));
     }
 
 }

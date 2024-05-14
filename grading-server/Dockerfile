@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     time
 
-RUN pip3 install memory_profiler
+RUN pip3 install psutil
 
 # 앱 jar 파일 복사
 ARG JAR_FILE=build/libs/app.jar

@@ -8,10 +8,8 @@ import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.UUID;
 import java.util.concurrent.*;
 import java.util.stream.Collectors;
@@ -20,14 +18,15 @@ import static com.ssafy.grading.util.CodeInputVerification.normalizeNewlines;
 
 @Slf4j
 @Service
-public class JavaExecutorService {
+public class JavaExecutorService implements LanguageExecutorService {
 
     private static final String JAVA_COMPILER = "javac";
     private static final String JAVA_RUNNER = "java";
 
     //TODO : 시간 초과 발생 시 txt 파일이 삭제 안됨.
 
-    public ExecutionResult compileAndExecute(String code, String input, String expected) {
+    @Override
+    public ExecutionResult execute(String code, String input, String expected) {
         String dirPath = UUID.randomUUID() + "/";
         String className = "Main";
         String javaFile = dirPath + className + ".java";
@@ -118,18 +117,21 @@ public class JavaExecutorService {
         }
     }
 
-    private String getActualOutput(String output) {
+    @Override
+    public String getActualOutput(String output) {
         String[] outputToArray = output.split("\n");
         String[] result = Arrays.copyOfRange(outputToArray, 0, outputToArray.length - 2);
         return String.join("\n", result);
     }
 
-    private double getUsedTime(String output) {
+    @Override
+    public double getUsedTime(String output) {
         String[] outputToArray = output.split("\n");
         return Double.parseDouble(outputToArray[outputToArray.length - 2]) / 1000000;
     }
 
-    private double getUsedMemory(String output) {
+    @Override
+    public double getUsedMemory(String output) {
         String[] outputToArray = output.split("\n");
         return Double.parseDouble(outputToArray[outputToArray.length - 1]) / 1024;
     }
@@ -184,18 +186,6 @@ public class JavaExecutorService {
             idx++;
         }
         return braceCnt == 0 ? idx : -1;
-    }
-
-    // 파일 제거
-    private void deleteFiles(Path path) {
-        try (var paths = Files.walk(path)) {
-            // 내부 요소부터 외부 요소 순으로 정렬 후 삭제
-            paths.sorted(Comparator.reverseOrder())
-                    .map(Path::toFile)
-                    .forEach(File::delete);
-        } catch (IOException e) {
-            throw new RuntimeException("파일 삭제 중 문제 발생");
-        }
     }
 
 }
