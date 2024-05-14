@@ -14,7 +14,8 @@
     border-radius: 0.5rem;
     min-height: 20rem;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: space-around;
     align-items: center;
   }
 

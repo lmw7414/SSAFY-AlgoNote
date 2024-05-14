@@ -3,6 +3,8 @@ import Image from 'next/image'
 import OpenAI from 'openai'
 import s from './ChatBot.module.scss'
 import useNoteStore from '@/stores/note-store'
+import MyChatMessage from '../ChatMessage/MyChatMessage'
+import GptChatMessage from '../ChatMessage/GptChatMessage'
 
 const openai = new OpenAI({
   apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
@@ -17,7 +19,7 @@ const ChatBot = () => {
 
   useEffect(() => {
     console.log('챗: ', chats)
-  }, [chats, question, answer])
+  }, [chats, answer])
 
   const openAI = async (msg: string) => {
     setSending(true)
@@ -54,13 +56,15 @@ const ChatBot = () => {
       <h4>AlgoBot</h4>
       <div>
         <div className={s.answerCont}>
-          {sending ? (
+          {/* {sending ? (
             <div className={s.spinnerCont}>
               <div className={s.spinner} />
             </div>
           ) : (
             <p>{answer}</p>
-          )}
+          )} */}
+          <MyChatMessage message="asdf" />
+          <GptChatMessage message="asdf" />
         </div>
       </div>
       <div className={s.gptInputBox}>
