@@ -38,15 +38,13 @@ public class Notification extends BaseEntity {
     private Member reciever;
 
     private String content;
-    private String relatedPath;
     private boolean isRead;
 
-    public static Notification of(NotificationType notificationType, Member reciever, String content, String relatedPath) {
+    public static Notification of(NotificationType notificationType, Member reciever, String content) {
         return Notification.builder()
             .notificationType(notificationType)
             .reciever(reciever)
             .content(content)
-            .relatedPath(relatedPath)
             .build();
     }
 

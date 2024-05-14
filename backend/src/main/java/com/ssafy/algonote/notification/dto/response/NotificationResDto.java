@@ -11,7 +11,6 @@ public record NotificationResDto(
     NotificationType notificationType,
     String content,
     boolean isRead,
-    String relatedPath,
     LocalDateTime createdAt
 ) {
     public static NotificationResDto from(Notification entity) {
@@ -20,7 +19,6 @@ public record NotificationResDto(
             .notificationType(entity.getNotificationType())
             .content(entity.getContent())
             .isRead(entity.isRead())
-            .relatedPath(entity.getRelatedPath())
             .createdAt(entity.getCreatedAt())
             .build();
     }

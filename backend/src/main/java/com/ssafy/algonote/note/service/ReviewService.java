@@ -44,7 +44,7 @@ public class ReviewService {
         reviewRepository.save(review);
 
         eventPublisher.publishEvent(
-            new NotificationReqDto(NotificationType.REVIEW, note.getMember(), note.getTitle(), "/api/notes/"+noteId));
+            new NotificationReqDto(NotificationType.REVIEW, note.getMember(), note.getTitle()));
     }
 
     private Note getNoteOrElseThrow(Long noteId) {

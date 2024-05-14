@@ -8,7 +8,6 @@ import lombok.Builder;
 public record NotificationReqDto(
     NotificationType notificationType,
     Member receiver,
-    String content,
-    String relatedPath
+    String content
 ) {
 }
