@@ -26,7 +26,7 @@ const executeCode = async (props: ExecuteDataProps) => {
 }
 
 const getComplexityCode = async (sourceCode: ComplexityProps) => {
-  const apiUrl = '/api/code/gpt'
+  const apiUrl = '/api/codes/complexity'
 
   try {
     const response = await axiosAuthApi().post(apiUrl, sourceCode)

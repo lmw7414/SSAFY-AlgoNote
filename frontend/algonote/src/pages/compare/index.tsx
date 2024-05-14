@@ -84,6 +84,8 @@ const ComparePage = () => {
         <select value={language} onChange={handleLanguageChange}>
           <option value="py">Python</option>
           <option value="java">Java</option>
+          <option value="c">C</option>
+          <option value="cpp">C++</option>
         </select>
         <input
           type="text"
