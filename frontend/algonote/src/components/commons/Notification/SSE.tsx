@@ -34,7 +34,7 @@ const SSE = () => {
       // data를 content 상태로 업데이트
       setContent(data || '')
       setEventId(lastEventId || '')
-
+      console.log(content, eventId)
       // 특정 조건에 따른 처리
       // if (!data.includes('EventStream Created')) {
       //   console.log('SSE 실패');
