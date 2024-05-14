@@ -36,7 +36,8 @@ public enum ErrorCode {
     NOTIFICATION_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "알람 전송 중 에러가 발생하였습니다."),
     JSON_MAPPING_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "FastAPI 서버 오류"),
     NOT_SOLVED(HttpStatus.FORBIDDEN, "아직 풀지 않은 문제입니다."),
-    INVALID_QUERY_PARAM(HttpStatus.BAD_REQUEST, "잘못된 요청 URL입니다.");
+    INVALID_QUERY_PARAM(HttpStatus.BAD_REQUEST, "잘못된 요청 URL입니다."),
+    NOT_FOUND_NOTIFICATION(HttpStatus.NOT_FOUND, "해당 알림을 찾을 수 없습니다.");
 
     private final HttpStatus httpStatus;
     private final String detail;

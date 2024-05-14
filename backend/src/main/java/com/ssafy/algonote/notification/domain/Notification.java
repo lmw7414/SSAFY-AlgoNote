@@ -3,7 +3,10 @@ package com.ssafy.algonote.notification.domain;
 import com.ssafy.algonote.common.BaseEntity;
 import com.ssafy.algonote.member.domain.Member;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,18 +29,27 @@ public class Notification extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private NotificationType notificationType;
+
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "member_id")
-    Member reciever;
+    private Member reciever;
 
-    String content;
-    boolean isRead;
+    private String content;
+    private boolean isRead;
 
-    public static Notification of(Member reciever, String content) {
+    public static Notification of(NotificationType notificationType, Member reciever, String content) {
         return Notification.builder()
+            .notificationType(notificationType)
             .reciever(reciever)
             .content(content)
             .build();
+    }
+
+    public void updateIsRead() {
+        this.isRead = true;
     }
 
 }
