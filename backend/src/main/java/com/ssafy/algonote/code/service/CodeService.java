@@ -47,8 +47,8 @@ public class CodeService {
 
     public ComplexityResDto getComplexity(ComplexityReqDto dto) {
         return ComplexityResDto.builder()
-            .timeComplexity(gptService.getTimeComplexity(dto.sourceCode()))
-            .spaceComplexity(gptService.getSpaceComplexity(dto.sourceCode()))
+            .timeComplexity(gptService.getTimeComplexity(dto))
+            .spaceComplexity(gptService.getSpaceComplexity(dto))
             .build();
     }
 
