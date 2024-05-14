@@ -28,7 +28,7 @@ const Wave = ({ type, date }: WaveProps) => {
 
     // 날짜 차이 계산 (일 수)
     const dateDiff = differenceInDays(new Date(currentDate), new Date(date))
-    console.log(type, dateDiff)
+    // console.log(type, dateDiff)
     setDateDif(dateDiff)
     // score 계산
     let score = 0
