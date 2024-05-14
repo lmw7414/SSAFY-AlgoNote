@@ -1,7 +1,6 @@
 package com.ssafy.algonote.problem.controller;
 
 import com.ssafy.algonote.config.security.SecurityUtil;
-import com.ssafy.algonote.note.domain.Note;
 import com.ssafy.algonote.problem.dto.response.AnalysisResDto;
 import com.ssafy.algonote.problem.dto.response.NotedProblemResDto;
 import com.ssafy.algonote.problem.dto.response.ProblemResDto;
@@ -19,6 +18,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -96,5 +96,10 @@ public class ProblemController {
         return ResponseEntity.ok(solvedProblemService.getNotedProblem(memberId));
     }
 
+    @PostMapping("/test")
+    public ResponseEntity<Void> notifyTest() {
+        solvedProblemService.sendNotificationsToAllMembersAboutTag();
+        return ResponseEntity.ok().build();
+    }
 
 }

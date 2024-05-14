@@ -49,6 +49,7 @@ public class ReviewService {
                 note.getMember(),
                 member,
                 noteId,
+                null,
                 note.getTitle() + " 에 댓글이 추가되었습니다."));
     }
 
