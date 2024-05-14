@@ -22,7 +22,7 @@ public record NotificationResDto(
             .type(entity.getNotificationType())
             .content(entity.getContent())
             .relatedId(entity.getRelatedId())
-            .provider(com.ssafy.algonote.member.dto.response.MemberResDto.from(entity.getProvider()))
+            .provider(MemberResDto.from(entity.getProvider()))
             .isRead(entity.isRead())
             .createdAt(entity.getCreatedAt())
             .build();

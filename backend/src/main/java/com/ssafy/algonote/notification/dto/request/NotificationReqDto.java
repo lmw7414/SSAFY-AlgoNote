@@ -10,6 +10,7 @@ public record NotificationReqDto(
     Member receiver,
     Member provider,
     Long relatedId,
+    String relatedTag,
     String content
 ) {
 }

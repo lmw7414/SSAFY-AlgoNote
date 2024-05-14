@@ -42,15 +42,17 @@ public class Notification extends BaseEntity {
     private Member provider;
 
     private Long relatedId;
+    private String relatedTag;
     private String content;
     private boolean isRead;
 
-    public static Notification of(NotificationType notificationType, Member reciever, Member provider, Long relatedId, String content) {
+    public static Notification of(NotificationType notificationType, Member reciever, Member provider, Long relatedId, String relatedTag, String content) {
         return Notification.builder()
             .notificationType(notificationType)
             .reciever(reciever)
             .provider(provider)
             .relatedId(relatedId)
+            .relatedTag(relatedTag)
             .content(content)
             .build();
     }
