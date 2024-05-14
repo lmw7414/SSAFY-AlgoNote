@@ -15,6 +15,7 @@ const NavBar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const { deleteUserInfo } = useUserInfo()
   const [userProfile, setUserProfile] = useState('/images/basicprofileimg')
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false)
   const [isNotReadNoti, setIsNotReadNoti] = useState(false)
 
   useEffect(() => {
@@ -151,6 +152,12 @@ const NavBar = () => {
           </div>
         )}
       </div>
+      {isNotificationOpen ? (
+        <Notification
+          setIsNotReadNoti={setIsNotReadNoti}
+          setIsNotificationOpen={setIsNotificationOpen}
+        />
+      ) : null}
     </div>
   )
 }
