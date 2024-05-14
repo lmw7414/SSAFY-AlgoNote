@@ -5,11 +5,11 @@ import com.ssafy.algonote.exception.ErrorCode;
 import com.ssafy.algonote.member.domain.Member;
 import com.ssafy.algonote.member.repository.MemberRepository;
 import com.ssafy.algonote.note.domain.Note;
-import com.ssafy.algonote.note.repository.NoteRepository;
 import com.ssafy.algonote.note.domain.Review;
 import com.ssafy.algonote.note.dto.request.ReviewReqDto;
 import com.ssafy.algonote.note.dto.request.ReviewUpdateReqDto;
 import com.ssafy.algonote.note.dto.response.ReviewResDto;
+import com.ssafy.algonote.note.repository.NoteRepository;
 import com.ssafy.algonote.note.repository.ReviewRepository;
 import com.ssafy.algonote.notification.domain.NotificationType;
 import com.ssafy.algonote.notification.dto.request.NotificationReqDto;
@@ -44,7 +44,11 @@ public class ReviewService {
         reviewRepository.save(review);
 
         eventPublisher.publishEvent(
-            new NotificationReqDto(NotificationType.REVIEW, note.getMember(), note.getTitle()));
+            new NotificationReqDto(
+                NotificationType.REVIEW,
+                note.getMember(),
+                member,
+                note.getTitle() + " 에 댓글이 추가되었습니다."));
     }
 
     private Note getNoteOrElseThrow(Long noteId) {
