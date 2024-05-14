@@ -25,7 +25,6 @@
   transition: flex 0.4s ease-out;
   flex: 3;
   height: 100%;
-  
 }
 
 .submitTitleBox {
@@ -54,7 +53,7 @@
   padding-right: 1rem;
   bottom: 0.01rem;
   border: none;
-  width: 37.5%;
+  width: 36.5%;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -81,26 +80,10 @@
 .chatGpt {
   position: fixed;
   right: 1.6rem;
-  bottom: 1.6rem;
+  bottom: 5rem;
 }
 
 .saveButtonSection {
   display: flex;
   justify-content: space-between;
-}
-
-.detailModal{
-  display: flex;
-  width: 100%;
-  border: 1px solid red;
-}
-
-.selectedCode{
-  margin-left: 1rem;
-  width: 45rem;
-  height: 35rem;
-  height: inherit;
-  overflow-x: hidden;
-  overflow-y: auto;
-  border: 1px solid blue;
 }

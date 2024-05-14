@@ -4,7 +4,17 @@ import MarkdownEditor from '../MarkdownEditor'
 import s from './Tabs.module.scss'
 import useNoteStore from '@/stores/note-store'
 
-const Tabs = () => {
+interface TabsProps {
+  gptSectionStyle: React.CSSProperties
+  chatBotState: boolean
+  showChatBotState: boolean
+}
+
+const Tabs = ({
+  gptSectionStyle,
+  chatBotState,
+  showChatBotState,
+}: TabsProps) => {
   const { tabs, curSelectedIdx, setCurSelectedIdx, addTab, removeTab } =
     useNoteStore()
   const [activeTab, setActiveTab] = useState(0)
@@ -86,7 +96,12 @@ const Tabs = () => {
       </div>
       <div className={s.tabsContent}>
         {tabs.length > 0 && tabs[curSelectedIdx] ? (
-          <MarkdownEditor currentTab={tabs[curSelectedIdx]} />
+          <MarkdownEditor
+            currentTab={tabs[curSelectedIdx]}
+            gptSectionStyle={gptSectionStyle}
+            chatBotState={chatBotState}
+            showChatBotState={showChatBotState}
+          />
         ) : (
           []
         )}
