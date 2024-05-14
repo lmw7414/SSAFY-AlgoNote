@@ -35,6 +35,10 @@ public class CodeService {
             return restTemplate.postForObject(serverUrl+ "/java", requestEntity, AnalyzeResDto.class);
         } else if("py".equals(lang)) {
             return restTemplate.postForObject(serverUrl+ "/py", requestEntity, AnalyzeResDto.class);
+        } else if("c".equals(lang)) {
+            return restTemplate.postForObject(serverUrl+ "/c", requestEntity, AnalyzeResDto.class);
+        } else if("cpp".equals(lang)) {
+            return restTemplate.postForObject(serverUrl+ "/cpp", requestEntity, AnalyzeResDto.class);
         } else {
             throw new CustomException(ErrorCode.INVALID_QUERY_PARAM);
         }

@@ -3,6 +3,8 @@ package com.ssafy.grading.controller;
 
 import com.ssafy.grading.dto.ExecutionResult;
 import com.ssafy.grading.dto.request.Request;
+import com.ssafy.grading.service.CExecutorService;
+import com.ssafy.grading.service.CppExecutorService;
 import com.ssafy.grading.service.JavaExecutorService;
 import com.ssafy.grading.service.PythonExecutorService;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class ExecutionController {
     private final JavaExecutorService javaExecutorService;
     private final PythonExecutorService pythonExecutorService;
-
+    private final CExecutorService cExecutorService;
+    private final CppExecutorService cppExecutorService;
     @PostMapping("/java")
     public ResponseEntity<ExecutionResult> executeJava(@RequestBody Request request) {
         return ResponseEntity.ok(javaExecutorService.compileAndExecute(request.sourceCode(), request.inputData(), request.expectedOutput()));
@@ -27,6 +30,16 @@ public class ExecutionController {
     @PostMapping("/py")
     public ResponseEntity<ExecutionResult> executePython(@RequestBody Request request) {
         return ResponseEntity.ok(pythonExecutorService.compileAndExecute(request.sourceCode(), request.inputData(), request.expectedOutput()));
+    }
+
+    @PostMapping("/c")
+    public ResponseEntity<ExecutionResult> executeC(@RequestBody Request request) {
+        return ResponseEntity.ok(cExecutorService.compileAndExecute(request.sourceCode(), request.inputData(), request.expectedOutput()));
+    }
+
+    @PostMapping("/cpp")
+    public ResponseEntity<ExecutionResult> executeCpp(@RequestBody Request request) {
+        return ResponseEntity.ok(cppExecutorService.compileAndExecute(request.sourceCode(), request.inputData(), request.expectedOutput()));
     }
 
 }
