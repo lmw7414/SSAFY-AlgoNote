@@ -1,63 +1,83 @@
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
+import Image from 'next/image'
 import OpenAI from 'openai'
 import s from './ChatBot.module.scss'
-import { SimpleButton } from '@/components/commons/Buttons/Button'
+import useNoteStore from '@/stores/note-store'
+
+const openai = new OpenAI({
+  apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
+  dangerouslyAllowBrowser: true,
+})
 
 const ChatBot = () => {
-  const [inputMsg, setInputMsg] = useState('')
-  const [outputMsg, setOutputMsg] = useState<string | null>('')
   const [sending, setSending] = useState(false)
-  const openai = new OpenAI({
-    apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
-    dangerouslyAllowBrowser: true,
-  })
+  const [answer, setAnswer] = useState<string | null>('')
+  const [question, setQuestion] = useState('')
+  const { chats, setChats, updateLastChat } = useNoteStore()
+
+  useEffect(() => {
+    console.log('챗: ', chats)
+  }, [chats, question, answer])
 
   const openAI = async (msg: string) => {
-    setInputMsg('')
     setSending(true)
     const completion = await openai.chat.completions.create({
       messages: [{ role: 'system', content: msg }],
       model: 'gpt-4-turbo',
     })
 
-    setOutputMsg(completion.choices[0].message.content)
+    setAnswer(() => completion.choices[0].message.content)
+    updateLastChat({ question, answer: completion.choices[0].message.content })
+
     setSending(false)
+  }
+
+  const handleSubmit = () => {
+    openAI(question)
+    setChats({ question, answer: '' })
   }
 
   const handleInput = (event: ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value
-    setInputMsg(newValue)
+    setQuestion(() => newValue)
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      openAI(inputMsg)
+      openAI(question)
+      setChats({ question, answer: '' })
     }
   }
 
   return (
     <div className={s.container}>
-      <h1>임시 챗봇</h1>
+      <h4>AlgoBot</h4>
       <div>
-        <p>답변: </p>
         <div className={s.answerCont}>
           {sending ? (
             <div className={s.spinnerCont}>
               <div className={s.spinner} />
             </div>
           ) : (
-            <p>{outputMsg}</p>
+            <p>{answer}</p>
           )}
         </div>
       </div>
-      <div>
+      <div className={s.gptInputBox}>
         <input
-          placeholder="질문을 입력하세요"
-          value={inputMsg}
+          placeholder="알고봇에게 무엇이든 물어보세요"
+          value={question}
           onChange={handleInput}
           onKeyDown={(event) => handleKeyDown(event)}
         />
-        <SimpleButton text="전송" onClick={() => openAI(inputMsg)} />
+        <button type="button" onClick={handleSubmit}>
+          <Image
+            src="/images/gptsubmmitbtn.png"
+            alt="gptsubmmitbtn"
+            width={50}
+            height={50}
+          />
+        </button>
       </div>
     </div>
   )

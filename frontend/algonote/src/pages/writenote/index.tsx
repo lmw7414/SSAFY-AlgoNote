@@ -5,7 +5,6 @@ import { useRouter } from 'next/router'
 import s from './writenote.module.scss'
 import { getSubmissionList, registNote } from '@/apis/regist-noteAxios'
 import { SimpleButton } from '@/components/commons/Buttons/Button'
-import ChatBot from '@/components/commons/ChatBot'
 import SubmitList from '@/components/commons/SubmitList'
 import SubmitListTitle from '@/components/commons/SubmitListTitle'
 import Tabs from '@/components/commons/Tabs'
@@ -27,8 +26,10 @@ const WriteNote = () => {
   const { id } = router.query // 쿼리에서 id(선택한 문제 번호)를 추출
   const currentDate = new Date()
   const [chatBotState, setChatBotState] = useState(false)
+  const [showChatBot, setShowChatBot] = useState(false) // 자연스럽게 챗봇 창 띄우기 위해
   const [submissionList, setSubmissionList] = useState<SubmissionHistory[]>([]) // 제출 이력
-  const [isCollapsed, setIsCollapsed] = useState(false)
+  const [isCollapsed, setIsCollapsed] = useState(false) // 좌측 상단 토글 클릭 여부
+
   const { tabs, setTabs, curSelectedIdx } = useNoteStore()
 
   useEffect(() => {
@@ -47,6 +48,19 @@ const WriteNote = () => {
     fetchData()
   }, [id, setTabs])
 
+  useEffect(() => {
+    let timer: string | number | NodeJS.Timeout | undefined
+    if (chatBotState) {
+      timer = setTimeout(() => {
+        setShowChatBot(true)
+      }, 300)
+    } else {
+      setShowChatBot(false)
+    }
+
+    return () => clearTimeout(timer) // 컴포넌트가 언마운트 되거나 chatBotState가 바뀌기 전에 타이머를 정리
+  }, [chatBotState])
+
   const buttonClickHandler = () => {
     setIsCollapsed(!isCollapsed)
   }
@@ -62,11 +76,26 @@ const WriteNote = () => {
   const [correctColor, incorrectColor] = ['#3c87fe', '#fb4444']
   const rightStyle = isCollapsed ? { flex: 30 } : { flex: 3 }
 
+  const gptSectionStyle = chatBotState
+    ? { flex: 1, padding: '2rem', paddingRight: '1rem' }
+    : { flex: 0, padding: 0 }
+
   const leftStyle = isCollapsed
     ? { justifyContent: 'center', paddingLeft: 0, paddingRight: 0 }
     : { justifyContent: 'space-between', paddingLeft: '1rem' }
 
-  const buttonSecStyle = isCollapsed ? { width: '48.5%' } : { width: '37.8%' }
+  const buttonSecStyle = isCollapsed
+    ? chatBotState
+      ? { width: '47.5%' }
+      : { width: '96.65%' }
+    : chatBotState
+      ? { width: '36.8%' }
+      : { width: '75.15%' }
+
+  const gptButtonStyle = chatBotState
+    ? { right: '3rem', top: '15.7%' }
+    : { right: '1.6rem' }
+
   return (
     <div className={s.pageWrapper}>
       <div className={s.wrapper}>
@@ -122,7 +151,9 @@ const WriteNote = () => {
 
                     // result 색상 설정
                     resultColor =
-                      sb.result === '맞았습니다' ? correctColor : incorrectColor
+                      sb.result === '맞았습니다!!'
+                        ? correctColor
+                        : incorrectColor
 
                     return (
                       <SubmitList
@@ -143,7 +174,11 @@ const WriteNote = () => {
           </div>
         </div>
         <div className={s.right} style={rightStyle}>
-          <Tabs />
+          <Tabs
+            gptSectionStyle={gptSectionStyle}
+            chatBotState={chatBotState}
+            showChatBotState={showChatBot}
+          />
           <div className={s.buttonSection} style={buttonSecStyle}>
             <Link href="/">
               <div className={s.exitButtonSec}>
@@ -190,18 +225,31 @@ const WriteNote = () => {
           </div>
         </div>
       </div>
-      {chatBotState ? <ChatBot /> : null}
-      <div className={s.chatGpt}>
-        <button type="button">
-          <Image
-            src="/images/gptbutton.png"
-            alt="chatGPTButton"
-            width={50}
-            height={50}
-            layout="fixed"
-            onClick={() => setChatBotState(!chatBotState)}
-          />
-        </button>
+
+      <div className={s.chatGpt} style={gptButtonStyle}>
+        {!chatBotState ? (
+          <button type="button">
+            <Image
+              src="/images/gptbutton.png"
+              alt="chatGPTButton"
+              width={50}
+              height={50}
+              layout="fixed"
+              onClick={() => setChatBotState(!chatBotState)}
+            />
+          </button>
+        ) : (
+          <button type="button">
+            <Image
+              src="/images/closegptbutton.png"
+              alt="chatGPTButton"
+              width={12}
+              height={12}
+              layout="fixed"
+              onClick={() => setChatBotState(!chatBotState)}
+            />
+          </button>
+        )}
       </div>
     </div>
   )
