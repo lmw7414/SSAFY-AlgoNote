@@ -40,9 +40,11 @@
   display: flex;
   flex: 1;
   height: 100%;
-  min-height: 89.5vh;
+  margin: 0.7rem;
+  // min-height: 89.5vh;
   padding: 1rem;
-  // background-color: #fbfbff;
+  background-color: var(--soft-gray);
+  border-radius: 1rem;
   font-size: 1.2rem;
   line-height: 2rem;
 }

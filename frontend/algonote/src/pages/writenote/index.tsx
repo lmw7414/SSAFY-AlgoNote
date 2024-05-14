@@ -77,7 +77,7 @@ const WriteNote = () => {
   const rightStyle = isCollapsed ? { flex: 30 } : { flex: 3 }
 
   const gptSectionStyle = chatBotState
-    ? { flex: 1, padding: '2rem' }
+    ? { flex: 1, padding: '2rem', paddingRight: '1rem' }
     : { flex: 0, padding: 0 }
 
   const leftStyle = isCollapsed
@@ -93,7 +93,7 @@ const WriteNote = () => {
       : { width: '75.15%' }
 
   const gptButtonStyle = chatBotState
-    ? { right: '3.6rem', top: '15.7%' }
+    ? { right: '3rem', top: '15.7%' }
     : { right: '1.6rem' }
 
   return (
