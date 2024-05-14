@@ -11,7 +11,7 @@ const App = ({ Component, pageProps }: AppProps) => {
     <>
       {router.pathname === '/writenote' ? <NoteNavBar /> : <NavBar />}
       <Component {...pageProps} />
-      <Footer />
+      {router.pathname !== '/writenote' ? <Footer /> : null}
     </>
   )
 }
