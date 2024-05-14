@@ -1,3 +1,6 @@
 grading-server/.idea/**
 grading-server/build/**
 grading-server/.gradle/**
+backend
+frontend
+recommender
