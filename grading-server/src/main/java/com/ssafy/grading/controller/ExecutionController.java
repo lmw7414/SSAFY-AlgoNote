@@ -29,4 +29,9 @@ public class ExecutionController {
         return ResponseEntity.ok(pythonExecutorService.compileAndExecute(request.sourceCode(), request.inputData(), request.expectedOutput()));
     }
 
+    @PostMapping("/c")
+    public ResponseEntity<ExecutionResult> executeC(@RequestBody Request request) {
+        return ResponseEntity.ok(cExecutorService.compileAndExecute(request.sourceCode(), request.inputData(), request.expectedOutput()));
+    }
+
 }
