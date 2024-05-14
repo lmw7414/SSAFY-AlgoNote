@@ -3,6 +3,7 @@ package com.ssafy.algonote.note.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ssafy.algonote.code.dto.request.ComplexityReqDto;
 import com.ssafy.algonote.exception.CustomException;
 import com.ssafy.algonote.exception.ErrorCode;
 import java.util.ArrayList;
@@ -34,14 +35,14 @@ public class GptService {
 
     private final RestTemplate restTemplate;
 
-    public String getTimeComplexity(String userMsg) {
-        String systemMsg = "Calculate the time complexity of the following Java code. Just give me the value, no explanation.";
-        return callChatGpt(systemMsg, userMsg);
+    public String getTimeComplexity(ComplexityReqDto dto) {
+        String systemMsg = "다음 코드의 시간복잡도를 계산해주세요. 한 문장으로 대답해주세요.";
+        return callChatGpt(systemMsg, dto.sourceCode());
     }
 
-    public String getSpaceComplexity(String userMsg) {
-        String systemMsg = "Calculate the space complexity of the following Java code. Just give me the value, no explanation.";
-        return callChatGpt(systemMsg, userMsg);
+    public String getSpaceComplexity(ComplexityReqDto dto) {
+        String systemMsg = "다음 코드의 공간복잡도를 계산해주세요. 한 문장으로 대답해주세요.";
+        return callChatGpt(systemMsg, dto.sourceCode());
     }
 
     private String callChatGpt(String systemMsg, String userMsg) {
