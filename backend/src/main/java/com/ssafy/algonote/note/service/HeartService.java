@@ -45,6 +45,7 @@ public class HeartService {
                     note.getMember(),
                     member,
                     noteId,
+                    null,
                     note.getTitle() + "에 좋아요가 추가되었습니다."));
 
             return new HeartResDto(true);

@@ -114,9 +114,10 @@ public class NotificationService {
      * @param content 알림 내용
      */
     @Transactional(TxType.REQUIRES_NEW)
-    public void notify(NotificationType notificationType, Member receiver, Member provider, Long relatedId, String content) {
+    public void notify(NotificationType notificationType, Member receiver, Member provider, Long relatedId, String relatedTag, String content) {
+        log.info(relatedId + " 님에게 알림이 발송되었습니다.");
         Notification notification = notificationRepository.save(
-            Notification.of(notificationType, receiver, provider, relatedId, content));
+            Notification.of(notificationType, receiver, provider, relatedId, relatedTag, content));
 
         String receiverId = String.valueOf(receiver.getId());
         String eventId = receiverId + "_" + System.currentTimeMillis();
