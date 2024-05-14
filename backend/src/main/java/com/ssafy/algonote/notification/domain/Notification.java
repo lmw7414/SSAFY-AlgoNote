@@ -41,14 +41,16 @@ public class Notification extends BaseEntity {
     @JoinColumn(name = "provider_id")
     private Member provider;
 
+    private Long relatedId;
     private String content;
     private boolean isRead;
 
-    public static Notification of(NotificationType notificationType, Member reciever, Member provider, String content) {
+    public static Notification of(NotificationType notificationType, Member reciever, Member provider, Long relatedId, String content) {
         return Notification.builder()
             .notificationType(notificationType)
             .reciever(reciever)
             .provider(provider)
+            .relatedId(relatedId)
             .content(content)
             .build();
     }

@@ -50,6 +50,7 @@ public class BookmarkService {
                     NotificationType.BOOKMARK,
                     note.getMember(),
                     member,
+                    noteId,
                     note.getTitle() + " 가 북마크 되었습니다."));
 
             return new BookmarkStatusResDto(true);

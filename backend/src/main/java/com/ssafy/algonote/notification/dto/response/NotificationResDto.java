@@ -8,19 +8,21 @@ import lombok.Builder;
 
 @Builder
 public record NotificationResDto(
-    Long notificationId,
-    NotificationType notificationType,
+    Long id,
+    NotificationType type,
     String content,
+    Long relatedId,
     MemberResDto provider,
     boolean isRead,
     LocalDateTime createdAt
 ) {
     public static NotificationResDto from(Notification entity) {
         return NotificationResDto.builder()
-            .notificationId(entity.getId())
-            .notificationType(entity.getNotificationType())
+            .id(entity.getId())
+            .type(entity.getNotificationType())
             .content(entity.getContent())
-            .provider(MemberResDto.from(entity.getProvider()))
+            .relatedId(entity.getRelatedId())
+            .provider(com.ssafy.algonote.member.dto.response.MemberResDto.from(entity.getProvider()))
             .isRead(entity.isRead())
             .createdAt(entity.getCreatedAt())
             .build();

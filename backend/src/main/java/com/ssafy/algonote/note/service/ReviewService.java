@@ -48,6 +48,7 @@ public class ReviewService {
                 NotificationType.REVIEW,
                 note.getMember(),
                 member,
+                noteId,
                 note.getTitle() + " 에 댓글이 추가되었습니다."));
     }
 

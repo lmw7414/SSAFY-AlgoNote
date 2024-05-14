@@ -9,6 +9,7 @@ public record NotificationReqDto(
     NotificationType notificationType,
     Member receiver,
     Member provider,
+    Long relatedId,
     String content
 ) {
 }
