@@ -11,19 +11,23 @@ import com.ssafy.algonote.note.dto.BookmarkStatusResDto;
 import com.ssafy.algonote.note.repository.BookmarkRepository;
 import com.ssafy.algonote.note.repository.HeartRepository;
 import com.ssafy.algonote.note.repository.NoteRepository;
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
+import com.ssafy.algonote.notification.domain.NotificationType;
+import com.ssafy.algonote.notification.dto.request.NotificationReqDto;
 import java.util.List;
 import java.util.Optional;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Transactional
 @AllArgsConstructor
 @Service
 public class BookmarkService {
+
+    private final ApplicationEventPublisher eventPublisher;
 
     private final BookmarkRepository bookmarkRepository;
     private final MemberRepository memberRepository;
@@ -40,6 +44,13 @@ public class BookmarkService {
                     .member(member)
                     .note(note)
                     .build());
+
+            eventPublisher.publishEvent(
+                new NotificationReqDto(
+                    NotificationType.BOOKMARK,
+                    note.getMember(),
+                    member,
+                    note.getTitle() + " 가 북마크 되었습니다."));
 
             return new BookmarkStatusResDto(true);
         } else {
