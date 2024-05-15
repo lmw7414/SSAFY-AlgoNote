@@ -119,6 +119,10 @@ const WriteNote = () => {
     alert('임시저장 되었습니다.')
   }
 
+  const handleTempNote = () => {
+    console.log('임시 저장 노트 클릭')
+  }
+
   // UI 관련 스타일
   let resultColor = ''
   const [correctColor, incorrectColor] = ['#3c87fe', '#fb4444']
@@ -245,10 +249,16 @@ const WriteNote = () => {
                         savedTime = '방금 전'
                       }
                       return (
-                        <div key={temp.tempNoteId} className={s.tempNoteItem}>
-                          <span>{temp.noteTitle}</span>
-                          <span>{savedTime}</span>
-                        </div>
+                        <button
+                          key={temp.tempNoteId}
+                          type="button"
+                          onClick={handleTempNote}
+                        >
+                          <div className={s.tempNoteItem}>
+                            <span>{temp.noteTitle}</span>
+                            <span>{savedTime}</span>
+                          </div>
+                        </button>
                       )
                     })}
                   </div>
