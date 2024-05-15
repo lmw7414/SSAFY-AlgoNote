@@ -1,3 +1,6 @@
+import { useState } from 'react'
+import ReactMarkdown from 'react-markdown'
+import Modal from '../Modal'
 import s from './SubmitList.module.scss'
 import useNoteStore from '@/stores/note-store'
 
@@ -22,14 +25,21 @@ const SubmitList = ({
 }: SubmitListProps) => {
   const { curSelectedIdx, tabs, updateTab } = useNoteStore()
 
-  const submissionCode = `#### 내 코드 \n\`\`\`${lang}\n${code}\n\`\`\``
+  const submissionCode = `\`\`\`${lang} ${code}\n\`\`\``
+
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
+  const closeModal = () => setIsModalOpen(false)
 
   const handleSubmissionButtonClick = () => {
+    setIsModalOpen(() => true)
+
     console.log(code)
     updateTab(curSelectedIdx, {
       title: tabs[curSelectedIdx].title,
-      content: submissionCode,
+      content: tabs[curSelectedIdx] + submissionCode,
     })
+    console.log('업뎃 후 현재 content: ', tabs[curSelectedIdx])
   }
 
   return (
@@ -58,6 +68,13 @@ const SubmitList = ({
         </div>
       </button>
       <hr className={s.bottomHr} />
+      {isModalOpen && (
+        <Modal onClose={closeModal} code={code}>
+          <div className={s.codeSection}>
+            <ReactMarkdown>{`\`\`\` ${lang} \n${code} \n \`\`\``}</ReactMarkdown>
+          </div>
+        </Modal>
+      )}
     </div>
   )
 }
