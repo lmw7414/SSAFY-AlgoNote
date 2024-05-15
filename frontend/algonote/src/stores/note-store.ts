@@ -23,6 +23,9 @@ interface NoteStore {
   chats: Chats[]
   setChats: (newChat: Omit<Chats, 'idx'>) => void
   updateLastChat: (updatedChat: Chats) => void
+  nowContent: string
+  setNowContent: (content: string) => void
+  updateAllNotes: (notes: NoteTab[]) => void
 }
 
 const useNoteStore = create<NoteStore>((set) => ({
@@ -88,6 +91,13 @@ const useNoteStore = create<NoteStore>((set) => ({
       }
       return { chats: newChats }
     }),
+  nowContent: '',
+  setNowContent: (content: string) => set(() => ({ nowContent: content })),
+
+  updateAllNotes: (notes: NoteTab[]) =>
+    set(() => ({
+      tabs: notes.map((note, idx) => ({ ...note, idx })),
+    })),
 }))
 
 export default useNoteStore

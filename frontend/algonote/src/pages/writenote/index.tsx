@@ -10,6 +10,7 @@ import {
   tempRegistNote,
 } from '@/apis/regist-noteAxios'
 import { SimpleButton } from '@/components/commons/Buttons/Button'
+import SavedNote from '@/components/commons/SavedNote'
 import SubmitList from '@/components/commons/SubmitList'
 import SubmitListTitle from '@/components/commons/SubmitListTitle'
 import Tabs from '@/components/commons/Tabs'
@@ -60,10 +61,16 @@ const WriteNote = () => {
   const [showChatBot, setShowChatBot] = useState(false) // 자연스럽게 챗봇 창 띄우기 위해
   const [submissionList, setSubmissionList] = useState<SubmissionHistory[]>([]) // 제출 이력
   const [tempSavedList, setTempSavedList] = useState<TempSavedNote[]>([])
-  const [isCollapsed, setIsCollapsed] = useState(false) // 좌측 상단 토글 클릭 여부
+  const [isCollapsed, setIsCollapsed] = useState(false) // 좌측 단 토글 클릭 여부
   const { tabs, setTabs, curSelectedIdx } = useNoteStore()
-  const { title } = tabs[curSelectedIdx]
-  const { content } = tabs[curSelectedIdx]
+
+  let title = ''
+  let content = ''
+
+  if (tabs[curSelectedIdx]) {
+    title = tabs[curSelectedIdx].title
+    content = tabs[curSelectedIdx].content
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -72,9 +79,9 @@ const WriteNote = () => {
       console.log('리스트임', list)
     }
     fetchData()
-  }, [id])
+  }, [])
 
-  useEffect(() => {}, [])
+  useEffect(() => {}, [tempSavedList])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -117,10 +124,13 @@ const WriteNote = () => {
   const handleTempSave = () => {
     tempRegistNote(Number(id), title, content)
     alert('임시저장 되었습니다.')
-  }
 
-  const handleClickTempNote = () => {
-    console.log('임시 저장된 노트 클릭')
+    const fetchData = async () => {
+      const list = await getTempSavedNote(Number(id))
+      setTempSavedList(() => list)
+      console.log('리스트임', list)
+    }
+    fetchData()
   }
 
   // UI 관련 스타일
@@ -249,16 +259,13 @@ const WriteNote = () => {
                         savedTime = '방금 전'
                       }
                       return (
-                        <button
+                        <SavedNote
                           key={temp.tempNoteId}
-                          type="button"
-                          onClick={handleClickTempNote}
-                        >
-                          <div className={s.tempNoteItem}>
-                            <span>{temp.noteTitle}</span>
-                            <span>{savedTime}</span>
-                          </div>
-                        </button>
+                          noteId={temp.tempNoteId}
+                          noteTitle={temp.noteTitle}
+                          content={temp.content}
+                          savedTime={savedTime}
+                        />
                       )
                     })}
                   </div>
