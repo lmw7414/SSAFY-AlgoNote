@@ -3,12 +3,18 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import s from './writenote.module.scss'
-import { getSubmissionList, registNote } from '@/apis/regist-noteAxios'
+import {
+  getSubmissionList,
+  getTempSavedNote,
+  registNote,
+  tempRegistNote,
+} from '@/apis/regist-noteAxios'
 import { SimpleButton } from '@/components/commons/Buttons/Button'
 import SubmitList from '@/components/commons/SubmitList'
 import SubmitListTitle from '@/components/commons/SubmitListTitle'
 import Tabs from '@/components/commons/Tabs'
 import useNoteStore from '@/stores/note-store'
+import 'react-toastify/dist/ReactToastify.css'
 
 interface SubmissionHistory {
   code: string
@@ -21,6 +27,31 @@ interface SubmissionHistory {
   submissionTime: string
 }
 
+interface Member {
+  memberId: number
+  nickname: string
+  profileImg: string
+}
+
+interface Problem {
+  acceptUserCount: number
+  averageTries: number
+  id: number
+  tags: string[]
+  tier: number
+  title: string
+}
+
+interface TempSavedNote {
+  content: string
+  createdAt: string
+  member: Member
+  modifiedAt: string
+  noteTitle: string
+  problem: Problem
+  tempNoteId: number
+}
+
 const WriteNote = () => {
   const router = useRouter()
   const { id } = router.query // 쿼리에서 id(선택한 문제 번호)를 추출
@@ -28,14 +59,28 @@ const WriteNote = () => {
   const [chatBotState, setChatBotState] = useState(false)
   const [showChatBot, setShowChatBot] = useState(false) // 자연스럽게 챗봇 창 띄우기 위해
   const [submissionList, setSubmissionList] = useState<SubmissionHistory[]>([]) // 제출 이력
+  const [tempSavedList, setTempSavedList] = useState<TempSavedNote[]>([])
   const [isCollapsed, setIsCollapsed] = useState(false) // 좌측 상단 토글 클릭 여부
-
   const { tabs, setTabs, curSelectedIdx } = useNoteStore()
+  const { title } = tabs[curSelectedIdx]
+  const { content } = tabs[curSelectedIdx]
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const list = await getTempSavedNote(Number(id))
+      setTempSavedList(() => list)
+      console.log('리스트임', list)
+    }
+    fetchData()
+  }, [id])
+
+  useEffect(() => {}, [])
 
   useEffect(() => {
     const fetchData = async () => {
       const list = await getSubmissionList(Number(id))
       setSubmissionList(() => list)
+      await getTempSavedNote(Number(id))
 
       // 노트, 탭 초기화
       setTabs([
@@ -58,7 +103,7 @@ const WriteNote = () => {
       setShowChatBot(false)
     }
 
-    return () => clearTimeout(timer) // 컴포넌트가 언마운트 되거나 chatBotState가 바뀌기 전에 타이머를 정리
+    return () => clearTimeout(timer)
   }, [chatBotState])
 
   const buttonClickHandler = () => {
@@ -66,9 +111,16 @@ const WriteNote = () => {
   }
 
   const handleClickButton = () => {
-    const { title } = tabs[curSelectedIdx]
-    const { content } = tabs[curSelectedIdx]
-    registNote(1012, title, content)
+    registNote(Number(id), title, content)
+  }
+
+  const handleTempSave = () => {
+    tempRegistNote(Number(id), title, content)
+    alert('임시저장 되었습니다.')
+  }
+
+  const handleClickTempNote = () => {
+    console.log('임시 저장된 노트 클릭')
   }
 
   // UI 관련 스타일
@@ -77,7 +129,7 @@ const WriteNote = () => {
   const rightStyle = isCollapsed ? { flex: 30 } : { flex: 3 }
 
   const gptSectionStyle = chatBotState
-    ? { flex: 1, padding: '2rem', paddingRight: '1rem' }
+    ? { flex: 1, padding: '1rem', paddingRight: '0.5rem' }
     : { flex: 0, padding: 0 }
 
   const leftStyle = isCollapsed
@@ -93,7 +145,7 @@ const WriteNote = () => {
       : { width: '75.15%' }
 
   const gptButtonStyle = chatBotState
-    ? { right: '3rem', top: '15.7%' }
+    ? { right: '2rem', top: '14%' }
     : { right: '1.6rem' }
 
   return (
@@ -169,6 +221,48 @@ const WriteNote = () => {
                     )
                   })}
                 </div>
+                <div className={s.tempNoteListBox}>
+                  <div className={s.tempNoteTitleBox}>임시 저장된 노트</div>
+                  <div className={s.tempNoteList}>
+                    {tempSavedList.map((temp) => {
+                      const timeDiff =
+                        currentDate.getTime() -
+                        new Date(temp.createdAt).getTime()
+
+                      const seconds = Math.floor(timeDiff / 1000)
+                      const minutes = Math.floor(seconds / 60)
+                      const hours = Math.floor(minutes / 60)
+                      const days = Math.floor(hours / 24)
+                      const months = Math.floor(days / 30)
+
+                      // 제출 시간 설정
+                      let savedTime
+                      if (days > 30) {
+                        savedTime = `${months}달 전`
+                      } else if (days > 0) {
+                        savedTime = `${days}일 전`
+                      } else if (hours > 0) {
+                        savedTime = `${hours}시간 전`
+                      } else if (minutes > 0) {
+                        savedTime = `${minutes}분 전`
+                      } else {
+                        savedTime = '방금 전'
+                      }
+                      return (
+                        <button
+                          key={temp.tempNoteId}
+                          type="button"
+                          onClick={handleClickTempNote}
+                        >
+                          <div className={s.tempNoteItem}>
+                            <span>{temp.noteTitle}</span>
+                            <span>{savedTime}</span>
+                          </div>
+                        </button>
+                      )
+                    })}
+                  </div>
+                </div>
               </div>
             )}
           </div>
@@ -196,7 +290,7 @@ const WriteNote = () => {
             <div className={s.saveButtonSection}>
               <SimpleButton
                 text="임시저장"
-                onClick={handleClickButton}
+                onClick={handleTempSave}
                 style={{
                   paddingRight: '1rem',
                   fontSize: '1.1rem',
