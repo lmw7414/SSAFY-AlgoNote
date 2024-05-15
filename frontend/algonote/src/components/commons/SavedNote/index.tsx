@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import s from './SavedNote.module.scss'
 import useNoteStore from '@/stores/note-store'
 
@@ -15,14 +14,12 @@ const SavedNote = ({
   content,
   savedTime,
 }: SavedNoteProps) => {
-  const { curSelectedIdx, updateTab, flag } = useNoteStore()
+  const { curSelectedIdx, updateTab } = useNoteStore()
   const handleClickTempNote = (tit: string, con: string) => {
     console.log('임시 저장된 노트 클릭')
 
     updateTab(curSelectedIdx, { title: tit, content: con })
   }
-
-  useEffect(() => {}, [flag])
 
   return (
     <button

@@ -25,8 +25,6 @@ interface NoteStore {
   updateLastChat: (updatedChat: Chats) => void
   nowContent: string
   setNowContent: (content: string) => void
-  flag: number
-  setFlag: (val: number) => void
   updateAllNotes: (notes: NoteTab[]) => void
 }
 
@@ -95,9 +93,7 @@ const useNoteStore = create<NoteStore>((set) => ({
     }),
   nowContent: '',
   setNowContent: (content: string) => set(() => ({ nowContent: content })),
-  flag: 0,
-  setFlag: (val: number) => set((state) => ({ flag: state.flag + val })),
-  // 전체 노트를 업데이트하는 함수
+
   updateAllNotes: (notes: NoteTab[]) =>
     set(() => ({
       tabs: notes.map((note, idx) => ({ ...note, idx })),

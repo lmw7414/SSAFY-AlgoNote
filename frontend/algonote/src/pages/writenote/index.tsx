@@ -81,7 +81,7 @@ const WriteNote = () => {
     fetchData()
   }, [])
 
-  useEffect(() => {}, [id, tempSavedList])
+  useEffect(() => {}, [tempSavedList])
 
   useEffect(() => {
     const fetchData = async () => {
