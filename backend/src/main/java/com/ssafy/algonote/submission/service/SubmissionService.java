@@ -4,6 +4,8 @@ import com.ssafy.algonote.exception.CustomException;
 import com.ssafy.algonote.exception.ErrorCode;
 import com.ssafy.algonote.member.domain.Member;
 import com.ssafy.algonote.member.repository.MemberRepository;
+import com.ssafy.algonote.notification.domain.NotificationType;
+import com.ssafy.algonote.notification.dto.request.NotificationReqDto;
 import com.ssafy.algonote.problem.domain.Problem;
 import com.ssafy.algonote.problem.repository.ProblemRepository;
 import com.ssafy.algonote.problem.service.SolvedProblemService;
@@ -12,6 +14,7 @@ import com.ssafy.algonote.submission.dto.SubmissionDto;
 import com.ssafy.algonote.submission.dto.request.SubmissionReqDto;
 import com.ssafy.algonote.submission.repository.SubmissionRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -21,6 +24,8 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class SubmissionService {
+
+    private final ApplicationEventPublisher eventPublisher;
 
     private final SolvedProblemService solvedProblemService;
     private final SubmissionRepository submissionRepository;
@@ -34,6 +39,15 @@ public class SubmissionService {
             Problem problem = getProblemOrException(dto.problemId());
             if (dto.result().equals("맞았습니다!!")) {
                 solvedProblemService.saveSolvedProblem(member, problem, dto.submissionTime());
+
+                eventPublisher.publishEvent(NotificationReqDto.builder()
+                        .notificationType(NotificationType.SUBMISSION)
+                        .receiver(member)
+                        .provider(Member.builder().nickname("시스템 알림").build())
+                        .relatedId(null)
+                        .content(problem.getTitle() + " 문제를 푸셨군요! 노트를 작성해보세요!")
+                        .build()
+                    );
             }
             submissionRepository.save(Submission.fromDto(
                             SubmissionDto.fromReq(dto, problem, member)
