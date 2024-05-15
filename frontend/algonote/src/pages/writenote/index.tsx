@@ -103,7 +103,7 @@ const WriteNote = () => {
       setShowChatBot(false)
     }
 
-    return () => clearTimeout(timer) // 컴포넌트가 언마운트 되거나 chatBotState가 바뀌기 전에 타이머를 정리
+    return () => clearTimeout(timer)
   }, [chatBotState])
 
   const buttonClickHandler = () => {
