@@ -40,7 +40,9 @@ public class ProblemCustomRepositoryImpl implements ProblemCustomRepository {
             .select(Projections.constructor(RecommendProblemResDto.class,
                 problem.id,
                 problem.tier,
-                problem.title
+                problem.title,
+                problem.acceptedUserCount,
+                problem.averageTries
             ))
             .from(problem)
             .where(problem.id.in(ids))
