@@ -58,6 +58,10 @@ const NavBar = () => {
       setIsLoggedIn(!!accessToken)
     }
     checkLogin()
+
+    if (isNotificationOpen) {
+      setIsNotificationOpen(false)
+    }
   }, [url])
 
   const logout = async () => {
