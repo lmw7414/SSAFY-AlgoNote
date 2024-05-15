@@ -26,28 +26,26 @@ import lombok.extern.slf4j.Slf4j;
 public class SolvedProblemCustomRepositoryImpl implements SolvedProblemCustomRepository{
 
     private JPAQueryFactory queryFactory;
-    private Map<String, List<SolvedProblemDto>> map;
-    private Map<String, Integer> scoreMap;
-    private Map<String, Set<Long>> problemIdMap;
 
     private String groups[] = {"math_theory", "graph_theory", "data_structure", "optimization", "implementation", "string"};
 
     public SolvedProblemCustomRepositoryImpl(EntityManager em){
         this.queryFactory = new JPAQueryFactory(em);
-        this.map = new HashMap<>();
-        this.scoreMap = new HashMap<>();
-        this.problemIdMap = new HashMap<>();
-        for (String group : groups) {
-            map.put(group, new ArrayList<>());
-            problemIdMap.put(group, new HashSet<>());
-            scoreMap.put(group, 0);
-        }
+
     }
 
     @Override
 //    @Transactional
     public AnalysisResDto analyzeSolvedProblem(Long memberId) {
+        Map<String, List<SolvedProblemDto>> map = new HashMap<>();
+         Map<String, Integer> scoreMap = new HashMap<>();
+         Map<String, Set<Long>> problemIdMap = new HashMap<>();
 
+        for (String group : groups) {
+            map.put(group, new ArrayList<>());
+            problemIdMap.put(group, new HashSet<>());
+            scoreMap.put(group, 0);
+        }
         List<SolvedProblemDto> solvedProblemDtos = queryFactory.selectFrom(solvedProblem)
             .where(solvedProblem.member.id.eq(memberId))
             .orderBy(solvedProblem.uploadedAt.desc())
