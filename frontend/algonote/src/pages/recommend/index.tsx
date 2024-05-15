@@ -28,9 +28,15 @@ const Recommend = () => {
   const [stringProblems, setStringProblems] = useState<Array<Array<Problem>>>(
     [],
   )
+  const [loading1, setLoading1] = useState<boolean>(true)
+  const [loading2, setLoading2] = useState<boolean>(true)
+  const [loading3, setLoading3] = useState<boolean>(true)
+  const [loading4, setLoading4] = useState<boolean>(true)
+  const [loading5, setLoading5] = useState<boolean>(true)
+  const [loading6, setLoading6] = useState<boolean>(true)
 
   const category = {
-    math_theory: ['math', 'arithmetic', 'primality_test', 'sieve'],
+    math_theory: ['math', 'primality_test', 'sieve'],
     graph_theory: [
       'graphs',
       'graph_traversal',
@@ -147,6 +153,7 @@ const Recommend = () => {
 
         // 모든 결과를 한 번에 업데이트
         setMathTheoryProblems([...updatedProblems])
+        setLoading1(false)
         console.log([...updatedProblems])
       }
 
@@ -159,8 +166,8 @@ const Recommend = () => {
             updatedProblems.push(tagResponse) // 결과를 배열에 추가
           }),
         )
-
         setGraphTheoryProblems([...updatedProblems])
+        setLoading2(false)
       }
 
       const dataStructure = async () => {
@@ -174,6 +181,7 @@ const Recommend = () => {
         )
 
         setDataStructureProblems([...updatedProblems])
+        setLoading3(false)
       }
 
       const optimization = async () => {
@@ -187,6 +195,7 @@ const Recommend = () => {
         )
 
         setOptimizationProblems([...updatedProblems])
+        setLoading4(false)
       }
 
       const implementation = async () => {
@@ -200,6 +209,7 @@ const Recommend = () => {
         )
 
         setImplementationProblems([...updatedProblems])
+        setLoading5(false)
       }
 
       const string = async () => {
@@ -213,6 +223,7 @@ const Recommend = () => {
         )
 
         setStringProblems([...updatedProblems])
+        setLoading6(false)
       }
       mathTheory()
       graphTheory()
