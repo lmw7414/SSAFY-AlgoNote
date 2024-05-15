@@ -17,22 +17,21 @@ const NavBar = () => {
   const [userProfile, setUserProfile] = useState('/images/basicprofileimg')
   const [isNotificationOpen, setIsNotificationOpen] = useState(false)
   const [isNotReadNoti, setIsNotReadNoti] = useState(false)
+  const [isImageLoaded, setIsImageLoaded] = useState(false)
 
   useEffect(() => {
-    const getNoti = async () => {
-      const notis = await getNotificationsApi()
-      if (notis.length !== 0) {
-        setIsNotReadNoti(true)
-      } else {
-        setIsNotReadNoti(false)
+    if (isLoggedIn) {
+      const getNoti = async () => {
+        const notis = await getNotificationsApi()
+        if (notis.length !== 0) {
+          setIsNotReadNoti(true)
+        } else {
+          setIsNotReadNoti(false)
+        }
       }
+      getNoti()
     }
-    getNoti()
-  }, [])
-
-  // 프로필 이미지 불러오기
-  const [userProfile, setUserProfile] = useState('/images/basicprofileimg.png') // Initial placeholder image
-  const [isImageLoaded, setIsImageLoaded] = useState(false)
+  }, [isLoggedIn])
 
   const router = useRouter()
   const url = router.pathname
