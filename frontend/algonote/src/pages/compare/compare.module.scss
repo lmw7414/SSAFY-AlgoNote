@@ -34,10 +34,14 @@
         }
       }
 
+    .element div{
+      margin-top: 1rem;
+    }
+
     .element{
         min-height: 30rem;
-        margin: 1rem 12.5%;
-        border: 3px solid blue;
+        margin: 0 12.5%;
+        // border: 3px solid blue;
         justify-content: space-between;
 
         .insert{
@@ -66,17 +70,26 @@
         display: flex;
       
         .compareButton{
-            border: 1px solid black;
             width: 50%;
             display: flex;
             justify-content: flex-end;
-            margin-top: 1rem;
         }
     }
 
     .codeView{
-      border: 1px solid green;
+      background-color: var(--soft-gray);
+      min-height: 30rem;
     }
+
+    // .codeView::before{
+    //   content: "";
+    //   position: absolute; 
+    //   left: 50%;
+    //   height: 35%;
+    //   margin-top: 1.5rem;
+    //   border-right: 2px solid black;
+    //   transform: translateX(-50%);
+    // }
     
 }
 

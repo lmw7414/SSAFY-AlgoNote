@@ -78,7 +78,7 @@ const ComparePage = () => {
         </div>
         <div className={style.headerSentence}>
           <p className={style.contentLight}>
-            더 효율적인 코드를 확인할 수 있어요
+            더 효율적인 코드를 확인할 수 있어요.
           </p>
         </div>
       </div>
@@ -106,7 +106,6 @@ const ComparePage = () => {
                 className={style.insert}
               />
           </div>
-
         <div className={style.compareButtons}>
           <div className={style.compareButton}>
             <CodeSelectButton setIsModalOpened={setIsModalOpened} index={0} />
@@ -122,8 +121,6 @@ const ComparePage = () => {
             compareMethod={DiffMethod.WORDS}
           />
         </div>
-        
-        
         <div>
           <ExecuteResult
             language={language}

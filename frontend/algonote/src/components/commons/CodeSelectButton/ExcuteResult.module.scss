@@ -1,5 +1,4 @@
 .executeButton{
-    border: 1px solid red;
     display: inline;
     display: flex;
     justify-content: flex-end;
@@ -12,7 +11,8 @@
 }
 
 .resultBox{
-    border: 1px solid plum;
     height: 20rem;
+    border:3px solid var(--soft-sky);
+    border-radius: 1rem;
 }
 
