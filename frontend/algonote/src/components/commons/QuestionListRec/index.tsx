@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router'
 import TierImg from '../Tier'
 import styles from './QuestionListRec.module.scss'
 
@@ -17,8 +16,6 @@ const QuestionListRec = ({
   acceptedUserCount,
   averageTries,
 }: QuestionListProps) => {
-  const router = useRouter()
-
   return (
     <div>
       <div className={styles.wrapper}>

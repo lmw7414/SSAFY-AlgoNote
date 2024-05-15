@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { v4 as uuidv4 } from 'uuid'
 import s from './recommend.module.scss'
 import recommendApi from '@/apis/recommendAxios'
@@ -143,8 +144,34 @@ const Recommend = () => {
     trie: '트라이',
   }
 
+  const router = useRouter()
+
+  // const { queryData } = router.query // 쿼리에서 id(선택한 문제 번호)를 추출
+  // console.log('대분류:', queryData)
+
   useEffect(() => {
+    // const name = router.query.queryData as string | undefined
+    // setCategoryName(name)
+    // const handleScrollToElement = () => {
+    //   const element = document.getElementById(categoryName)
+    //   if (element) {
+    //     element.scrollIntoView({ behavior: 'smooth' })
+    //   }
+    // }
+    // handleScrollToElement()
+
     const fetchData = () => {
+      const { queryData } = router.query
+      if (typeof queryData === 'string') {
+        const handleScrollToElement = () => {
+          const element = document.getElementById(queryData)
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth' })
+          }
+        }
+        handleScrollToElement()
+      }
+
       const mathTheory = async () => {
         const updatedProblems: Array<Array<Problem>> = []
 
@@ -237,29 +264,6 @@ const Recommend = () => {
       implementation()
       string()
     }
-    // const fetchData = async () => {
-    //   try {
-    //     const fetchMathTheory = async () => {
-    //       const updatedProblems = await Promise.all(
-    //         category.math_theory.map(async (tag) => {
-    //           const tagResponse = await recommendApi(tag, 0, 3)
-    //           return tagResponse
-    //         }),
-    //       )
-    //       console.log('Math Theory Problems:', updatedProblems)
-    //       setMathTheoryProblems(updatedProblems)
-    //     }
-
-    //     // 다른 카테고리에 대해서도 동일하게 처리
-
-    //     await Promise.all([
-    //       fetchMathTheory(),
-    //       // Fetch other categories
-    //     ])
-    //   } catch (error) {
-    //     console.error('Error fetching data:', error)
-    //   }
-    // }
     fetchData()
   }, [])
 
@@ -277,7 +281,7 @@ const Recommend = () => {
         </div>
       </div>
       <div className={s.content}>
-        <div className={s.firstCategoryCont}>
+        <div className={s.firstCategoryCont} id="math_theory">
           <p className={s.categoryTitle}>수학 및 이론</p>
           {loading1 ? (
             <div className={s.loadingCont}>
@@ -315,7 +319,7 @@ const Recommend = () => {
             </>
           )}
         </div>
-        <div className={s.categoryCont}>
+        <div className={s.categoryCont} id="graph_theory">
           <hr className={s.divide} />
           <p className={s.categoryTitle}>그래프</p>
           {loading2 ? (
@@ -354,7 +358,7 @@ const Recommend = () => {
             </>
           )}
         </div>
-        <div className={s.categoryCont}>
+        <div className={s.categoryCont} id="data_structure">
           <hr className={s.divide} />
           <p className={s.categoryTitle}>자료구조</p>
           {loading3 ? (
@@ -369,8 +373,6 @@ const Recommend = () => {
                     <p className={s.tagTitle}>
                       {dictionary[category.data_structure[index]]}
                     </p>
-                    {/* <p>{days}</p> */}
-                    {/* <p>일 동안 풀지 않았어요</p> */}
                   </div>
                   <QuestionListRecTitle />
                   {tag.map((problem: Problem) => (
@@ -395,7 +397,7 @@ const Recommend = () => {
             </>
           )}
         </div>
-        <div className={s.categoryCont}>
+        <div className={s.categoryCont} id="optimization">
           <hr className={s.divide} />
           <p className={s.categoryTitle}>전략 및 최적화</p>
           {loading4 ? (
@@ -434,7 +436,7 @@ const Recommend = () => {
             </>
           )}
         </div>
-        <div className={s.categoryCont}>
+        <div className={s.categoryCont} id="implementation">
           <hr className={s.divide} />
           <p className={s.categoryTitle}>구현</p>
           {loading5 ? (
@@ -473,7 +475,7 @@ const Recommend = () => {
             </>
           )}
         </div>
-        <div className={s.categoryCont}>
+        <div className={s.categoryCont} id="string">
           <hr className={s.divide} />
           <p className={s.categoryTitle}>문자열</p>
           {loading6 ? (
