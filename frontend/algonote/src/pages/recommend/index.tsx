@@ -271,17 +271,17 @@ const Recommend = () => {
     <div className={s.container}>
       <div className={s.header}>
         <div className={s.headerSentence}>
-          <p className={s.headerBold}>추천 문제를 알려드릴게요</p>
+          <p className={s.headerBold}>유형별 추천 문제를 알려드릴게요</p>
         </div>
         <div className={s.headerSentence}>
-          <p className={s.contentLight}>
+          <p className={s.contentLight} id="math_theory">
             부족한 유형, 많이 틀린 유형을 집중적으로 공부해보세요. 해결한 문제는
             오답노트에서 확인할 수 있어요.
           </p>
         </div>
       </div>
       <div className={s.content}>
-        <div className={s.firstCategoryCont} id="math_theory">
+        <div className={s.firstCategoryCont}>
           <p className={s.categoryTitle}>수학 및 이론</p>
           {loading1 ? (
             <div className={s.loadingCont}>
@@ -319,8 +319,8 @@ const Recommend = () => {
             </>
           )}
         </div>
-        <div className={s.categoryCont} id="graph_theory">
-          <hr className={s.divide} />
+        <div className={s.categoryCont}>
+          <hr className={s.divide} id="graph_theory" />
           <p className={s.categoryTitle}>그래프</p>
           {loading2 ? (
             <div className={s.loadingCont}>
@@ -358,8 +358,8 @@ const Recommend = () => {
             </>
           )}
         </div>
-        <div className={s.categoryCont} id="data_structure">
-          <hr className={s.divide} />
+        <div className={s.categoryCont}>
+          <hr className={s.divide} id="data_structure" />
           <p className={s.categoryTitle}>자료구조</p>
           {loading3 ? (
             <div className={s.loadingCont}>
@@ -397,8 +397,8 @@ const Recommend = () => {
             </>
           )}
         </div>
-        <div className={s.categoryCont} id="optimization">
-          <hr className={s.divide} />
+        <div className={s.categoryCont}>
+          <hr className={s.divide} id="optimization" />
           <p className={s.categoryTitle}>전략 및 최적화</p>
           {loading4 ? (
             <div className={s.loadingCont}>
@@ -436,8 +436,8 @@ const Recommend = () => {
             </>
           )}
         </div>
-        <div className={s.categoryCont} id="implementation">
-          <hr className={s.divide} />
+        <div className={s.categoryCont}>
+          <hr className={s.divide} id="implementation" />
           <p className={s.categoryTitle}>구현</p>
           {loading5 ? (
             <div className={s.loadingCont}>
@@ -475,8 +475,8 @@ const Recommend = () => {
             </>
           )}
         </div>
-        <div className={s.categoryCont} id="string">
-          <hr className={s.divide} />
+        <div className={s.categoryCont}>
+          <hr className={s.divide} id="string" />
           <p className={s.categoryTitle}>문자열</p>
           {loading6 ? (
             <div className={s.loadingCont}>
