@@ -1,3 +1,19 @@
 .frame{
     padding-top: 60px;
 }
+
+.reviewsContainer {
+    width: 50%;
+    border-radius: 1rem;
+    border: 1px solid var(--blue);
+    padding: 1rem;
+}
+
+.reviewInput {
+    width: 100%;
+    box-sizing: border-box;
+    height: 2rem;
+    margin-bottom: 0.4rem;
+    border-radius: 0.4rem;
+}
+

@@ -1,0 +1,288 @@
+$low: #02366F;
+$lowBack: #87B8DB;
+$mid: #3C87FE;
+$midBack: #C0E6FF;
+$high: #5CE2FF;
+$highBack: #D0FCFF;
+
+.boxSkel {
+  height: 9rem;
+  min-width: 9rem;
+  transform: translate(0%, 0%);
+  background-color: var(--gray);
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.box {
+    height: 9rem;
+    min-width: 9rem;
+    // position: absolute;
+    // top: 50%;
+    // left: 50%;
+    transform: translate(0%, 0%);
+    background-color: var(--white);
+    border-radius: 50%;
+    overflow: hidden;
+    transition: all 0.3s;
+
+    .validation {
+      display: none;
+    }
+
+    .validationBottom {
+      display: none;
+    }
+  
+    .type {
+      position: absolute;
+      left: 0;
+      top: 0;
+      z-index: 3;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--black);
+      font-size: 1.3rem;
+      font-weight: 400;
+    }
+  
+    .water {
+      position: absolute;
+      left: 0;
+      top: 0;
+      z-index: 2;
+      width: 100%;
+      height: 100%;
+      transform: translate(0, 100%);
+      // transition: background-color 0.5s ease;
+      background-color: $high;
+      transition: all 0.3s;
+
+      &_wave {
+        width: 200%;
+        position: absolute;
+        bottom: 100%;
+  
+        &_back {
+          right: 0;
+          fill: $highBack;
+          // transition: fill, animation 0.5s ease;
+          animation: wave-back 1.6s infinite linear;
+          transition: all 0.3s;
+          
+        }
+  
+        &_front {
+          left: 0;
+          // transition: fill, animation 0.5s ease;
+          fill: $high;
+          margin-bottom: -0.6px;
+          animation: wave-front 1s infinite linear;
+          transition: all 0.3s;
+
+        }
+      }
+    }
+
+    .waterMid{
+      position: absolute;
+      left: 0;
+      top: 0;
+      z-index: 2;
+      width: 100%;
+      height: 100%;
+      transform: translate(0, 100%);
+      // transition: background-color 0.5s ease;
+      background-color: $mid;
+      transition: all 0.3s;
+
+      &_wave {
+        width: 200%;
+        position: absolute;
+        bottom: 100%;
+  
+        &_back {
+          right: 0;
+          fill: $midBack;
+          // transition: fill, animation 0.5s ease;
+          animation: wave-back 1.8s infinite linear;
+          transition: all 0.3s;
+          
+        }
+  
+        &_front {
+          left: 0;
+          // transition: fill, animation 0.5s ease;
+          fill: $mid;
+          margin-bottom: -0.6px;
+          animation: wave-front 1.2s infinite linear;
+          transition: all 0.3s;
+
+        }
+      }
+    }
+
+    .waterLow{
+      position: absolute;
+      left: 0;
+      top: 0;
+      z-index: 2;
+      width: 100%;
+      height: 100%;
+      transform: translate(0, 100%);
+      // transition: background-color 0.5s ease;
+      background-color: var(--navy);
+      transition: all 0.3s;
+
+      &_wave {
+        width: 200%;
+        position: absolute;
+        bottom: 100%;
+  
+        &_back {
+          right: 0;
+          fill: $lowBack;
+          // transition: fill, animation 0.5s ease;
+          animation: wave-back 2s infinite linear;
+          transition: all 0.3s;
+          
+        }
+  
+        &_front {
+          left: 0;
+          // transition: fill, animation 0.5s ease;
+          fill: var(--navy);
+          margin-bottom: -0.6px;
+          animation: wave-front 1.4s infinite linear;
+          transition: all 0.3s;
+
+        }
+      }
+    }
+  }
+  
+  @keyframes wave-front {
+    100% {
+      transform: translate(-50%, 0);
+    }
+  }
+  
+  @keyframes wave-back {
+    100% {
+      transform: translate(50%, 0);
+    }
+  }
+
+.box:hover {
+  transform: scale(1.1);
+
+  .pCont {
+    display: flex;
+  }
+
+  .validation {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 5;
+    width: 100%;
+    height: 60%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--red);
+    font-size:  0.8rem;
+    font-weight: 500;
+  }
+
+  .validationStrong {
+    font-weight: 700;
+    margin-left: 0.16rem;
+  }
+ 
+  .validationBottom {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 5;
+    width: 100%;
+    height: 130%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--black);
+    font-size:  0.74rem;
+    font-weight: 500;
+  }
+  
+  .black {
+    color: var(--black);
+  }
+
+  .blue {
+    color: var(--blue);
+  }
+
+  .type {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 3;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--black);
+    font-size: 1.3rem;
+    font-weight: 700;
+  }
+
+  .water {
+    background-color: $high;
+    &_wave {
+      &_back {
+        fill: $highBack;
+        animation: wave-back 0.6s infinite linear;
+      }
+
+      &_front {
+        fill: $high;
+        animation: wave-front 0.4s infinite linear;
+      }
+    }
+  }
+  .waterMid {
+    background-color: $mid;
+    &_wave {
+      &_back {
+        fill: $midBack;
+        animation: wave-back 0.6s infinite linear;
+      }
+
+      &_front {
+        fill: $mid;
+        animation: wave-front 0.4s infinite linear;
+      }
+    }
+  }
+
+  .waterLow {
+    background-color: var(--navy);
+    &_wave {
+      &_back {
+        fill:  $lowBack;
+        animation: wave-back 0.6s infinite linear;
+      }
+
+      &_front {
+        fill: var(--navy);
+        animation: wave-front 0.4s infinite linear;
+      }
+    }
+  }
+}
+

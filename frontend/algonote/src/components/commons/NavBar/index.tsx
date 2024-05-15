@@ -1,11 +1,37 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { SimpleButton } from '../Buttons/Button'
 import styles from './NavBar.module.scss'
-import { getCookie } from '@/utils/cookie'
+import myInfo from '@/apis/user-infoAxios'
+import useUserInfo from '@/stores/user-store'
+import { eraseCookie, getCookie } from '@/utils/cookie'
 
 const NavBar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const { deleteUserInfo } = useUserInfo()
+  const [userProfile, setUserProfile] = useState('/images/basicprofileimg')
+
+  // 프로필 이미지 불러오기
+  useEffect(() => {
+    myInfo()
+      .then((res) => {
+        if (res.status === 200) {
+          setUserProfile(res.data.profileImg)
+        } else {
+          console.log('유저 정보 불러오기 실패')
+        }
+      })
+      .catch((e) => {
+        console.log('API 통신 오류')
+        console.log(e)
+      })
+  }, [userProfile])
+
+  const router = useRouter()
+
+  const url = router.pathname
 
   useEffect(() => {
     const checkLogin = async () => {
@@ -13,18 +39,25 @@ const NavBar = () => {
       setIsLoggedIn(!!accessToken)
     }
     checkLogin()
-  }, [])
+  }, [url])
+
+  const logout = async () => {
+    await eraseCookie('access_token')
+    await eraseCookie('memberId')
+    deleteUserInfo()
+    router.replace('/')
+  }
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.navBox}>
         <div className={styles.logoSec}>
-          <Link href="/home">
+          <Link href="/">
             <Image src="/images/logo.png" alt="logo" width={112} height={20} />
           </Link>
         </div>
         <div className={styles.menuSec}>
-          <Link href="/writenote">
+          <Link href="/solvedproblems">
             <p>새 노트 작성</p>
           </Link>
 
@@ -70,13 +103,18 @@ const NavBar = () => {
         {isLoggedIn ? (
           <div className={styles.profileSec}>
             <Link href="/member">
-              <Image
-                src="/images/profileImage.png"
-                alt="profileImage"
-                width={30}
-                height={30}
-              />
+              <Image src={userProfile} alt="Img" width={30} height={30} />
             </Link>
+            <SimpleButton
+              text="로그아웃"
+              style={{
+                width: '4rem',
+                height: '2rem',
+                fontSize: '0.8rem',
+                padding: '0',
+              }}
+              onClick={logout}
+            />
           </div>
         ) : (
           <div className={styles.loginSec}>
