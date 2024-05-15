@@ -56,6 +56,7 @@ export default function App() {
 
   const { tabs, curSelectedIdx, updateTab } = useNoteStore()
   const currentTab = tabs.find((tab) => tab.idx === curSelectedIdx)
+
   const handleContent = (val: string) => {
     console.log('입력값: ', val)
 
@@ -67,14 +68,14 @@ export default function App() {
 
   const [content, setContent] = useState(currentTab?.content ?? '')
   useEffect(() => {
+    console.log('tab 업데이트 ')
+
     setContent(() => currentTab?.content ?? '')
-  }, [currentTab, curSelectedIdx, tabs])
-  // Ensure the MDXEditor re-renders by changing key on content update
-  const editorKey = curSelectedIdx + content
+  }, [currentTab?.content, tabs])
 
   return (
     <MDXEditor
-      key={editorKey}
+      key={curSelectedIdx}
       onChange={(e) => {
         handleContent(e)
       }}

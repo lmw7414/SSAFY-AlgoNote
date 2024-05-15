@@ -25,6 +25,8 @@ interface NoteStore {
   updateLastChat: (updatedChat: Chats) => void
   nowContent: string
   setNowContent: (content: string) => void
+  flag: number
+  setFlag: (val: number) => void
 }
 
 const useNoteStore = create<NoteStore>((set) => ({
@@ -58,7 +60,6 @@ const useNoteStore = create<NoteStore>((set) => ({
         tab.idx === idx ? { ...tab, ...updatedTab } : tab,
       ),
     })),
-
   setCurSelectedIdx: (idx) =>
     set(() => ({
       curSelectedIdx: idx,
@@ -92,7 +93,9 @@ const useNoteStore = create<NoteStore>((set) => ({
       return { chats: newChats }
     }),
   nowContent: '',
-  setNowContent: (newContent: string) => set({ nowContent: newContent }),
+  setNowContent: (content: string) => set(() => ({ nowContent: content })),
+  flag: 0,
+  setFlag: (val: number) => set((state) => ({ flag: state.flag + val })),
 }))
 
 export default useNoteStore
