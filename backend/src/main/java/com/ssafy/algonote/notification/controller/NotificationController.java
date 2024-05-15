@@ -48,12 +48,6 @@ public class NotificationController {
         return ResponseEntity.ok(notificationService.getList(memberId));
     }
 
-    @GetMapping(value = "/subscribe/{memberId}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public SseEmitter subscribeForTest(@PathVariable("memberId") Long memberId) {
-        String lastEventId = "";
-        return notificationService.subscribe(memberId, lastEventId);
-    }
-
     @Operation(
         summary = "알림 읽음 처리",
         description = "알림을 읽음 처리합니다."

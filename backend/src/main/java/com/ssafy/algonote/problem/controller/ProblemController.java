@@ -96,7 +96,8 @@ public class ProblemController {
         return ResponseEntity.ok(solvedProblemService.getNotedProblem(memberId));
     }
 
-    @PostMapping("/test")
+    @PostMapping("/send-to-all-members")
+    @Operation(summary = "모든 사용자에게 안푼지 오래된 알고리즘 유형에 대한 알림 전송")
     public ResponseEntity<Void> notifyTest() {
         solvedProblemService.sendNotificationsToAllMembersAboutTag();
         return ResponseEntity.ok().build();
