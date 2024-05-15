@@ -17,7 +17,6 @@ const NavBar = () => {
   const router = useRouter()
   const url = router.pathname
 
-  // 프로필 이미지 불러오기
   useEffect(() => {
     myInfo()
       .then((res) => {
