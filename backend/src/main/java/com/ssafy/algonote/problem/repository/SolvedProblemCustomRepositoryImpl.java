@@ -55,9 +55,6 @@ public class SolvedProblemCustomRepositoryImpl implements SolvedProblemCustomRep
             .stream()
             .map(SolvedProblemDto::of).toList();
 
-        for (SolvedProblemDto solvedProblemDto : solvedProblemDtos) {
-            log.info("solvedProblemDto: {}", solvedProblemDto);
-        }
 
         for (SolvedProblemDto dto : solvedProblemDtos) {
             for (String group : dto.getGroups()) {
@@ -84,11 +81,6 @@ public class SolvedProblemCustomRepositoryImpl implements SolvedProblemCustomRep
             if(scoreMap.containsKey(group))
                 group1.score(scoreMap.get(group));
             if(map.containsKey(group) && !map.get(group).isEmpty()){
-//                log.info("lastSolvedDate : {}", map.get(group).get(0).getUploadedAt());
-                map.get(group).forEach(dto->{
-                    log.info("dto: {}", dto.getUploadedAt());
-                    log.info("-----");
-                });
 
                 group1.lastSolvedDate(map.get(group).get(0).getUploadedAt());
             }
