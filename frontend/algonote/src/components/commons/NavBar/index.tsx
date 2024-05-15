@@ -23,10 +23,10 @@ const NavBar = () => {
     if (isLoggedIn) {
       const getNoti = async () => {
         const notis = await getNotificationsApi()
-        if (notis.length !== 0) {
-          setIsNotReadNoti(true)
-        } else {
+        if (!notis) {
           setIsNotReadNoti(false)
+        } else if (notis.length >= 1) {
+          setIsNotReadNoti(true)
         }
       }
       getNoti()
