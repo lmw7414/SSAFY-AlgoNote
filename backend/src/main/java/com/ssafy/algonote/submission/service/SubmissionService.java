@@ -1,5 +1,6 @@
 package com.ssafy.algonote.submission.service;
 
+import com.ssafy.algonote.common.AdminMemberProvider;
 import com.ssafy.algonote.exception.CustomException;
 import com.ssafy.algonote.exception.ErrorCode;
 import com.ssafy.algonote.member.domain.Member;
@@ -43,7 +44,7 @@ public class SubmissionService {
                 eventPublisher.publishEvent(NotificationReqDto.builder()
                         .notificationType(NotificationType.SUBMISSION)
                         .receiver(member)
-                        .provider(Member.builder().nickname("시스템 알림").build())
+                        .provider(AdminMemberProvider.getAdminMember())
                         .relatedId(null)
                         .content(problem.getTitle() + " 문제를 푸셨군요! 노트를 작성해보세요!")
                         .build()

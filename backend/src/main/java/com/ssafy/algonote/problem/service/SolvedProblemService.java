@@ -1,9 +1,9 @@
 package com.ssafy.algonote.problem.service;
 
+import com.ssafy.algonote.common.AdminMemberProvider;
 import com.ssafy.algonote.exception.CustomException;
 import com.ssafy.algonote.exception.ErrorCode;
 import com.ssafy.algonote.member.domain.Member;
-import com.ssafy.algonote.member.domain.MemberRole;
 import com.ssafy.algonote.member.repository.MemberRepository;
 import com.ssafy.algonote.note.repository.NoteRepository;
 import com.ssafy.algonote.notification.domain.NotificationType;
@@ -93,14 +93,10 @@ public class SolvedProblemService {
 
     //TODO : 스케줄러 적용
     public void sendNotificationsToAllMembersAboutTag() {
-        Member admin = memberRepository.findByRole(MemberRole.ADMIN)
-            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_MEMBER));
         List<Member> members = memberRepository.findAll();
         for (Member member : members) {
             List<AnaylsisDto> groups = solvedProblemRepository.analyzeSolvedProblem(member.getId()).groups();
-            log.info("사이즈: "+groups.size());
             for (AnaylsisDto group : groups) {
-                log.info(group.lastSolvedDate() + " 로그 확인");
                 if (group.lastSolvedDate() == null) continue;
                 if (Math.abs(ChronoUnit.DAYS.between(group.lastSolvedDate(), LocalDate.now())) == 15) {
                     String tagName = switch (group.group()) {
@@ -116,7 +112,7 @@ public class SolvedProblemService {
                         new NotificationReqDto(
                             NotificationType.TAG,
                             member,
-                            admin,
+                            AdminMemberProvider.getAdminMember(),
                             null,
                             tagName,
                             group.group() + " 유형의 문제를 풀이한 지 15일이 경과하였습니다!"));
