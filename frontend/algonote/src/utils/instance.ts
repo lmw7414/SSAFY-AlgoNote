@@ -28,8 +28,8 @@ const axiosAuthApi = () => {
         config,
         // response: { status },
       } = error
-      console.log(error.response.data)
-      console.log(error.response)
+      // console.log(error.response.data)
+      // console.log(error.response)
       // console.log(status)
       if (error.response?.status === 401) {
         if (error.response?.data.actionRequired === 'REFRESH_TOKEN') {
