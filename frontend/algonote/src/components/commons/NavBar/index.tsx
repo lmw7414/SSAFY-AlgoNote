@@ -121,7 +121,6 @@ const NavBar = () => {
           </Link>
           <div className={styles.notiCont}>
             {isNotReadNoti ? <div className={styles.redDot} /> : null}
-            {isLoggedIn ? <SSE /> : null}
             <Image
               src="/images/alarm.png"
               alt="alarmIcon"

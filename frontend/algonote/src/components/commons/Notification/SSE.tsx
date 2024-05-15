@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { EventSourcePolyfill, NativeEventSource } from 'event-source-polyfill'
+import s from './SSE.module.scss'
 import { getCookie } from '@/utils/cookie'
 
 const SSE = () => {
@@ -45,7 +46,12 @@ const SSE = () => {
       eventSource.close()
     }
   }, [accessToken])
-  return <div />
+  return (
+    <div className={s.container}>
+      <p>{eventId}</p>
+      <p>{content}</p>
+    </div>
+  )
 }
 
 export default SSE
