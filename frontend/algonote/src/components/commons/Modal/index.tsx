@@ -2,9 +2,9 @@ import ReactDom from 'react-dom'
 import { SimpleButton } from '../Buttons/Button'
 import style from './Modal.module.scss'
 
-interface ModalProps {
+export interface ModalProps {
   onClose: () => void
-  code: string
+  code?: string
   children: React.ReactNode
 }
 
@@ -22,12 +22,6 @@ const Modal = ({ onClose, code, children }: ModalProps) => {
   return ReactDom.createPortal(
     <div className={style.container}>
       <div className={style.children}>
-        <div className={style.mySubmission}>
-          <p>내 제출 코드</p>
-        </div>
-        <div className={style.mySubmissionDetail}>
-          <p>코드를 복사해서 내 노트의 코드 블럭에 붙여넣어 보세요</p>
-        </div>
         <div> {children}</div>
         <div className={style.closeButtonSection}>
           <SimpleButton
@@ -39,7 +33,7 @@ const Modal = ({ onClose, code, children }: ModalProps) => {
               fontFamily: 'Pretendard',
               marginRight: '0.5rem', // 버튼 간격 조정
             }}
-            onClick={() => copyToClipboard(code)}
+            onClick={() => copyToClipboard(code ?? '')}
           />
           <SimpleButton
             text="닫기"

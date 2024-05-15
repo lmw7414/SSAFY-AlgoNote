@@ -70,6 +70,12 @@ const SubmitList = ({
       <hr className={s.bottomHr} />
       {isModalOpen && (
         <Modal onClose={closeModal} code={code}>
+          <div className={s.mySubmission}>
+            <p>내 제출 코드</p>
+          </div>
+          <div className={s.mySubmissionDetail}>
+            <p>코드를 복사해서 내 노트의 코드 블럭에 붙여넣어 보세요</p>
+          </div>
           <div className={s.codeSection}>
             <ReactMarkdown>{`\`\`\` ${lang} \n${code} \n \`\`\``}</ReactMarkdown>
           </div>
