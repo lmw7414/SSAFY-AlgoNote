@@ -35,10 +35,12 @@ const Notification = ({
     [],
   )
 
+  const router = useRouter()
+
   useEffect(() => {
     const fetchData = async () => {
       const response = await getNotificationsApi()
-      // console.log('알림:', response)
+      console.log('알림:', response)
       setNotifications(response)
     }
     fetchData()
@@ -51,7 +53,6 @@ const Notification = ({
       setIsNotReadNoti(true)
     }
   }, [notifications])
-  const router = useRouter()
 
   const clickNotification = async (
     type: string,
@@ -64,9 +65,9 @@ const Notification = ({
     // 클릭시 알림 내용으로 이동
     if (type === 'HEART' || type === 'BOOKMARK' || type === 'REVIEW') {
       router.push(`/note/${noteId}`)
-    } else if (type === 'NOTE') {
+    } else if (type === 'SUBMISSION') {
       router.push('/solvedproblems')
-    } else if (type === 'REC') {
+    } else if (type === 'TAG') {
       router.push('/recommend')
     }
 
