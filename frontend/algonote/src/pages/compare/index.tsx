@@ -72,9 +72,19 @@ const ComparePage = () => {
 
   return (
     <div className={style.container}>
-      <div>코드를 비교하세요</div>
-      <div>
-        <div className={style.element}>
+      <div className={style.header}>
+        <div className={style.headerSentence}>
+          <p className={style.headerBold}>코드를 비교해보세요</p>
+        </div>
+        <div className={style.headerSentence}>
+          <p className={style.contentLight}>
+            더 효율적인 코드를 확인할 수 있어요
+          </p>
+        </div>
+      </div>
+      <div className={style.element}>
+        <div>
+        <div >
           <ReactDiffViewer
             oldValue={codes[0]}
             newValue={codes[1]}
@@ -162,7 +172,8 @@ const ComparePage = () => {
             )}
           </Modal>
         )}
-      </div>
+      </div></div>
+      
     </div>
   )
 }
