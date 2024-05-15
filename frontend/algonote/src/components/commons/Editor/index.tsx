@@ -12,6 +12,7 @@ import {
 } from '@mdxeditor/editor'
 import useNoteStore from '@/stores/note-store'
 import '@mdxeditor/editor/style.css'
+import { useState, useEffect } from 'react'
 
 const {
   MDXEditor,
@@ -55,22 +56,30 @@ export default function App() {
 
   const { tabs, curSelectedIdx, updateTab } = useNoteStore()
   const currentTab = tabs.find((tab) => tab.idx === curSelectedIdx)
-  const handleContent = (value: string) => {
-    console.log('입력값: ', value)
+  const handleContent = (val: string) => {
+    console.log('입력값: ', val)
 
-    if (currentTab) {
-      updateTab(curSelectedIdx, {
-        title: currentTab?.title,
-        content: value,
-      })
-    }
+    updateTab(curSelectedIdx, {
+      title: currentTab?.title ?? '',
+      content: val,
+    })
   }
+
+  const [content, setContent] = useState(currentTab?.content ?? '')
+  useEffect(() => {
+    setContent(() => currentTab?.content ?? '')
+  }, [currentTab, curSelectedIdx, tabs])
+  // Ensure the MDXEditor re-renders by changing key on content update
+  const editorKey = curSelectedIdx + content
 
   return (
     <MDXEditor
-      onChange={handleContent}
+      key={editorKey}
+      onChange={(e) => {
+        handleContent(e)
+      }}
       placeholder="당신의 풀이를 기록해보세요..."
-      markdown=""
+      markdown={currentTab?.content ?? ''}
       plugins={[
         codeBlockPlugin({ defaultCodeBlockLanguage: 'python' }),
         sandpackPlugin({ sandpackConfig: simpleSandpackConfig }),

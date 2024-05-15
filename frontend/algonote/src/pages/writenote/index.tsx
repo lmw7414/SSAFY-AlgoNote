@@ -60,10 +60,17 @@ const WriteNote = () => {
   const [showChatBot, setShowChatBot] = useState(false) // 자연스럽게 챗봇 창 띄우기 위해
   const [submissionList, setSubmissionList] = useState<SubmissionHistory[]>([]) // 제출 이력
   const [tempSavedList, setTempSavedList] = useState<TempSavedNote[]>([])
-  const [isCollapsed, setIsCollapsed] = useState(false) // 좌측 상단 토글 클릭 여부
-  const { tabs, setTabs, curSelectedIdx } = useNoteStore()
-  const { title } = tabs[curSelectedIdx]
-  const { content } = tabs[curSelectedIdx]
+  const [isCollapsed, setIsCollapsed] = useState(false) // 좌측 단 토글 클릭 여부
+  const { tabs, setTabs, curSelectedIdx, updateTab } = useNoteStore()
+  const [flag, setFlag] = useState(false)
+
+  let title = ''
+  let content = ''
+
+  if (tabs[curSelectedIdx]) {
+    title = tabs[curSelectedIdx].title
+    content = tabs[curSelectedIdx].content
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -74,7 +81,7 @@ const WriteNote = () => {
     fetchData()
   }, [id])
 
-  useEffect(() => {}, [])
+  useEffect(() => {}, [flag])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -119,8 +126,13 @@ const WriteNote = () => {
     alert('임시저장 되었습니다.')
   }
 
-  const handleClickTempNote = () => {
+  const handleClickTempNote = (tit: string, con: string) => {
     console.log('임시 저장된 노트 클릭')
+    console.log('Clicked note title:', tit)
+    console.log('Clicked note content:', con)
+    updateTab(curSelectedIdx, { title: tit, content: con })
+    setFlag(() => !flag)
+    console.log(flag)
   }
 
   // UI 관련 스타일
@@ -252,7 +264,9 @@ const WriteNote = () => {
                         <button
                           key={temp.tempNoteId}
                           type="button"
-                          onClick={handleClickTempNote}
+                          onClick={() =>
+                            handleClickTempNote(temp.noteTitle, temp.content)
+                          }
                         >
                           <div className={s.tempNoteItem}>
                             <span>{temp.noteTitle}</span>
