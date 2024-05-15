@@ -1,5 +1,23 @@
 // alert('실행은 됩니다...');
 
+chrome.runtime.onMessage.addListener(
+    function(request, sender, sendResponse) { 
+    const targetDiv = document.querySelector('.margin-bottom-30');
+
+    if(targetDiv){
+        if (request.message === "success") {
+            targetDiv.textContent = "알고노트에 업로드 완료!";
+        }
+        else{
+            targetDiv.textContent = "알고노트에 업로드 실패";
+        }
+    }
+    else{
+        console.error('지정된 클래스를 가진 div 요소를 찾을 수 없습니다.');
+    }
+    }
+  );
+
 const currentUrl = window.location.href;
 
 const isNull = (value) => {

@@ -6,8 +6,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             if (cookie !== null) {
                 sendDataToAPI(message.tableData, cookie.value);
             } else {
-                const alert = console.log.bind(console);
-                alert('서비스 재로그인 후 제출 페이지를 새로고침해주세요');
+                console.warn('서비스 재로그인 후 제출 페이지를 새로고침해주세요');
             }
         });
     }
@@ -23,8 +22,8 @@ function sendDataToAPI(tableData, cookie) {
         body: JSON.stringify(tableData),
     })
         .then((response) => response.text())
-        .then((text) => {
-            console.log(text);
+        .then(() => {
+            chrome.tabs.sendMessage(tabId, { message: "success" });
         })
-        .catch((error) => console.error('Error sending data to API:', error));
+        .catch((error) => chrome.tabs.sendMessage(tabId, { message: "fail" + error.message }));
 }
