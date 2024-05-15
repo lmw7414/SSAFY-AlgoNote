@@ -24,7 +24,24 @@
   min-width: 1066.5px;
   transition: flex 0.4s ease-out;
   flex: 3;
-  height: 100%;
+  height: 90%;
+}
+
+.right::-webkit-scrollbar {
+  width: 10px; /* 스크롤바의 너비 */
+}
+
+.right::-webkit-scrollbar-track {
+  background: #f1f1f1; /* 스크롤바 트랙의 배경색 */
+}
+
+.right::-webkit-scrollbar-thumb {
+  background: var(--gray); /* 스크롤바 자체의 배경색 */
+  border-radius: 1rem;
+}
+
+.right::-webkit-scrollbar-thumb:hover {
+  background: #555; /* 스크롤바를 호버했을 때의 배경색 */
 }
 
 .submitTitleBox {
@@ -86,4 +103,54 @@
 .saveButtonSection {
   display: flex;
   justify-content: space-between;
+}
+
+// 임시 노트
+.tempNoteListBox {
+  padding-top: 3rem;
+}
+
+.tempNoteTitleBox {
+  margin: 0;
+  padding-right: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--soft-gray);
+  width: 100%;
+  height: 2.6rem;
+  padding-left: 1rem;
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--blue);
+}
+
+.tempNoteList {
+  background: var(--white);
+  border-radius: 8px; // 둥근 모서리
+  padding: 1rem; // 내부 패딩
+  padding-top: 0.5rem;
+}
+
+.tempNoteItem {
+  display: flex;
+  justify-content: space-between; // 항목 간격 조정
+  align-items: center;
+  padding: 0.8rem 0.5rem; // 상하 패딩
+  border-bottom: 1px solid #eee; // 하단 경계선
+
+  // &:last-child {
+  //   border-bottom: none; // 마지막 항목의 경계선 제거
+  // }
+
+  span {
+    display: block;
+    &:first-child {
+      flex-grow: 1; // 첫 번째 span(노트 제목)이 남은 공간을 모두 차지하도록 설정
+    }
+    &:last-child {
+      color: #999; // 생성 날짜 색상
+      margin-left: 1rem; // 왼쪽 여백
+    }
+  }
 }

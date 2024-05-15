@@ -1,5 +1,4 @@
 .container {
-  margin-top: 1%;
   border-radius: 1rem;
   width: 100%;
   height: 80vh;
@@ -7,15 +6,42 @@
   color: var(--black);
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  // padding: 1rem;
+  justify-content: flex-start;
+
+  h4 {
+    padding-bottom: 1rem;
+  }
 
   .answerCont {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    overflow-y: auto;
+    overflow-x: auto;
     border-radius: 0.5rem;
-    min-height: 20rem;
+    min-height: 32rem;
+    max-height: 32rem;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: flex-start;
     align-items: center;
+  }
+
+  .answerCont::-webkit-scrollbar {
+    width: 5px; /* 스크롤바의 너비 */
+    height: 5px;
+  }
+
+  .answerCont::-webkit-scrollbar-track {
+    background: #f1f1f1; /* 스크롤바 트랙의 배경색 */
+  }
+
+  .answerCont::-webkit-scrollbar-thumb {
+    background: var(--gray); /* 스크롤바 자체의 배경색 */
+    border-radius: 1rem;
+  }
+
+  .answerCont::-webkit-scrollbar-thumb:hover {
+    background: #555; /* 스크롤바를 호버했을 때의 배경색 */
   }
 
   input {
@@ -49,6 +75,7 @@
 }
 
 .gptInputBox {
+  padding-top: 0.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -63,27 +90,40 @@
   }
 }
 
-// 여기에 CSSTransition에 필요한 스타일 추가
+// Transition
 .chatEnter {
   opacity: 0.5;
-  // transform: scale(0.98);
 }
 
 .chatEnterActive {
   opacity: 1;
   transform: scale(1);
   transition: opacity 300ms;
-  // transform 300ms;
 }
 
 .chatExit {
   opacity: 1;
-  // transform: scale(1);
 }
 
 .chatExitActive {
   opacity: 0.5;
-  // transform: scale(0.98);
   transition: opacity 300ms;
-  // transform 300ms;
+}
+
+.blankSection {
+  height: 1.2rem;
+}
+
+.chatSection {
+  width: 99%;
+
+  .myChatSection {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .gptChatSection {
+    display: flex;
+    justify-content: flex-start;
+  }
 }
