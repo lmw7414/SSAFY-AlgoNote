@@ -34,7 +34,63 @@
   
   .content {
     width: 75%;
-    margin: 0 auto;
+    margin: auto;
+
+    .loadingCont {
+      margin-top: 3rem;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      font-size: 1rem;
+      font-weight: 500;
+    }
+
+    .firstCategoryCont {
+      margin: 5rem 0;
+    }
+
+    .categoryCont {
+      margin: 9rem 0;
+      height: 100%;
+      position: relative;
+
+      .divide {
+        position: absolute;
+        width: 100vw;
+        top: -3rem;
+        left: -12.5vw;
+        border: 0.5px solid var(--soft-gray);
+      }
+    }
+
+    .categoryTitle {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--blue);
+      margin: -1rem 0 1rem 0;
+    }
+
+    .tagCont {
+      margin: 2.5rem 0;
+      display: flex;
+      flex-direction: column;
+      .tagTitleCont {
+        display: flex;
+        margin-bottom: 0.8rem;
+        
+        .tagTitle {
+          font-size: 1.2rem;
+          font-weight: 600;
+        }
+      }
+
+      .problem:hover {
+        background-color: var(--soft-sky-gray);
+      }
+    }
+
   }
 }
 
