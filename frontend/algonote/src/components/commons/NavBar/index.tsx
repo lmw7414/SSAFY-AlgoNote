@@ -11,7 +11,11 @@ import { eraseCookie, getCookie } from '@/utils/cookie'
 const NavBar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const { deleteUserInfo } = useUserInfo()
-  const [userProfile, setUserProfile] = useState('/images/basicprofileimg')
+  const [userProfile, setUserProfile] = useState('/images/basicprofileimg.png') // Initial placeholder image
+  const [isImageLoaded, setIsImageLoaded] = useState(false)
+
+  const router = useRouter()
+  const url = router.pathname
 
   // 프로필 이미지 불러오기
   useEffect(() => {
@@ -27,11 +31,7 @@ const NavBar = () => {
         console.log('API 통신 오류')
         console.log(e)
       })
-  }, [userProfile])
-
-  const router = useRouter()
-
-  const url = router.pathname
+  }, [isImageLoaded]) // Removed userProfile dependency to avoid unnecessary re-fetching
 
   useEffect(() => {
     const checkLogin = async () => {
@@ -103,7 +103,13 @@ const NavBar = () => {
         {isLoggedIn ? (
           <div className={styles.profileSec}>
             <Link href="/member">
-              <Image src={userProfile} alt="Img" width={30} height={30} />
+              <Image
+                src={isImageLoaded ? userProfile : '/images/logo.png'}
+                alt="Img"
+                width={30}
+                height={30}
+                onLoadingComplete={() => setIsImageLoaded(true)}
+              />
             </Link>
             <SimpleButton
               text="로그아웃"
