@@ -1,12 +1,17 @@
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
 import { v4 as uuidv4 } from 'uuid'
 import s from './recommend.module.scss'
 import recommendApi from '@/apis/recommendAxios'
+import QuestionListRec from '@/components/commons/QuestionListRec'
+import QuestionListRecTitle from '@/components/commons/QuestionListRecTitle'
 
 interface Problem {
   problemId: number
   problemTitle: string
   tier: number
+  acceptedUserCount: number
+  averageTries: number
 }
 
 const Recommend = () => {
@@ -271,20 +276,242 @@ const Recommend = () => {
           </p>
         </div>
       </div>
-      <h1>asd</h1>
       <div className={s.content}>
-        {mathTheoryProblems.map((tag, index) => (
-          <div key={uuidv4()}>
-            <p>{category.math_theory[index]}</p>
-            {tag.map((problem: Problem) => (
-              <div key={problem.problemId}>
-                <p>{problem.problemTitle}</p>
-                <p>{problem.tier}</p>
-              </div>
-            ))}
-            ,
-          </div>
-        ))}
+        <div className={s.firstCategoryCont}>
+          <p className={s.categoryTitle}>수학 및 이론</p>
+          {loading1 ? (
+            <div className={s.loadingCont}>
+              <p>적합한 추천 문제를 선별 중이에요...</p>
+            </div>
+          ) : (
+            <>
+              {mathTheoryProblems.map((tag, index) => (
+                <div className={s.tagCont} key={uuidv4()}>
+                  <div className={s.tagTitleCont}>
+                    <p className={s.tagTitle}>
+                      {dictionary[category.math_theory[index]]}
+                    </p>
+                  </div>
+                  <QuestionListRecTitle />
+                  {tag.map((problem: Problem) => (
+                    <Link
+                      href={`https://www.acmicpc.net/problem/${problem.problemId}`}
+                      key={problem.problemId}
+                      style={{ textDecoration: 'none', color: 'black' }}
+                    >
+                      <div className={s.problem}>
+                        <QuestionListRec
+                          id={problem.problemId}
+                          title={problem.problemTitle}
+                          tier={problem.tier}
+                          acceptedUserCount={problem.acceptedUserCount}
+                          averageTries={problem.averageTries}
+                        />
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              ))}
+            </>
+          )}
+        </div>
+        <div className={s.categoryCont}>
+          <hr className={s.divide} />
+          <p className={s.categoryTitle}>그래프</p>
+          {loading2 ? (
+            <div className={s.loadingCont}>
+              <p>적합한 추천 문제를 선별 중이에요...</p>
+            </div>
+          ) : (
+            <>
+              {graphTheoryProblems.map((tag, index) => (
+                <div className={s.tagCont} key={uuidv4()}>
+                  <div className={s.tagTitleCont}>
+                    <p className={s.tagTitle}>
+                      {dictionary[category.graph_theory[index]]}
+                    </p>
+                  </div>
+                  <QuestionListRecTitle />
+                  {tag.map((problem: Problem) => (
+                    <Link
+                      href={`https://www.acmicpc.net/problem/${problem.problemId}`}
+                      key={problem.problemId}
+                      style={{ textDecoration: 'none', color: 'black' }}
+                    >
+                      <div className={s.problem}>
+                        <QuestionListRec
+                          id={problem.problemId}
+                          title={problem.problemTitle}
+                          tier={problem.tier}
+                          acceptedUserCount={problem.acceptedUserCount}
+                          averageTries={problem.averageTries}
+                        />
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              ))}
+            </>
+          )}
+        </div>
+        <div className={s.categoryCont}>
+          <hr className={s.divide} />
+          <p className={s.categoryTitle}>자료구조</p>
+          {loading3 ? (
+            <div className={s.loadingCont}>
+              <p>적합한 추천 문제를 선별 중이에요...</p>
+            </div>
+          ) : (
+            <>
+              {dataStructureProblems.map((tag, index) => (
+                <div className={s.tagCont} key={uuidv4()}>
+                  <div className={s.tagTitleCont}>
+                    <p className={s.tagTitle}>
+                      {dictionary[category.data_structure[index]]}
+                    </p>
+                    {/* <p>{days}</p> */}
+                    {/* <p>일 동안 풀지 않았어요</p> */}
+                  </div>
+                  <QuestionListRecTitle />
+                  {tag.map((problem: Problem) => (
+                    <Link
+                      href={`https://www.acmicpc.net/problem/${problem.problemId}`}
+                      key={problem.problemId}
+                      style={{ textDecoration: 'none', color: 'black' }}
+                    >
+                      <div className={s.problem}>
+                        <QuestionListRec
+                          id={problem.problemId}
+                          title={problem.problemTitle}
+                          tier={problem.tier}
+                          acceptedUserCount={problem.acceptedUserCount}
+                          averageTries={problem.averageTries}
+                        />
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              ))}
+            </>
+          )}
+        </div>
+        <div className={s.categoryCont}>
+          <hr className={s.divide} />
+          <p className={s.categoryTitle}>전략 및 최적화</p>
+          {loading4 ? (
+            <div className={s.loadingCont}>
+              <p>적합한 추천 문제를 선별 중이에요...</p>
+            </div>
+          ) : (
+            <>
+              {optimizationProblems.map((tag, index) => (
+                <div className={s.tagCont} key={uuidv4()}>
+                  <div className={s.tagTitleCont}>
+                    <p className={s.tagTitle}>
+                      {dictionary[category.optimization[index]]}
+                    </p>
+                  </div>
+                  <QuestionListRecTitle />
+                  {tag.map((problem: Problem) => (
+                    <Link
+                      href={`https://www.acmicpc.net/problem/${problem.problemId}`}
+                      key={problem.problemId}
+                      style={{ textDecoration: 'none', color: 'black' }}
+                    >
+                      <div className={s.problem}>
+                        <QuestionListRec
+                          id={problem.problemId}
+                          title={problem.problemTitle}
+                          tier={problem.tier}
+                          acceptedUserCount={problem.acceptedUserCount}
+                          averageTries={problem.averageTries}
+                        />
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              ))}
+            </>
+          )}
+        </div>
+        <div className={s.categoryCont}>
+          <hr className={s.divide} />
+          <p className={s.categoryTitle}>구현</p>
+          {loading5 ? (
+            <div className={s.loadingCont}>
+              <p>적합한 추천 문제를 선별 중이에요...</p>
+            </div>
+          ) : (
+            <>
+              {implementationProblems.map((tag, index) => (
+                <div className={s.tagCont} key={uuidv4()}>
+                  <div className={s.tagTitleCont}>
+                    <p className={s.tagTitle}>
+                      {dictionary[category.implementation[index]]}
+                    </p>
+                  </div>
+                  <QuestionListRecTitle />
+                  {tag.map((problem: Problem) => (
+                    <Link
+                      href={`https://www.acmicpc.net/problem/${problem.problemId}`}
+                      key={problem.problemId}
+                      style={{ textDecoration: 'none', color: 'black' }}
+                    >
+                      <div className={s.problem}>
+                        <QuestionListRec
+                          id={problem.problemId}
+                          title={problem.problemTitle}
+                          tier={problem.tier}
+                          acceptedUserCount={problem.acceptedUserCount}
+                          averageTries={problem.averageTries}
+                        />
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              ))}
+            </>
+          )}
+        </div>
+        <div className={s.categoryCont}>
+          <hr className={s.divide} />
+          <p className={s.categoryTitle}>문자열</p>
+          {loading6 ? (
+            <div className={s.loadingCont}>
+              <p>적합한 추천 문제를 선별 중이에요...</p>
+            </div>
+          ) : (
+            <>
+              {stringProblems.map((tag, index) => (
+                <div className={s.tagCont} key={uuidv4()}>
+                  <div className={s.tagTitleCont}>
+                    <p className={s.tagTitle}>
+                      {dictionary[category.string[index]]}
+                    </p>
+                  </div>
+                  <QuestionListRecTitle />
+                  {tag.map((problem: Problem) => (
+                    <Link
+                      href={`https://www.acmicpc.net/problem/${problem.problemId}`}
+                      key={problem.problemId}
+                      style={{ textDecoration: 'none', color: 'black' }}
+                    >
+                      <div className={s.problem}>
+                        <QuestionListRec
+                          id={problem.problemId}
+                          title={problem.problemTitle}
+                          tier={problem.tier}
+                          acceptedUserCount={problem.acceptedUserCount}
+                          averageTries={problem.averageTries}
+                        />
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              ))}
+            </>
+          )}
+        </div>
       </div>
     </div>
   )
