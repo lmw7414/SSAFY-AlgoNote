@@ -31,6 +31,12 @@ const NavBar = () => {
   }, [])
 
   // 프로필 이미지 불러오기
+  const [userProfile, setUserProfile] = useState('/images/basicprofileimg.png') // Initial placeholder image
+  const [isImageLoaded, setIsImageLoaded] = useState(false)
+
+  const router = useRouter()
+  const url = router.pathname
+
   useEffect(() => {
     myInfo()
       .then((res) => {
@@ -44,11 +50,7 @@ const NavBar = () => {
         console.log('API 통신 오류')
         console.log(e)
       })
-  }, [userProfile])
-
-  const router = useRouter()
-
-  const url = router.pathname
+  }, [isImageLoaded]) // Removed userProfile dependency to avoid unnecessary re-fetching
 
   useEffect(() => {
     const checkLogin = async () => {
@@ -73,7 +75,7 @@ const NavBar = () => {
     <div className={styles.wrapper}>
       <div className={styles.navBox}>
         <div className={styles.logoSec}>
-          <Link href="/">
+          <Link href={isLoggedIn ? '/' : '/landing'}>
             <Image src="/images/logo.png" alt="logo" width={112} height={20} />
           </Link>
         </div>
@@ -131,7 +133,13 @@ const NavBar = () => {
         {isLoggedIn ? (
           <div className={styles.profileSec}>
             <Link href="/member">
-              <Image src={userProfile} alt="Img" width={30} height={30} />
+              <Image
+                src={isImageLoaded ? userProfile : '/images/logo.png'}
+                alt="Img"
+                width={30}
+                height={30}
+                onLoadingComplete={() => setIsImageLoaded(true)}
+              />
             </Link>
             <SimpleButton
               text="로그아웃"

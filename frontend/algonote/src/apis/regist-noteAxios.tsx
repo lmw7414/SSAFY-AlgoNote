@@ -26,6 +26,28 @@ const registNote = async (
   }
 }
 
+const tempRegistNote = async (
+  problemId: number,
+  title: string,
+  content: string,
+) => {
+  try {
+    await axiosAuthApi()
+      .post(`/api/notes/temp`, {
+        problemId,
+        title,
+        content,
+      })
+      .then((res) => {
+        console.log('임시저장 response: ', res.data)
+
+        return res.data
+      })
+  } catch (e) {
+    console.log(e)
+  }
+}
+
 // 제출 번호로 제출 이력 조회 (로그인 후 노트 작성 페이지 진입 시 호출, 현재 임시 번호 넣어놓음)
 const getSubmissionList = async (problemId: number) => {
   try {
@@ -46,4 +68,19 @@ const getSubmissionList = async (problemId: number) => {
   }
 }
 
-export { registNote, getSubmissionList }
+// 문제에 대한 임시저장 노트 조회
+const getTempSavedNote = async (problemId: number) => {
+  try {
+    return await axiosAuthApi()
+      .get(`/api/notes/temp?problemId=${problemId}`)
+      .then((res) => {
+        console.log('임시 저장 노트 목록 조회', res.data)
+        return res.data
+      })
+  } catch (e) {
+    console.log(e)
+    return []
+  }
+}
+
+export { registNote, tempRegistNote, getSubmissionList, getTempSavedNote }

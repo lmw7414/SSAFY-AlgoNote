@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import {
   UndoRedo,
   BoldItalicUnderlineToggles,
@@ -56,22 +57,27 @@ export default function App() {
   const { tabs, curSelectedIdx, updateTab } = useNoteStore()
   const currentTab = tabs.find((tab) => tab.idx === curSelectedIdx)
 
-  const handleContent = (value: string) => {
-    console.log(value)
+  const handleContent = (val: string) => {
+    console.log('입력값: ', val)
 
-    if (currentTab) {
-      updateTab(curSelectedIdx, {
-        title: currentTab?.title,
-        content: value,
-      })
-    }
+    updateTab(curSelectedIdx, {
+      title: currentTab?.title ?? '',
+      content: val,
+    })
   }
+
+  useEffect(() => {
+    console.log('tab 업데이트 ')
+  }, [currentTab?.content, tabs])
 
   return (
     <MDXEditor
-      onChange={handleContent}
+      key={curSelectedIdx}
+      onChange={(e) => {
+        handleContent(e)
+      }}
       placeholder="당신의 풀이를 기록해보세요..."
-      markdown=""
+      markdown={currentTab?.content ?? ''}
       plugins={[
         codeBlockPlugin({ defaultCodeBlockLanguage: 'python' }),
         sandpackPlugin({ sandpackConfig: simpleSandpackConfig }),

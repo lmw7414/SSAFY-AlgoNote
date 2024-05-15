@@ -9,6 +9,7 @@ interface NoteTab {
 interface Chats {
   question: string
   answer: string | null
+  idx: number
 }
 
 interface NoteStore {
@@ -20,8 +21,11 @@ interface NoteStore {
   setTabs: (tabs: Omit<NoteTab, 'idx'>[]) => void // 탭을 초기화하는 함수 추가
   curSelectedIdx: number
   chats: Chats[]
-  setChats: (newChat: Chats) => void
+  setChats: (newChat: Omit<Chats, 'idx'>) => void
   updateLastChat: (updatedChat: Chats) => void
+  nowContent: string
+  setNowContent: (content: string) => void
+  updateAllNotes: (notes: NoteTab[]) => void
 }
 
 const useNoteStore = create<NoteStore>((set) => ({
@@ -64,20 +68,36 @@ const useNoteStore = create<NoteStore>((set) => ({
       tabs: newTabs.map((tab, idx) => ({ ...tab, idx })), // 새 탭들에 idx를 할당
       curSelectedIdx: 0, // 현재 선택된 탭 인덱스를 초기화
     })),
-  chats: [{ question: '', answer: '' }],
-  // 새로운 챗을 추가하는 함수
-  setChats: (newChat: Chats) =>
+  chats: [
+    {
+      question: '',
+      answer:
+        '안녕하세요 저는 알고봇이에요. \n 질문이 있으시다면 무엇이든 물어보세요 :)',
+      idx: 0,
+    },
+  ],
+  setChats: (
+    newChat: Omit<Chats, 'idx'>, // idx 제외
+  ) =>
     set((state) => ({
-      chats: [...state.chats, newChat],
+      chats: [...state.chats, { ...newChat, idx: state.chats.length }],
     })),
   updateLastChat: (updatedChat: Chats) =>
     set((state) => {
-      const newChats = state.chats.slice(0) // 현재 상태의 chats 배열을 복사
+      const newChats = state.chats.slice(0)
       if (newChats.length > 0) {
         newChats[newChats.length - 1] = updatedChat // 마지막 원소를 업데이트
+        newChats[newChats.length - 1].idx = newChats.length - 1
       }
       return { chats: newChats }
     }),
+  nowContent: '',
+  setNowContent: (content: string) => set(() => ({ nowContent: content })),
+
+  updateAllNotes: (notes: NoteTab[]) =>
+    set(() => ({
+      tabs: notes.map((note, idx) => ({ ...note, idx })),
+    })),
 }))
 
 export default useNoteStore
