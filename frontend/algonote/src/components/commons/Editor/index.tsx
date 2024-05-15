@@ -12,7 +12,7 @@ import {
 } from '@mdxeditor/editor'
 import useNoteStore from '@/stores/note-store'
 import '@mdxeditor/editor/style.css'
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 
 const {
   MDXEditor,
@@ -66,11 +66,8 @@ export default function App() {
     })
   }
 
-  const [content, setContent] = useState(currentTab?.content ?? '')
   useEffect(() => {
     console.log('tab 업데이트 ')
-
-    setContent(() => currentTab?.content ?? '')
   }, [currentTab?.content, tabs])
 
   return (

@@ -18,8 +18,7 @@ const SavedNote = ({
   const { curSelectedIdx, updateTab, flag } = useNoteStore()
   const handleClickTempNote = (tit: string, con: string) => {
     console.log('임시 저장된 노트 클릭')
-    console.log('Clicked note title:', tit)
-    console.log('Clicked note content:', con)
+
     updateTab(curSelectedIdx, { title: tit, content: con })
   }
 
