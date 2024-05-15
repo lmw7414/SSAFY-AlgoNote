@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import {
   UndoRedo,
   BoldItalicUnderlineToggles,
@@ -12,7 +13,6 @@ import {
 } from '@mdxeditor/editor'
 import useNoteStore from '@/stores/note-store'
 import '@mdxeditor/editor/style.css'
-import { useEffect } from 'react'
 
 const {
   MDXEditor,
