@@ -84,31 +84,29 @@ const ComparePage = () => {
       </div>
       <div className={style.element}>
         <div>
-        <div >
-          <ReactDiffViewer
-            oldValue={codes[0]}
-            newValue={codes[1]}
-            compareMethod={DiffMethod.WORDS}
-          />
-        </div>
-        <select value={language} onChange={handleLanguageChange}>
-          <option value="py">Python</option>
-          <option value="java">Java</option>
-          <option value="c">C</option>
-          <option value="cpp">C++</option>
-        </select>
-        <input
-          type="text"
-          placeholder="입력 데이터"
-          value={inputData}
-          onChange={handleInputChange}
-        />
-        <input
-          type="text"
-          placeholder="예상 출력 결과"
-          value={expectedOutput}
-          onChange={handleOutputChange}
-        />
+          <div className={style.insertBox}>
+             <select value={language} onChange={handleLanguageChange} className={style.insert}>
+                 <option value="java">Java</option>
+                 <option value="py">Python</option>
+                <option value="c">C</option>
+                <option value="cpp">C++</option>
+              </select>
+              <input
+                type="text"
+                placeholder="입력 데이터"
+                value={inputData}
+                onChange={handleInputChange}
+                className={style.insert}
+              />
+              <input
+                type="text"
+                placeholder="예상 출력 결과"
+                value={expectedOutput}
+                onChange={handleOutputChange}
+                className={style.insert}
+              />
+          </div>
+
         <div className={style.compareButtons}>
           <div className={style.compareButton}>
             <CodeSelectButton setIsModalOpened={setIsModalOpened} index={0} />
@@ -117,6 +115,15 @@ const ComparePage = () => {
             <CodeSelectButton setIsModalOpened={setIsModalOpened} index={1} />
           </div>
         </div>
+        <div className={style.codeView}>
+          <ReactDiffViewer
+            oldValue={codes[0]}
+            newValue={codes[1]}
+            compareMethod={DiffMethod.WORDS}
+          />
+        </div>
+        
+        
         <div>
           <ExecuteResult
             language={language}

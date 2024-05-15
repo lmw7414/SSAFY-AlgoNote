@@ -36,10 +36,29 @@
 
     .element{
         min-height: 30rem;
-        margin: 0 12.5%;
+        margin: 1rem 12.5%;
         border: 3px solid blue;
-        border-style: dashed;
         justify-content: space-between;
+
+        .insert{
+            height: 2rem;
+            width: 12.5rem;
+            border-radius: 0.5rem;
+            padding: 0.5rem 0.5rem;
+            margin-right: 0.625rem;
+            border: 1px solid;
+        }
+
+        select.insert {
+            height: 3rem;
+            -webkit-appearance: none; // 기본 디자인 제거
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12"><polyline points="1,4 6,9 11,4" style="fill:none;stroke:black;stroke-width:2"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 0.625rem center; // 화살표 위치 (10px)
+            background-size: 0.75rem 0.75rem; // 화살표 크기 (12px)
+          }
     }
 
     .compareButtons{
@@ -49,9 +68,15 @@
         .compareButton{
             border: 1px solid black;
             width: 50%;
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 1rem;
         }
     }
 
+    .codeView{
+      border: 1px solid green;
+    }
     
 }
 

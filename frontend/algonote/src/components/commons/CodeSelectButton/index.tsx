@@ -1,6 +1,6 @@
 import React from 'react'
-import { SimpleButton } from '../Buttons/Button'
 import useCodeInfo from '@/stores/code-store'
+import Image from 'next/image'
 
 interface Props {
   setIsModalOpened: React.Dispatch<React.SetStateAction<boolean>>
@@ -12,14 +12,12 @@ const CodeSelectButton = ({ setIsModalOpened, index }: Props) => {
 
   return (
     <div>
-      <SimpleButton
-        text="코드 업로드"
-        className="back"
-        onClick={() => {
+      <button type='button' onClick={() => {
           setIsModalOpened(true)
           setUpdateIndex(index)
-        }}
-      />
+        }}>
+        <Image src="/images/upload_white.svg" alt="토글버튼" width={40} height={50} objectFit="contain" />
+      </button>
     </div>
   )
 }

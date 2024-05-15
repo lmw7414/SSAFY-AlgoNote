@@ -1,4 +1,18 @@
-.result{
+.executeButton{
+    border: 1px solid red;
+    display: inline;
+    display: flex;
+    justify-content: flex-end;
+    color: var(--red);
+    align-items: center;
+
+    .alert{
+        margin-right: 1rem;
+    }
+}
+
+.resultBox{
     border: 1px solid plum;
     height: 20rem;
 }
+
