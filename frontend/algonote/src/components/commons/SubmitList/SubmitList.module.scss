@@ -98,3 +98,22 @@
 // .codeSection code {
 //   max-width: 100%; /* 코드 블록의 최대 너비를 부모 요소에 맞춤 */
 // }
+
+.mySubmission {
+  font-size: 1.4rem;
+  font-weight: 600;
+  padding-bottom: 0.7rem;
+}
+
+.mySubmissionDetail {
+  color: var(--gray);
+  font-size: 0.95rem;
+  font-weight: 500;
+  padding-bottom: 1rem;
+}
+
+.closeButtonSection {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 0.5rem;
+}

@@ -103,7 +103,7 @@ const WriteNote = () => {
       setShowChatBot(false)
     }
 
-    return () => clearTimeout(timer) // 컴포넌트가 언마운트 되거나 chatBotState가 바뀌기 전에 타이머를 정리
+    return () => clearTimeout(timer)
   }, [chatBotState])
 
   const buttonClickHandler = () => {
@@ -117,6 +117,10 @@ const WriteNote = () => {
   const handleTempSave = () => {
     tempRegistNote(Number(id), title, content)
     alert('임시저장 되었습니다.')
+  }
+
+  const handleClickTempNote = () => {
+    console.log('임시 저장된 노트 클릭')
   }
 
   // UI 관련 스타일
@@ -245,10 +249,16 @@ const WriteNote = () => {
                         savedTime = '방금 전'
                       }
                       return (
-                        <div key={temp.tempNoteId} className={s.tempNoteItem}>
-                          <span>{temp.noteTitle}</span>
-                          <span>{savedTime}</span>
-                        </div>
+                        <button
+                          key={temp.tempNoteId}
+                          type="button"
+                          onClick={handleClickTempNote}
+                        >
+                          <div className={s.tempNoteItem}>
+                            <span>{temp.noteTitle}</span>
+                            <span>{savedTime}</span>
+                          </div>
+                        </button>
                       )
                     })}
                   </div>
