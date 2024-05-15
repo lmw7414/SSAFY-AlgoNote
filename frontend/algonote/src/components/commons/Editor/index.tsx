@@ -55,9 +55,8 @@ export default function App() {
 
   const { tabs, curSelectedIdx, updateTab } = useNoteStore()
   const currentTab = tabs.find((tab) => tab.idx === curSelectedIdx)
-
   const handleContent = (value: string) => {
-    console.log(value)
+    console.log('입력값: ', value)
 
     if (currentTab) {
       updateTab(curSelectedIdx, {
