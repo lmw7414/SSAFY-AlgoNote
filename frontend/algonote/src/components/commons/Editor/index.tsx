@@ -9,11 +9,6 @@ import {
   ConditionalContents,
   ShowSandpackInfo,
   InsertSandpack,
-} from '@mdxeditor/editor'
-import useNoteStore from '@/stores/note-store'
-import '@mdxeditor/editor/style.css'
-
-const {
   MDXEditor,
   codeBlockPlugin,
   codeMirrorPlugin,
@@ -23,7 +18,9 @@ const {
   quotePlugin,
   markdownShortcutPlugin,
   toolbarPlugin,
-} = await import('@mdxeditor/editor')
+} from '@mdxeditor/editor'
+import useNoteStore from '@/stores/note-store'
+import '@mdxeditor/editor/style.css'
 
 const Editor = () => {
   const defaultSnippetContent = `
