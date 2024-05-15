@@ -4,6 +4,7 @@ import com.ssafy.algonote.problem.domain.Problem;
 import com.ssafy.algonote.problem.domain.SolvedProblem;
 import com.ssafy.algonote.problem.domain.Tag;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,7 +23,7 @@ public class SolvedProblemDto {
 
     private Set<String> tags;
     private Set<String> groups;
-    private LocalDate uploadedAt;
+    private LocalDateTime uploadedAt;
 
     public static SolvedProblemDto of(SolvedProblem solvedProblemProblem){
         Set<String> tags = new HashSet<>();
@@ -39,7 +40,7 @@ public class SolvedProblemDto {
                 .tier(problem.getTier())
                 .tags(tags)
                 .groups(groups)
-                .uploadedAt(solvedProblemProblem.getUploadedAt().toLocalDate())
+                .uploadedAt(solvedProblemProblem.getUploadedAt())
                 .build();
     }
 }
