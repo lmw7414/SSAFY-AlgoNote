@@ -11,6 +11,8 @@ import com.ssafy.algonote.problem.dto.response.AnaylsisDto;
 import com.ssafy.algonote.problem.dto.response.AnaylsisDto.AnaylsisDtoBuilder;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -43,7 +45,7 @@ public class SolvedProblemCustomRepositoryImpl implements SolvedProblemCustomRep
     }
 
     @Override
-    @Transactional
+//    @Transactional
     public AnalysisResDto analyzeSolvedProblem(Long memberId) {
 
         List<SolvedProblemDto> solvedProblemDtos = queryFactory.selectFrom(solvedProblem)
@@ -53,6 +55,9 @@ public class SolvedProblemCustomRepositoryImpl implements SolvedProblemCustomRep
             .stream()
             .map(SolvedProblemDto::of).toList();
 
+        for (SolvedProblemDto solvedProblemDto : solvedProblemDtos) {
+            log.info("solvedProblemDto: {}", solvedProblemDto);
+        }
 
         for (SolvedProblemDto dto : solvedProblemDtos) {
             for (String group : dto.getGroups()) {
@@ -78,8 +83,11 @@ public class SolvedProblemCustomRepositoryImpl implements SolvedProblemCustomRep
                 group1.problemCount(problemIdMap.get(group).size());
             if(scoreMap.containsKey(group))
                 group1.score(scoreMap.get(group));
-            if(map.containsKey(group) && !map.get(group).isEmpty())
+            if(map.containsKey(group) && !map.get(group).isEmpty()){
+                log.info("lastSolvedDate : {}", map.get(group).get(0).getUploadedAt());
                 group1.lastSolvedDate(map.get(group).get(0).getUploadedAt());
+            }
+
 
             groups.add(group1.build());
         }

@@ -6,17 +6,15 @@ import com.ssafy.algonote.problem.domain.Tag;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+
+import lombok.*;
 
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString
 public class SolvedProblemDto {
     private Long problemId;
     private String problemTitle;
