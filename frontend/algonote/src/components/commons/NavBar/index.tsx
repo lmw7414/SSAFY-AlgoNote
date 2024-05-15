@@ -91,7 +91,7 @@ const NavBar = () => {
             <p>내 노트</p>
           </Link>
 
-          <Link href="/recommand">
+          <Link href="/recommend">
             <p>문제 추천</p>
           </Link>
 
