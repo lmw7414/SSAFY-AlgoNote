@@ -4,5 +4,6 @@ public enum NotificationType {
     REVIEW,
     HEART,
     BOOKMARK,
-    TAG
+    TAG,
+    SUBMISSION
 }
