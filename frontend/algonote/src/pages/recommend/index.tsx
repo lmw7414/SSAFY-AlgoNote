@@ -53,7 +53,7 @@ const Recommend = () => {
     data_structure: [
       'data_structures',
       'segtree',
-      'hash_set',
+      // 'hash_set',
       'prefix_sum',
       'stack',
       'queue',
@@ -69,7 +69,7 @@ const Recommend = () => {
       'binary_search',
       'parametric_search',
       'knapsack',
-      'lis',
+      // 'lis',
       'recursion',
       'two_pointer',
     ],
@@ -85,7 +85,7 @@ const Recommend = () => {
     string: ['manacher', 'rabin_karp', 'kmp', 'string', 'trie'],
   }
 
-  const dictionary = {
+  const dictionary: { [key: string]: string } = {
     math_theory: '수학',
     graph_theory: '그래프',
     data_structure: '자료구조',
@@ -93,7 +93,7 @@ const Recommend = () => {
     implementation: '구현',
     string: '문자열',
     math: '수학',
-    arithmetic: '사칙연산',
+    // arithmetic: '사칙연산',
     primality_test: '소수 판정',
     sieve: '에라토스테네스의 체',
     graphs: '그래프 이론',
@@ -109,7 +109,7 @@ const Recommend = () => {
     lca: '최소 공통 조상',
     data_structures: '자료구조',
     segtree: '세그먼트 트리',
-    hash_set: '해시를 사용한 집합과 맵',
+    // hash_set: '해시를 사용한 집합과 맵',
     prefix_sum: '누적 합',
     stack: '스택',
     queue: '큐',
@@ -123,7 +123,7 @@ const Recommend = () => {
     binary_search: '이분 탐색',
     parametric_search: '매개 변수 탐색',
     knapsack: '배낭 문제',
-    lis: '가장 긴 증가하는 부분수열',
+    // lis: '가장 긴 증가하는 부분수열',
     recursion: '재귀',
     two_pointer: '두 포인터',
     simulation: '시뮬레이션',
