@@ -55,6 +55,10 @@
   display: flex;
   justify-content: space-around;
   line-height: 1px;
+
+  img {
+    border-radius: 50%;
+  }
 }
 
 .loginSec {
