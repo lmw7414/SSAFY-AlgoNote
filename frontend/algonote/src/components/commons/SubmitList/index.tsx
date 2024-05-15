@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import ReactMarkdown from 'react-markdown'
-import Modal from '../Modal'
+import { SimpleButton } from '../Buttons/Button'
+import NoteModal from '../Modal/NoteModal'
 import s from './SubmitList.module.scss'
 import useNoteStore from '@/stores/note-store'
 
@@ -29,7 +30,7 @@ const SubmitList = ({
 
   const [isModalOpen, setIsModalOpen] = useState(false)
 
-  const closeModal = () => setIsModalOpen(false)
+  const onClose = () => setIsModalOpen(false)
 
   const handleSubmissionButtonClick = () => {
     setIsModalOpen(() => true)
@@ -40,6 +41,16 @@ const SubmitList = ({
       content: tabs[curSelectedIdx] + submissionCode,
     })
     console.log('업뎃 후 현재 content: ', tabs[curSelectedIdx])
+  }
+
+  const copyToClipboard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text)
+      alert('코드가 복사되었어요!')
+      onClose()
+    } catch (err) {
+      console.log('클립보드 복사에 실패했습니다.', err)
+    }
   }
 
   return (
@@ -69,7 +80,7 @@ const SubmitList = ({
       </button>
       <hr className={s.bottomHr} />
       {isModalOpen && (
-        <Modal onClose={closeModal} code={code}>
+        <NoteModal code={code}>
           <div className={s.mySubmission}>
             <p>내 제출 코드</p>
           </div>
@@ -79,7 +90,33 @@ const SubmitList = ({
           <div className={s.codeSection}>
             <ReactMarkdown>{`\`\`\` ${lang} \n${code} \n \`\`\``}</ReactMarkdown>
           </div>
-        </Modal>
+          <div className={s.closeButtonSection}>
+            <SimpleButton
+              text="복사"
+              style={{
+                fontWeight: '500',
+                width: '4rem',
+                height: '2rem',
+                fontFamily: 'Pretendard',
+                marginRight: '0.5rem', // 버튼 간격 조정
+              }}
+              onClick={() => copyToClipboard(code ?? '')}
+            />
+            <SimpleButton
+              text="닫기"
+              style={{
+                background: '#ffffff',
+                color: '#3c87fe',
+                border: '1.5px solid #3c87fe',
+                fontWeight: '500',
+                width: '4rem',
+                height: '2rem',
+                fontFamily: 'Pretendard',
+              }}
+              onClick={onClose}
+            />
+          </div>
+        </NoteModal>
       )}
     </div>
   )
