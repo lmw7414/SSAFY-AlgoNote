@@ -90,27 +90,39 @@ const Notification = ({
 
   return (
     <div className={s.container}>
-      <p className={s.title}>알림</p>
-      {notifications.map((noti) => (
-        <div key={noti.createdAt}>
-          {noti.isRead ? null : (
-            <>
-              <button
-                className={s.notiCont}
-                onClick={() =>
-                  clickNotification(noti.type, noti.id, noti.relatedId)
-                }
-                type="button"
-              >
-                <div className={s.redDot} />
-                <p className={s.content}>{noti.content}</p>
-                <p className={s.date}>{formatDate(noti.createdAt)}</p>
-              </button>
-              <hr className={s.divide} />
-            </>
-          )}
-        </div>
-      ))}
+      <div className={s.header}>
+        <p className={s.title}>알림</p>
+      </div>
+      <div className={s.notisCont}>
+        {notifications.length ? (
+          <>
+            {notifications.map((noti) => (
+              <div key={noti.createdAt}>
+                {noti.isRead ? null : (
+                  <>
+                    <button
+                      className={s.notiCont}
+                      onClick={() =>
+                        clickNotification(noti.type, noti.id, noti.relatedId)
+                      }
+                      type="button"
+                    >
+                      <div className={s.redDot} />
+                      <p className={s.content}>{noti.content}</p>
+                      <p className={s.date}>{formatDate(noti.createdAt)}</p>
+                    </button>
+                    <hr className={s.divide} />
+                  </>
+                )}
+              </div>
+            ))}
+          </>
+        ) : (
+          <div className={s.emptyValidationCont}>
+            <p className={s.emptyValidation}>표시할 알림이 없습니다.</p>
+          </div>
+        )}
+      </div>
     </div>
   )
 }

@@ -9,17 +9,27 @@
     border-radius: 0.6rem;
     overflow: auto;
       
-    
-    .title {
-        font-size: 1.2rem;
-        font-weight: 600;
-        color: var(--black);
-        margin: 1rem
+    .header {
+        position: fixed;
+        width: 100%;
+        height: 3.4rem;
+        background-color: var(--white);
+        z-index: 4;
+        .title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--black);
+            margin: 1rem
+        }
+    }
+
+    .notisCont {
+        margin-top: 3rem;
     }
 
     .notiCont {
         text-align: start;
-        padding: 1.5rem 2.5rem;
+        padding: 1.2rem 2.5rem;
         position: relative;
 
         .redDot {
@@ -41,7 +51,7 @@
             margin-top: 0.5rem;
             font-size: 0.9rem;
             font-weight: 500;
-            color: var(--charcoal);
+            color: var(--medium-sky-gray);
         }
 
     }
@@ -61,4 +71,15 @@
 
 .container::-webkit-scrollbar {
 display: none;
+}
+
+.emptyValidationCont {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    .emptyValidation {
+        margin-top: 10rem;
+        font-weight: 400;
+    }
 }
