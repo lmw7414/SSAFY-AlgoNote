@@ -6,7 +6,15 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             if (cookie !== null) {
                 sendDataToAPI(message.tableData, cookie.value);
             } else {
-                console.warn('서비스 재로그인 후 제출 페이지를 새로고침해주세요');
+                chrome.notifications.create({
+                    type: 'basic',
+                    iconUrl: 'images/logo.png',
+                    title: '로그인 필요',
+                    message: '서비스 로그인 후 제출 페이지를 새로고침해주세요'
+                });
+                setTimeout(() => {
+                    chrome.tabs.update(sender.tab.id, {url: 'https://algnote.duckdns.org/login'});
+                }, 3000); // 3초 후에 로그인 페이지로 리디렉션
             }
         });
     }
