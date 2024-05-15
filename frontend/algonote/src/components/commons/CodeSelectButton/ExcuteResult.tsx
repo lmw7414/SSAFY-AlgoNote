@@ -88,19 +88,25 @@ const ExecuteResult = ({
         </div>
       </div>
       <div className={style.resultBox}>
-            {executeResult.map((result, index) => (
+             {executeResult.map((result, index) => (
               // eslint-disable-next-line react/no-array-index-key
-              <div key={index}>
-                실행 결과 {index + 1}: {JSON.stringify(result)}
+              <div key={index} className={style.result}>
+                <div>
+                  <p className={style.title}>실행 결과</p>
+                  <p>출력 {JSON.stringify(result.output)}</p>
+                  <p>실행 시간 {JSON.stringify(result.executionTime)}</p>
+                  <p>메모리 {JSON.stringify(result.memoryUsage)}</p>
+                  <p>{JSON.stringify(result.isCorrect) ? "정답입니다" : "오답입니다"}</p>
+                </div>
+                <div>
+                  <p>{JSON.stringify(complexityResult[index].timeComplexity)}</p>
+                  <p>{JSON.stringify(complexityResult[index].spaceComplexity)}</p>
+                </div>
+              
+                
               </div>
             ))}
-            {complexityResult.map((result, index) => (
-              // eslint-disable-next-line react/no-array-index-key
-              <div key={index}>
-                복잡도 결과 {index + 1}: {JSON.stringify(result)}
-              </div>
-            ))}
-            </div>
+      </div>
     </div>
   )
 }

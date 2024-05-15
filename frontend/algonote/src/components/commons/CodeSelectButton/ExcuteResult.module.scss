@@ -12,7 +12,30 @@
 
 .resultBox{
     height: 20rem;
-    border:3px solid var(--soft-sky);
+    border:0.25rem solid var(--soft-sky);
     border-radius: 1rem;
+    display: flex;
+
+    .result{
+        width: 50%;
+        justify-content: flex-start;
+        padding: 0 1rem;
+
+        
+
+        .title{
+            font-size:1.2rem;
+        }
+    }
+     
+    .result::before{
+        content: "";
+        position: absolute; 
+        left: 50%;
+        height: 17.5rem;
+        border-right: 0.2rem solid var(--soft-sky);
+        transform: translateX(-50%);
+    }
+   
 }
 
