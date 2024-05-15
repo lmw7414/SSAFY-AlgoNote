@@ -1,3 +1,6 @@
+import { useState } from 'react'
+import ReactMarkdown from 'react-markdown'
+import Modal from '../Modal'
 import s from './SubmitList.module.scss'
 import useNoteStore from '@/stores/note-store'
 
@@ -24,7 +27,13 @@ const SubmitList = ({
 
   const submissionCode = `\`\`\`${lang} ${code}\n\`\`\``
 
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
+  const closeModal = () => setIsModalOpen(false)
+
   const handleSubmissionButtonClick = () => {
+    setIsModalOpen(() => true)
+
     console.log(code)
     updateTab(curSelectedIdx, {
       title: tabs[curSelectedIdx].title,
@@ -59,6 +68,13 @@ const SubmitList = ({
         </div>
       </button>
       <hr className={s.bottomHr} />
+      {isModalOpen && (
+        <Modal onClose={closeModal} code={code}>
+          <div className={s.codeSection}>
+            <ReactMarkdown>{`\`\`\` ${lang} \n${code} \n \`\`\``}</ReactMarkdown>
+          </div>
+        </Modal>
+      )}
     </div>
   )
 }

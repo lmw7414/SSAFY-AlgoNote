@@ -1,5 +1,4 @@
 .container {
-  // margin-top: 0.5%;
   border-radius: 1rem;
   width: 100%;
   height: 80vh;
@@ -8,19 +7,19 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  // padding: 1rem;
 
   h4 {
     padding-bottom: 1rem;
   }
 
   .answerCont {
-    padding-left: 1rem;
-    padding-right: 1rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
     overflow-y: auto;
+    overflow-x: auto;
     border-radius: 0.5rem;
-    min-height: 30rem;
-    max-height: 30rem;
+    min-height: 32rem;
+    max-height: 32rem;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -76,7 +75,7 @@
 }
 
 .gptInputBox {
-  padding-top: 2rem;
+  padding-top: 0.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -91,29 +90,24 @@
   }
 }
 
-// 여기에 CSSTransition에 필요한 스타일 추가
+// Transition
 .chatEnter {
   opacity: 0.5;
-  // transform: scale(0.98);
 }
 
 .chatEnterActive {
   opacity: 1;
   transform: scale(1);
   transition: opacity 300ms;
-  // transform 300ms;
 }
 
 .chatExit {
   opacity: 1;
-  // transform: scale(1);
 }
 
 .chatExitActive {
   opacity: 0.5;
-  // transform: scale(0.98);
   transition: opacity 300ms;
-  // transform 300ms;
 }
 
 .blankSection {
@@ -121,7 +115,7 @@
 }
 
 .chatSection {
-  width: 100%;
+  width: 99%;
 
   .myChatSection {
     display: flex;
