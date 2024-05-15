@@ -11,8 +11,12 @@ const handleSearchResult = async (
 ) => {
   if (e.key === 'Enter' && input) {
     const { setSearchResult } = useSearchResult.getState()
-    const response = await getSearchResult(input.value, 0)
-    setSearchResult(response.data)
+    const response = await getSearchResult(input.value, 1)
+    if(response.status===404){
+      // 화면에 결과 없음 처리 추가해주기
+      console.log(response.message)
+    }
+    setSearchResult(response)
   }
 }
 

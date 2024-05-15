@@ -1,23 +1,20 @@
 import { create } from 'zustand'
 
-interface Notes {
+interface Notes{
   noteId: number
   problemId: number
   noteTitle: string
+  problemTier: number
   problemTitle: string
   memberNickname: string
-}
-
-interface Problems {
-  problemId: number
-  problemTitle: string
-  tier: number
-  tags: string[]
+  heartCnt: number
+  bookmarked: boolean
+  hearted: boolean
 }
 
 interface SearchResultType {
   notes: Notes[]
-  problems: Problems[]
+  noteCnt: number
 }
 
 interface SearchResultState {
@@ -33,19 +30,16 @@ const defaultState = {
     {
       noteId: 0,
       problemId: 0,
-      noteTitle: '',
-      problemTitle: '',
-      memberNickname: '',
-    },
+      noteTitle: "",
+      problemTitle: "",
+      problemTier: 0,
+      memberNickname: "",
+      heartCnt: 0,
+      bookmarked: false,
+      hearted: false
+    }
   ],
-  problems: [
-    {
-      problemId: 0,
-      problemTitle: '',
-      tier: 0,
-      tags: [],
-    },
-  ],
+  noteCnt: 0
 }
 
 const useSearchResult = create<SearchResultState>((set) => ({
@@ -53,7 +47,7 @@ const useSearchResult = create<SearchResultState>((set) => ({
   isSearched: false,
   setSearchResult: (result: SearchResultType) =>
     set({ searchResult: result, isSearched: true }),
-  clearSearchResult: () => set({ searchResult: { notes: [], problems: [] } }),
+  clearSearchResult: () => set({ searchResult: defaultState  }),
   resetSearch: () => set({ isSearched: false }),
 }))
 
