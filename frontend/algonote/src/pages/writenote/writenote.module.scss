@@ -130,12 +130,17 @@
   border-radius: 8px; // 둥근 모서리
   padding: 1rem; // 내부 패딩
   padding-top: 0.5rem;
+
+  button {
+    width: 100%;
+  }
 }
 
 .tempNoteItem {
   display: flex;
   justify-content: space-between; // 항목 간격 조정
   align-items: center;
+  text-align: start;
   padding: 0.8rem 0.5rem; // 상하 패딩
   border-bottom: 1px solid #eee; // 하단 경계선
 
