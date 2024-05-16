@@ -44,6 +44,7 @@ public class NoteService {
     private final NoteDocumentRepository noteDocumentRepository;
     private final ProblemDocumentRepository problemDocumentRepository;
     private final TempNoteRepository tempNoteRepository;
+    private final ReviewRepository reviewRepository;
     private final ElasticsearchOperations operations;
 
     // 노트 생성
@@ -83,6 +84,7 @@ public class NoteService {
         bookmarkRepository.deleteAllByNote(note);
         heartRepository.deleteAllByNote(note);
         noteRepository.delete(note);
+        reviewRepository.deleteAllByNote(note);
         noteDocumentRepository.delete(noteDocument);
     }
 
