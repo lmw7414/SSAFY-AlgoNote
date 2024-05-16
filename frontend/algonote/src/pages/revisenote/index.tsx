@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
-import s from './writenote.module.scss'
+import s from './revisenote.module.scss'
+import { modifyNote } from '@/apis/note-detailAxios'
 import {
   getSubmissionList,
   getTempSavedNote,
-  registNote,
   tempRegistNote,
 } from '@/apis/regist-noteAxios'
 import { SimpleButton } from '@/components/commons/Buttons/Button'
@@ -53,16 +52,23 @@ interface TempSavedNote {
   tempNoteId: number
 }
 
-const WriteNote = () => {
-  const router = useRouter()
-  const { id } = router.query // 쿼리에서 id(선택한 문제 번호)를 추출
+const ReviseNote = () => {
   const currentDate = new Date()
   const [chatBotState, setChatBotState] = useState(false)
   const [showChatBot, setShowChatBot] = useState(false) // 자연스럽게 챗봇 창 띄우기 위해
   const [submissionList, setSubmissionList] = useState<SubmissionHistory[]>([]) // 제출 이력
   const [tempSavedList, setTempSavedList] = useState<TempSavedNote[]>([])
   const [isCollapsed, setIsCollapsed] = useState(false) // 좌측 단 토글 클릭 여부
-  const { tabs, setTabs, curSelectedIdx, setSelectedNoteData } = useNoteStore()
+  const {
+    tabs,
+    setTabs,
+    curSelectedIdx,
+    selectedNoteData,
+    setSelectedNoteData,
+    modifiedTitle,
+  } = useNoteStore()
+
+  const router = useRouter()
 
   let title = ''
   let content = ''
@@ -73,25 +79,23 @@ const WriteNote = () => {
   }
 
   useEffect(() => {
-    setSelectedNoteData(null)
-  }, [])
-
-  useEffect(() => {
     const fetchData = async () => {
-      const list = await getTempSavedNote(Number(id))
+      const list = await getTempSavedNote(Number(selectedNoteData?.problem.id))
       setTempSavedList(() => list)
       console.log('리스트임', list)
     }
     fetchData()
-  }, [id])
+
+    console.log('수정할 노트', selectedNoteData)
+  }, [selectedNoteData])
 
   useEffect(() => {}, [tempSavedList])
 
   useEffect(() => {
     const fetchData = async () => {
-      const list = await getSubmissionList(Number(id))
+      const list = await getSubmissionList(Number(selectedNoteData?.problem.id))
       setSubmissionList(() => list)
-      await getTempSavedNote(Number(id))
+      await getTempSavedNote(Number(Number(selectedNoteData?.problem.id)))
 
       // 노트, 탭 초기화
       setTabs([
@@ -102,7 +106,7 @@ const WriteNote = () => {
       ])
     }
     fetchData()
-  }, [id, setTabs])
+  }, [setTabs])
 
   useEffect(() => {
     let timer: string | number | NodeJS.Timeout | undefined
@@ -121,21 +125,28 @@ const WriteNote = () => {
     setIsCollapsed(!isCollapsed)
   }
 
-  const handleClickButton = () => {
-    registNote(Number(id), title, content)
-    router.push('/mynote')
+  const handleClickButton = async () => {
+    console.log('이거야 바바', selectedNoteData)
+    await modifyNote(Number(selectedNoteData?.noteId), modifiedTitle, content)
+    router.push({
+      pathname: `/note/${selectedNoteData?.noteId}`,
+    })
   }
 
   const handleTempSave = () => {
-    tempRegistNote(Number(id), title, content)
+    tempRegistNote(Number(Number(selectedNoteData?.problem.id)), title, content)
     alert('임시저장 되었습니다.')
 
     const fetchData = async () => {
-      const list = await getTempSavedNote(Number(id))
+      const list = await getTempSavedNote(Number(selectedNoteData?.problem.id))
       setTempSavedList(() => list)
       console.log('리스트임', list)
     }
     fetchData()
+  }
+
+  const handleExitNote = () => {
+    setSelectedNoteData(null)
   }
 
   // UI 관련 스타일
@@ -286,19 +297,17 @@ const WriteNote = () => {
             showChatBotState={showChatBot}
           />
           <div className={s.buttonSection} style={buttonSecStyle}>
-            <Link href="/">
-              <div className={s.exitButtonSec}>
-                <Image
-                  src="/images/back.png"
-                  alt="logo"
-                  width={28}
-                  height={28}
-                />
-                <button className={s.exitButton} type="button">
-                  나가기
-                </button>
-              </div>
-            </Link>
+            <div className={s.exitButtonSec}>
+              <Image src="/images/back.png" alt="logo" width={28} height={28} />
+              <button
+                className={s.exitButton}
+                type="button"
+                onClick={handleExitNote}
+              >
+                나가기
+              </button>
+            </div>
+
             <div className={s.saveButtonSection}>
               <SimpleButton
                 text="임시저장"
@@ -316,7 +325,7 @@ const WriteNote = () => {
                 }}
               />
               <SimpleButton
-                text="저장하기"
+                text="수정하기"
                 onClick={handleClickButton}
                 style={{
                   fontSize: '1.1rem',
@@ -361,4 +370,4 @@ const WriteNote = () => {
   )
 }
 
-export default WriteNote
+export default ReviseNote

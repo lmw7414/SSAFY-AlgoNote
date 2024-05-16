@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import type { AppProps } from 'next/app'
 import '@/styles/globals.scss'
@@ -5,7 +6,6 @@ import Footer from '@/components/commons/Footer'
 import NavBar from '@/components/commons/NavBar'
 import NoteNavBar from '@/components/commons/NoteNavBar'
 import SSE from '@/components/commons/Notification/SSE/SSE'
-import { useEffect, useState } from 'react'
 import { getCookie } from '@/utils/cookie'
 
 const App = ({ Component, pageProps }: AppProps) => {
@@ -23,10 +23,16 @@ const App = ({ Component, pageProps }: AppProps) => {
 
   return (
     <>
-      {url === '/writenote' ? <NoteNavBar /> : <NavBar />}
+      {router.pathname === '/writenote' || router.pathname === '/revisenote' ? (
+        <NoteNavBar />
+      ) : (
+        <NavBar />
+      )}
       <Component {...pageProps} />
       {isLoggedIn ? <SSE /> : null}
-      {url !== '/writenote' ? <Footer /> : null}
+      {router.pathname !== '/writenote' && router.pathname !== '/revisenote' ? (
+        <Footer />
+      ) : null}
     </>
   )
 }
