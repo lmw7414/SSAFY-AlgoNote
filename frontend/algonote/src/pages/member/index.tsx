@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react'
 import Image from 'next/image'
 import { LuPencil } from 'react-icons/lu'
+import { MdOutlineEmail } from 'react-icons/md'
 import style from './member.module.scss'
 import { nameChange, imageChange } from '@/apis/info-changeAxios'
 import myInfo from '@/apis/user-infoAxios'
@@ -141,55 +142,71 @@ const User = () => {
   // 사용자 정보 렌더링 로직
   return (
     <div className={style.info}>
-      <Image
-        src={userDetails.profileImg}
-        alt="프로필 이미지"
-        width={100}
-        height={100}
-      />
+      <div className={style.img}>
+        <Image
+          src={userDetails.profileImg}
+          alt="프로필 이미지"
+          layout="fill"
+          objectFit="contain"
+        />
+      </div>
+      <div className={style.imgButton}>
+        <input
+          type="file"
+          hidden
+          accept="image/* .jpg, .png, .jpeg"
+          ref={fileInput}
+          onChange={onChange}
+        />
+        <LuPencil
+          onClick={() => {
+            if (fileInput.current) {
+              fileInput.current.click()
+            }
+          }}
+        />
+      </div>
 
-      <input
-        type="file"
-        hidden
-        accept="image/* .jpg, .png, .jpeg"
-        ref={fileInput}
-        onChange={onChange}
-      />
-
-      <LuPencil
-        onClick={() => {
-          if (fileInput.current) {
-            fileInput.current.click()
-          }
-        }}
-      />
-
-      <p>이메일: {userDetails.email}</p>
+      <div className={style.email}>
+        <MdOutlineEmail /> <p>{userDetails.email}</p>
+      </div>
       <div className={style.nickname}>
-        <p>닉네임: {userDetails.nickname}</p>
-
         {isChangeClicked ? (
           <>
-            <input
-              type="text"
-              defaultValue={userDetails.nickname}
-              onChange={(e) => setNickName(e.target.value)}
-              maxLength={14}
-            />
-            <SimpleButton
-              text="변경"
-              onClick={nicknameCheck}
-              isDisabled={nicknameState.status}
-            />
-            {nicknameState.value && <div>{nicknameState.value}</div>}
+            <div className={style.nicknameContainer}>
+              <input
+                type="text"
+                defaultValue={userDetails.nickname}
+                onChange={(e) => setNickName(e.target.value)}
+                maxLength={14}
+                className={style.input}
+              />
+              <SimpleButton
+                text="변경"
+                onClick={nicknameCheck}
+                isDisabled={nicknameState.status}
+                style={{
+                  width: '6rem',
+                  height: '2.5rem',
+                  marginLeft: '0.5rem',
+                }}
+              />
+            </div>
+            {nicknameState.value && (
+              <div className={style.nicknameValue}>{nicknameState.value}</div>
+            )}
           </>
         ) : (
-          <LuPencil
-            onClick={() => {
-              setIsChangeClicked(true)
-              setNickName(userDetails.nickname)
-            }}
-          />
+          <div className={style.nameContainer}>
+            <p className={style.name}>{userDetails.nickname} </p>
+            <p>님, 반가워요!&nbsp;</p>
+            <LuPencil
+              onClick={() => {
+                setIsChangeClicked(true)
+                setNickName(userDetails.nickname)
+              }}
+            />
+          </div>
         )}
       </div>
     </div>
