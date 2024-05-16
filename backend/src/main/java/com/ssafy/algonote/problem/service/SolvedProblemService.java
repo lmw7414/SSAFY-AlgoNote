@@ -16,7 +16,6 @@ import com.ssafy.algonote.problem.dto.response.AnaylsisDto;
 import com.ssafy.algonote.problem.dto.response.NotedProblemResDto;
 import com.ssafy.algonote.problem.dto.response.NotedProblemResDto.NotedProblemResDtoBuilder;
 import com.ssafy.algonote.problem.repository.SolvedProblemRepository;
-import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -98,11 +97,11 @@ public class SolvedProblemService {
             List<AnaylsisDto> groups = solvedProblemRepository.analyzeSolvedProblem(member.getId()).groups();
             for (AnaylsisDto group : groups) {
                 if (group.lastSolvedDate() == null) continue;
-                if (Math.abs(ChronoUnit.DAYS.between(group.lastSolvedDate(), LocalDate.now())) == 15) {
+                if (Math.abs(ChronoUnit.DAYS.between(group.lastSolvedDate(), LocalDateTime.now())) >= 15) {
                     String tagName = switch (group.group()) {
                         case "graph_theory" -> "그래프";
-                        case "math_theory" -> "수학";
-                        case "optimization" -> "최적화";
+                        case "math_theory" -> "수학 및 이론";
+                        case "optimization" -> "전략 및 최적화";
                         case "implementation" -> "구현";
                         case "string" -> "문자열";
                         case "data_structure" -> "자료구조";
@@ -115,7 +114,7 @@ public class SolvedProblemService {
                             AdminMemberProvider.getAdminMember(),
                             null,
                             tagName,
-                            group.group() + " 유형의 문제를 풀이한 지 15일이 경과하였습니다!"));
+                            tagName + " 유형의 문제를 풀이한 지 15일이 경과하였습니다!"));
                 }
             }
         }
