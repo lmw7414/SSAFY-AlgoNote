@@ -1,19 +1,33 @@
-.frame{
-    padding-top: 60px;
+.frame {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  max-width: 75vw;
+  padding-top: 80px;
+}
+
+.titleSection {
+  display: flex;
+  justify-content: flex-start;
+  font-size: 1.1rem;
+  font-weight: 400;
+
+  span {
+    padding-left: 0.6rem;
+  }
 }
 
 .reviewsContainer {
-    width: 50%;
-    border-radius: 1rem;
-    border: 1px solid var(--blue);
-    padding: 1rem;
+  width: 50%;
+  border-radius: 1rem;
+  border: 1px solid var(--blue);
+  padding: 1rem;
 }
 
 .reviewInput {
-    width: 100%;
-    box-sizing: border-box;
-    height: 2rem;
-    margin-bottom: 0.4rem;
-    border-radius: 0.4rem;
+  width: 100%;
+  box-sizing: border-box;
+  height: 2rem;
+  margin-bottom: 0.4rem;
+  border-radius: 0.4rem;
 }
-
