@@ -14,6 +14,7 @@ pipeline{
         stage('Build docker image'){
             steps{
                 dir('recommender'){
+                    sh 'cp /var/jenkins_home/env/.python_env ./.env'
                     script{
                         dockerImage = docker.build repository + ":$BUILD_NUMBER"
                     }

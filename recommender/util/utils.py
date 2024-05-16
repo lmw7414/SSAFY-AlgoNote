@@ -34,9 +34,17 @@ def get_df(tag):
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
+from dotenv import load_dotenv
+import os
+
 # 데이터베이스 연결 설정
 def get_session():
-    engine = create_engine('mysql+pymysql://b203:b203203!@k10b203.p.ssafy.io:3306/algonote')
+    load_dotenv()
+    username = os.getenv('DB_USERNAME')
+    password = os.getenv('DB_PASSWORD')
+    host = os.getenv('DB_HOST')
+    print(f"username: {username}, password: {password}, host: {host}")
+    engine = create_engine(f'mysql+pymysql://{username}:{password}@{host}:3306/algonote')
     Session = sessionmaker(bind=engine)
     session = Session()
     return session

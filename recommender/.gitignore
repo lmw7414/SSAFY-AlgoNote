@@ -6,3 +6,4 @@
 *.pkl
 *.pyc
 __pycache__/
+.env
