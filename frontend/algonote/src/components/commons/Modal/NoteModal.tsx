@@ -13,7 +13,7 @@ const NoteModal = ({ children }: ModalProps) => {
         <div> {children}</div>
       </div>
     </div>,
-    document.getElementById('modal-root') as HTMLElement,
+    document.getElementById('modal2-root') as HTMLElement,
   )
 }
 
