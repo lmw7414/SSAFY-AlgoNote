@@ -83,8 +83,8 @@ public class NoteService {
         }
         bookmarkRepository.deleteAllByNote(note);
         heartRepository.deleteAllByNote(note);
-        noteRepository.delete(note);
         reviewRepository.deleteAllByNote(note);
+        noteRepository.delete(note);
         noteDocumentRepository.delete(noteDocument);
     }
 
