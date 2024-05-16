@@ -58,6 +58,16 @@ const Main = () => {
     // setSelectedNoteData(null)
   }, [])
 
+  const goRec = (queryData: string) => {
+    router.push({
+      pathname: '/recommend',
+      query: { queryData },
+    })
+  }
+
+  const onClickHandler = () => {
+    console.log('클릭')
+  }
   return (
     <>
       <Head>
@@ -87,10 +97,10 @@ const Main = () => {
                 <Radar
                   data={recentSolved.map((item) => item.score)}
                   labels={[
-                    '수학',
+                    '수학 및 이론',
                     '그래프',
                     '자료구조',
-                    '최적화',
+                    '전략 및 최적화',
                     '구현',
                     '문자열',
                   ]}
@@ -137,11 +147,17 @@ const Main = () => {
           <h2 className={s.title}>취약 알고리즘 공략하기</h2>
           <div className={s.recommendCont}>
             <p className={s.recommendDesc}>
-              감이 떨어진 알고리즘 유형 문제를 추천해드려요
+              감이 떨어졌을 수 있는 알고리즘 유형을 확인하세요
             </p>
             <div className={s.waveCont}>
               {recentSolved?.map((group) => (
-                <div key={group.group}>
+                <div
+                  key={group.group}
+                  onClick={() => goRec(group.group)}
+                  onKeyDown={onClickHandler}
+                  role="presentation"
+                  className={s.wave}
+                >
                   <Wave type={group.group} date={group.lastSolvedDate} />
                 </div>
               ))}
