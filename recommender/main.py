@@ -39,7 +39,7 @@ app.add_middleware(
 async def test():
     return {"message": "Hello World"}
 
-@app.get("/api/python/recommend")
+@app.get("/python/recommend")
 async def recommend(tag: str = Query(...), page: int=Query(0), memberId: int=Query(), size: int=Query(10)):
 
     # print(user_dict)
