@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import Head from 'next/head'
+import Image from 'next/image'
 import { useRouter } from 'next/router'
 import s from './main.module.scss'
 import { getRecentSolvedApi, getUserRecordApi } from '@/apis/analysisAxios'
@@ -92,7 +93,7 @@ const Main = () => {
           <h2 className={s.title}>내 기록</h2>
           <div className={s.analysis}>
             <div className={s.radarCont}>
-              <p className={s.graphTitle}>종합점수</p>
+              <p className={s.graphTitle}>내가 푼 문제 분석</p>
               <div className={s.radarBox}>
                 <Radar
                   data={recentSolved.map((item) => item.score)}
@@ -108,35 +109,61 @@ const Main = () => {
               </div>
             </div>
             <div className={s.right}>
-              <div className={s.textCont}>
+              <div className={s.top}>
                 <a href="./member">{info?.nickname}</a>
-                <p>님은 알고노트에 가입한 이후로,</p>
+                <p>님이 알고노트를 사용한 기록이에요</p>
               </div>
-              <div className={s.sentenceCont}>
-                <div className={s.textCont}>
+              <div className={s.elements}>
+                <div className={s.elementCont}>
+                  <Image
+                    src="/images/record/problem.png"
+                    width={28}
+                    height={21}
+                    alt="problemIcon"
+                  />
+                  <div className={s.descCont}>
+                    <p>푼 문제 개수</p>
+                  </div>
                   <div className={s.numCont}>
                     <a href="./solvedproblems">{record?.solvedProblemCnt}</a>
                   </div>
-                  <p>개의 문제를 풀었어요</p>
                 </div>
-                <div className={s.textCont}>
+                <div className={s.elementCont}>
+                  <Image
+                    src="/images/record/folder.png"
+                    width={28}
+                    height={21}
+                    alt="folderIcon"
+                  />
+                  <div className={s.descCont}>
+                    <p>노트를 작성한 문제 개수</p>
+                  </div>
                   <div className={s.numCont}>
                     <a href="./mynote">{record?.notedProblemCnt}</a>
                   </div>
-                  <p>개의 문제에 대해</p>
                 </div>
-                <div className={s.textCont}>
+                <div className={s.elementCont}>
+                  <Image
+                    src="/images/record/note.png"
+                    width={28}
+                    height={21}
+                    alt="noteIcon"
+                  />
+                  <div className={s.descCont}>
+                    <p>작성한 노트 개수</p>
+                  </div>
                   <div className={s.numCont}>
                     <a href="./mynote">{record?.noteCnt}</a>
                   </div>
-                  <p>개의 노트를 작성했어요</p>
                 </div>
               </div>
-              <SimpleButton
-                text="노트 작성하러 가기"
-                style={{ fontWeight: '700' }}
-                onClick={() => router.push('/solvedproblems')}
-              />
+              <div className={s.btnCont}>
+                <SimpleButton
+                  text="노트 작성하러 가기"
+                  style={{ fontWeight: '700' }}
+                  onClick={() => router.push('/solvedproblems')}
+                />
+              </div>
             </div>
           </div>
         </div>
