@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 
-interface Notes{
+interface Notes {
   noteId: number
   problemId: number
   noteTitle: string
@@ -30,16 +30,16 @@ const defaultState = {
     {
       noteId: 0,
       problemId: 0,
-      noteTitle: "",
-      problemTitle: "",
+      noteTitle: '',
+      problemTitle: '',
       problemTier: 0,
-      memberNickname: "",
+      memberNickname: '',
       heartCnt: 0,
       bookmarked: false,
-      hearted: false
-    }
+      hearted: false,
+    },
   ],
-  noteCnt: 0
+  noteCnt: 0,
 }
 
 const useSearchResult = create<SearchResultState>((set) => ({
@@ -47,7 +47,7 @@ const useSearchResult = create<SearchResultState>((set) => ({
   isSearched: false,
   setSearchResult: (result: SearchResultType) =>
     set({ searchResult: result, isSearched: true }),
-  clearSearchResult: () => set({ searchResult: defaultState  }),
+  clearSearchResult: () => set({ searchResult: defaultState }),
   resetSearch: () => set({ isSearched: false }),
 }))
 

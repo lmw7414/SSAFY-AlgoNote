@@ -1,15 +1,33 @@
-import useSearchResult from '@/stores/search-store'
+'use client'
+
+import { useRouter } from 'next/router'
+import { handleDetailNote, handleKeyPress } from './Note'
 import styles from './Note.module.scss'
 import TierImg from '@/components/commons/Tier'
+import useSearchResult from '@/stores/search-store'
 
 const ResultNote = () => {
   const { searchResult } = useSearchResult()
+  const router = useRouter()
 
+  const filteredNotes =
+    router.asPath === '/bookmark'
+      ? searchResult.notes.filter((it) => it.bookmarked)
+      : searchResult.notes
+
+  console.log('필터링 노트', filteredNotes)
   return (
     <div className={styles.frame}>
-      {searchResult.notes.map((it, index:number)=>{
-        return(
-            <div key={it.noteId}>
+      {filteredNotes.map((it) => {
+        return (
+          <div
+            key={it.noteId}
+            className={styles.note}
+            onClick={() => handleDetailNote(it.noteId, router)}
+            onKeyDown={(e) => handleKeyPress(e, it.noteId, router)}
+            role="button"
+            tabIndex={0}
+          >
             <div className={styles.content}>
               <div className={styles.problem}>
                 <div className={styles.tierImage}>

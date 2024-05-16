@@ -11,11 +11,7 @@ const handleSearchResult = async (
 ) => {
   if (e.key === 'Enter' && input) {
     const { setSearchResult } = useSearchResult.getState()
-    const response = await getSearchResult(input.value, 1)
-    if(response.status===404){
-      // 화면에 결과 없음 처리 추가해주기
-      console.log(response.message)
-    }
+    const response = await getSearchResult(input.value, 0) // 인덱스 추후 수정
     setSearchResult(response)
   }
 }
@@ -29,7 +25,7 @@ const SearchInput = () => {
         <input
           ref={inputValue}
           type="text"
-          placeholder="검색어를 입력해주세요"
+          placeholder="문제 번호 또는 노트 제목으로 검색할 수 있어요"
           maxLength={25}
           onKeyDown={(e) => handleSearchResult(e, inputValue.current)}
         />
