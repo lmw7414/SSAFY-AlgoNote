@@ -118,14 +118,13 @@ const User = () => {
   useEffect(() => {
     const idRegExp = /^[^\s]{2,14}$/
     const isLengthLimited = nickname && !idRegExp.test(nickname)
-    
-    if(nickname===''){
+
+    if (nickname === '') {
       setNicknameState({
         value: '닉네임을 입력해주세요.',
         status: true,
       })
-    }
-    else if (isLengthLimited) {
+    } else if (isLengthLimited) {
       setNicknameState({
         value: '닉네임은 공백없는 2-14자이여야 합니다.',
         status: true,
@@ -185,7 +184,12 @@ const User = () => {
             {nicknameState.value && <div>{nicknameState.value}</div>}
           </>
         ) : (
-          <LuPencil onClick={() => {setIsChangeClicked(true); setNickName(userDetails.nickname)}} />
+          <LuPencil
+            onClick={() => {
+              setIsChangeClicked(true)
+              setNickName(userDetails.nickname)
+            }}
+          />
         )}
       </div>
     </div>
