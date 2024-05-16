@@ -85,11 +85,20 @@ const Popup = ({ content, onClose }: PopupProps) => {
     >
       <div className={s.profileCont}>
         <div className={s.imgCont}>
-          <img
-            src={parsedContent?.provider.profileImg}
-            alt="profileImg"
-            className={s.profileImg}
-          />
+          {parsedContent?.type === 'TAG' ||
+          parsedContent?.type === 'SUBMISSION' ? (
+            <img
+              src={parsedContent?.provider.profileImg}
+              alt="profileImg"
+              className={s.adminImg}
+            />
+          ) : (
+            <img
+              src={parsedContent?.provider.profileImg}
+              alt="profileImg"
+              className={s.profileImg}
+            />
+          )}
         </div>
         <p className={s.nickname}>{parsedContent?.provider.nickname}</p>
       </div>
