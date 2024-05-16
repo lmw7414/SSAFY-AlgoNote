@@ -4,6 +4,7 @@ import st from '../ChatBot/ChatBot.module.scss'
 import s from './MarkdownEditor.module.scss'
 import NoteContent from '@/pages/notecontent'
 import useNoteStore from '@/stores/note-store'
+import { useState } from 'react'
 
 interface Tab {
   title: string | undefined
@@ -24,12 +25,18 @@ const MarkdownEditor = ({
   chatBotState,
   showChatBotState,
 }: MarkdownEditorProps) => {
-  const { curSelectedIdx, updateTab } = useNoteStore()
-  const handleTitle = (e: { target: { value: string } }) => {
+  const { curSelectedIdx, updateTab, selectedNoteData, setModifiedTitle } =
+    useNoteStore()
+  const [tmpTitle, setTmpTitle] = useState(selectedNoteData?.noteTitle)
+
+  const handleTitle = async (e: { target: { value: string } }) => {
     updateTab(curSelectedIdx, {
       title: e.target.value,
       content: currentTab.content,
     })
+
+    setTmpTitle(() => e.target.value)
+    setModifiedTitle(tmpTitle ?? '')
   }
 
   return (
@@ -37,7 +44,7 @@ const MarkdownEditor = ({
       <div className={s.inputSection}>
         <input
           placeholder="제목을 입력하세요"
-          value={currentTab?.title}
+          value={selectedNoteData === null ? currentTab?.title : tmpTitle}
           onChange={handleTitle}
         />
         <div className={s.content}>
