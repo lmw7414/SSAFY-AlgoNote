@@ -2,8 +2,6 @@
 
 import { useEffect } from 'react'
 import dynamic from 'next/dynamic'
-import Notes from '@/components/commons/Bookmark/Note'
-// import ResultNote from '@/components/commons/Bookmark/ResultNote'
 import { FilterButton } from '@/components/commons/Buttons/Button'
 import SearchInput from '@/components/commons/SearchInput'
 import styles from '@/pages/bookmark/bookmark.module.scss'
@@ -48,8 +46,8 @@ const FilterSection = ({ title, items, itemKey }: FilterSectionProps) => {
   )
 }
 
-const Bookmark = () => {
-  const { isSearched, resetSearch } = useSearchResult()
+const NoteSearch = () => {
+  const { resetSearch } = useSearchResult()
 
   useEffect(() => {
     resetSearch()
@@ -61,9 +59,9 @@ const Bookmark = () => {
       <FilterSection title="티어" items={tier} itemKey="tier" />
       <FilterSection title="유형" items={category} itemKey="category" />
       <div className={styles.division_line} />
-      {isSearched ? <DynamicResultNote /> : <Notes />}
+      <DynamicResultNote />
     </div>
   )
 }
 
-export default Bookmark
+export default NoteSearch

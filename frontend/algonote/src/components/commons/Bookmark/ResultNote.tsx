@@ -1,5 +1,7 @@
 'use client'
 
+import redHeart from '@public/images/redHeart.svg'
+import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { handleDetailNote, handleKeyPress } from './Note'
 import styles from './Note.module.scss'
@@ -38,7 +40,17 @@ const ResultNote = () => {
               <div className={styles.note_title}>{it.noteTitle}</div>
               <div className={styles.details}>
                 <div className={styles.countNickname}>
-                  <div>{it.heartCnt}</div>
+                  {router.asPath === '/search' && (
+                    <div className={styles.heart}>
+                      <Image
+                        src={redHeart}
+                        alt="좋아요 개수"
+                        width={25}
+                        height={22}
+                      />
+                      {it.heartCnt}
+                    </div>
+                  )}
                   <div className={styles.nickname}>{it.memberNickname}</div>
                 </div>
               </div>
