@@ -4,7 +4,7 @@ import '@/styles/globals.scss'
 import Footer from '@/components/commons/Footer'
 import NavBar from '@/components/commons/NavBar'
 import NoteNavBar from '@/components/commons/NoteNavBar'
-import SSE from '@/components/commons/Notification/SSE'
+import SSE from '@/components/commons/Notification/SSE/SSE'
 import { useEffect, useState } from 'react'
 import { getCookie } from '@/utils/cookie'
 
