@@ -12,6 +12,7 @@ public record NotificationResDto(
     NotificationType type,
     String content,
     Long relatedId,
+    String relatedTag,
     MemberResDto provider,
     boolean isRead,
     LocalDateTime createdAt
@@ -22,7 +23,8 @@ public record NotificationResDto(
             .type(entity.getNotificationType())
             .content(entity.getContent())
             .relatedId(entity.getRelatedId())
-            .provider(MemberResDto.from(entity.getProvider()))
+            .relatedTag(entity.getRelatedTag())
+            .provider(com.ssafy.algonote.member.dto.response.MemberResDto.from(entity.getProvider()))
             .isRead(entity.isRead())
             .createdAt(entity.getCreatedAt())
             .build();
