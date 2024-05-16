@@ -4,7 +4,6 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { SimpleButton } from '../Buttons/Button'
 import Notification from '../Notification'
-import SSE from '../Notification/SSE'
 import styles from './NavBar.module.scss'
 import { getNotificationsApi } from '@/apis/notificationAxios'
 import myInfo from '@/apis/user-infoAxios'
@@ -121,7 +120,6 @@ const NavBar = () => {
           </Link>
           <div className={styles.notiCont}>
             {isNotReadNoti ? <div className={styles.redDot} /> : null}
-            {isLoggedIn ? <SSE /> : null}
             <Image
               src="/images/alarm.png"
               alt="alarmIcon"
