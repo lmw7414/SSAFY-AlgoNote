@@ -4,14 +4,29 @@ import '@/styles/globals.scss'
 import Footer from '@/components/commons/Footer'
 import NavBar from '@/components/commons/NavBar'
 import NoteNavBar from '@/components/commons/NoteNavBar'
+import SSE from '@/components/commons/Notification/SSE/SSE'
+import { useEffect, useState } from 'react'
+import { getCookie } from '@/utils/cookie'
 
 const App = ({ Component, pageProps }: AppProps) => {
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null)
   const router = useRouter()
+  const url = router.pathname
+  useEffect(() => {
+    const accessToken = getCookie('access_token')
+    if (accessToken) {
+      setIsLoggedIn(true)
+    } else {
+      setIsLoggedIn(false)
+    }
+  }, [url])
+
   return (
     <>
-      {router.pathname === '/writenote' ? <NoteNavBar /> : <NavBar />}
+      {url === '/writenote' ? <NoteNavBar /> : <NavBar />}
       <Component {...pageProps} />
-      {router.pathname !== '/writenote' ? <Footer /> : null}
+      {isLoggedIn ? <SSE /> : null}
+      {url !== '/writenote' ? <Footer /> : null}
     </>
   )
 }
