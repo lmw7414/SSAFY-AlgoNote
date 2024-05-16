@@ -10,6 +10,7 @@ public enum ErrorCode {
 
     NOT_FOUND_MEMBER(HttpStatus.NOT_FOUND, "해당 멤버를 찾을 수 없습니다."),
     NOT_FOUND_NOTE(HttpStatus.NOT_FOUND, "해당 노트를 찾을 수 없습니다."),
+    NOT_FOUND_ES_NOTE(HttpStatus.NOT_FOUND, "ES에서 노트 정보를 찾을 수 없습니다."),
     NOT_FOUND_TEMP_NOTE(HttpStatus.NOT_FOUND, "해당 임시 노트를 찾을 수 없습니다."),
     NOT_FOUND_REVIEW(HttpStatus.NOT_FOUND, "해당 리뷰를 찾을 수 없습니다."),
     INVALID_PATH(HttpStatus.NOT_FOUND, "유효하지 않은 경로입니다."),

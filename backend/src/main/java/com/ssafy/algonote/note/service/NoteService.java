@@ -240,7 +240,7 @@ public class NoteService {
 
     private NoteDocument getNoteDocumentOrException(Long noteId) {
         return noteDocumentRepository.findById(noteId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_NOTE));
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ES_NOTE));
     }
 
     private Member getMemberOrException(Long memberId) {
