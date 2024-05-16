@@ -135,3 +135,15 @@
     width: 100%;
   }
 }
+
+.detailModal{
+  display: flex;
+  border: 1px solid blue;
+  width: 100%;
+}
+
+.uploadButton{
+  display: flex;
+  justify-content: flex-end;
+  border: 1px solid red;
+}

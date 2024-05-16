@@ -1,5 +1,5 @@
 import ReactDom from 'react-dom'
-import style from './Modal.module.scss'
+import style from './DefaultModal.module.scss'
 
 interface ModalProps {
   onClose: () => void

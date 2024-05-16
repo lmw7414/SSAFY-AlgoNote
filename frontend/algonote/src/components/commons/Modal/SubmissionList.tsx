@@ -119,7 +119,6 @@ const SubmissionList = ({
                   codeLength={sb.length}
                   submitTime={submissionTime}
                   resultColor={resultColor}
-                  code={sb.code}
                   onClick={() => handleCodeClick(sb.code)}
                   onKeyDown={(e) => handleCodeEnter(e, sb.code)}
                 />
@@ -131,7 +130,7 @@ const SubmissionList = ({
           {selectedCode && <div>{selectedCode}</div>}
         </div>
       </div>
-      <div>
+      <div className={style.uploadButton}>
         <SimpleButton
           text="업로드"
           style={{ width: '5rem', height: '2.5rem' }}
