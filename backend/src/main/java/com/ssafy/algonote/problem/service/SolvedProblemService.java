@@ -114,7 +114,7 @@ public class SolvedProblemService {
                             AdminMemberProvider.getAdminMember(),
                             null,
                             tagName,
-                            group.group() + " 유형의 문제를 풀이한 지 15일이 경과하였습니다!"));
+                            tagName + " 유형의 문제를 풀이한 지 15일이 경과하였습니다!"));
                 }
             }
         }
