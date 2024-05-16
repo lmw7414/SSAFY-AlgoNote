@@ -1,13 +1,31 @@
 import { useEffect, useState } from 'react'
 import { EventSourcePolyfill, NativeEventSource } from 'event-source-polyfill'
-import s from './SSE.module.scss'
+import Popup from '../Popup/Popup'
 import { getCookie } from '@/utils/cookie'
 
+interface Notification {
+  // id: string
+  content: string
+}
+
 const SSE = () => {
-  const [content, setContent] = useState('')
-  const [eventId, setEventId] = useState('')
+  const [notifications, setNotifications] = useState<Notification[]>([])
+  const [showPopup, setShowPopup] = useState(false)
+  const [popupContent, setPopupContent] = useState('')
 
   const accessToken = getCookie('access_token')
+
+  const handleNewNotification = (content: string) => {
+    const newNotification: Notification = {
+      // id: new Date().toISOString(), // 임시로 ID를 생성
+      content,
+    }
+    setNotifications([newNotification, ...notifications])
+    setPopupContent(content)
+    if (content.substring(0, 5) !== 'Event') {
+      setShowPopup(true)
+    }
+  }
 
   const EventSource = EventSourcePolyfill || NativeEventSource
 
@@ -18,38 +36,28 @@ const SSE = () => {
         headers: {
           Authorization: `Bearer ${accessToken}`,
           Connection: 'keep-alive',
-          // Accept: 'text/event-stream',
         },
         heartbeatTimeout: 3600000,
       },
     )
 
-    // 'sse' 이벤트 리스너를 추가
     eventSource.addEventListener('sse', (event) => {
-      // CustomEventMap에 따라 event 타입을 지정
       const messageEvent = event as MessageEvent
       const { data, lastEventId } = messageEvent
-      console.log(data)
+      handleNewNotification(data)
       console.log(lastEventId)
-
-      // data를 content 상태로 업데이트
-      setContent(data || '')
-      setEventId(lastEventId || '')
-      console.log(content, eventId)
-      // 특정 조건에 따른 처리
-      // if (!data.includes('EventStream Created')) {
-      //   console.log('SSE 실패');
-      // }
     })
 
     return () => {
       eventSource.close()
     }
   }, [accessToken])
+
   return (
-    <div className={s.container}>
-      <p>{eventId}</p>
-      <p>{content}</p>
+    <div>
+      {showPopup && (
+        <Popup content={popupContent} onClose={() => setShowPopup(false)} />
+      )}
     </div>
   )
 }
