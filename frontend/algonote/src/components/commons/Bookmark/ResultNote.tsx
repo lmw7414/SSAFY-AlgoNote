@@ -9,10 +9,8 @@ import TierImg from '@/components/commons/Tier'
 import useSearchResult from '@/stores/search-store'
 
 const ResultNote = () => {
-  const { searchResult } = useSearchResult()
+  const { searchResult, isSearched } = useSearchResult()
   const router = useRouter()
-
-  console.log('검색 결과', searchResult.noteCnt)
 
   const filteredNotes =
     router.asPath === '/bookmark'
@@ -21,7 +19,7 @@ const ResultNote = () => {
 
   return (
     <div className={styles.frame}>
-      {searchResult.noteCnt === 0 ? (
+      {filteredNotes.length === 0 && isSearched ? (
         <div className={styles.noResults}>아직 저장된 노트가 없어요!</div>
       ) : (
         filteredNotes.map((it) => {

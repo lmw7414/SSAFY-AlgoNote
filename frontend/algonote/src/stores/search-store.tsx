@@ -26,19 +26,7 @@ interface SearchResultState {
 }
 
 const defaultState = {
-  notes: [
-    {
-      noteId: 0,
-      problemId: 0,
-      noteTitle: '',
-      problemTitle: '',
-      problemTier: 0,
-      memberNickname: '',
-      heartCnt: 0,
-      bookmarked: false,
-      hearted: false,
-    },
-  ],
+  notes: [],
   noteCnt: 0,
 }
 
@@ -48,7 +36,7 @@ const useSearchResult = create<SearchResultState>((set) => ({
   setSearchResult: (result: SearchResultType) =>
     set({ searchResult: result, isSearched: true }),
   clearSearchResult: () => set({ searchResult: defaultState }),
-  resetSearch: () => set({ isSearched: false }),
+  resetSearch: () => set({ searchResult: defaultState, isSearched: false }),
 }))
 
 export default useSearchResult

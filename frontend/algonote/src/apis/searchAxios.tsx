@@ -5,7 +5,6 @@ const getSearchResult = async (keyword: string, page: number) => {
 
   try {
     const response = await axiosAuthApi().get(apiUrl)
-    console.log('검색 응답', response)
     return response.data
   } catch (error) {
     throw error
