@@ -14,6 +14,7 @@ import com.ssafy.algonote.submission.domain.Submission;
 import com.ssafy.algonote.submission.dto.SubmissionDto;
 import com.ssafy.algonote.submission.dto.request.SubmissionReqDto;
 import com.ssafy.algonote.submission.repository.SubmissionRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,7 @@ public class SubmissionService {
     private final ProblemRepository problemRepository;
 
     // 제출 이력 저장
+    @Transactional
     public void saveSubmission(SubmissionReqDto dto, Long memberId) {
         if (!submissionRepository.findById(dto.submissionId()).isPresent()) {
             Member member = getMemberOrException(memberId);
