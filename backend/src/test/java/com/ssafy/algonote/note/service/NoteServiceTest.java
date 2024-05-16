@@ -39,6 +39,9 @@ class NoteServiceTest {
     private TempNoteRepository tempNoteRepository;
     @Mock
     private MemberRepository memberRepository;
+
+    @Mock
+    private ReviewRepository reviewRepository;
     @Mock
     private HeartRepository heartRepository;
     @Mock
