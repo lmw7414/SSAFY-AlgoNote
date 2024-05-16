@@ -7,6 +7,7 @@ import myInfo from '@/apis/user-infoAxios'
 import { SimpleButton } from '@/components/commons/Buttons/Button'
 import Radar from '@/components/commons/Main/Radar'
 import Wave from '@/components/commons/Main/Wave'
+// import useNoteStore from '@/stores/note-store'
 import { getCookie } from '@/utils/cookie'
 
 interface RecordProps {
@@ -33,6 +34,7 @@ const Main = () => {
   const [info, setInfo] = useState<UserInfo | null>(null)
   const [record, setRecord] = useState<RecordProps | null>(null)
   const [recentSolved, setRecentSolved] = useState<Group[]>([])
+  // const { setSelectedNoteData } = useNoteStore()
 
   const router = useRouter()
 
@@ -53,6 +55,7 @@ const Main = () => {
       setRecentSolved(userRecentSolved.groups)
     }
     fetchData()
+    // setSelectedNoteData(null)
   }, [])
 
   const goRec = (queryData: string) => {

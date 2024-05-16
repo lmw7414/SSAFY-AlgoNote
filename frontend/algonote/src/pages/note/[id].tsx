@@ -1,13 +1,14 @@
 import { ChangeEvent, useEffect, useState } from 'react'
+import Image from 'next/image'
+import { useRouter } from 'next/router'
 import BookMarkSVG from '@public/images/bookmark.svg'
 import BookMarkOffSVG from '@public/images/bookmark_off.svg'
 import HeartOffSVG from '@public/images/heart.svg'
 import HeartSVG from '@public/images/redHeart.svg'
-import Image from 'next/image'
-import { useRouter } from 'next/router'
 import { bookmarkButtonApi } from '@/apis/bookmarkAxios'
 import likeApi from '@/apis/likeAxios'
-import getNoteDetail from '@/apis/note-detailAxios'
+import { deleteNote, getNoteDetail } from '@/apis/note-detailAxios'
+
 import {
   createReviewApi,
   deleteReviewApi,
@@ -18,8 +19,7 @@ import myInfo from '@/apis/user-infoAxios'
 import { SimpleButton } from '@/components/commons/Buttons/Button'
 import ImageToggle from '@/components/commons/Buttons/ImageToggle'
 import style from '@/pages/note/note.module.scss'
-
-// import { getCookie } from '@/utils/cookie'
+import useNoteStore from '@/stores/note-store'
 
 interface Member {
   memberId: number
@@ -81,6 +81,7 @@ const Note = () => {
   const [userDetails, setUserDetails] = useState<UserInfo | null>(null)
   const [updateId, setUpdateId] = useState<number | null>(null)
   const [updating, setUpdating] = useState(false)
+  const { setSelectedNoteData } = useNoteStore()
 
   const handleBookmark = async () => {
     const response = await bookmarkButtonApi(id as string)
@@ -127,7 +128,7 @@ const Note = () => {
     }
     fetchData()
     fetchMyInfo()
-  }, [id])
+  }, [])
 
   const fetchReviews = async () => {
     try {
@@ -205,6 +206,18 @@ const Note = () => {
     setNewComment(newValue)
   }
 
+  // 노트 수정
+  const handleReviseNote = () => {
+    setSelectedNoteData(noteDetail || null)
+    router.push('/revisenote')
+  }
+
+  // 노트 삭제
+  const handleDeleteNote = () => {
+    deleteNote(Number(noteDetail?.noteId))
+    router.push(`/mynote`)
+  }
+
   return (
     <div className={style.frame}>
       <div>제목 : {noteDetail?.noteTitle}</div>
@@ -227,6 +240,27 @@ const Note = () => {
         {noteDetail?.member.nickname}
       </div>
       <div>
+        <SimpleButton
+          text="수정하기"
+          onClick={handleReviseNote}
+          style={{
+            width: '6rem',
+            height: '2.5rem',
+            border: 'none',
+            fontFamily: 'Pretendard',
+          }}
+        />
+        <SimpleButton
+          text="삭제하기"
+          onClick={handleDeleteNote}
+          style={{
+            width: '6rem',
+            height: '2.5rem',
+            background: '#fb4444',
+            border: 'none',
+            fontFamily: 'Pretendard',
+          }}
+        />
         <ImageToggle
           isOff={markIsOff}
           onClick={() => handleBookmark()}
