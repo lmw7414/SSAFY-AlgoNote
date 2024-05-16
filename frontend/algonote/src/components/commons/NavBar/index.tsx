@@ -3,7 +3,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { SimpleButton } from '../Buttons/Button'
+import Notification from '../Notification'
 import styles from './NavBar.module.scss'
+import { getNotificationsApi } from '@/apis/notificationAxios'
 import myInfo from '@/apis/user-infoAxios'
 import useUserInfo from '@/stores/user-store'
 import { eraseCookie, getCookie } from '@/utils/cookie'
@@ -11,8 +13,24 @@ import { eraseCookie, getCookie } from '@/utils/cookie'
 const NavBar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const { deleteUserInfo } = useUserInfo()
-  const [userProfile, setUserProfile] = useState('/images/basicprofileimg.png') // Initial placeholder image
+  const [userProfile, setUserProfile] = useState('/images/basicprofileimg')
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false)
+  const [isNotReadNoti, setIsNotReadNoti] = useState(false)
   const [isImageLoaded, setIsImageLoaded] = useState(false)
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      const getNoti = async () => {
+        const notis = await getNotificationsApi()
+        if (!notis) {
+          setIsNotReadNoti(false)
+        } else if (notis.length >= 1) {
+          setIsNotReadNoti(true)
+        }
+      }
+      getNoti()
+    }
+  }, [isLoggedIn])
 
   const router = useRouter()
   const url = router.pathname
@@ -38,6 +56,10 @@ const NavBar = () => {
       setIsLoggedIn(!!accessToken)
     }
     checkLogin()
+
+    if (isNotificationOpen) {
+      setIsNotificationOpen(false)
+    }
   }, [url])
 
   const logout = async () => {
@@ -45,6 +67,10 @@ const NavBar = () => {
     await eraseCookie('memberId')
     deleteUserInfo()
     router.replace('/')
+  }
+
+  const handleNotification = () => {
+    setIsNotificationOpen(!isNotificationOpen)
   }
 
   return (
@@ -64,7 +90,7 @@ const NavBar = () => {
             <p>내 노트</p>
           </Link>
 
-          <Link href="/recommand">
+          <Link href="/recommend">
             <p>문제 추천</p>
           </Link>
 
@@ -80,6 +106,7 @@ const NavBar = () => {
               alt="searchIcon"
               width={21}
               height={21}
+              className={styles.icon}
             />
           </Link>
           <Link href="/bookmark">
@@ -88,16 +115,20 @@ const NavBar = () => {
               alt="saveIcon"
               width={21}
               height={21}
+              className={styles.icon}
             />
           </Link>
-          <Link href="/alarm">
+          <div className={styles.notiCont}>
+            {isNotReadNoti ? <div className={styles.redDot} /> : null}
             <Image
               src="/images/alarm.png"
               alt="alarmIcon"
               width={21}
               height={21}
+              onClick={handleNotification}
+              className={styles.icon}
             />
-          </Link>
+          </div>
         </div>
         {isLoggedIn ? (
           <div className={styles.profileSec}>
@@ -129,6 +160,12 @@ const NavBar = () => {
           </div>
         )}
       </div>
+      {isNotificationOpen ? (
+        <Notification
+          setIsNotReadNoti={setIsNotReadNoti}
+          setIsNotificationOpen={setIsNotificationOpen}
+        />
+      ) : null}
     </div>
   )
 }
