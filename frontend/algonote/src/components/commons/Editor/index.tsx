@@ -54,7 +54,7 @@ export default function App() {
     ],
   }
 
-  const { tabs, curSelectedIdx, updateTab } = useNoteStore()
+  const { tabs, curSelectedIdx, updateTab, selectedNoteData } = useNoteStore()
   const currentTab = tabs.find((tab) => tab.idx === curSelectedIdx)
 
   const handleContent = (val: string) => {
@@ -77,7 +77,11 @@ export default function App() {
         handleContent(e)
       }}
       placeholder="당신의 풀이를 기록해보세요..."
-      markdown={currentTab?.content ?? ''}
+      markdown={
+        selectedNoteData === null
+          ? currentTab?.content ?? ''
+          : selectedNoteData.content
+      }
       plugins={[
         codeBlockPlugin({ defaultCodeBlockLanguage: 'python' }),
         sandpackPlugin({ sandpackConfig: simpleSandpackConfig }),

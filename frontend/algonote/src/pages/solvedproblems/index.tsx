@@ -3,6 +3,7 @@ import s from './solvedproblems.module.scss'
 import { getAllMySolvedList } from '@/apis/problemAxios'
 import QuestionList from '@/components/commons/QuestionList'
 import QuestionListTitle from '@/components/commons/QuestionListTitle'
+import useNoteStore from '@/stores/note-store'
 
 interface Problem {
   id: number
@@ -20,11 +21,13 @@ interface ProblemData {
 const SolvedProblems = () => {
   const currentDate = new Date()
   const [mySolvedList, setMySolvedList] = useState<ProblemData[]>([])
+  // const { setSelectedNoteData } = useNoteStore()
 
   useEffect(() => {
     getAllMySolvedList().then((res) => {
       console.log('mySolvedList: ', res)
       setMySolvedList(res)
+      // setSelectedNoteData(null)
     })
   }, [])
 

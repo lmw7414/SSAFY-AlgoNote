@@ -16,6 +16,8 @@ const registNote = async (
       })
       .then((res) => {
         if (res.status === 200) {
+          console.log('노트 저장 성공')
+
           return res.data
         }
         console.log('노트 저장 실패')

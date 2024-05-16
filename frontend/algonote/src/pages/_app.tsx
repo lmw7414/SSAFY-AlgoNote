@@ -9,9 +9,15 @@ const App = ({ Component, pageProps }: AppProps) => {
   const router = useRouter()
   return (
     <>
-      {router.pathname === '/writenote' ? <NoteNavBar /> : <NavBar />}
+      {router.pathname === '/writenote' || router.pathname === '/revisenote' ? (
+        <NoteNavBar />
+      ) : (
+        <NavBar />
+      )}
       <Component {...pageProps} />
-      {router.pathname !== '/writenote' ? <Footer /> : null}
+      {router.pathname !== '/writenote' && router.pathname !== '/revisenote' ? (
+        <Footer />
+      ) : null}
     </>
   )
 }

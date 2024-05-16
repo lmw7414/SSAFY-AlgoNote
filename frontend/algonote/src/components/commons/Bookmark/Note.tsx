@@ -5,8 +5,6 @@ import { NextRouter, useRouter } from 'next/router'
 import styles from './Note.module.scss'
 import { bookmarkListApi } from '@/apis/bookmarkAxios'
 import TierImg from '@/components/commons/Tier'
-// import likeAxios from '@/apis/likeAxios'
-// import ImageToggle from '@/components/commons/Buttons/ImageToggle'
 
 interface Note {
   id: number
