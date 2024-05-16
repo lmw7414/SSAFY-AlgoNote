@@ -85,99 +85,105 @@ const ComparePage = () => {
       <div className={style.element}>
         <div>
           <div className={style.insertBox}>
-             <select value={language} onChange={handleLanguageChange} className={style.insert}>
-                 <option value="java">Java</option>
-                 <option value="py">Python</option>
-                <option value="c">C</option>
-                <option value="cpp">C++</option>
-              </select>
-              <input
-                type="text"
-                placeholder="입력 데이터"
-                value={inputData}
-                onChange={handleInputChange}
-                className={style.insert}
-              />
-              <input
-                type="text"
-                placeholder="예상 출력 결과"
-                value={expectedOutput}
-                onChange={handleOutputChange}
-                className={style.insert}
-              />
+            <select
+              value={language}
+              onChange={handleLanguageChange}
+              className={style.insert}
+            >
+              <option value="java">Java</option>
+              <option value="py">Python</option>
+              <option value="c">C</option>
+              <option value="cpp">C++</option>
+            </select>
+            <input
+              type="text"
+              placeholder="입력 데이터"
+              value={inputData}
+              onChange={handleInputChange}
+              className={style.insert}
+            />
+            <input
+              type="text"
+              placeholder="예상 출력 결과"
+              value={expectedOutput}
+              onChange={handleOutputChange}
+              className={style.insert}
+            />
           </div>
-        <div className={style.compareButtons}>
-          <div className={style.compareButton}>
-            <CodeSelectButton setIsModalOpened={setIsModalOpened} index={0} />
+          <div className={style.compareButtons}>
+            <div className={style.compareButton}>
+              <CodeSelectButton setIsModalOpened={setIsModalOpened} index={0} />
+            </div>
+            <div className={style.compareButton}>
+              <CodeSelectButton setIsModalOpened={setIsModalOpened} index={1} />
+            </div>
           </div>
-          <div className={style.compareButton}>
-            <CodeSelectButton setIsModalOpened={setIsModalOpened} index={1} />
+          <div className={style.codeView}>
+            <ReactDiffViewer
+              oldValue={codes[0]}
+              newValue={codes[1]}
+              compareMethod={DiffMethod.WORDS}
+            />
           </div>
-        </div>
-        <div className={style.codeView}>
-          <ReactDiffViewer
-            oldValue={codes[0]}
-            newValue={codes[1]}
-            compareMethod={DiffMethod.WORDS}
-          />
+          <div>
+            <ExecuteResult
+              language={language}
+              inputData={inputData}
+              expectedOutput={expectedOutput}
+              codes={[codes[0], codes[1]]}
+            />
+          </div>
         </div>
         <div>
-          <ExecuteResult
-            language={language}
-            inputData={inputData}
-            expectedOutput={expectedOutput}
-            codes={[codes[0], codes[1]]}
-          />
+          {isModalOpened && (
+            <Modal
+              onClose={() => {
+                setIsModalOpened(false)
+                setDetailProblems({ modalStatus: false, problemId: 0 })
+              }}
+            >
+              {detailProblems.modalStatus === true ? (
+                <div>
+                  <SubmissionList
+                    problemId={detailProblems.problemId}
+                    setIsModalOpened={setIsModalOpened}
+                    setDetailProblems={setDetailProblems}
+                  />
+                </div>
+              ) : (
+                <div>
+                  <div className={cStyle.title}>가져올 코드를 선택하세요</div>
+                  <div className={cStyle.content}>
+                    {myProblems.map((it) => (
+                      <div
+                        role="button"
+                        tabIndex={0}
+                        key={it.problem.id}
+                        className={cStyle.problem}
+                        onClick={() =>
+                          setDetailProblems({
+                            modalStatus: true,
+                            problemId: it.problem.id,
+                          })
+                        }
+                        onKeyDown={(e) =>
+                          handleDetailProblems(e, it.problem.id)
+                        }
+                      >
+                        <div>{it.problem.title}</div>
+                        <div>
+                          <TierImg tier={it.problem.tier} />
+                        </div>
+                        <div>{it.problem.tags}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </Modal>
+          )}
         </div>
       </div>
-      <div>
-        {isModalOpened && (
-          <Modal
-            onClose={() => {
-              setIsModalOpened(false)
-              setDetailProblems({ modalStatus: false, problemId: 0 })
-            }}
-          >
-            {detailProblems.modalStatus === true ? (
-              <div>
-                <SubmissionList
-                  problemId={detailProblems.problemId}
-                  setIsModalOpened={setIsModalOpened}
-                  setDetailProblems={setDetailProblems}
-                />
-              </div>
-            ) : (
-              <div>
-                <div className={cStyle.title}>가져올 코드를 선택하세요</div>
-                <div className={cStyle.content}>
-                  {myProblems.map((it) => (
-                    <div
-                      role="button"
-                      tabIndex={0}
-                      key={it.problem.id}
-                      className={cStyle.problem}
-                      onClick={() =>
-                        setDetailProblems({
-                          modalStatus: true,
-                          problemId: it.problem.id,
-                        })
-                      }
-                      onKeyDown={(e) => handleDetailProblems(e, it.problem.id)}
-                    >
-                      <div>{it.problem.title}</div>
-                      <div>
-                        <TierImg tier={it.problem.tier} />
-                      </div>
-                      <div>{it.problem.tags}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </Modal>
-        )}
-      </div></div>
-      
     </div>
   )
 }
