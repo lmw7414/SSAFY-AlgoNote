@@ -1,5 +1,5 @@
 import uvicorn
-from fastapi import FastAPI, UploadFile, Request, status, File, HTTPException
+from fastapi import FastAPI, UploadFile, Request, status, File, HTTPException, Query
 from fastapi.responses import JSONResponse, FileResponse
 import os
 import uuid
@@ -11,8 +11,7 @@ from starlette.middleware.cors import CORSMiddleware
 
 from dto.request.RecommendReqDto import RecommendReqDto
 from dto.response.RecommendResDto import RecommendResDto
-
-
+from repository.ProblemRepository import find_solved_problems, find_by_ids
 from util.utils import get_user_dict
 from model.model import inference
 import pandas as pd
@@ -39,25 +38,32 @@ app.add_middleware(
 async def test():
     return {"message": "Hello World"}
 
-@app.post("/python/recommend")
-async def recommend(recommendDto : RecommendReqDto):
+@app.get("/python/recommend")
+async def recommend(tag: str = Query(...), page: int=Query(0), memberId: int=Query(), size: int=Query(10)):
 
     # print(user_dict)
     try:
-        nickname = recommendDto.nickname
-        tag = recommendDto.tag
-        solvedProblemIds = recommendDto.solvedProblemIds
+       print(f"tag : {tag}, page : {page}, size : {size}, memberId : {memberId}")
 
-        validation = []
-        for problemId in solvedProblemIds:
-            validation.append([0, problemId, 5])
-        validation = pd.DataFrame(validation, columns=["userID", "itemID", "rating"]) 
+            
+       sovled_problem_ids = find_solved_problems(memberId, tag)
 
-        recommended_problems = inference(validation, tag)
-        recommendResDto = RecommendResDto(count=len(recommended_problems), 
-                                          recommendedProblemIds=recommended_problems)
+       validation = []
+       for problem_id in sovled_problem_ids:
+            validation.append([0,problem_id,5])
+        
+       validation = pd.DataFrame(validation, columns=["userID", "itemID", "rating"])
+       
+       recommend_problem_ids = inference(validation, tag)
 
-        return  recommendResDto
+       recommend_problems = find_by_ids(recommend_problem_ids, page, size)
+
+
+       return recommend_problems
+       
+
+
+
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
