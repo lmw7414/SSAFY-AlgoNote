@@ -59,6 +59,7 @@ public class RecommendService {
         for(JsonNode id : unsolvedProblemIds){
             list.add(id.asLong());
         }
+        log.info("list: {}", list);
 
         Pageable pageable = PageRequest.of(page, size);
         return problemRepository.findByIds(list, pageable);
