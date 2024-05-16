@@ -1,5 +1,5 @@
 .info {
-    padding-top: 120px;
+    padding-top: 60px;
     font-size: 2rem;
     position: relative;
     display: flex;
@@ -7,7 +7,7 @@
     align-items: center; /* 가로 중앙 정렬 */
     justify-content: center; /* 세로 중앙 정렬 */
     text-align: center;
-    
+    min-height: 30rem;
 }
 
 .img {
@@ -22,7 +22,7 @@
     position: absolute;
     background-color: var(--black); /* 버튼 배경색 */
     color: #fff; /* 버튼 글자색 */
-    bottom: 7rem; 
+    bottom: 13rem; 
     left: 54%;
     transform: translateX(-50%);
     border: none;
@@ -68,7 +68,8 @@
     .nicknameValue{
         margin-top: 0.2rem;
         font-size: 1rem;
-        color:var(--red)
+        color:var(--red);
+        min-height: 2rem;
     }
 
     .nameContainer{

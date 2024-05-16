@@ -192,9 +192,9 @@ const User = () => {
                 }}
               />
             </div>
-            {nicknameState.value && (
-              <div className={style.nicknameValue}>{nicknameState.value}</div>
-            )}
+            <div className={style.nicknameValue}>
+              {nicknameState.value && <div>{nicknameState.value}</div>}
+            </div>
           </>
         ) : (
           <div className={style.nameContainer}>
