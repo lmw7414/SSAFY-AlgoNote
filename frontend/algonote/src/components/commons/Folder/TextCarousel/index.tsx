@@ -28,7 +28,13 @@ const TextCarousel = ({ notes }: { notes: Notes[] }) => {
   return (
     <div>
       {notes.length === 1 ? (
-        <div className={s.noteTitleCon}>
+        <div
+          className={s.noteTitleCon}
+          onClick={() => handleDetailNote(notes[0].noteId, router)}
+          onKeyDown={(e) => handleKeyPress(e, notes[0].noteId, router)}
+          tabIndex={0}
+          role="button"
+        >
           <p className={s.noteTitle}>{notes[0].noteTitle}</p>
         </div>
       ) : (

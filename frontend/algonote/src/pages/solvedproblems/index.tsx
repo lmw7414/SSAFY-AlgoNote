@@ -20,11 +20,13 @@ interface ProblemData {
 const SolvedProblems = () => {
   const currentDate = new Date()
   const [mySolvedList, setMySolvedList] = useState<ProblemData[]>([])
+  // const { setSelectedNoteData } = useNoteStore()
 
   useEffect(() => {
     getAllMySolvedList().then((res) => {
       console.log('mySolvedList: ', res)
       setMySolvedList(res)
+      // setSelectedNoteData(null)
     })
   }, [])
 

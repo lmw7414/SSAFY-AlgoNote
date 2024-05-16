@@ -3,7 +3,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { SimpleButton } from '../Buttons/Button'
+import Notification from '../Notification'
 import styles from './NavBar.module.scss'
+import { getNotificationsApi } from '@/apis/notificationAxios'
 import myInfo from '@/apis/user-infoAxios'
 import useUserInfo from '@/stores/user-store'
 import { eraseCookie, getCookie } from '@/utils/cookie'
@@ -12,8 +14,27 @@ const NavBar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const { deleteUserInfo } = useUserInfo()
   const [userProfile, setUserProfile] = useState('/images/basicprofileimg')
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false)
+  const [isNotReadNoti, setIsNotReadNoti] = useState(false)
+  const [isImageLoaded, setIsImageLoaded] = useState(false)
 
-  // 프로필 이미지 불러오기
+  useEffect(() => {
+    if (isLoggedIn) {
+      const getNoti = async () => {
+        const notis = await getNotificationsApi()
+        if (!notis) {
+          setIsNotReadNoti(false)
+        } else if (notis.length >= 1) {
+          setIsNotReadNoti(true)
+        }
+      }
+      getNoti()
+    }
+  }, [isLoggedIn])
+
+  const router = useRouter()
+  const url = router.pathname
+
   useEffect(() => {
     myInfo()
       .then((res) => {
@@ -27,11 +48,7 @@ const NavBar = () => {
         console.log('API 통신 오류')
         console.log(e)
       })
-  }, [userProfile])
-
-  const router = useRouter()
-
-  const url = router.pathname
+  }, [isImageLoaded]) // Removed userProfile dependency to avoid unnecessary re-fetching
 
   useEffect(() => {
     const checkLogin = async () => {
@@ -39,6 +56,10 @@ const NavBar = () => {
       setIsLoggedIn(!!accessToken)
     }
     checkLogin()
+
+    if (isNotificationOpen) {
+      setIsNotificationOpen(false)
+    }
   }, [url])
 
   const logout = async () => {
@@ -48,11 +69,15 @@ const NavBar = () => {
     router.replace('/')
   }
 
+  const handleNotification = () => {
+    setIsNotificationOpen(!isNotificationOpen)
+  }
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.navBox}>
         <div className={styles.logoSec}>
-          <Link href="/">
+          <Link href={isLoggedIn ? '/' : '/landing'}>
             <Image src="/images/logo.png" alt="logo" width={112} height={20} />
           </Link>
         </div>
@@ -65,7 +90,7 @@ const NavBar = () => {
             <p>내 노트</p>
           </Link>
 
-          <Link href="/recommand">
+          <Link href="/recommend">
             <p>문제 추천</p>
           </Link>
 
@@ -81,6 +106,7 @@ const NavBar = () => {
               alt="searchIcon"
               width={21}
               height={21}
+              className={styles.icon}
             />
           </Link>
           <Link href="/bookmark">
@@ -89,21 +115,31 @@ const NavBar = () => {
               alt="saveIcon"
               width={21}
               height={21}
+              className={styles.icon}
             />
           </Link>
-          <Link href="/alarm">
+          <div className={styles.notiCont}>
+            {isNotReadNoti ? <div className={styles.redDot} /> : null}
             <Image
               src="/images/alarm.png"
               alt="alarmIcon"
               width={21}
               height={21}
+              onClick={handleNotification}
+              className={styles.icon}
             />
-          </Link>
+          </div>
         </div>
         {isLoggedIn ? (
           <div className={styles.profileSec}>
             <Link href="/member">
-              <Image src={userProfile} alt="Img" width={30} height={30} />
+              <Image
+                src={isImageLoaded ? userProfile : '/images/logo.png'}
+                alt="Img"
+                width={30}
+                height={30}
+                onLoadingComplete={() => setIsImageLoaded(true)}
+              />
             </Link>
             <SimpleButton
               text="로그아웃"
@@ -124,6 +160,12 @@ const NavBar = () => {
           </div>
         )}
       </div>
+      {isNotificationOpen ? (
+        <Notification
+          setIsNotReadNoti={setIsNotReadNoti}
+          setIsNotificationOpen={setIsNotificationOpen}
+        />
+      ) : null}
     </div>
   )
 }

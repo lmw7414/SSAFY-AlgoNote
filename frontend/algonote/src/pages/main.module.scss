@@ -118,18 +118,15 @@
     color: var(--navy);
     margin-bottom: 3rem;
   }
-  
+
   .waveCont {
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    .wave {
-      width: 16.5%;
-      display: flex;
-      justify-content: center;
+    .wave:hover {
+      cursor: pointer;
     }
   }
 }
-

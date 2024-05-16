@@ -9,19 +9,55 @@ interface NoteTab {
 interface Chats {
   question: string
   answer: string | null
+  idx: number
 }
 
+interface Member {
+  memberId: number
+  nickname: string
+  profileImg: string
+}
+
+interface Problem {
+  id: number
+  title: string
+  tier: number
+  acceptUserCount: number
+  averageTries: number
+  tags: string[]
+}
+
+interface NoteData {
+  noteId: number
+  member: Member
+  problem: Problem
+  noteTitle: string
+  content: string
+  heartCnt: number
+  hearted: boolean
+  createdAt: string
+  modifiedAt: string
+}
+
+// 변경된 부분: NoteData 인터페이스 추가
 interface NoteStore {
   tabs: NoteTab[]
   addTab: (tab: Omit<NoteTab, 'idx'>) => void
   removeTab: (idx: number) => void
   updateTab: (idx: number, updatedTab: Omit<NoteTab, 'idx'>) => void
   setCurSelectedIdx: (idx: number) => void
-  setTabs: (tabs: Omit<NoteTab, 'idx'>[]) => void // 탭을 초기화하는 함수 추가
+  setTabs: (tabs: Omit<NoteTab, 'idx'>[]) => void
   curSelectedIdx: number
   chats: Chats[]
-  setChats: (newChat: Chats) => void
+  setChats: (newChat: Omit<Chats, 'idx'>) => void
   updateLastChat: (updatedChat: Chats) => void
+  nowContent: string
+  setNowContent: (content: string) => void
+  updateAllNotes: (notes: NoteTab[]) => void
+  selectedNoteData: NoteData | null
+  setSelectedNoteData: (noteData: NoteData | null) => void
+  modifiedTitle: string
+  setModifiedTitle: (title: string) => void
 }
 
 const useNoteStore = create<NoteStore>((set) => ({
@@ -61,23 +97,45 @@ const useNoteStore = create<NoteStore>((set) => ({
     })),
   setTabs: (newTabs) =>
     set(() => ({
-      tabs: newTabs.map((tab, idx) => ({ ...tab, idx })), // 새 탭들에 idx를 할당
-      curSelectedIdx: 0, // 현재 선택된 탭 인덱스를 초기화
+      tabs: newTabs.map((tab, idx) => ({ ...tab, idx })),
+      curSelectedIdx: 0,
     })),
-  chats: [{ question: '', answer: '' }],
-  // 새로운 챗을 추가하는 함수
-  setChats: (newChat: Chats) =>
+  chats: [
+    {
+      question: '',
+      answer:
+        '안녕하세요 저는 알고봇이에요. \n 질문이 있으시다면 무엇이든 물어보세요 :)',
+      idx: 0,
+    },
+  ],
+  setChats: (
+    newChat: Omit<Chats, 'idx'>, // idx 제외
+  ) =>
     set((state) => ({
-      chats: [...state.chats, newChat],
+      chats: [...state.chats, { ...newChat, idx: state.chats.length }],
     })),
   updateLastChat: (updatedChat: Chats) =>
     set((state) => {
-      const newChats = state.chats.slice(0) // 현재 상태의 chats 배열을 복사
+      const newChats = state.chats.slice(0)
       if (newChats.length > 0) {
-        newChats[newChats.length - 1] = updatedChat // 마지막 원소를 업데이트
+        newChats[newChats.length - 1] = updatedChat
+        newChats[newChats.length - 1].idx = newChats.length - 1
       }
       return { chats: newChats }
     }),
+  nowContent: '',
+  setNowContent: (content: string) => set(() => ({ nowContent: content })),
+
+  updateAllNotes: (notes: NoteTab[]) =>
+    set(() => ({
+      tabs: notes.map((note, idx) => ({ ...note, idx })),
+    })),
+
+  selectedNoteData: null,
+  setSelectedNoteData: (noteData) =>
+    set(() => ({ selectedNoteData: noteData })),
+  modifiedTitle: '',
+  setModifiedTitle: (title: string) => set(() => ({ modifiedTitle: title })),
 }))
 
 export default useNoteStore
