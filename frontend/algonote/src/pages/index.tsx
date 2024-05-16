@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import Head from 'next/head'
+import Image from 'next/image'
 import { useRouter } from 'next/router'
 import s from './main.module.scss'
 import { getRecentSolvedApi, getUserRecordApi } from '@/apis/analysisAxios'
@@ -7,6 +8,7 @@ import myInfo from '@/apis/user-infoAxios'
 import { SimpleButton } from '@/components/commons/Buttons/Button'
 import Radar from '@/components/commons/Main/Radar'
 import Wave from '@/components/commons/Main/Wave'
+// import useNoteStore from '@/stores/note-store'
 import { getCookie } from '@/utils/cookie'
 
 interface RecordProps {
@@ -33,6 +35,7 @@ const Main = () => {
   const [info, setInfo] = useState<UserInfo | null>(null)
   const [record, setRecord] = useState<RecordProps | null>(null)
   const [recentSolved, setRecentSolved] = useState<Group[]>([])
+  // const { setSelectedNoteData } = useNoteStore()
 
   const router = useRouter()
 
@@ -53,8 +56,19 @@ const Main = () => {
       setRecentSolved(userRecentSolved.groups)
     }
     fetchData()
+    // setSelectedNoteData(null)
   }, [])
 
+  const goRec = (queryData: string) => {
+    router.push({
+      pathname: '/recommend',
+      query: { queryData },
+    })
+  }
+
+  const onClickHandler = () => {
+    console.log('클릭')
+  }
   return (
     <>
       <Head>
@@ -79,15 +93,15 @@ const Main = () => {
           <h2 className={s.title}>내 기록</h2>
           <div className={s.analysis}>
             <div className={s.radarCont}>
-              <p className={s.graphTitle}>종합점수</p>
+              <p className={s.graphTitle}>내가 푼 문제 분석</p>
               <div className={s.radarBox}>
                 <Radar
                   data={recentSolved.map((item) => item.score)}
                   labels={[
-                    '수학',
+                    '수학 및 이론',
                     '그래프',
                     '자료구조',
-                    '최적화',
+                    '전략 및 최적화',
                     '구현',
                     '문자열',
                   ]}
@@ -95,35 +109,61 @@ const Main = () => {
               </div>
             </div>
             <div className={s.right}>
-              <div className={s.textCont}>
+              <div className={s.top}>
                 <a href="./member">{info?.nickname}</a>
-                <p>님은 알고노트에 가입한 이후로,</p>
+                <p>님이 알고노트를 사용한 기록이에요</p>
               </div>
-              <div className={s.sentenceCont}>
-                <div className={s.textCont}>
+              <div className={s.elements}>
+                <div className={s.elementCont}>
+                  <Image
+                    src="/images/record/problem.png"
+                    width={28}
+                    height={21}
+                    alt="problemIcon"
+                  />
+                  <div className={s.descCont}>
+                    <p>푼 문제 개수</p>
+                  </div>
                   <div className={s.numCont}>
                     <a href="./solvedproblems">{record?.solvedProblemCnt}</a>
                   </div>
-                  <p>개의 문제를 풀었어요</p>
                 </div>
-                <div className={s.textCont}>
+                <div className={s.elementCont}>
+                  <Image
+                    src="/images/record/folder.png"
+                    width={28}
+                    height={21}
+                    alt="folderIcon"
+                  />
+                  <div className={s.descCont}>
+                    <p>노트를 작성한 문제 개수</p>
+                  </div>
                   <div className={s.numCont}>
                     <a href="./mynote">{record?.notedProblemCnt}</a>
                   </div>
-                  <p>개의 문제에 대해</p>
                 </div>
-                <div className={s.textCont}>
+                <div className={s.elementCont}>
+                  <Image
+                    src="/images/record/note.png"
+                    width={28}
+                    height={21}
+                    alt="noteIcon"
+                  />
+                  <div className={s.descCont}>
+                    <p>작성한 노트 개수</p>
+                  </div>
                   <div className={s.numCont}>
                     <a href="./mynote">{record?.noteCnt}</a>
                   </div>
-                  <p>개의 노트를 작성했어요</p>
                 </div>
               </div>
-              <SimpleButton
-                text="노트 작성하러 가기"
-                style={{ fontWeight: '700' }}
-                onClick={() => router.push('/solvedproblems')}
-              />
+              <div className={s.btnCont}>
+                <SimpleButton
+                  text="노트 작성하러 가기"
+                  style={{ fontWeight: '700' }}
+                  onClick={() => router.push('/solvedproblems')}
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -134,11 +174,17 @@ const Main = () => {
           <h2 className={s.title}>취약 알고리즘 공략하기</h2>
           <div className={s.recommendCont}>
             <p className={s.recommendDesc}>
-              감이 떨어진 알고리즘 유형 문제를 추천해드려요
+              감이 떨어졌을 수 있는 알고리즘 유형을 확인하세요
             </p>
             <div className={s.waveCont}>
               {recentSolved?.map((group) => (
-                <div key={group.group}>
+                <div
+                  key={group.group}
+                  onClick={() => goRec(group.group)}
+                  onKeyDown={onClickHandler}
+                  role="presentation"
+                  className={s.wave}
+                >
                   <Wave type={group.group} date={group.lastSolvedDate} />
                 </div>
               ))}

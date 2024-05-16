@@ -9,6 +9,7 @@ const getMyNote = async () => {
 
   try {
     const response = await axios.get(apiUrl, config)
+    console.log(response)
     return response
   } catch (error) {
     throw error

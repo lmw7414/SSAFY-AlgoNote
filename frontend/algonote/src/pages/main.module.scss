@@ -42,7 +42,7 @@
 }
 
 .radarCont {
-  width: 49%;
+  width: 45%;
   height: 100%;
   background-color: var(--soft-sky);
   border-radius: 1rem;
@@ -68,30 +68,53 @@
 }
 
 .right {
-  width: 49%;
+  width: 51%;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
 }
 
-.sentenceCont {
-  padding-left: 20%;
-}
-
-.textCont {
-  display: flex;
+.top {
   margin-top: 1rem;
-  margin-left: 8%;
+  display: flex;
+  justify-content: center;
   color: var(--navy);
+  gap: 0.4rem;
 
   a {
-    font-weight: 700;
     font-size: 1.2rem;
-    text-decoration: none;
+    font-weight: 700;
   }
 
   p {
     font-size: 1.2rem;
+  }
+}
+
+.elements {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  gap: 1.2rem;
+
+  .elementCont {
+    display: flex;
+    color: var(--navy);
+    gap: 0.6rem;
+    align-items: center;
+    .descCont {
+      width: 13rem;
+      font-size: 1.3rem;
+      font-weight: 500;
+    }
+    
+    a {
+      font-weight: 800;
+      font-size: 1.3rem;
+      text-decoration: none;
+    }
   }
 }
 
@@ -125,10 +148,12 @@
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    .wave {
-      width: 16.5%;
-      display: flex;
-      justify-content: center;
+    .wave:hover {
+      cursor: pointer;
     }
   }
+}
+
+.btnCont {
+  margin-top: auto;
 }
