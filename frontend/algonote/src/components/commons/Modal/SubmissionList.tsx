@@ -98,7 +98,7 @@ const SubmissionList = ({
           style={{
             width: '25rem',
             maxHeight: '25rem',
-            overflowY: 'scroll',
+            overflowY: 'auto',
           }}
         >
           <div className={style.submitListTitle}>
