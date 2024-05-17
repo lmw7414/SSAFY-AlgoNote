@@ -1,10 +1,10 @@
 import { ChangeEvent, useEffect, useState } from 'react'
-import Image from 'next/image'
-import { useRouter } from 'next/router'
 import BookMarkSVG from '@public/images/bookmark.svg'
 import BookMarkOffSVG from '@public/images/bookmark_off.svg'
 import HeartOffSVG from '@public/images/heart.svg'
 import HeartSVG from '@public/images/redHeart.svg'
+import Image from 'next/image'
+import { useRouter } from 'next/router'
 import { bookmarkButtonApi } from '@/apis/bookmarkAxios'
 import likeApi from '@/apis/likeAxios'
 import { deleteNote, getNoteDetail } from '@/apis/note-detailAxios'
@@ -18,6 +18,7 @@ import {
 import myInfo from '@/apis/user-infoAxios'
 import { SimpleButton } from '@/components/commons/Buttons/Button'
 import ImageToggle from '@/components/commons/Buttons/ImageToggle'
+import TierImg from '@/components/commons/Tier'
 import style from '@/pages/note/note.module.scss'
 import useNoteStore from '@/stores/note-store'
 
@@ -220,21 +221,23 @@ const Note = () => {
 
   return (
     <div className={style.frame}>
-      <div>제목 : {noteDetail?.noteTitle}</div>
       <div>
-        문제 정보:
-        <div>
-          {noteDetail?.problem.id}
-          {noteDetail?.problem.title}
-          티어{noteDetail?.problem.tier}
-          시도횟수{noteDetail?.problem.averageTries}푼 사람
-          {noteDetail?.problem.acceptUserCount}
+        <div className={style.titleSection}>
+          <div className={style.tierImg}>
+            <TierImg tier={Number(noteDetail?.problem.tier)} />
+          </div>
+          <span>백준 {noteDetail?.problem.id}</span>
+          <span>{noteDetail?.problem.title}</span>
         </div>
+        시도횟수{noteDetail?.problem.averageTries}푼 사람
+        {noteDetail?.problem.acceptUserCount}
       </div>
+
       <div>
         태그:
         {noteDetail?.problem.tags.map((tag) => <div key={tag}>{tag}</div>)}
       </div>
+      <div>{noteDetail?.noteTitle}</div>
       <div>
         작성자:
         {noteDetail?.member.nickname}
