@@ -1,10 +1,10 @@
 import { ChangeEvent, useEffect, useState } from 'react'
+import Image from 'next/image'
+import { useRouter } from 'next/router'
 import BookMarkSVG from '@public/images/bookmark.svg'
 import BookMarkOffSVG from '@public/images/bookmark_off.svg'
 import HeartOffSVG from '@public/images/heart.svg'
 import HeartSVG from '@public/images/redHeart.svg'
-import Image from 'next/image'
-import { useRouter } from 'next/router'
 import { bookmarkButtonApi } from '@/apis/bookmarkAxios'
 import likeApi from '@/apis/likeAxios'
 import { deleteNote, getNoteDetail } from '@/apis/note-detailAxios'
@@ -17,11 +17,10 @@ import {
 import myInfo from '@/apis/user-infoAxios'
 import { SimpleButton } from '@/components/commons/Buttons/Button'
 import ImageToggle from '@/components/commons/Buttons/ImageToggle'
+import EditorInNoteDetail from '@/components/commons/Editor/detail'
 import TierImg from '@/components/commons/Tier'
 import style from '@/pages/note/note.module.scss'
 import useNoteStore from '@/stores/note-store'
-import TierImg from '@/components/commons/Tier'
-import EditorInNoteDetail from '@/components/commons/Editor/detail'
 
 interface Member {
   memberId: number
