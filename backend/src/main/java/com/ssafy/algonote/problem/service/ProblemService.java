@@ -8,6 +8,7 @@ import com.ssafy.algonote.problem.domain.Tag;
 import com.ssafy.algonote.problem.dto.ConsumerProblemResDto;
 import com.ssafy.algonote.problem.repository.ProblemDocumentRepository;
 import com.ssafy.algonote.problem.repository.ProblemRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
@@ -55,6 +56,12 @@ public class ProblemService {
     //문제 id로 조회하기
     public Problem getProblemById(Long id) {
         return getProblemOrException(id);
+    }
+
+    public List<String> getTagOfProblem(Long problemId){
+        ProblemDocument problemDocument = problemDocumentRepository.findById(String.valueOf(problemId)).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_PROBLEM));
+
+        return problemDocument.getTags().stream().map(ProblemDocument.Tag::getTag).toList();
     }
 
     // 문제 이름으로 조회하기
