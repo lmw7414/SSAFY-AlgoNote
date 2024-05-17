@@ -178,7 +178,6 @@ const ExecuteResult = ({
             </div>
           </div>
         ))}
-
       </div>
     </div>
   )
