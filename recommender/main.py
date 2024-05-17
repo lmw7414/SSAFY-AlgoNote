@@ -35,11 +35,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/recommend/test")
+@app.get("/python/recommend/test")
 async def test():
     return {"message": "Hello World"}
 
-@app.get("/recommend")
+@app.get("/python/recommend")
 async def recommend(tag: str = Query(...), page: int=Query(0), memberId: int=Query(), size: int=Query(10)):
 
     # print(user_dict)
@@ -71,5 +71,5 @@ async def recommend(tag: str = Query(...), page: int=Query(0), memberId: int=Que
 
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
-    # uvicorn.run("main:app", host="localhost", port=8000, reload=True)
+    # uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("main:app", host="localhost", port=8000, reload=True)
