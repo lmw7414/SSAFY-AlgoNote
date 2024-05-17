@@ -1,5 +1,6 @@
 package com.ssafy.algonote.note.service;
 
+import co.elastic.clients.elasticsearch._types.query_dsl.MatchAllQuery;
 import com.ssafy.algonote.exception.CustomException;
 import com.ssafy.algonote.exception.ErrorCode;
 import com.ssafy.algonote.member.domain.Member;
@@ -17,6 +18,7 @@ import com.ssafy.algonote.problem.repository.ProblemDocumentRepository;
 import com.ssafy.algonote.problem.repository.SolvedProblemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.client.elc.NativeQueryBuilder;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHit;
@@ -30,6 +32,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static org.springframework.data.elasticsearch.client.elc.Queries.matchAllQuery;
 
 @Service
 @Transactional
@@ -129,6 +133,17 @@ public class NoteService {
 
         SearchHits<NoteDocument> noteHits = searchNoteDocument(keyword, page);
         return parseSearchHits(noteHits);
+    }
+
+    public List<NoteSearchDto> getAllNotes(Pageable pageable){
+//        MatchAllQuery matchAllQuery = matchAllQuery();
+//        Query query = createQuery(List.of(matchAllQuery._toQuery()));
+//
+//        query.setPageable(pageable);
+//
+//        return parseSearchHits(operations.search(query, NoteDocument.class));
+
+        return noteRepository.searchAll(pageable);
     }
 
     private SearchHits<NoteDocument> searchNoteDocument(String keyword, int page) {
