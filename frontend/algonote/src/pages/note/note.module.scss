@@ -1,7 +1,7 @@
 .noteWrapper {
   margin: 0 auto;
   margin-top: 3rem;
-  width: 85%;
+  width: 100%;
 }
 
 .frame {
@@ -88,6 +88,10 @@
 .buttonSection {
   display: flex;
   align-items: flex-end;
+
+  button {
+    width: 2rem;
+  }
 }
 
 .likeButtonSection {
@@ -139,7 +143,7 @@
 }
 
 .reviewInput {
-  width: 53rem;
+  width: 100%;
   padding: 0.5rem;
   height: 5rem;
   margin-bottom: 0.4rem;
@@ -152,11 +156,11 @@
 
   .reviewProfileSection {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: flex-start;
 
     .reviewProfileImg {
-      width: 10px;
+      width: 3.5rem;
       height: 10px;
     }
 
@@ -199,9 +203,8 @@
     display: flex;
     flex-direction: column;
     margin-left: 1rem;
-    // padding-top: 0.5rem;
     padding-bottom: 1rem;
-    width: 50rem;
+    width: 100%;
 
     .reviewNickname {
       font-weight: 700;
