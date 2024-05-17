@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import ReactMarkdown from 'react-markdown'
 import { SimpleButton } from '../Buttons/Button'
 import WrapperComponent from './WrapperComponent'
 import { getSubmissionList } from '@/apis/regist-noteAxios'
@@ -28,13 +29,21 @@ interface DetailProblemType {
   problemId: number
 }
 
+interface SelectCodeInfo {
+  code: string
+  language: string
+}
+
 const SubmissionList = ({
   problemId,
   setIsModalOpened,
   setDetailProblems,
 }: SubmissionListProps) => {
   const [submission, setSubmission] = useState<SubmissionHistory[]>([])
-  const [selectedCode, setSelectedCode] = useState('')
+  const [selectedCode, setSelectedCode] = useState<SelectCodeInfo>({
+    code: '',
+    language: '',
+  })
   const currentDate = new Date()
   let resultColor = ''
   const [correctColor, incorrectColor] = ['#3c87fe', '#fb4444']
@@ -52,16 +61,17 @@ const SubmissionList = ({
     fetchData()
   }, [problemId])
 
-  const handleCodeClick = (code: string) => {
-    setSelectedCode(code)
+  const handleCodeClick = (code: string, language: string) => {
+    setSelectedCode({ code, language })
   }
 
   const handleCodeEnter = (
     e: React.KeyboardEvent<HTMLDivElement>,
     code: string,
+    language: string,
   ) => {
     if (e.key === 'Enter') {
-      setSelectedCode(code)
+      setSelectedCode({ code, language })
     }
   }
 
@@ -119,23 +129,24 @@ const SubmissionList = ({
                   codeLength={sb.length}
                   submitTime={submissionTime}
                   resultColor={resultColor}
-                  code={sb.code}
-                  onClick={() => handleCodeClick(sb.code)}
-                  onKeyDown={(e) => handleCodeEnter(e, sb.code)}
+                  onClick={() => handleCodeClick(sb.code, sb.language)}
+                  onKeyDown={(e) => handleCodeEnter(e, sb.code, sb.language)}
                 />
               )
             })}
           </div>
         </div>
         <div className={style.selectedCode}>
-          {selectedCode && <div>{selectedCode}</div>}
+          {selectedCode && (
+            <ReactMarkdown>{`\`\`\` ${selectedCode.language} \n${selectedCode.code} \n \`\`\``}</ReactMarkdown>
+          )}
         </div>
       </div>
-      <div>
+      <div className={style.uploadButton}>
         <SimpleButton
           text="업로드"
           style={{ width: '5rem', height: '2.5rem' }}
-          onClick={() => handleUploadCode(selectedCode)}
+          onClick={() => handleUploadCode(selectedCode.code)}
         />
       </div>
     </div>
