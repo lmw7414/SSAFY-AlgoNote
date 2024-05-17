@@ -5,14 +5,20 @@ import styles from './SearchInput.module.scss'
 import getSearchResult from '@/apis/searchAxios'
 import useSearchResult from '@/stores/search-store'
 
+const onSearchResult = async (input: HTMLInputElement | null) => {
+  if (input) {
+    const { setSearchResult } = useSearchResult.getState()
+    const response = await getSearchResult(input.value, 0) // 인덱스 추후 수정
+    setSearchResult(response)
+  }
+}
+
 const handleSearchResult = async (
   e: React.KeyboardEvent<HTMLInputElement>,
   input: HTMLInputElement | null,
 ) => {
   if (e.key === 'Enter' && input) {
-    const { setSearchResult } = useSearchResult.getState()
-    const response = await getSearchResult(input.value, 0) // 인덱스 추후 수정
-    setSearchResult(response)
+    onSearchResult(input)
   }
 }
 
@@ -25,14 +31,19 @@ const SearchInput = () => {
         <input
           ref={inputValue}
           type="text"
-          placeholder="문제 번호 또는 노트 제목으로 검색할 수 있어요"
+          placeholder="문제 번호, 문제 이름, 노트 제목으로 검색할 수 있어요"
           maxLength={25}
           onKeyDown={(e) => handleSearchResult(e, inputValue.current)}
         />
       </div>
 
       <div>
-        <Image src={Magnifier} alt="검색창 버튼" height={24} />
+        <Image
+          src={Magnifier}
+          alt="검색창 버튼"
+          height={24}
+          onClick={() => onSearchResult(inputValue.current)}
+        />
       </div>
     </div>
   )
