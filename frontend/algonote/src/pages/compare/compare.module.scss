@@ -40,7 +40,6 @@
     .element{
         min-height: 30rem;
         margin: 0 12.5%;
-        // border: 3px solid blue;
         justify-content: space-between;
 
         .insert{
@@ -49,7 +48,7 @@
             border-radius: 0.5rem;
             padding: 0.5rem 0.5rem;
             margin-right: 0.625rem;
-            border: 1px solid;
+            border: 2px solid var(--blue);
         }
 
         select.insert {
@@ -64,6 +63,10 @@
         
           .insert, select.insert {
             box-sizing: border-box;
+        }
+
+        .insert:focus{
+          border-color: #2f7cf7;
         }
     }
 
@@ -86,3 +89,7 @@
     
 }
 
+.tags{
+  font-size: 0.9rem;
+  color: var(--charcoal);
+}

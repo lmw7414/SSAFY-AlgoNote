@@ -56,7 +56,6 @@ const Bookmark = () => {
         <div className={style.division_line} />
         <Notes />
       </div>
-      
     </div>
   )
 }
