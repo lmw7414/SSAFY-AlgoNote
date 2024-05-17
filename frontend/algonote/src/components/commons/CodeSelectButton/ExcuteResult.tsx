@@ -107,12 +107,15 @@ const ExecuteResult = ({
               <p className={style.title}>실행 결과</p>
               <p
                 style={{
-                  color: result.isCorrect ? correctColor : incorrectColor,
+                  color:
+                    result.isCorrect === true ? correctColor : incorrectColor,
                   fontWeight: 600,
                   marginBottom: '1rem',
                 }}
               >
-                {JSON.stringify(result.isCorrect) ? '맞았습니다' : '틀렸습니다'}
+                {JSON.stringify(result.isCorrect) === 'true'
+                  ? '맞았습니다'
+                  : '틀렸습니다'}
               </p>
               <p>
                 <strong>출력 | </strong> {JSON.stringify(result.output)}
