@@ -41,4 +41,6 @@ public class BookmarkController {
         return ResponseEntity.ok(bookmarkService.getList(memberId));
     }
 
+
+
 }
