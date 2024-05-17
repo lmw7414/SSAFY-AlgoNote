@@ -1,5 +1,6 @@
 package com.ssafy.algonote.note.dto.response;
 
+import java.util.List;
 import lombok.Builder;
 
 @Builder
@@ -12,10 +13,11 @@ public record NoteSearchResDto(
     String memberNickname,
     long heartCnt,
     boolean bookmarked,
-    boolean hearted
+    boolean hearted,
+    List<String> tags
 ) {
 
-    public static NoteSearchResDto of(NoteSearchDto tempDto, long heartCnt, boolean hearted, boolean bookmarked) {
+    public static NoteSearchResDto of(NoteSearchDto tempDto, long heartCnt, boolean hearted, boolean bookmarked, List<String> tags) {
         return NoteSearchResDto.builder()
             .noteId(tempDto.noteId())
             .problemId(tempDto.problemId())
@@ -26,6 +28,7 @@ public record NoteSearchResDto(
             .hearted(hearted)
             .heartCnt(heartCnt)
             .bookmarked(bookmarked)
+            .tags(tags)
             .build();
     }
 }

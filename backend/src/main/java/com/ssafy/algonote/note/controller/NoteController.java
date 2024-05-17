@@ -11,6 +11,7 @@ import com.ssafy.algonote.note.service.BookmarkService;
 import com.ssafy.algonote.note.service.HeartService;
 import com.ssafy.algonote.note.service.NoteService;
 import com.ssafy.algonote.problem.dto.response.ProblemWithNoteResDto;
+import com.ssafy.algonote.problem.service.ProblemService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,7 @@ public class NoteController {
     private final NoteService noteService;
     private final HeartService heartService;
     private final BookmarkService bookmarkService;
+    private final ProblemService problemService;
 
     @Operation(
             summary = "노트의 좋아요",
@@ -189,11 +191,14 @@ public class NoteController {
         log.info("fullTextSearch keyword: {}, page: {}", keyword, page);
 
         List<NoteSearchDto> noteSearchResults = noteService.fulltextNoteSearch(keyword, page);
-        List<NoteSearchResDto> resDtos = noteSearchResults.stream().map(result -> {
-            return NoteSearchResDto.of(result,
-                    heartService.heartCnt(result.noteId()),
-                    heartService.heartStatus(memberId, result.noteId()),
-                    bookmarkService.bookmarkStatus(memberId, result.noteId()));
+        List<NoteSearchResDto> resDtos = noteSearchResults.stream().map(resDto -> {
+            List<String> tags = problemService.getTagOfProblem(resDto.problemId());
+
+            return NoteSearchResDto.of(resDto,
+                    heartService.heartCnt(resDto.noteId()),
+                    heartService.heartStatus(memberId, resDto.noteId()),
+                    bookmarkService.bookmarkStatus(memberId, resDto.noteId()),
+                    tags);
         }).toList();
 
 
