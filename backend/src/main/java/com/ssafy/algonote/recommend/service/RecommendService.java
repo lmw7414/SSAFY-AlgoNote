@@ -35,6 +35,7 @@ public class RecommendService {
 
     private final MemberRepository memberRepository;
     private final ProblemRepository problemRepository;
+    private final SolvedProblemRepository solvedProblemRepository;
 
 
     @Value("${fastapi.url}")

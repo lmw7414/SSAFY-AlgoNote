@@ -10,6 +10,6 @@ public interface ProblemCustomRepository {
 
 
     List<Long> findSolvedProblemIdByTag(Long memberId, String tag);
-
+    List<Problem> findSolvedProblemIdByGroup(Long memberId, String group);
     Page<RecommendProblemResDto> findByIds(List<Long> ids, Pageable pageable);
 }

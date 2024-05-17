@@ -190,6 +190,8 @@ public class NoteController {
 
         List<NoteSearchDto> noteSearchResults = noteService.fulltextNoteSearch(keyword, page);
         List<NoteSearchResDto> resDtos = noteSearchResults.stream().map(result -> {
+            log.info("memberId:{}, noteId:{}, bookmarkStatus:{}", memberId, result.noteId(), bookmarkService.bookmarkStatus(memberId, result.noteId()));
+
             return NoteSearchResDto.of(result,
                     heartService.heartCnt(result.noteId()),
                     heartService.heartStatus(memberId, result.noteId()),

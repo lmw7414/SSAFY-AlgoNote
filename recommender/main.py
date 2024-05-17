@@ -68,6 +68,29 @@ async def recommend(tag: str = Query(...), page: int=Query(0), memberId: int=Que
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+@app.post("/python/recommend")
+async def recommend(recommendDto : RecommendReqDto):
+    try:
+        tag = recommendDto.tag
+        solvedProblemIds = recommendDto.solvedProblemIds
+        page = recommendDto.page
+        size = recommendDto.size
+
+        validation = []
+    
+        for problem_id in solvedProblemIds:
+            validation.append([0,problem_id,5])
+        
+        validation = pd.DataFrame(validation, columns=["userID", "itemID", "rating"])
+       
+        recommend_problem_ids = inference(validation, tag)
+
+        recommend_problems = find_by_ids(recommend_problem_ids)
+
+        return recommend_problems
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 if __name__ == "__main__":

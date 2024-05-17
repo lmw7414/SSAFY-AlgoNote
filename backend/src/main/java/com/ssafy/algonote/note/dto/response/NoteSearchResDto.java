@@ -15,7 +15,7 @@ public record NoteSearchResDto(
     boolean hearted
 ) {
 
-    public static NoteSearchResDto of(NoteSearchDto tempDto, long heartCnt, boolean bookmarked, boolean hearted) {
+    public static NoteSearchResDto of(NoteSearchDto tempDto, long heartCnt, boolean hearted, boolean bookmarked) {
         return NoteSearchResDto.builder()
             .noteId(tempDto.noteId())
             .problemId(tempDto.problemId())

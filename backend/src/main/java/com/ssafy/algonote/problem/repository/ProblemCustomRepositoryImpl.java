@@ -33,6 +33,20 @@ public class ProblemCustomRepositoryImpl implements ProblemCustomRepository {
             .fetch();
     }
 
+    @Override
+    public List<Problem> findSolvedProblemIdByGroup(Long memberId, String group) {
+        List<Problem> problems =  queryFactory.select(solvedProblem.problem)
+            .from(solvedProblem)
+            .where(solvedProblem.member.id.eq(memberId))
+            .join(solvedProblem.problem)
+            .where(solvedProblem.problem.tags.any().group.eq(group))
+            .fetch();
+
+
+
+        return problems;
+    }
+
 
     @Override
     public Page<RecommendProblemResDto> findByIds(List<Long> ids, Pageable pageable) {

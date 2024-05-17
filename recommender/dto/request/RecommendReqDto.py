@@ -4,4 +4,6 @@ from typing import List
 class RecommendReqDto(BaseModel):
     nickname: str
     tag: str
-    solvedProblemIds: List[int]
+    solvedProblemIds: List[int],
+    page : int
+    size : int
