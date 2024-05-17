@@ -143,12 +143,7 @@ const User = () => {
   return (
     <div className={style.info}>
       <div className={style.img}>
-        <Image
-          src={userDetails.profileImg}
-          alt="프로필 이미지"
-          layout="fill"
-          objectFit="contain"
-        />
+        <Image src={userDetails.profileImg} alt="프로필 이미지" layout="fill" />
       </div>
       <div className={style.imgButton}>
         <input
