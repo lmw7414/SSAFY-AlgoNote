@@ -2,16 +2,10 @@
 
 import { useEffect } from 'react'
 import dynamic from 'next/dynamic'
-import { FilterButton } from '@/components/commons/Buttons/Button'
+import FilterSection from '@/components/commons/Buttons/FilterSection'
 import SearchInput from '@/components/commons/SearchInput'
 import styles from '@/pages/bookmark/bookmark.module.scss'
 import useSearchResult from '@/stores/search-store'
-
-interface FilterSectionProps {
-  title: string
-  items: string[]
-  itemKey: string
-}
 
 // 동적 임포트 설정
 const DynamicResultNote = dynamic(
@@ -21,30 +15,15 @@ const DynamicResultNote = dynamic(
   },
 )
 
-const tier = ['브론즈', '실버', '골드', '플레티넘', '다이아', '루비'] //
-const category = ['구현', '그리디', '그래프', '플래티넘', 'DP', '자료구조'] // note.title
-
-const FilterSection = ({ title, items, itemKey }: FilterSectionProps) => {
-  return (
-    <div className={styles.bookmark}>
-      <div>{title}</div>
-      <div className={styles.filterButton}>
-        {items.map((it, index) => {
-          const tierKey = `${itemKey}-${index}`
-          return (
-            <div key={tierKey}>
-              <FilterButton
-                text={it}
-                onClick={() => console.log('눌렸음')}
-                className="search"
-              />
-            </div>
-          )
-        })}
-      </div>
-    </div>
-  )
-}
+const tier = ['브론즈', '실버', '골드', '플레티넘', '다이아', '루비']
+const category = [
+  '구현',
+  '문자열',
+  '그래프',
+  '수학 및 이론',
+  '전략 및 최적화',
+  '자료구조',
+]
 
 const NoteSearch = () => {
   const { resetSearch } = useSearchResult()
