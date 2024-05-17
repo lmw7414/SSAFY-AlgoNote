@@ -8,7 +8,6 @@ import { useRouter } from 'next/router'
 import { bookmarkButtonApi } from '@/apis/bookmarkAxios'
 import likeApi from '@/apis/likeAxios'
 import { deleteNote, getNoteDetail } from '@/apis/note-detailAxios'
-
 import {
   createReviewApi,
   deleteReviewApi,
@@ -21,6 +20,8 @@ import ImageToggle from '@/components/commons/Buttons/ImageToggle'
 import TierImg from '@/components/commons/Tier'
 import style from '@/pages/note/note.module.scss'
 import useNoteStore from '@/stores/note-store'
+import TierImg from '@/components/commons/Tier'
+import EditorInNoteDetail from '@/components/commons/Editor/detail'
 
 interface Member {
   memberId: number
@@ -129,7 +130,7 @@ const Note = () => {
     }
     fetchData()
     fetchMyInfo()
-  }, [])
+  }, [id])
 
   const fetchReviews = async () => {
     try {
@@ -219,6 +220,15 @@ const Note = () => {
     router.push(`/mynote`)
   }
 
+  const dateString = noteDetail?.createdAt ?? ''
+  const date = new Date(dateString)
+
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1)
+  const day = String(date.getDate())
+
+  const formattedDate = `${year}년 ${month}월 ${day}일`
+
   return (
     <div className={style.frame}>
       <div>
@@ -228,143 +238,194 @@ const Note = () => {
           </div>
           <span>백준 {noteDetail?.problem.id}</span>
           <span>{noteDetail?.problem.title}</span>
+          {noteDetail?.problem.tags.map((tag) => (
+            <div key={tag}>
+              <div className={style.tagBox}>{tag}</div>
+            </div>
+          ))}
         </div>
-        시도횟수{noteDetail?.problem.averageTries}푼 사람
-        {noteDetail?.problem.acceptUserCount}
+        <div className={style.tries}>
+          <span> 평균 {noteDetail?.problem.averageTries}회 시도</span>
+          <span>| 맞은 사람 {noteDetail?.problem.acceptUserCount}명</span>
+        </div>
+        <hr className={style.upperHr} />
       </div>
 
-      <div>
-        태그:
-        {noteDetail?.problem.tags.map((tag) => <div key={tag}>{tag}</div>)}
-      </div>
-      <div>{noteDetail?.noteTitle}</div>
-      <div>
-        작성자:
-        {noteDetail?.member.nickname}
-      </div>
-      <div>
-        <SimpleButton
-          text="수정하기"
-          onClick={handleReviseNote}
-          style={{
-            width: '6rem',
-            height: '2.5rem',
-            border: 'none',
-            fontFamily: 'Pretendard',
-          }}
-        />
-        <SimpleButton
-          text="삭제하기"
-          onClick={handleDeleteNote}
-          style={{
-            width: '6rem',
-            height: '2.5rem',
-            background: '#fb4444',
-            border: 'none',
-            fontFamily: 'Pretendard',
-          }}
-        />
-        <ImageToggle
-          isOff={markIsOff}
-          onClick={() => handleBookmark()}
-          offImg={BookMarkSVG}
-          onImg={BookMarkOffSVG}
-          width="30px"
-        />
-      </div>
-      <div>
-        <ImageToggle
-          isOff={likeIsOff}
-          onClick={() => handleLike()}
-          offImg={HeartSVG}
-          onImg={HeartOffSVG}
-          width="30px"
-        />
-      </div>
-      <div>
-        내용:
-        {noteDetail?.content}
-      </div>
-      <div>
-        좋아요 수:
-        {noteDetail?.heartCnt}
-      </div>
-      <div>{noteDetail?.hearted ? '좋아요 했음' : '좋아요 안했음'}</div>
-      <div>작성일: {noteDetail?.createdAt}</div>
-      <div>수정일: {noteDetail?.modifiedAt}</div>
-
-      <div className={style.reviewsContainer}>
-        <h2>리뷰 목록</h2>
-        <hr />
-        {reviews?.map((review) => (
-          <div className={style.reviewContainer} key={review.reviewId}>
-            <Image
-              src={review.member.profileImg} // 이미지 경로
-              alt="profile-image"
-              width={60}
-              height={80}
+      <div className={style.noteWrapper}>
+        <div className={style.noteTitleSection}>{noteDetail?.noteTitle}</div>
+        <div className={style.writerWrapper}>
+          <div className={style.writerSection}>
+            <div className={style.noteWriter}>
+              {noteDetail?.member.nickname}{' '}
+            </div>
+            <div className={style.noteCreatedDay}> · {formattedDate}</div>
+          </div>
+          <div className={style.buttonSection}>
+            <SimpleButton
+              text="수정"
+              onClick={handleReviseNote}
+              style={{
+                width: '3.5rem',
+                height: '2.2rem',
+                fontFamily: 'Pretendard',
+                background: '#ffffff',
+                color: '#b9b9b9',
+                border: 'none',
+              }}
             />
-            <p>작성자: {review.member.nickname}</p>
-            <h4>
-              {review.startLine}-{review.endLine} line
-            </h4>
-            {review.reviewId === updateId ? (
+            <SimpleButton
+              text="삭제"
+              onClick={handleDeleteNote}
+              style={{
+                width: '3.5rem',
+                height: '2.2rem',
+                background: '#ffffff',
+                color: '#b9b9b9',
+                border: 'none',
+                fontFamily: 'Pretendard',
+                marginLeft: '0.4rem',
+              }}
+            />
+          </div>
+        </div>
+
+        <div className={style.noteContent}>
+          <EditorInNoteDetail content={noteDetail?.content ?? ''} />
+        </div>
+
+        <div className={style.likeButtonSection}>
+          <div className={style.likeButton}>
+            <ImageToggle
+              isOff={likeIsOff}
+              onClick={() => handleLike()}
+              offImg={HeartSVG}
+              onImg={HeartOffSVG}
+              width="17px"
+              height="17px"
+            />
+            <span>{noteDetail?.heartCnt}</span>
+          </div>
+          <div className={style.bookmarkButton}>
+            <ImageToggle
+              isOff={markIsOff}
+              onClick={() => handleBookmark()}
+              offImg={BookMarkSVG}
+              onImg={BookMarkOffSVG}
+              width="12.5px"
+              height="30px"
+            />
+          </div>
+        </div>
+
+        <div className={style.reviewsContainer}>
+          <div className={style.reviewsConTainerTitle}>
+            <span>리뷰 </span>
+            <span>{reviews?.length} </span>
+          </div>
+          {reviews?.map((review) => (
+            <div className={style.reviewContainer} key={review.reviewId}>
+              <div className={style.reviewProfileImg}>
+                <Image
+                  src={review.member.profileImg} // 이미지 경로
+                  alt="profile-image"
+                  width={60}
+                  height={80}
+                />
+              </div>
+              <div className={style.reviewContentSection}>
+                <div className={style.reviewNickname}>
+                  <p>{review.member.nickname}</p>
+                </div>
+                <div className={style.reviewContent}>
+                  {review.reviewId === updateId ? (
+                    <input
+                      type="newComment"
+                      placeholder="내용을 입력하세요"
+                      value={newComment}
+                      onChange={handleNewComment}
+                      className={style.reviewInput}
+                    />
+                  ) : (
+                    <p>{review.content}</p>
+                  )}
+                </div>
+              </div>
+
+              {review.member.memberId === userDetails?.memberId && (
+                <div>
+                  {updating && review.reviewId === updateId ? (
+                    <SimpleButton
+                      text="확인"
+                      style={{
+                        marginTop: '9rem',
+                        width: '4rem',
+                        height: '2rem',
+                        fontFamily: 'Pretendard',
+                        fontSize: '0.9rem',
+                        border: 'none',
+                        borderRadius: '2rem',
+                      }}
+                      onClick={() => updateReview(review.reviewId, newComment)}
+                    />
+                  ) : (
+                    <div className={style.buttonSection}>
+                      <button
+                        className={style.reviewBtn}
+                        type="button"
+                        onClick={() => updateCall(review.reviewId)}
+                      >
+                        수정
+                      </button>
+                      <button
+                        className={style.reviewBtn}
+                        type="button"
+                        onClick={() => deleteReview(review.reviewId)}
+                      >
+                        삭제
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          ))}
+
+          <div className={style.reviewsBottom}>
+            <div className={style.reviewProfileSection}>
+              <div className={style.reviewProfileImg}>
+                <Image
+                  src={userDetails?.profileImg ?? ''} // 이미지 경로
+                  alt="profile-image"
+                  width={60}
+                  height={80}
+                />
+              </div>
               <input
-                type="newComment"
-                placeholder="리뷰 작성"
-                value={newComment}
-                onChange={handleNewComment}
+                type="comment"
+                placeholder="내용을 입력하세요"
+                value={comment}
+                onChange={handleComment}
                 className={style.reviewInput}
               />
-            ) : (
-              <p>내용: {review.content}</p>
-            )}
-
-            {review.member.memberId === userDetails?.memberId && (
-              <>
-                {updating && review.reviewId === updateId ? (
-                  <SimpleButton
-                    text="확인"
-                    style={{
-                      backgroundColor: 'orange',
-                      border: 'none',
-                      marginBottom: '0.4rem',
-                    }}
-                    onClick={() => updateReview(review.reviewId, newComment)}
-                  />
-                ) : (
-                  <SimpleButton
-                    text="리뷰 수정하기"
-                    style={{ marginBottom: '0.4rem' }}
-                    onClick={() => updateCall(review.reviewId)}
-                  />
-                )}
-
-                <SimpleButton
-                  text="리뷰 삭제"
-                  onClick={() => deleteReview(review.reviewId)}
-                />
-              </>
-            )}
-
-            <hr />
+            </div>
+            <div className={style.registNote}>
+              <SimpleButton
+                text="등록"
+                onClick={() => createReview(1, 3, comment)}
+                style={{
+                  width: '4rem',
+                  height: '2rem',
+                  fontFamily: 'Pretendard',
+                  fontSize: '0.9rem',
+                  border: 'none',
+                  borderRadius: '2rem',
+                }}
+              />
+            </div>
           </div>
-        ))}
-        <div className={style.reviewBottom}>
-          <input
-            type="comment"
-            placeholder="리뷰 작성"
-            value={comment}
-            onChange={handleComment}
-            className={style.reviewInput}
-          />
-          <SimpleButton
-            text="댓글 작성"
-            onClick={() => createReview(1, 3, comment)}
-          />
         </div>
+        <div />
       </div>
-      <div />
     </div>
   )
 }
