@@ -12,6 +12,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.ApplicationEventPublisher;
 
 import java.util.Optional;
 
@@ -32,6 +33,8 @@ class HeartServiceTest {
     private MemberRepository memberRepository;
     @Mock
     private NoteRepository noteRepository;
+    @Mock
+    ApplicationEventPublisher eventPublisher;
 
     @Test
     @DisplayName("하트가 존재 하지 않을 경우 하트 생성")

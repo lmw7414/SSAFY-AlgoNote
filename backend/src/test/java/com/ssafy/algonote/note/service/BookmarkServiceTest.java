@@ -20,6 +20,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.ApplicationEventPublisher;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -49,6 +50,8 @@ class BookmarkServiceTest {
 
     @Mock
     HeartRepository heartRepository;
+    @Mock
+    ApplicationEventPublisher eventPublisher;
 
     @Nested
     @DisplayName("북마크 생성/삭제")

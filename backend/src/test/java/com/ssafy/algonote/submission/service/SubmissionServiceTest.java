@@ -14,6 +14,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.ApplicationEventPublisher;
 
 import java.util.Optional;
 
@@ -38,6 +39,9 @@ class SubmissionServiceTest {
     private ProblemRepository problemRepository;
     @Mock
     private SolvedProblemService solvedProblemService;
+
+    @Mock
+    ApplicationEventPublisher eventPublisher;
 
     @Test
     @DisplayName("[성공] 성공 제출이력 정상적으로 저장")

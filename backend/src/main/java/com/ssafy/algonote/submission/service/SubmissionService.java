@@ -48,7 +48,7 @@ public class SubmissionService {
                         .receiver(member)
                         .provider(AdminMemberProvider.getAdminMember())
                         .relatedId(null)
-                        .content(problem.getTitle() + " 문제를 푸셨군요! 노트를 작성해보세요!")
+                        .content(problem.getTitle() + " 문제를 푸셨군요! 노트를 작성해보세요.")
                         .build()
                     );
             }

@@ -44,6 +44,7 @@ public class NoteService {
     private final NoteDocumentRepository noteDocumentRepository;
     private final ProblemDocumentRepository problemDocumentRepository;
     private final TempNoteRepository tempNoteRepository;
+    private final ReviewRepository reviewRepository;
     private final ElasticsearchOperations operations;
 
     // 노트 생성
@@ -82,6 +83,7 @@ public class NoteService {
         }
         bookmarkRepository.deleteAllByNote(note);
         heartRepository.deleteAllByNote(note);
+        reviewRepository.deleteAllByNote(note);
         noteRepository.delete(note);
         noteDocumentRepository.delete(noteDocument);
     }
@@ -238,7 +240,7 @@ public class NoteService {
 
     private NoteDocument getNoteDocumentOrException(Long noteId) {
         return noteDocumentRepository.findById(noteId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_NOTE));
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_ES_NOTE));
     }
 
     private Member getMemberOrException(Long memberId) {
