@@ -323,58 +323,72 @@ const Note = () => {
           </div>
           {reviews?.map((review) => (
             <div className={style.reviewContainer} key={review.reviewId}>
-              <Image
-                src={review.member.profileImg} // 이미지 경로
-                alt="profile-image"
-                width={60}
-                height={80}
-              />
-              <p>작성자: {review.member.nickname}</p>
-              <h4>
-                {review.startLine}-{review.endLine} line
-              </h4>
-              {review.reviewId === updateId ? (
-                <input
-                  type="newComment"
-                  placeholder="리뷰 작성"
-                  value={newComment}
-                  onChange={handleNewComment}
-                  className={style.reviewInput}
+              <div className={style.reviewProfileImg}>
+                <Image
+                  src={review.member.profileImg} // 이미지 경로
+                  alt="profile-image"
+                  width={60}
+                  height={80}
                 />
-              ) : (
-                <p>내용: {review.content}</p>
-              )}
+              </div>
+              <div className={style.reviewContentSection}>
+                <div className={style.reviewNickname}>
+                  <p>{review.member.nickname}</p>
+                </div>
+                <div className={style.reviewContent}>
+                  {review.reviewId === updateId ? (
+                    <input
+                      type="newComment"
+                      placeholder="내용을 입력하세요"
+                      value={newComment}
+                      onChange={handleNewComment}
+                      className={style.reviewInput}
+                    />
+                  ) : (
+                    <p>{review.content}</p>
+                  )}
+                </div>
+              </div>
 
               {review.member.memberId === userDetails?.memberId && (
-                <>
+                <div>
                   {updating && review.reviewId === updateId ? (
                     <SimpleButton
                       text="확인"
                       style={{
-                        backgroundColor: 'orange',
+                        marginTop: '9rem',
+                        width: '4rem',
+                        height: '2rem',
+                        fontFamily: 'Pretendard',
+                        fontSize: '0.9rem',
                         border: 'none',
-                        marginBottom: '0.4rem',
+                        borderRadius: '2rem',
                       }}
                       onClick={() => updateReview(review.reviewId, newComment)}
                     />
                   ) : (
-                    <SimpleButton
-                      text="리뷰 수정하기"
-                      style={{ marginBottom: '0.4rem' }}
-                      onClick={() => updateCall(review.reviewId)}
-                    />
+                    <div className={style.buttonSection}>
+                      <button
+                        className={style.reviewBtn}
+                        type="button"
+                        onClick={() => updateCall(review.reviewId)}
+                      >
+                        수정
+                      </button>
+                      <button
+                        className={style.reviewBtn}
+                        type="button"
+                        onClick={() => deleteReview(review.reviewId)}
+                      >
+                        삭제
+                      </button>
+                    </div>
                   )}
-
-                  <SimpleButton
-                    text="리뷰 삭제"
-                    onClick={() => deleteReview(review.reviewId)}
-                  />
-                </>
+                </div>
               )}
-
-              <hr />
             </div>
           ))}
+
           <div className={style.reviewsBottom}>
             <div className={style.reviewProfileSection}>
               <div className={style.reviewProfileImg}>
