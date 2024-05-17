@@ -100,6 +100,7 @@ const ExecuteResult = ({
         </div>
       </div>
       <div className={style.resultBox}>
+<<<<<<< 793593ad950ae7a1d079c8b277faf48b8b53f414
         {executeResult.map(
           (result, index) =>
             codes[index] !== ' ' && ( // eslint-disable-next-line react/no-array-index-key
@@ -144,6 +145,42 @@ const ExecuteResult = ({
               </div>
             ),
         )}
+=======
+        {executeResult.map((result, index) => (
+          // eslint-disable-next-line react/no-array-index-key
+          <div key={index} className={style.result}>
+            <div>
+              <p className={style.title}>실행 결과</p>
+              <p
+                style={{
+                  color:
+                    result.isCorrect === true ? correctColor : incorrectColor,
+                  fontWeight: 600,
+                  marginBottom: '1rem',
+                }}
+              >
+                {JSON.stringify(result.isCorrect) === 'true'
+                  ? '맞았습니다'
+                  : '틀렸습니다'}
+              </p>
+              <p>
+                <strong>출력 | </strong> {JSON.stringify(result.output)}
+              </p>
+              <p>
+                <strong>실행 시간 | </strong>
+                {JSON.stringify(result.executionTime)}
+              </p>
+              <p>
+                <strong>메모리 | </strong> {JSON.stringify(result.memoryUsage)}
+              </p>
+            </div>
+            <div>
+              <p>{JSON.stringify(complexityResult[index].timeComplexity)}</p>
+              <p>{JSON.stringify(complexityResult[index].spaceComplexity)}</p>
+            </div>
+          </div>
+        ))}
+>>>>>>> 7e1b17e1e77497c8797e459040d8d06f1a338cda
       </div>
     </div>
   )
