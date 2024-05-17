@@ -4,6 +4,13 @@
     grid-template-columns: repeat(4, 1fr); // 4열 레이아웃
     justify-content: space-between; // 각 열 사이에 균일한 간격 유지
     gap: 1.6%; // 그리드 아이템 사이의 간격 추가
+
+    .noResults{
+        justify-content: center; // 가로 방향 가운데 정렬
+        align-items: center; // 세로 방향 가운데 정렬
+        font-size: 1.5rem;
+        color: var(--black);
+    }
 }
 
 
@@ -77,6 +84,13 @@
                 display: flex; 
                 align-items: center;
                 align-items: space-between;
+
+                .heart{
+                    box-sizing: border-box;
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 5px;
+                }
             }
 
             .nickname {
