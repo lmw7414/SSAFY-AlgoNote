@@ -131,7 +131,7 @@ const SubmissionList = ({
 
               // result 색상 설정
               resultColor =
-                sb.result === '맞았습니다!!' ? correctColor : incorrectColor
+                sb.result === '맞았습니다' ? correctColor : incorrectColor
 
               return (
                 <WrapperComponent
