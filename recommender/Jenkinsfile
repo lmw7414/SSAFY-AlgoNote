@@ -49,18 +49,18 @@ pipeline{
             }
         }
 
-         stage('Deploy on Deploy Server'){
-            steps{
-                dir('backend'){
-                    echo "$BUILD_NUMBER"
-                    sh "kubectl config use-context eks-work"
-                    sh "BUILD_NUMBER=$BUILD_NUMBER envsubst < deployment-recommend-app.yaml.template | kubectl apply -f -"
-                    sh 'kubectl apply -f service-recommend-app.yaml'
+        //  stage('Deploy on Deploy Server'){
+        //     steps{
+        //         dir('backend'){
+        //             echo "$BUILD_NUMBER"
+        //             sh "kubectl config use-context eks-work"
+        //             sh "BUILD_NUMBER=$BUILD_NUMBER envsubst < deployment-recommend-app.yaml.template | kubectl apply -f -"
+        //             sh 'kubectl apply -f service-recommend-app.yaml'
 
                     
-                }
-            }
-        }
+        //         }
+        //     }
+        // }
 
 
         

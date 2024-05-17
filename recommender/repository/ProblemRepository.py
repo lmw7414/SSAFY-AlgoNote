@@ -4,6 +4,7 @@ from sqlalchemy.sql import text
 from entity.problem import Problem
 from entity.solved_problem import SolvedProblem
 from dto.response.RecommendResDto import RecommendResDto
+from dto.response.RecommendResponseDto import RecommendResponseDto
 from sqlalchemy.orm import aliased
 
 def find_by_ids(ids, page, size):
@@ -24,7 +25,7 @@ def find_by_ids(ids, page, size):
     session.close()
 
 
-    return [RecommendResDto(id=result[0].id, title=result[0].title, tier=result[0].tier, 
+    return [RecommendResponseDto(id=result[0].id, title=result[0].title, tier=result[0].tier, 
                             accepted_user_count=result[0].accepted_user_count, 
                             average_tries=result[0].average_tries) for result in results]
 

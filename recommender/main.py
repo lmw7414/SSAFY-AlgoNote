@@ -10,8 +10,10 @@ import json
 from starlette.middleware.cors import CORSMiddleware
 
 from dto.request.RecommendReqDto import RecommendReqDto
-from dto.response.RecommendResDto import RecommendResDto
 from dto.request.RecommendGroupDto import RecommendGroupDto
+from dto.response.RecommendResDto import RecommendResDto
+from dto.response.RecommendReturnDto import RecommendReturnDto
+
 from dto.response.RecommendResultDto import RecommendResultDto
 from repository.ProblemRepository import find_solved_problems, find_by_ids
 from util.utils import get_user_dict
@@ -26,6 +28,7 @@ origins = [
     "http://localhost:8000",
     "https://algnote.duckdns.org",
     "http://0.0.0.0:8000",
+    "http://localhost:3000",
     "http://0.0.0.0",
 ]
 user_dict = get_user_dict()
@@ -78,6 +81,8 @@ async def recommend(recommendGroupDto : RecommendGroupDto):
         group = recommendGroupDto.group
         tagDtos = recommendGroupDto.tags
 
+
+        response = []
         for tagDto in tagDtos:
             tag = tagDto.tag
             # print("tag", tag)
@@ -90,7 +95,10 @@ async def recommend(recommendGroupDto : RecommendGroupDto):
             result = inference(validation, tag)
             recommendResultDto = RecommendResultDto(count=len(result), 
                                         recommendedProblemIds=result)
-
+            recommendReturnDto = RecommendReturnDto(tag=tag, recommendResultDto=recommendResultDto)
+            # response.append(recommendReturnDto)
+        print("response: ", response)
+        return response
 
         
     except Exception as e:
@@ -112,11 +120,11 @@ async def recommend(recommendDto : RecommendReqDto):
         validation = pd.DataFrame(validation, columns=["userID", "itemID", "rating"]) 
 
         result = inference(validation, tag)
-        print("result: ", result)
-        recommendResultDto = RecommendResultDto(count=len(result), 
+        # print("result: ", result)
+        recommendResDto = RecommendResDto(count=len(result), 
                                           recommendedProblemIds=result)
-
-        return  recommendResultDto
+        # print("response: ", recommendResultDto)
+        return  recommendResDto
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
