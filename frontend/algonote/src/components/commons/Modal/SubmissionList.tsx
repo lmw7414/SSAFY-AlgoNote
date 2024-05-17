@@ -84,10 +84,23 @@ const SubmissionList = ({
     setDetailProblems({ modalStatus: false, problemId: 0 })
   }
 
+  // 코드 다시 선택 버튼 클릭시 세부 정보 모달을 닫고 첫번째 모달 오픈
+  const handleBackButton = () => {
+    setIsModalOpened(true)
+    setDetailProblems({ modalStatus: false, problemId: 0 })
+  }
+
   return (
     <div>
       <div className={style.detailModal}>
-        <div className={style.submitListBox} style={{ width: '25rem' }}>
+        <div
+          className={style.submitListBox}
+          style={{
+            width: '25rem',
+            maxHeight: '25rem',
+            overflowY: 'scroll',
+          }}
+        >
           <div className={style.submitListTitle}>
             <SubmitListTitle />
           </div>
@@ -143,6 +156,12 @@ const SubmissionList = ({
         </div>
       </div>
       <div className={style.uploadButton}>
+        <SimpleButton
+          text="문제 재선택"
+          className="back"
+          style={{ width: '9rem', height: '2.5rem' }}
+          onClick={() => handleBackButton()}
+        />
         <SimpleButton
           text="업로드"
           style={{ width: '5rem', height: '2.5rem' }}

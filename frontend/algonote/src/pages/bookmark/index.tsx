@@ -1,11 +1,7 @@
 'use client'
 
-<<<<<<< 0eee4637ae28c60301c330c74113849e5551c847
-import style from './bookmark.module.scss'
-=======
 import { useEffect } from 'react'
-import styles from './bookmark.module.scss'
->>>>>>> 21d5124f3fc5b119a82cabd8434229f683992dd3
+import style from './bookmark.module.scss'
 import Notes from '@/components/commons/Bookmark/Note'
 import ResultNote from '@/components/commons/Bookmark/ResultNote'
 import { FilterButton } from '@/components/commons/Buttons/Button'
@@ -51,7 +47,6 @@ const Bookmark = () => {
   }, [])
 
   return (
-<<<<<<< 0eee4637ae28c60301c330c74113849e5551c847
     <div className={style.frame}>
       <div className={style.header}>
         <div className={style.headerSentence}>
@@ -68,16 +63,8 @@ const Bookmark = () => {
         <FilterSection title="티어" items={tier} itemKey="tier" />
         <FilterSection title="유형" items={category} itemKey="category" />
         <div className={style.division_line} />
-        <Notes />
+        {isSearched ? <ResultNote /> : <Notes />}
       </div>
-=======
-    <div className={styles.frame}>
-      <SearchInput />
-      <FilterSection title="티어" items={tier} itemKey="tier" />
-      <FilterSection title="유형" items={category} itemKey="category" />
-      <div className={styles.division_line} />
-      {isSearched ? <ResultNote /> : <Notes />}
->>>>>>> 21d5124f3fc5b119a82cabd8434229f683992dd3
     </div>
   )
 }
