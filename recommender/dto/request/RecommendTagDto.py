@@ -1,7 +1,6 @@
 from pydantic import BaseModel
 from typing import List
 
-class RecommendReqDto(BaseModel):
-    nickname: str
+class RecommendTagDto(BaseModel):
     tag: str
     solvedProblemIds: List[int]

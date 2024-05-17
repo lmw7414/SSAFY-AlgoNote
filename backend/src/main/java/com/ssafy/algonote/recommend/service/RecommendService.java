@@ -10,6 +10,7 @@ import com.ssafy.algonote.member.repository.MemberRepository;
 import com.ssafy.algonote.problem.repository.ProblemRepository;
 import com.ssafy.algonote.problem.repository.SolvedProblemRepository;
 import com.ssafy.algonote.recommend.dto.RecommendDto;
+import com.ssafy.algonote.recommend.dto.RecommendGroupDto;
 import com.ssafy.algonote.recommend.dto.response.RecommendProblemResDto;
 import com.ssafy.algonote.recommend.dto.response.RecommendResDto;
 import java.io.IOException;
@@ -64,6 +65,35 @@ public class RecommendService {
 
         Pageable pageable = PageRequest.of(page, size);
         return problemRepository.findByIds(list, pageable);
+    }
+
+
+    public RecommendGroupDto recommendByTags(Long memberId, String group, int page, int size){
+        RecommendGroupDto groupDto = problemRepository.findSolvedProblemIdByGroup(memberId, group);
+
+        getJsonNodeByTag(groupDto);
+        return groupDto;
+    }
+
+    private JsonNode getJsonNodeByTag(RecommendGroupDto groupDto){
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/json");
+
+        String url = fastApiUrl + "/python/recommend/group";
+
+        HttpEntity<RecommendGroupDto> requestEntity = new HttpEntity<>(groupDto, headers);
+        RestTemplate restTemplate = new RestTemplate();
+
+
+        String response = restTemplate.postForObject(url, requestEntity, String.class);
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        try{
+            return objectMapper.readTree(response);
+        }catch (IOException e){
+            log.error("error: {}", e.getMessage());
+            throw new CustomException(ErrorCode.JSON_MAPPING_ERROR);
+        }
     }
 
     private JsonNode getResponseJsonNode(Long memberId, String tag){

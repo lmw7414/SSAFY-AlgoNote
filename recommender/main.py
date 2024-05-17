@@ -11,6 +11,8 @@ from starlette.middleware.cors import CORSMiddleware
 
 from dto.request.RecommendReqDto import RecommendReqDto
 from dto.response.RecommendResDto import RecommendResDto
+from dto.request.RecommendGroupDto import RecommendGroupDto
+from dto.response.RecommendResultDto import RecommendResultDto
 from repository.ProblemRepository import find_solved_problems, find_by_ids
 from util.utils import get_user_dict
 from model.model import inference
@@ -62,33 +64,60 @@ async def recommend(tag: str = Query(...), page: int=Query(0), memberId: int=Que
        return recommend_problems
        
 
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    
+
+@app.post("/python/recommend/group")
+async def recommend(recommendGroupDto : RecommendGroupDto):
+
+    # print(user_dict)
+    try:
+
+        group = recommendGroupDto.group
+        tagDtos = recommendGroupDto.tags
+
+        for tagDto in tagDtos:
+            tag = tagDto.tag
+            # print("tag", tag)
+            solvedProblemIds = tagDto.solvedProblemIds
+
+            validation = []
+            for problemId in solvedProblemIds:
+                validation.append([0, problemId, 5])
+            validation = pd.DataFrame(validation, columns=["userID", "itemID", "rating"])
+            result = inference(validation, tag)
+            recommendResultDto = RecommendResultDto(count=len(result), 
+                                        recommendedProblemIds=result)
 
 
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+
 @app.post("/python/recommend")
 async def recommend(recommendDto : RecommendReqDto):
+
+    # print(user_dict)
     try:
+        nickname = recommendDto.nickname
         tag = recommendDto.tag
         solvedProblemIds = recommendDto.solvedProblemIds
-        page = recommendDto.page
-        size = recommendDto.size
-
+        print(f"nickname : {nickname}, tag : {tag}, solvedProblemIds : {solvedProblemIds}")
         validation = []
-    
-        for problem_id in solvedProblemIds:
-            validation.append([0,problem_id,5])
+        for problemId in solvedProblemIds:
+            validation.append([0, problemId, 5])
+        validation = pd.DataFrame(validation, columns=["userID", "itemID", "rating"]) 
+
+        result = inference(validation, tag)
+        print("result: ", result)
+        recommendResultDto = RecommendResultDto(count=len(result), 
+                                          recommendedProblemIds=result)
+
+        return  recommendResultDto
         
-        validation = pd.DataFrame(validation, columns=["userID", "itemID", "rating"])
-       
-        recommend_problem_ids = inference(validation, tag)
-
-        recommend_problems = find_by_ids(recommend_problem_ids)
-
-        return recommend_problems
-
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

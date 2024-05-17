@@ -22,15 +22,7 @@ def find_by_ids(ids, page, size):
     results = session.execute(results_query).fetchall()
 
     session.close()
-    
-    
-    # for result in results:
-    #     print(result[0].id)
-    #     print(result[0].title)
-    #     print(result[0].tier)
-    #     print(result[0].accepted_user_count)
-    #     print(result[0].average_tries)
-    #     print("----")
+
 
     return [RecommendResDto(id=result[0].id, title=result[0].title, tier=result[0].tier, 
                             accepted_user_count=result[0].accepted_user_count, 
