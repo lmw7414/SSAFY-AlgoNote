@@ -39,7 +39,7 @@ app.add_middleware(
 async def test():
     return {"message": "Hello World"}
 
-@app.get("/python/recommend")
+@app.get("/recommend")
 async def recommend(tag: str = Query(...), page: int=Query(0), memberId: int=Query(), size: int=Query(10)):
 
     # print(user_dict)
@@ -58,7 +58,6 @@ async def recommend(tag: str = Query(...), page: int=Query(0), memberId: int=Que
        recommend_problem_ids = inference(validation, tag)
 
        recommend_problems = find_by_ids(recommend_problem_ids, page, size)
-
 
        return recommend_problems
        
