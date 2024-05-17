@@ -17,10 +17,10 @@ import {
 import myInfo from '@/apis/user-infoAxios'
 import { SimpleButton } from '@/components/commons/Buttons/Button'
 import ImageToggle from '@/components/commons/Buttons/ImageToggle'
+import EditorInNoteDetail from '@/components/commons/Editor/detail'
+import TierImg from '@/components/commons/Tier'
 import style from '@/pages/note/note.module.scss'
 import useNoteStore from '@/stores/note-store'
-import TierImg from '@/components/commons/Tier'
-import EditorInNoteDetail from '@/components/commons/Editor/detail'
 
 interface Member {
   memberId: number
