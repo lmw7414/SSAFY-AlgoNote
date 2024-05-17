@@ -2,6 +2,7 @@ package com.ssafy.algonote.note.controller;
 
 import com.ssafy.algonote.config.security.SecurityUtil;
 import com.ssafy.algonote.note.domain.Note;
+import com.ssafy.algonote.note.dto.BookmarkResDto;
 import com.ssafy.algonote.note.dto.HeartResDto;
 import com.ssafy.algonote.note.dto.request.NoteSaveReqDto;
 import com.ssafy.algonote.note.dto.request.NoteUpdateReqDto;
@@ -16,6 +17,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -179,6 +183,28 @@ public class NoteController {
         Long memberId = SecurityUtil.getMemberId();
         return ResponseEntity.ok(noteService.updateTempNote(memberId, tempNoteId, req.title(), req.content()));
     }
+
+    @Operation(
+            summary = "모든 노트 조회"
+    )
+    @GetMapping("/all")
+    public ResponseEntity<SearchResDto> getAllNotes(@PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC)Pageable pageable) {
+        Long memberId = SecurityUtil.getMemberId();
+        log.info("page: {}, size:{}", pageable.getOffset(), pageable.getPageSize());
+        List<NoteSearchDto> noteSearchResults = noteService.getAllNotes(pageable);
+        List<NoteSearchResDto> resDtos = noteSearchResults.stream().map(resDto -> {
+            List<String> tags = problemService.getTagOfProblem(resDto.problemId());
+
+            return NoteSearchResDto.of(resDto,
+                    heartService.heartCnt(resDto.noteId()),
+                    heartService.heartStatus(memberId, resDto.noteId()),
+                    bookmarkService.bookmarkStatus(memberId, resDto.noteId()),
+                    tags);
+        }).toList();
+
+        return ResponseEntity.ok(SearchResDto.from(resDtos));
+    }
+
 
     @Operation(
             summary = "노트 검색 - 엘라스틱서치",
