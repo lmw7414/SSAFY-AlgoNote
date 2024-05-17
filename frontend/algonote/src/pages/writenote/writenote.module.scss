@@ -135,3 +135,34 @@
     width: 100%;
   }
 }
+
+.detailModal{
+  display: flex;
+  width: 65rem;
+}
+
+.uploadButton{
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem;
+  gap: 1rem;
+  width: 50%;
+  right: 0; /* 오른쪽 고정 */
+  bottom: 0; /* 하단 고정 */
+  float: right;
+}
+
+.selectedCode{
+  width: calc(100% - 25rem);
+  max-height: 27rem;
+  padding: 1rem;
+  background-color: var(--soft-gray);
+  border-radius: 1rem;
+  margin:0 1rem 0 2rem;
+  font-family: 'Pretendard';
+  font-size: 0.9rem;
+  overflow-y: auto; 
+  overflow-x: auto; /* 가로 스크롤이 가능하도록 설정 */
+  white-space: pre-wrap; /* 코드가 줄바꿈되지 않도록 설정 */
+}
+

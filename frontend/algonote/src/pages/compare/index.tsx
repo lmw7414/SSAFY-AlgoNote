@@ -2,6 +2,7 @@ import { useState, useEffect, KeyboardEvent, ChangeEvent } from 'react'
 import ReactDiffViewer, { DiffMethod } from 'react-diff-viewer-continued'
 import style from './compare.module.scss'
 import { getAllMySolvedList } from '@/apis/problemAxios'
+import noteStyle from '@/components/commons/Bookmark/Note.module.scss'
 import CodeSelectButton from '@/components/commons/CodeSelectButton'
 import ExecuteResult from '@/components/commons/CodeSelectButton/ExcuteResult'
 import Modal from '@/components/commons/Modal'
@@ -49,6 +50,18 @@ const ComparePage = () => {
     fetchData()
   }, [])
 
+  useEffect(() => {
+    if (isModalOpened) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'auto'
+    }
+
+    return () => {
+      document.body.style.overflow = 'auto'
+    }
+  }, [isModalOpened])
+
   const handleDetailProblems = (
     e: KeyboardEvent<HTMLDivElement>,
     problemId: number,
@@ -72,96 +85,127 @@ const ComparePage = () => {
 
   return (
     <div className={style.container}>
-      <div>코드를 비교하세요</div>
-      <div>
-        <div className={style.element}>
-          <ReactDiffViewer
-            oldValue={codes[0]}
-            newValue={codes[1]}
-            compareMethod={DiffMethod.WORDS}
-          />
+      <div className={style.header}>
+        <div className={style.headerSentence}>
+          <p className={style.headerBold}>코드를 실행해보세요</p>
         </div>
-        <select value={language} onChange={handleLanguageChange}>
-          <option value="py">Python</option>
-          <option value="java">Java</option>
-          <option value="c">C</option>
-          <option value="cpp">C++</option>
-        </select>
-        <input
-          type="text"
-          placeholder="입력 데이터"
-          value={inputData}
-          onChange={handleInputChange}
-        />
-        <input
-          type="text"
-          placeholder="예상 출력 결과"
-          value={expectedOutput}
-          onChange={handleOutputChange}
-        />
-        <div className={style.compareButtons}>
-          <div className={style.compareButton}>
-            <CodeSelectButton setIsModalOpened={setIsModalOpened} index={0} />
+        <div className={style.headerSentence}>
+          <p className={style.contentLight}>정답과 복잡도를 확인할 수 있어요</p>
+        </div>
+      </div>
+      <div className={style.element}>
+        <div>
+          <div className={style.insertBox}>
+            <select
+              value={language}
+              onChange={handleLanguageChange}
+              className={style.insert}
+            >
+              <option value="java">Java</option>
+              <option value="py">Python</option>
+              <option value="c">C</option>
+              <option value="cpp">C++</option>
+            </select>
+            <input
+              type="text"
+              placeholder="입력 데이터"
+              value={inputData}
+              onChange={handleInputChange}
+              className={style.insert}
+            />
+            <input
+              type="text"
+              placeholder="예상 출력 결과"
+              value={expectedOutput}
+              onChange={handleOutputChange}
+              className={style.insert}
+            />
           </div>
-          <div className={style.compareButton}>
-            <CodeSelectButton setIsModalOpened={setIsModalOpened} index={1} />
+          <div className={style.compareButtons}>
+            <div className={style.compareButton}>
+              <CodeSelectButton setIsModalOpened={setIsModalOpened} index={0} />
+            </div>
+            <div className={style.compareButton}>
+              <CodeSelectButton setIsModalOpened={setIsModalOpened} index={1} />
+            </div>
+          </div>
+          <div className={style.codeView}>
+            <ReactDiffViewer
+              oldValue={codes[0]}
+              newValue={codes[1]}
+              compareMethod={DiffMethod.WORDS}
+            />
+          </div>
+          <div>
+            <ExecuteResult
+              language={language}
+              inputData={inputData}
+              expectedOutput={expectedOutput}
+              codes={[codes[0], codes[1]]}
+            />
           </div>
         </div>
         <div>
-          <ExecuteResult
-            language={language}
-            inputData={inputData}
-            expectedOutput={expectedOutput}
-            codes={[codes[0], codes[1]]}
-          />
-        </div>
-      </div>
-      <div>
-        {isModalOpened && (
-          <Modal
-            onClose={() => {
-              setIsModalOpened(false)
-              setDetailProblems({ modalStatus: false, problemId: 0 })
-            }}
-          >
-            {detailProblems.modalStatus === true ? (
-              <div>
-                <SubmissionList
-                  problemId={detailProblems.problemId}
-                  setIsModalOpened={setIsModalOpened}
-                  setDetailProblems={setDetailProblems}
-                />
-              </div>
-            ) : (
-              <div>
-                <div className={cStyle.title}>가져올 코드를 선택하세요</div>
-                <div className={cStyle.content}>
-                  {myProblems.map((it) => (
-                    <div
-                      role="button"
-                      tabIndex={0}
-                      key={it.problem.id}
-                      className={cStyle.problem}
-                      onClick={() =>
-                        setDetailProblems({
-                          modalStatus: true,
-                          problemId: it.problem.id,
-                        })
-                      }
-                      onKeyDown={(e) => handleDetailProblems(e, it.problem.id)}
-                    >
-                      <div>{it.problem.title}</div>
-                      <div>
-                        <TierImg tier={it.problem.tier} />
-                      </div>
-                      <div>{it.problem.tags}</div>
-                    </div>
-                  ))}
+          {isModalOpened && (
+            <Modal
+              onClose={() => {
+                setIsModalOpened(false)
+                setDetailProblems({ modalStatus: false, problemId: 0 })
+              }}
+            >
+              {detailProblems.modalStatus === true ? (
+                <div>
+                  <SubmissionList
+                    problemId={detailProblems.problemId}
+                    setIsModalOpened={setIsModalOpened}
+                    setDetailProblems={setDetailProblems}
+                  />
                 </div>
-              </div>
-            )}
-          </Modal>
-        )}
+              ) : (
+                <div>
+                  <div className={cStyle.title}>가져올 코드를 선택하세요</div>
+                  <div className={noteStyle.miniNote}>
+                    {myProblems.map((it) => (
+                      <div
+                        role="button"
+                        tabIndex={0}
+                        key={it.problem.id}
+                        className={noteStyle.note}
+                        onClick={() =>
+                          setDetailProblems({
+                            modalStatus: true,
+                            problemId: it.problem.id,
+                          })
+                        }
+                        onKeyDown={(e) =>
+                          handleDetailProblems(e, it.problem.id)
+                        }
+                      >
+                        <div className={noteStyle.content}>
+                          <div className={noteStyle.tierImage}>
+                            <TierImg tier={it.problem.tier} />
+                          </div>
+                          <div className={noteStyle.note_title}>
+                            {it.problem.title}
+                          </div>
+                        </div>
+
+                        <div className={style.tags}>
+                          {it.problem.tags.map((tag, tagIdx) => (
+                            // eslint-disable-next-line react/no-array-index-key
+                            <span key={tagIdx} style={{ marginRight: '10px' }}>
+                              #{tag}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </Modal>
+          )}
+        </div>
       </div>
     </div>
   )
