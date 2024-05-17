@@ -21,6 +21,7 @@ const WrapperComponent = ({
   onClick,
   onKeyDown,
 }: CodeListProps) => {
+  console.log('정답 로그', result)
   return (
     <div>
       <div role="button" tabIndex={0} onClick={onClick} onKeyDown={onKeyDown}>
