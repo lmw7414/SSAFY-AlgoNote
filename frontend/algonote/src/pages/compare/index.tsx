@@ -87,12 +87,10 @@ const ComparePage = () => {
     <div className={style.container}>
       <div className={style.header}>
         <div className={style.headerSentence}>
-          <p className={style.headerBold}>코드를 비교해보세요</p>
+          <p className={style.headerBold}>코드를 실행해보세요</p>
         </div>
         <div className={style.headerSentence}>
-          <p className={style.contentLight}>
-            더 효율적인 코드를 확인할 수 있어요.
-          </p>
+          <p className={style.contentLight}>정답과 복잡도를 확인할 수 있어요</p>
         </div>
       </div>
       <div className={style.element}>
