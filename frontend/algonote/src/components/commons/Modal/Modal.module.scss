@@ -1,0 +1,61 @@
+.container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.children {
+  width: 90%;
+  max-width: 40rem;
+  height: 90%;
+  max-height: 65rem;
+  background-color: white;
+  padding: 20px;
+  border-radius: 0.5rem;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* 그림자 강조 */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-size: 1.2rem;
+  font-weight: 600;
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #333; /* 버튼 색상 변경 */
+  text-shadow: 0 0 2px #fff; /* 버튼 눈에 띄게 */
+}
+
+.content {
+  flex: 1;
+  margin-top: 10px;
+}
+
+.problem {
+  display: flex;
+  border: 1px solid blue;
+  padding: 10px;
+  word-break: break-word;
+}
+
+.closeButtonSection {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 0.5rem;
+}

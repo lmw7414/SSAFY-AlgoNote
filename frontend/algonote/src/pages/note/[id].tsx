@@ -1,14 +1,26 @@
 import { ChangeEvent, useEffect, useState } from 'react'
+import BookMarkSVG from '@public/images/bookmark.svg'
+import BookMarkOffSVG from '@public/images/bookmark_off.svg'
+import HeartOffSVG from '@public/images/heart.svg'
+import HeartSVG from '@public/images/redHeart.svg'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import getNoteDetail from '@/apis/note-detailAxios'
+import { bookmarkButtonApi } from '@/apis/bookmarkAxios'
+import likeApi from '@/apis/likeAxios'
+import { deleteNote, getNoteDetail } from '@/apis/note-detailAxios'
+
 import {
   createReviewApi,
   deleteReviewApi,
   readReviewApi,
+  updateReviewApi,
 } from '@/apis/reviewAxios'
+import myInfo from '@/apis/user-infoAxios'
 import { SimpleButton } from '@/components/commons/Buttons/Button'
+import ImageToggle from '@/components/commons/Buttons/ImageToggle'
+import TierImg from '@/components/commons/Tier'
 import style from '@/pages/note/note.module.scss'
+import useNoteStore from '@/stores/note-store'
 
 interface Member {
   memberId: number
@@ -51,12 +63,38 @@ interface Review {
 // Review[] 형태의 배열을 나타내는 인터페이스
 interface ReviewProps extends Array<Review> {}
 
+interface UserInfo {
+  memberId: number
+  email: string
+  nickname: string
+  profileImg: string
+}
+
 const Note = () => {
   const router = useRouter()
   const { id } = router.query
   const [noteDetail, setNoteDetail] = useState<NoteData>()
   const [reviews, setReviews] = useState<ReviewProps>()
   const [comment, setComment] = useState<string>('')
+  const [newComment, setNewComment] = useState<string>('')
+  const [markIsOff, setMarkIsOff] = useState(false)
+  const [likeIsOff, setLikeIsOff] = useState(false)
+  const [userDetails, setUserDetails] = useState<UserInfo | null>(null)
+  const [updateId, setUpdateId] = useState<number | null>(null)
+  const [updating, setUpdating] = useState(false)
+  const { setSelectedNoteData } = useNoteStore()
+
+  const handleBookmark = async () => {
+    const response = await bookmarkButtonApi(id as string)
+    setMarkIsOff(response.data.bookmarked)
+  }
+
+  const handleLike = async () => {
+    const response = await likeApi(id as string)
+    if (response.status === 200) {
+      setLikeIsOff(response.data.hearted)
+    }
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -66,6 +104,8 @@ const Note = () => {
           const noteResponse = await getNoteDetail(id as string)
           console.log('노트 상세보기 응답:', noteResponse.data)
           setNoteDetail(noteResponse.data)
+          setMarkIsOff(noteResponse.data.bookmarked)
+          setLikeIsOff(noteResponse.data.hearted)
 
           console.log('리뷰 조회 요청')
           const reviewResponse = await readReviewApi(id as string)
@@ -76,8 +116,20 @@ const Note = () => {
         }
       }
     }
+    const fetchMyInfo = async () => {
+      try {
+        const response = await myInfo()
+        // API 응답을 상태에 저장하기 전에 형식이 맞는지 확인
+        if (response && typeof response === 'object') {
+          setUserDetails(response.data)
+        }
+      } catch (error) {
+        console.error('내 정보 가져오기 실패:', error)
+      }
+    }
     fetchData()
-  }, [id])
+    fetchMyInfo()
+  }, [])
 
   const fetchReviews = async () => {
     try {
@@ -123,31 +175,111 @@ const Note = () => {
     }
   }
 
+  const updateReview = async (reviewId: number, content: string) => {
+    try {
+      console.log('리뷰수정 요청')
+      await updateReviewApi(id as string, reviewId, content) // 리뷰조회 API 호출
+      console.log('리뷰수정 성공!')
+      // 리뷰수정 성공 후 필요한 작업 수행
+      fetchReviews()
+      setComment('')
+      setUpdating(false)
+      setNewComment('')
+      setUpdateId(null)
+    } catch (e) {
+      console.error('리뷰수정 실패:', e)
+      // 리뷰수정 실패 처리
+    }
+  }
+
+  const updateCall = (newValue: number) => {
+    setUpdateId(newValue)
+    setUpdating(true)
+  }
+
   const handleComment = (event: ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value
     setComment(newValue)
   }
 
+  const handleNewComment = (event: ChangeEvent<HTMLInputElement>) => {
+    const newValue = event.target.value
+    setNewComment(newValue)
+  }
+
+  // 노트 수정
+  const handleReviseNote = () => {
+    setSelectedNoteData(noteDetail || null)
+    router.push('/revisenote')
+  }
+
+  // 노트 삭제
+  const handleDeleteNote = () => {
+    deleteNote(Number(noteDetail?.noteId))
+    router.push(`/mynote`)
+  }
+
   return (
     <div className={style.frame}>
-      <div>제목 : {noteDetail?.noteTitle}</div>
       <div>
-        문제 정보:
-        <div>
-          {noteDetail?.problem.id}
-          {noteDetail?.problem.title}
-          티어{noteDetail?.problem.tier}
-          시도횟수{noteDetail?.problem.averageTries}푼 사람
-          {noteDetail?.problem.acceptUserCount}
+        <div className={style.titleSection}>
+          <div className={style.tierImg}>
+            <TierImg tier={Number(noteDetail?.problem.tier)} />
+          </div>
+          <span>백준 {noteDetail?.problem.id}</span>
+          <span>{noteDetail?.problem.title}</span>
         </div>
+        시도횟수{noteDetail?.problem.averageTries}푼 사람
+        {noteDetail?.problem.acceptUserCount}
       </div>
+
       <div>
         태그:
         {noteDetail?.problem.tags.map((tag) => <div key={tag}>{tag}</div>)}
       </div>
+      <div>{noteDetail?.noteTitle}</div>
       <div>
         작성자:
         {noteDetail?.member.nickname}
+      </div>
+      <div>
+        <SimpleButton
+          text="수정하기"
+          onClick={handleReviseNote}
+          style={{
+            width: '6rem',
+            height: '2.5rem',
+            border: 'none',
+            fontFamily: 'Pretendard',
+          }}
+        />
+        <SimpleButton
+          text="삭제하기"
+          onClick={handleDeleteNote}
+          style={{
+            width: '6rem',
+            height: '2.5rem',
+            background: '#fb4444',
+            border: 'none',
+            fontFamily: 'Pretendard',
+          }}
+        />
+        <ImageToggle
+          isOff={markIsOff}
+          onClick={() => handleBookmark()}
+          offImg={BookMarkSVG}
+          onImg={BookMarkOffSVG}
+          width="30px"
+        />
+      </div>
+      <div>
+        <ImageToggle
+          isOff={likeIsOff}
+          onClick={() => handleLike()}
+          offImg={HeartSVG}
+          onImg={HeartOffSVG}
+          width="30px"
+        />
       </div>
       <div>
         내용:
@@ -161,41 +293,76 @@ const Note = () => {
       <div>작성일: {noteDetail?.createdAt}</div>
       <div>수정일: {noteDetail?.modifiedAt}</div>
 
-      <div>
-        <h2>댓글 목록</h2>
+      <div className={style.reviewsContainer}>
+        <h2>리뷰 목록</h2>
+        <hr />
         {reviews?.map((review) => (
-          <div key={review.reviewId}>
+          <div className={style.reviewContainer} key={review.reviewId}>
             <Image
               src={review.member.profileImg} // 이미지 경로
               alt="profile-image"
-              width={120}
+              width={60}
               height={80}
             />
-            {/* <img src={review.profileImg} alt="" /> */}
             <p>작성자: {review.member.nickname}</p>
             <h4>
               {review.startLine}-{review.endLine} line
             </h4>
-            <p>내용: {review.content}</p>
-            <SimpleButton
-              text="댓글 삭제"
-              onClick={() => deleteReview(review.reviewId)}
-            />
+            {review.reviewId === updateId ? (
+              <input
+                type="newComment"
+                placeholder="리뷰 작성"
+                value={newComment}
+                onChange={handleNewComment}
+                className={style.reviewInput}
+              />
+            ) : (
+              <p>내용: {review.content}</p>
+            )}
+
+            {review.member.memberId === userDetails?.memberId && (
+              <>
+                {updating && review.reviewId === updateId ? (
+                  <SimpleButton
+                    text="확인"
+                    style={{
+                      backgroundColor: 'orange',
+                      border: 'none',
+                      marginBottom: '0.4rem',
+                    }}
+                    onClick={() => updateReview(review.reviewId, newComment)}
+                  />
+                ) : (
+                  <SimpleButton
+                    text="리뷰 수정하기"
+                    style={{ marginBottom: '0.4rem' }}
+                    onClick={() => updateCall(review.reviewId)}
+                  />
+                )}
+
+                <SimpleButton
+                  text="리뷰 삭제"
+                  onClick={() => deleteReview(review.reviewId)}
+                />
+              </>
+            )}
+
             <hr />
           </div>
         ))}
-        <div>
+        <div className={style.reviewBottom}>
           <input
             type="comment"
             placeholder="리뷰 작성"
             value={comment}
             onChange={handleComment}
+            className={style.reviewInput}
+          />
+          <SimpleButton
+            text="댓글 작성"
+            onClick={() => createReview(1, 3, comment)}
           />
         </div>
-        <SimpleButton
-          text="댓글 작성"
-          onClick={() => createReview(1, 3, comment)}
-        />
       </div>
       <div />
     </div>

@@ -1,12 +1,10 @@
-.wrapper {
-}
-
 .tabsTitle {
   display: flex;
   justify-content: flex-start;
   align-items: center;
   width: 100%;
-  background: rgb(221, 245, 255);
+  height: 2.6rem;
+  background: var(--soft-gray);
   color: var(--black);
   font-weight: 400;
   font-size: 0.9rem;
@@ -18,8 +16,8 @@
   align-items: center;
   padding-left: 1.5rem;
   width: 14rem;
-  height: 3.2rem;
-  background: rgb(221, 245, 255);
+  height: 2.6rem;
+  background: var(--soft-gray);
   border-top-left-radius: 0.8rem;
   border-top-right-radius: 0.8rem;
 
@@ -42,8 +40,6 @@
 }
 
 .tabsContent {
-  padding: 2rem;
-
   textarea {
     width: 45%;
     height: 80vh;
@@ -55,7 +51,11 @@
 
 .markdown {
   width: 50%;
-  height: 100vh;
+  height: 90vh;
   padding: 1.3rem;
   outline: none;
+}
+
+.placeholder {
+  color: var(--black);
 }

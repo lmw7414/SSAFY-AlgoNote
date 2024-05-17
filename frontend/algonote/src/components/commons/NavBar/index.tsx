@@ -1,11 +1,54 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { SimpleButton } from '../Buttons/Button'
+import Notification from '../Notification'
 import styles from './NavBar.module.scss'
-import { getCookie } from '@/utils/cookie'
+import { getNotificationsApi } from '@/apis/notificationAxios'
+import myInfo from '@/apis/user-infoAxios'
+import useUserInfo from '@/stores/user-store'
+import { eraseCookie, getCookie } from '@/utils/cookie'
 
 const NavBar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const { deleteUserInfo } = useUserInfo()
+  const [userProfile, setUserProfile] = useState('/images/basicprofileimg')
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false)
+  const [isNotReadNoti, setIsNotReadNoti] = useState(false)
+  const [isImageLoaded, setIsImageLoaded] = useState(false)
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      const getNoti = async () => {
+        const notis = await getNotificationsApi()
+        if (!notis) {
+          setIsNotReadNoti(false)
+        } else if (notis.length >= 1) {
+          setIsNotReadNoti(true)
+        }
+      }
+      getNoti()
+    }
+  }, [isLoggedIn])
+
+  const router = useRouter()
+  const url = router.pathname
+
+  useEffect(() => {
+    myInfo()
+      .then((res) => {
+        if (res.status === 200) {
+          setUserProfile(res.data.profileImg)
+        } else {
+          console.log('유저 정보 불러오기 실패')
+        }
+      })
+      .catch((e) => {
+        console.log('API 통신 오류')
+        console.log(e)
+      })
+  }, [isImageLoaded]) // Removed userProfile dependency to avoid unnecessary re-fetching
 
   useEffect(() => {
     const checkLogin = async () => {
@@ -13,18 +56,33 @@ const NavBar = () => {
       setIsLoggedIn(!!accessToken)
     }
     checkLogin()
-  }, [])
+
+    if (isNotificationOpen) {
+      setIsNotificationOpen(false)
+    }
+  }, [url])
+
+  const logout = async () => {
+    await eraseCookie('access_token')
+    await eraseCookie('memberId')
+    deleteUserInfo()
+    router.replace('/')
+  }
+
+  const handleNotification = () => {
+    setIsNotificationOpen(!isNotificationOpen)
+  }
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.navBox}>
         <div className={styles.logoSec}>
-          <Link href="/home">
+          <Link href={isLoggedIn ? '/' : '/landing'}>
             <Image src="/images/logo.png" alt="logo" width={112} height={20} />
           </Link>
         </div>
         <div className={styles.menuSec}>
-          <Link href="/writenote">
+          <Link href="/solvedproblems">
             <p>새 노트 작성</p>
           </Link>
 
@@ -32,7 +90,7 @@ const NavBar = () => {
             <p>내 노트</p>
           </Link>
 
-          <Link href="/recommand">
+          <Link href="/recommend">
             <p>문제 추천</p>
           </Link>
 
@@ -48,6 +106,7 @@ const NavBar = () => {
               alt="searchIcon"
               width={21}
               height={21}
+              className={styles.icon}
             />
           </Link>
           <Link href="/bookmark">
@@ -56,27 +115,42 @@ const NavBar = () => {
               alt="saveIcon"
               width={21}
               height={21}
+              className={styles.icon}
             />
           </Link>
-          <Link href="/alarm">
+          <div className={styles.notiCont}>
+            {isNotReadNoti ? <div className={styles.redDot} /> : null}
             <Image
               src="/images/alarm.png"
               alt="alarmIcon"
               width={21}
               height={21}
+              onClick={handleNotification}
+              className={styles.icon}
             />
-          </Link>
+          </div>
         </div>
         {isLoggedIn ? (
           <div className={styles.profileSec}>
             <Link href="/member">
               <Image
-                src="/images/profileImage.png"
-                alt="profileImage"
+                src={isImageLoaded ? userProfile : '/images/logo.png'}
+                alt="Img"
                 width={30}
                 height={30}
+                onLoadingComplete={() => setIsImageLoaded(true)}
               />
             </Link>
+            <SimpleButton
+              text="로그아웃"
+              style={{
+                width: '4rem',
+                height: '2rem',
+                fontSize: '0.8rem',
+                padding: '0',
+              }}
+              onClick={logout}
+            />
           </div>
         ) : (
           <div className={styles.loginSec}>
@@ -86,6 +160,12 @@ const NavBar = () => {
           </div>
         )}
       </div>
+      {isNotificationOpen ? (
+        <Notification
+          setIsNotReadNoti={setIsNotReadNoti}
+          setIsNotificationOpen={setIsNotificationOpen}
+        />
+      ) : null}
     </div>
   )
 }

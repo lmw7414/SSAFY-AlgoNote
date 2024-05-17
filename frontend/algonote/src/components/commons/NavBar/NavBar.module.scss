@@ -3,12 +3,13 @@
   position: fixed;
   width: 100%;
   height: 60px;
-  line-height: 60px;
+  // line-height: 60px;
   margin: 0 auto;
   color: var(--black);
   background-color: var(--white);
   font-size: 16px;
   font-weight: 600;
+  display: flex;
 }
 
 .navBox {
@@ -43,6 +44,25 @@
   display: flex;
   justify-content: space-between;
   line-height: 1px;
+
+  .notiCont {
+    position: relative;
+    .redDot {
+      width: 6px; /* 지름 설정 */
+      height: 6px; /* 지름 설정 */
+      background-color: var(--red); /* 배경색 설정 */
+      border-radius: 50%; /* 원 모양으로 만듦 */
+      position: absolute;
+      top: -0.25rem;
+      left: 1.1rem;
+    }
+  }
+  
+
+  .icon {
+    cursor: pointer;
+  }
+
 }
 
 .blank {
@@ -55,6 +75,11 @@
   display: flex;
   justify-content: space-around;
   line-height: 1px;
+
+  img {
+    border-radius: 50%;
+    object-fit: cover;
+  }
 }
 
 .loginSec {

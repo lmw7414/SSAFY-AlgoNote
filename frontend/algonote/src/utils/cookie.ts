@@ -9,6 +9,9 @@ const setCookie = (name: string, value: string, days: number) => {
 }
 
 const getCookie = (name: string) => {
+  if (typeof document === 'undefined') {
+    return '' // 서버 환경에서는 빈 문자열 또는 다른 처리
+  }
   const nameEQ = `${name}=`
   const ca = document.cookie.split(';')
   for (let i = 0; i < ca.length; i += 1) {

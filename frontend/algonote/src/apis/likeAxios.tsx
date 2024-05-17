@@ -1,15 +1,14 @@
-import axios from 'axios'
-import { getCookie } from '@/utils/cookie'
+import { axiosAuthApi } from '@/utils/instance'
 
-const likeAxios = (noteId: number) => {
-  const apiUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/notes/${noteId}/hearts`
-  const token = getCookie('access_token')
-  const config = { headers: { Authorization: `Bearer ${token}` } }
+const likeApi = async (noteId: string) => {
+  const apiUrl = `/api/notes/${noteId}/hearts`
 
-  return axios.post(apiUrl, null, config).then((response) => {
-    console.log('like 응답', response)
+  try {
+    const response = await axiosAuthApi().post(apiUrl)
     return response
-  })
+  } catch (error) {
+    throw error
+  }
 }
 
-export default likeAxios
+export default likeApi

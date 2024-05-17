@@ -1,56 +1,84 @@
+import { useRouter } from 'next/router'
+import { SimpleButton } from '../Buttons/Button'
+import TierImg from '../Tier'
 import styles from './QuestionList.module.scss'
-import Image from 'next/image'
-import Link from 'next/link'
 
 interface QuestionListProps {
+  id: number
   title: string
-  category: string
-  tier: string
-  src: string
-  type: string
+  tier: number
+  tags: string[]
+  complete: string
   time: string
 }
 
 const QuestionList = ({
+  id,
   title,
-  category,
   tier,
-  src,
-  type,
+  tags,
+  complete,
   time,
 }: QuestionListProps) => {
+  const router = useRouter()
+  const handleWriteNote = () => {
+    const problemId = id
+    router.push({
+      pathname: '/writenote',
+      query: { id: problemId, title },
+    })
+  }
+
   return (
     <div>
       <div className={styles.wrapper}>
         <div className={styles.level}>
-          <Image
-            src={`/images/tier/${category}/${tier}.png`} // 이미지 경로
-            alt="logo"
-            width={20}
-            height={16}
-          />
+          <TierImg tier={tier} />
         </div>
         <div className={styles.questionNumber}>
-          <p>1333</p>
+          <p>{id}</p>
         </div>
         <div className={styles.title}>
-          <Link href={`/${src}`}>
-            <p>{title}</p>
-          </Link>
+          <p>{title}</p>
         </div>
         <div className={styles.type}>
-          <p>{type}</p>
+          <p>#{tags.join(' #')}</p>
         </div>
         <div className={styles.summitDate}>
           <p>{time}</p>
         </div>
         <div className={styles.writeNote}>
-          <Image
-            src="/images/checked.png" // 이미지 경로
-            alt="checked-button"
-            width={16}
-            height={16}
-          />
+          {complete === 'NOT_YET' ? (
+            <SimpleButton
+              text="노트 작성하기"
+              onClick={handleWriteNote}
+              style={{
+                background: '#ffffff',
+                border: '1.3px solid #3c87fe',
+                color: '#3c87fe',
+                fontSize: '0.9rem',
+                fontFamily: 'Pretendard',
+                width: '6.7rem',
+                height: '2.2rem',
+                borderRadius: '8px',
+                fontWeight: '500',
+              }}
+            />
+          ) : (
+            <SimpleButton
+              text="노트 보러가기"
+              onClick={handleWriteNote}
+              style={{
+                border: 'none',
+                fontSize: '0.9rem',
+                fontFamily: 'Pretendard',
+                width: '6.7rem',
+                height: '2.2rem',
+                borderRadius: '8px',
+                fontWeight: '500',
+              }}
+            />
+          )}
         </div>
       </div>
       <hr className={styles.bottomHr} />

@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { getCookie } from '@/utils/cookie'
+import { axiosAuthApi } from '@/utils/instance'
 
 const bookmarkListApi = async () => {
   const memberId = getCookie('memberId')
@@ -16,4 +17,15 @@ const bookmarkListApi = async () => {
     })
 }
 
-export default bookmarkListApi
+const bookmarkButtonApi = async (noteId: string) => {
+  const apiUrl = `/api/notes/${noteId}/bookmarks`
+
+  try {
+    const response = await axiosAuthApi().post(apiUrl)
+    return response
+  } catch (error) {
+    throw error
+  }
+}
+
+export { bookmarkListApi, bookmarkButtonApi }

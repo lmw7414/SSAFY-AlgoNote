@@ -1,7 +1,14 @@
+.submissionButton {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Pretendard';
+}
+
 .wrapper {
   height: 50px;
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
 
   div {
@@ -14,13 +21,13 @@
   }
 
   .number {
-    flex: 0.8;
+    flex: 1.3;
     // background: skyblue;
   }
 
   .result {
     color: var(--blue);
-    flex: 1.5;
+    flex: 1.2;
     // background: greenyellow;
   }
 
@@ -50,4 +57,63 @@
   height: 1px;
   background-color: var(--soft-gray);
   margin: 0;
+}
+
+.codeSection {
+  width: 100%;
+  height: 69vh;
+  padding: 1rem;
+  font-family: 'Pretendard';
+  overflow-y: auto;
+  overflow-x: auto;
+  font-size: 0.9rem;
+  background: var(--soft-gray);
+  border-radius: 1rem;
+}
+
+.codeSection::-webkit-scrollbar {
+  width: 5px; /* 스크롤바의 너비 */
+  height: 5px;
+}
+
+.codeSection::-webkit-scrollbar-track {
+  background: #f1f1f1; /* 스크롤바 트랙의 배경색 */
+}
+
+.codeSection::-webkit-scrollbar-thumb {
+  background: var(--gray); /* 스크롤바 자체의 배경색 */
+  border-radius: 1rem;
+}
+
+.codeSection::-webkit-scrollbar-thumb:hover {
+  background: #555; /* 스크롤바를 호버했을 때의 배경색 */
+}
+
+// .codeSection pre {
+//   overflow-x: auto;
+//   white-space: pre-wrap; /* 줄바꿈 처리 */
+//   word-wrap: break-word; /* 단어 단위로 줄바꿈 처리 */
+// }
+
+// .codeSection code {
+//   max-width: 100%; /* 코드 블록의 최대 너비를 부모 요소에 맞춤 */
+// }
+
+.mySubmission {
+  font-size: 1.4rem;
+  font-weight: 600;
+  padding-bottom: 0.7rem;
+}
+
+.mySubmissionDetail {
+  color: var(--gray);
+  font-size: 0.95rem;
+  font-weight: 500;
+  padding-bottom: 1rem;
+}
+
+.closeButtonSection {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 0.5rem;
 }
