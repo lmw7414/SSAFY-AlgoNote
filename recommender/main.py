@@ -35,7 +35,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/python/recommend/test")
+@app.get("/recommend/test")
 async def test():
     return {"message": "Hello World"}
 
