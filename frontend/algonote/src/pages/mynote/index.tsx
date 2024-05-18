@@ -103,11 +103,25 @@ const MyNote = () => {
 
   return (
     <div className={s.container}>
-      <div className={s.contents}>
-        <div className={s.filterButton}>
-          <FilterSection title="티어" items={tier} itemKey="tier" />
-          <FilterSection title="유형" items={category} itemKey="category" />
+      <div className={s.header}>
+        <div className={s.headerSentence}>
+          <p className={s.headerBold}>
+            내가 작성한 노트를 한 눈에 모아서 살펴보세요
+          </p>
         </div>
+        <div className={s.headerSentence}>
+          <p className={s.contentLight} id="math_theory">
+            작성한 노트가 문제별로 폴더화 돼있어요. 캐러셀을 넘기면 같은 문제에
+            작성한 다른 노트들을 볼 수 있어요.
+          </p>
+        </div>
+      </div>
+      <div className={s.filterButton}>
+        <FilterSection title="티어" items={tier} itemKey="tier" />
+        <FilterSection title="유형" items={category} itemKey="category" />
+      </div>
+      <hr className={s.divide} />
+      <div className={s.contents}>
         <div className={s.folderContainer}>
           {filteredMyNotes &&
             filteredMyNotes.problems.map((problem) => (
