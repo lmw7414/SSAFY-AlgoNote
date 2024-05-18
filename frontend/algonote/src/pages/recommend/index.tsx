@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { Category } from './Category'
+import Category from './Category'
 import s from './recommend.module.scss'
 
 const Recommend = () => {
