@@ -2,10 +2,10 @@
 
 import { useEffect } from 'react'
 import dynamic from 'next/dynamic'
+import styles from './search.module.scss'
 import getFullNote from '@/apis/full-noteAxios'
 import FilterSection from '@/components/commons/Buttons/FilterSection'
 import SearchInput from '@/components/commons/SearchInput'
-import styles from '@/pages/bookmark/bookmark.module.scss'
 import { useSearchResult } from '@/stores/search-store'
 
 // 동적 임포트 설정
