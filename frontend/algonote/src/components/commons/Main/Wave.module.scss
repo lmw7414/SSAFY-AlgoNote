@@ -79,7 +79,7 @@ $highBack: #D0FCFF;
           left: 0;
           // transition: fill, animation 0.5s ease;
           fill: $high;
-          margin-bottom: -0.6px;
+          margin-bottom: -0.65px;
           animation: wave-front 1s infinite linear;
           transition: all 0.3s;
 
@@ -117,7 +117,7 @@ $highBack: #D0FCFF;
           left: 0;
           // transition: fill, animation 0.5s ease;
           fill: $mid;
-          margin-bottom: -0.6px;
+          margin-bottom: -0.65px;
           animation: wave-front 1.2s infinite linear;
           transition: all 0.3s;
 
@@ -155,7 +155,7 @@ $highBack: #D0FCFF;
           left: 0;
           // transition: fill, animation 0.5s ease;
           fill: var(--navy);
-          margin-bottom: -0.6px;
+          margin-bottom: -0.65px;
           animation: wave-front 1.4s infinite linear;
           transition: all 0.3s;
 
@@ -252,6 +252,7 @@ $highBack: #D0FCFF;
       &_front {
         fill: $high;
         animation: wave-front 0.4s infinite linear;
+        margin-bottom: -0.65px;
       }
     }
   }
@@ -266,6 +267,7 @@ $highBack: #D0FCFF;
       &_front {
         fill: $mid;
         animation: wave-front 0.4s infinite linear;
+        margin-bottom: -0.65px;
       }
     }
   }
@@ -281,6 +283,7 @@ $highBack: #D0FCFF;
       &_front {
         fill: var(--navy);
         animation: wave-front 0.4s infinite linear;
+        margin-bottom: -0.65px;
       }
     }
   }
