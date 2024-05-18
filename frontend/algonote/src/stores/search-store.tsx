@@ -10,6 +10,7 @@ interface Notes {
   heartCnt: number
   bookmarked: boolean
   hearted: boolean
+  tags: string[]
 }
 
 interface SearchResultType {
@@ -39,4 +40,5 @@ const useSearchResult = create<SearchResultState>((set) => ({
   resetSearch: () => set({ searchResult: defaultState, isSearched: false }),
 }))
 
-export default useSearchResult
+export type { Notes }
+export { useSearchResult }

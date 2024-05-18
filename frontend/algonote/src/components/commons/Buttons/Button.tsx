@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React from 'react'
 import styles from '@/components/commons/Buttons/Button.module.scss'
 
 export interface SimpleButtonProps {
@@ -18,7 +18,8 @@ const SimpleButton = ({
   style = {},
   isDisabled,
 }: SimpleButtonProps) => {
-  const buttonClass = `${styles.button} ${className ? styles[className] : ' '}`
+  const buttonClass =
+    `${styles.button} ${className ? styles[className] || className : ' '}`.trim()
 
   return (
     <button
@@ -33,24 +34,25 @@ const SimpleButton = ({
   )
 }
 
+export interface FilterButtonProps extends SimpleButtonProps {
+  active: boolean
+}
+
 const FilterButton = ({
   text,
   onClick,
   className,
   style,
-}: SimpleButtonProps) => {
-  const [isClicked, setIsClicked] = useState(false)
-
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    setIsClicked(!isClicked)
-    onClick(e)
-  }
+  active,
+}: FilterButtonProps) => {
+  const activeStyle = active ? ' active' : ''
+  const fullClassName = `${className || ''}${activeStyle}`
 
   return (
     <SimpleButton
       text={text}
-      onClick={handleClick}
-      className={className}
+      onClick={onClick}
+      className={fullClassName}
       style={style}
     />
   )
