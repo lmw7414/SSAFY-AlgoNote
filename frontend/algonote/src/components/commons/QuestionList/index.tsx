@@ -222,15 +222,16 @@ const QuestionList = ({
             <SimpleButton
               text="노트 작성하기"
               onClick={handleWriteNote}
+              className="back"
               style={{
-                background: '#ffffff',
-                border: '1.3px solid #3c87fe',
-                color: '#3c87fe',
+                // background: '#ffffff',
+                border: '1px solid',
+                // color: '#3c87fe',
                 fontSize: '0.9rem',
                 fontFamily: 'Pretendard',
                 width: '6.7rem',
                 height: '2.2rem',
-                borderRadius: '8px',
+                borderRadius: '0.7rem',
                 fontWeight: '500',
               }}
             />
@@ -239,12 +240,12 @@ const QuestionList = ({
               text="노트 보러가기"
               onClick={handleWriteNote}
               style={{
-                border: 'none',
+                // border: 'none',
                 fontSize: '0.9rem',
                 fontFamily: 'Pretendard',
                 width: '6.7rem',
                 height: '2.2rem',
-                borderRadius: '8px',
+                // borderRadius: '8px',
                 fontWeight: '500',
               }}
             />
