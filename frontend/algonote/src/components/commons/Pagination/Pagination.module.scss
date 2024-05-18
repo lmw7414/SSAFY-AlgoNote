@@ -1,6 +1,7 @@
 .wrapper {
   margin: 0 auto;
   display: flex;
+  justify-content: center;
   width: 12rem;
   height: 3rem;
 }
@@ -16,13 +17,5 @@
   button {
     font-size: 0.9rem;
     font-weight: 500;
-  }
-}
-
-.pageBox:first-child {
-  background-color: var(--blue);
-
-  button {
-    color: white;
   }
 }

@@ -29,6 +29,9 @@ const QuestionList = ({
     })
   }
 
+  const handleViewNote = () => {
+    router.push('/mynote')
+  }
   const dictionary: { [key: string]: string } = {
     math_theory: '수학 및 이론',
     graph_theory: '그래프',
@@ -238,7 +241,7 @@ const QuestionList = ({
           ) : (
             <SimpleButton
               text="노트 보러가기"
-              onClick={handleWriteNote}
+              onClick={handleViewNote}
               style={{
                 // border: 'none',
                 fontSize: '0.9rem',

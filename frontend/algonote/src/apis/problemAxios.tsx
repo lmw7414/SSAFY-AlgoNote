@@ -1,10 +1,10 @@
 import { getCookie } from '@/utils/cookie'
 import axios from 'axios'
 
-const getAllMySolvedList = async () => {
+const getAllMySolvedList = async (page?: number) => {
   const token = getCookie('access_token')
   const config = { headers: { Authorization: `Bearer ${token}` } }
-  const apiUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/problems/solved`
+  const apiUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/problems/solved?page=${page}&size=15`
 
   try {
     const response = await axios.get(apiUrl, config)
