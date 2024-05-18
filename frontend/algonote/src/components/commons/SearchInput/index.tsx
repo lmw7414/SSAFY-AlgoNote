@@ -2,14 +2,20 @@ import { useRef } from 'react'
 import Magnifier from '@public/images/magnifier.png'
 import Image from 'next/image'
 import styles from './SearchInput.module.scss'
+import getFullNote from '@/apis/full-noteAxios'
 import getSearchResult from '@/apis/searchAxios'
 import useSearchResult from '@/stores/search-store'
 
 const onSearchResult = async (input: HTMLInputElement | null) => {
+  const { setSearchResult } = useSearchResult.getState()
   if (input) {
-    const { setSearchResult } = useSearchResult.getState()
-    const response = await getSearchResult(input.value, 0) // 인덱스 추후 수정
-    setSearchResult(response)
+    if (input.value === '') {
+      const response = await getFullNote()
+      setSearchResult(response)
+    } else {
+      const response = await getSearchResult(input.value, 0) // 인덱스 추후 수정
+      setSearchResult(response)
+    }
   }
 }
 

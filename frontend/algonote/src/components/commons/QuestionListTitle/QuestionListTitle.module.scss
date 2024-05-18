@@ -1,12 +1,9 @@
 .wrapper {
-  height: 30px;
   display: flex;
-  justify-content: flex-start;
   align-items: center;
 
   div {
-    line-height: 30px;
-    height: 100%;
+    line-height: 2rem;
     text-align: center;
     color: var(--black);
     font-weight: 600;
@@ -14,36 +11,27 @@
   }
 
   .level {
-    flex: 1;
-
-    // background: blue;
+    flex: 0.8;
   }
 
   .questionNumber {
-    flex: 1;
-    // background: skyblue;
+    flex: 0.8;
   }
 
   .title {
     flex: 2.5;
-    // text-align: start;
-    // padding-left: 1em;
-    // background: greenyellow;
   }
 
   .type {
-    flex: 2;
-    // background: yellow;
+    flex: 2.5;
   }
 
   .summitDate {
     flex: 1;
-    // background: antiquewhite;
   }
 
   .writeNote {
     flex: 1;
-    // background: dodgerblue;
   }
 }
 
