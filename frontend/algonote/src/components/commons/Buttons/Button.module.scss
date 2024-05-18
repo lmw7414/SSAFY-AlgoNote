@@ -8,7 +8,7 @@
     height: 3rem;
     font-size: 1rem;
     cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
     background-color: var(--blue);
     color: var(--white);
     
@@ -53,6 +53,12 @@
             border-color: #EAEFF6;      // 동일한 테두리 색을 유지
         }
     }
+
+    &.searchactive{
+        border-top-left-radius: 0;
+        border-color: var(--blue);
+        background-color: var(--blue);
+    };
   }
   
 
