@@ -77,20 +77,18 @@ const Notes = () => {
   useEffect(() => {
     if (categories.length === 0 && tiers.length === 0) {
       setFilteredBookmarks(bookmarks)
-    } else {
+    } else if (tiers.length === 0) {
       const tagFilteredNotes = tagFiltering(bookmarks, categories)
       setFilteredBookmarks(tagFilteredNotes)
-    }
-  }, [categories])
-
-  useEffect(() => {
-    if (categories.length === 0 && tiers.length === 0) {
-      setFilteredBookmarks(bookmarks)
-    } else {
+    } else if (categories.length === 0) {
       const tierFilteredNotes = tierFiltering(bookmarks, tiers)
       setFilteredBookmarks(tierFilteredNotes)
+    } else {
+      const tagFilteredNotes = tagFiltering(bookmarks, categories)
+      const tierFilteredNotes = tierFiltering(tagFilteredNotes, tiers)
+      setFilteredBookmarks(tierFilteredNotes)
     }
-  }, [tiers])
+  }, [tiers, categories, bookmarks])
 
   return (
     <div className={styles.frame}>
