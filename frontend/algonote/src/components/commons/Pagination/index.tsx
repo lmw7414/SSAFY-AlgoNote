@@ -49,10 +49,10 @@ const PageButton = ({
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     const clickedPageNumber = parseInt(e.currentTarget.value, 10)
-    setPageNumber(() => clickedPageNumber)
-    setSelectedPage(() => clickedPageNumber)
-    getAllMySolvedList(clickedPageNumber).then((res) => {
-      setMySolvedList(() => res)
+    setPageNumber(clickedPageNumber)
+    setSelectedPage(clickedPageNumber)
+    getAllMySolvedList(clickedPageNumber - 1).then((res) => {
+      setMySolvedList(res)
     })
   }
 
@@ -80,7 +80,10 @@ const Pagination = ({
 
   useEffect(() => {
     setSelectedPage(pageNumber)
-  }, [pageNumber])
+    getAllMySolvedList(pageNumber).then((res) => {
+      setMySolvedList(res)
+    })
+  }, [pageNumber, setMySolvedList])
 
   const pageNumbers = Array.from(
     { length: Math.min(pageQuantity, 3) },
