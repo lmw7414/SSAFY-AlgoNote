@@ -24,14 +24,14 @@ const SolvedProblems = () => {
   const currentDate = new Date()
   const [mySolvedList, setMySolvedList] = useState<ProblemData[]>([])
   useEffect(() => {
-    getAllMySolvedList().then((res) => {
+    getAllMySolvedList(page - 1).then((res) => {
       console.log('mySolvedList: ', res)
-      console.log('pageNumber: ', 0)
+      console.log('pageNumber: ', page)
 
-      setMySolvedList(() => res)
-      setPageQuantity(() => mySolvedList.length / 15 + 1) // 한 페이지 당 15개의 문제 리스트
+      setMySolvedList(res)
+      setPageQuantity(Math.ceil(res.length / 15 + 1)) // 한 페이지 당 15개의 문제 리스트
     })
-  }, [mySolvedList.length])
+  }, [page]) // 페이지 번호가 변경될 때마다 실행
 
   return (
     <div className={s.main}>
