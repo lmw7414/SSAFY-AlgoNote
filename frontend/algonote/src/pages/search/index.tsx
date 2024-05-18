@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react'
 import dynamic from 'next/dynamic'
+import getFullNote from '@/apis/full-noteAxios'
 import { FilterButton } from '@/components/commons/Buttons/Button'
 import SearchInput from '@/components/commons/SearchInput'
 import styles from '@/pages/bookmark/bookmark.module.scss'
@@ -47,10 +48,16 @@ const FilterSection = ({ title, items, itemKey }: FilterSectionProps) => {
 }
 
 const NoteSearch = () => {
-  const { resetSearch } = useSearchResult()
+  const { resetSearch, setSearchResult } = useSearchResult()
 
   useEffect(() => {
     resetSearch()
+    const fetchData = async () => {
+      const response = await getFullNote()
+      setSearchResult(response)
+    }
+
+    fetchData()
   }, [])
 
   return (
