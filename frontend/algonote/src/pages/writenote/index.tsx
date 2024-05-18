@@ -122,8 +122,15 @@ const WriteNote = () => {
   }
 
   const handleClickButton = () => {
-    registNote(Number(id), title, content)
-    router.push('/mynote')
+    console.log('노트 저장 버튼 클릭')
+
+    registNote(Number(id), title, content).then((res) => {
+      if (res === 'success') {
+        router.push('/mynote')
+      } else {
+        alert('제목 또는 내용을 입력해주세요')
+      }
+    })
   }
 
   const handleTempSave = () => {
