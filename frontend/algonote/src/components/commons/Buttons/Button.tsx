@@ -45,7 +45,7 @@ const FilterButton = ({
   style,
   active,
 }: FilterButtonProps) => {
-  const activeStyle = active ? ' active' : ''
+  const activeStyle = active ? 'active' : ''
   const fullClassName = `${className || ''}${activeStyle}`
 
   return (
