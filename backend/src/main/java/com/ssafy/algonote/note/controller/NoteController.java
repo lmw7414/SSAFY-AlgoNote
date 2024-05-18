@@ -104,6 +104,18 @@ public class NoteController {
     }
 
     @Operation(
+            summary="문제 번호로 사용자가 작성한 노트 전부 조회"
+    )
+    @GetMapping("/problem/{problemId}")
+    public ResponseEntity<List<NoteResDto>> getNotesByProblem(@PathVariable Long problemId) {
+        Long memberId = SecurityUtil.getMemberId();
+        log.info("memberId: {}, problemId : {}", memberId, problemId);
+        List<Note> notes = noteService.getNotesByProblem(memberId, problemId);
+
+        return ResponseEntity.ok(notes.stream().map(NoteResDto::of).toList());
+    }
+
+    @Operation(
             summary = "사용자가 작성한 노트 조회",
             description = "노트 상세조회 이전 단계로 문제별로 그루핑하여 문제안의 노트들을 모두 전달한다."
     )

@@ -15,4 +15,6 @@ public interface NoteRepository extends JpaRepository<Note, Long> {
 
     // 문제 id로 노트 조회
     List<Note> findByProblemId(Long problemId);
+
+    List<Note> findByMember_IdAndProblem_Id(Long memberId, Long problemId);
 }

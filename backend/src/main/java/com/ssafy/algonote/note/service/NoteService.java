@@ -131,6 +131,10 @@ public class NoteService {
         return parseSearchHits(noteHits);
     }
 
+    public List<Note> getNotesByProblem(Long memberId, Long problemId) {
+        return noteRepository.findByMember_IdAndProblem_Id(memberId, problemId);
+    }
+
     private SearchHits<NoteDocument> searchNoteDocument(String keyword, int page) {
 
 //        MatchQuery problemIdMatch = MatchQuery.of(m -> m.field("problemId").query(keyword));
