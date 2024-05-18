@@ -1,6 +1,15 @@
 import { getCookie } from '@/utils/cookie'
 import { axiosAuthApi } from '@/utils/instance'
 
+const decodeHtmlEntities = (str: string) => {
+  const parser = new DOMParser()
+  const decodedString = parser.parseFromString(
+    `<!doctype html><body>${str}`,
+    'text/html',
+  ).body.textContent
+  return decodedString
+}
+
 // 노트 등록 (현재 임시 문제 번호값 넣어놓은 상태 )
 const registNote = async (
   problemId: number,
@@ -8,7 +17,13 @@ const registNote = async (
   content: string,
 ) => {
   try {
-    if (title !== '' || content !== '') {
+    const decodedTitle = decodeHtmlEntities(title)
+    const decodedContent = decodeHtmlEntities(content)
+
+    console.log('decodedTitle:', decodedTitle)
+    console.log('decodedContent:', decodedContent)
+
+    if (decodedTitle?.trim() !== '' || decodedContent?.trim() !== '') {
       await axiosAuthApi()
         .post(`/api/notes`, {
           problemId,
