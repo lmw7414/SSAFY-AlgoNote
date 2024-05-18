@@ -44,7 +44,7 @@ const TierImg = ({ tier }: TierImgProps) => {
         src={`/images/tier/${folder}/${folder}${file}.png`}
         alt={`문제레벨${folder}${file}`}
         width={20}
-        height={16}
+        height={15.35}
       />
     </div>
   )
