@@ -167,30 +167,25 @@ const User = () => {
       </div>
       <div className={style.nickname}>
         {isChangeClicked ? (
-          <>
-            <div className={style.nicknameContainer}>
-              <input
-                type="text"
-                defaultValue={userDetails.nickname}
-                onChange={(e) => setNickName(e.target.value)}
-                maxLength={14}
-                className={style.input}
-              />
-              <SimpleButton
-                text="변경"
-                onClick={nicknameCheck}
-                isDisabled={nicknameState.status}
-                style={{
-                  width: '6rem',
-                  height: '2.5rem',
-                  marginLeft: '0.5rem',
-                }}
-              />
-            </div>
-            <div className={style.nicknameValue}>
-              {nicknameState.value && <div>{nicknameState.value}</div>}
-            </div>
-          </>
+          <div className={style.nicknameContainer}>
+            <input
+              type="text"
+              defaultValue={userDetails.nickname}
+              onChange={(e) => setNickName(e.target.value)}
+              maxLength={14}
+              className={style.input}
+            />
+            <SimpleButton
+              text="변경"
+              onClick={nicknameCheck}
+              isDisabled={nicknameState.status}
+              style={{
+                width: '6rem',
+                height: '2.5rem',
+                marginLeft: '0.5rem',
+              }}
+            />
+          </div>
         ) : (
           <div className={style.nameContainer}>
             <p className={style.name}>{userDetails.nickname} </p>
@@ -203,6 +198,9 @@ const User = () => {
             />
           </div>
         )}
+        <div className={style.nicknameValue}>
+          {isChangeClicked ? nicknameState.value : ''}
+        </div>
       </div>
     </div>
   )

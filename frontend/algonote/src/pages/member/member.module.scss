@@ -22,7 +22,7 @@
     position: absolute;
     background-color: var(--black); /* 버튼 배경색 */
     color: #fff; /* 버튼 글자색 */
-    bottom: 13rem; 
+    bottom: 13.5rem; 
     left: 54%;
     transform: translateX(-50%);
     border: none;
@@ -65,14 +65,17 @@
         color: var(--blue);
     }
 
-    .nicknameValue{
+    .nicknameValue {
         margin-top: 0.2rem;
         font-size: 1rem;
-        color:var(--red);
-        min-height: 2rem;
+        color: var(--red);
+        min-height: 2rem; /* 기본 높이 설정 */
     }
 
+
+
     .nameContainer{
+        margin-top: 0.2rem;
         display: flex;
         justify-content: center; /* 가로 중앙 정렬 */
         align-items: center;
