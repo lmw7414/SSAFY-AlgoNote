@@ -57,6 +57,7 @@ export default function App() {
   const handleContent = (val: string) => {
     console.log('입력값: ', val)
 
+    // 상태 업데이트를 동기적으로 처리
     updateTab(curSelectedIdx, {
       title: currentTab?.title ?? '',
       content: val,
@@ -70,8 +71,8 @@ export default function App() {
   return (
     <MDXEditor
       key={curSelectedIdx}
-      onChange={(e) => {
-        handleContent(e)
+      onChange={(val) => {
+        handleContent(val)
       }}
       placeholder="당신의 풀이를 기록해보세요..."
       markdown={

@@ -1,6 +1,15 @@
 import { getCookie } from '@/utils/cookie'
 import { axiosAuthApi } from '@/utils/instance'
 
+const decodeHtmlEntities = (str: string) => {
+  const parser = new DOMParser()
+  const decodedString = parser.parseFromString(
+    `<!doctype html><body>${str}`,
+    'text/html',
+  ).body.textContent
+  return decodedString
+}
+
 // 노트 등록 (현재 임시 문제 번호값 넣어놓은 상태 )
 const registNote = async (
   problemId: number,
@@ -8,24 +17,35 @@ const registNote = async (
   content: string,
 ) => {
   try {
-    await axiosAuthApi()
-      .post(`/api/notes`, {
-        problemId,
-        title,
-        content,
-      })
-      .then((res) => {
-        if (res.status === 200) {
-          console.log('노트 저장 성공')
+    const decodedTitle = decodeHtmlEntities(title)
+    const decodedContent = decodeHtmlEntities(content)
 
-          return res.data
-        }
-        console.log('노트 저장 실패')
-        return 'fail'
-      })
+    console.log('decodedTitle:', decodedTitle)
+    console.log('decodedContent:', decodedContent)
+
+    if (decodedTitle?.trim() !== '' || decodedContent?.trim() !== '') {
+      await axiosAuthApi()
+        .post(`/api/notes`, {
+          problemId,
+          title,
+          content,
+        })
+        .then((res) => {
+          if (res.status === 200) {
+            console.log('노트 저장 성공')
+
+            return 'success'
+          }
+          console.log('노트 저장 실패')
+          return 'fail'
+        })
+    } else {
+      console.log('제목 또는 내용 입력 안함')
+    }
   } catch (e) {
     console.log(e)
   }
+  return 'fail'
 }
 
 const tempRegistNote = async (
