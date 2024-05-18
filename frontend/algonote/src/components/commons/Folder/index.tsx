@@ -12,13 +12,13 @@ interface Notes {
 }
 
 interface FolderProps {
-  tier: string
+  tier: number
   problemId: number
   problemTitle: string
   notes: Notes[]
 }
 const Folder = ({ tier, problemId, problemTitle, notes }: FolderProps) => {
-  const newTier = parseInt(tier, 10)
+  const newTier = tier
   return (
     <div className={s.wrapper}>
       <div className={s.tierContainer}>
