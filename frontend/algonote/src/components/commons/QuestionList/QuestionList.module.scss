@@ -1,51 +1,42 @@
 .wrapper {
-  height: 36px;
+  height: 2.2rem;
   display: flex;
-  justify-content: flex-start;
   align-items: center;
+  text-align: center;
 
   div {
-    line-height: 36px;
-    height: 100%;
-    text-align: center;
     font-weight: 400;
     font-size: 15px;
     color: var(--black);
   }
 
   .level {
-    flex: 1;
-
-    // background: blue;
+    flex: 0.8;
   }
 
   .questionNumber {
-    flex: 1;
-    // background: skyblue;
+    flex: 0.8;
   }
 
   .title {
     flex: 2.5;
     text-align: start;
     padding-left: 1em;
-    // background: greenyellow;
   }
 
   .type {
-    flex: 2;
+    flex: 2.5;
     color: var(--gray);
-    // background: yellow;
+    padding: 0.4rem;
   }
 
   .summitDate {
     flex: 1;
-    // background: antiquewhite;
   }
 
   .writeNote {
     flex: 1;
     line-height: 42px;
-    // background: dodgerblue;
   }
 
   a {
