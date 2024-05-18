@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import s from './solvedproblems.module.scss'
 import { getAllMySolvedList } from '@/apis/problemAxios'
+import Pagination from '@/components/commons/Pagination'
 import QuestionList from '@/components/commons/QuestionList'
 import QuestionListTitle from '@/components/commons/QuestionListTitle'
 
@@ -18,17 +19,19 @@ interface ProblemData {
 }
 
 const SolvedProblems = () => {
+  const [page, setPage] = useState(1)
+  const [pageQuantity, setPageQuantity] = useState(4)
   const currentDate = new Date()
   const [mySolvedList, setMySolvedList] = useState<ProblemData[]>([])
-  // const { setSelectedNoteData } = useNoteStore()
-
   useEffect(() => {
     getAllMySolvedList().then((res) => {
       console.log('mySolvedList: ', res)
-      setMySolvedList(res)
-      // setSelectedNoteData(null)
+      console.log('pageNumber: ', 0)
+
+      setMySolvedList(() => res)
+      setPageQuantity(() => mySolvedList.length / 15 + 1) // 한 페이지 당 15개의 문제 리스트
     })
-  }, [])
+  }, [mySolvedList.length])
 
   return (
     <div className={s.main}>
@@ -85,6 +88,14 @@ const SolvedProblems = () => {
             </div>
           )
         })}
+      </div>
+      <div className={s.pagination}>
+        <Pagination
+          pageNumber={page}
+          setPageNumber={setPage}
+          pageQuantity={pageQuantity}
+          setMySolvedList={setMySolvedList}
+        />
       </div>
     </div>
   )

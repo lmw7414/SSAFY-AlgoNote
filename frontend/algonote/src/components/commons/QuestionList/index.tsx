@@ -29,6 +29,10 @@ const QuestionList = ({
     })
   }
 
+  const handleViewNote = () => {
+    router.push('/mynote')
+  }
+
   return (
     <div>
       <div className={styles.wrapper}>
@@ -67,7 +71,7 @@ const QuestionList = ({
           ) : (
             <SimpleButton
               text="노트 보러가기"
-              onClick={handleWriteNote}
+              onClick={handleViewNote}
               style={{
                 border: 'none',
                 fontSize: '0.9rem',
