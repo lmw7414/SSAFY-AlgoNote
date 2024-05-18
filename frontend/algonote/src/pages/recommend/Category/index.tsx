@@ -211,4 +211,5 @@ const Category = ({ categoryName }: CategoryProps) => {
   )
 }
 
-export { dictionary, category, Category }
+export { dictionary, category }
+export default Category
