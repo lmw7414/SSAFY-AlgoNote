@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface NoteRepository extends JpaRepository<Note, Long> {
+public interface NoteRepository extends JpaRepository<Note, Long>, NoteCustomRepository {
 
     // 멤버가 작성한 노트 조회
     List<Note> findByMember(Member member);
