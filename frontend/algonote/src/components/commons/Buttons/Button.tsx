@@ -48,6 +48,8 @@ const FilterButton = ({
   const activeStyle = active ? ' active' : ''
   const fullClassName = `${className || ''}${activeStyle}`
 
+  console.log('fullClassName', fullClassName)
+
   return (
     <SimpleButton
       text={text}
