@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { FilterButton } from './Button'
 import style from './FilterSection.module.scss'
+import { dictionary, category } from '@/pages/recommend/Category'
 import useFilterStore from '@/stores/filter-store'
 
 interface FilterSectionProps {
@@ -9,25 +10,13 @@ interface FilterSectionProps {
   itemKey: string
 }
 
-type Category =
-  | '구현'
-  | '수학 및 이론'
-  | '문자열'
-  | '그래프'
-  | '전략 및 최적화'
-  | '자료구조'
-
-type CategoryMapping = {
-  [key in Category]: string
-}
-
-const categoryMapping: CategoryMapping = {
-  구현: 'implementation',
-  '수학 및 이론': 'math_theory',
-  문자열: 'string',
-  그래프: 'graph_theory',
-  '전략 및 최적화': 'optimization',
-  자료구조: 'data_structure',
+const getKeyByValue = <T extends object>(
+  obj: T,
+  value: string,
+): keyof T | undefined => {
+  return Object.keys(obj).find((key) => obj[key as keyof T] === value) as
+    | keyof T
+    | undefined
 }
 
 const FilterSection = ({ title, items, itemKey }: FilterSectionProps) => {
@@ -39,18 +28,18 @@ const FilterSection = ({ title, items, itemKey }: FilterSectionProps) => {
     resetFilter()
   }, [])
 
-  const toggleFilter = (item: Category, key: string) => {
-    // 매핑 함수 (카테고리일때만)
-    if(key===)
-    const engCategory = categoryMapping[item]
-
+  const toggleFilter = (item: string | string, key: string) => {
     if (activeFilters.includes(item)) {
       // 활성화 상태이면 비활성화, 전역 데이터에서 제거
       setActiveFilters(activeFilters.filter((filter) => filter !== item))
       if (key === 'tier') {
         deleteTier(item)
       } else if (key === 'category') {
-        deleteCategory(item)
+        const engCategory = getKeyByValue(dictionary, item) // 카테고리만 영어로 매핑 후 사용
+        if (engCategory) {
+          const subCategory = category[engCategory]
+          deleteCategory(subCategory)
+        }
       }
     } else {
       // 전역 데이터에 추가 (아이템키는 tier or category)
@@ -58,7 +47,11 @@ const FilterSection = ({ title, items, itemKey }: FilterSectionProps) => {
       if (key === 'tier') {
         addTier(item)
       } else if (key === 'category') {
-        addCategory(item)
+        const engCategory = getKeyByValue(dictionary, item)
+        if (engCategory) {
+          const subCategory = category[engCategory]
+          addCategory(subCategory)
+        }
       }
     }
   }

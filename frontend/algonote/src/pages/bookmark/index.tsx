@@ -6,7 +6,7 @@ import Notes from '@/components/commons/Bookmark/Note'
 import ResultNote from '@/components/commons/Bookmark/ResultNote'
 import FilterSection from '@/components/commons/Buttons/FilterSection'
 import SearchInput from '@/components/commons/SearchInput'
-import useSearchResult from '@/stores/search-store'
+import { useSearchResult } from '@/stores/search-store'
 
 const tier = ['브론즈', '실버', '골드', '플레티넘', '다이아', '루비']
 const category = [

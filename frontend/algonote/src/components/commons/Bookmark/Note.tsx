@@ -3,6 +3,7 @@ import { NextRouter, useRouter } from 'next/router'
 import styles from './Note.module.scss'
 import { bookmarkListApi } from '@/apis/bookmarkAxios'
 import TierImg from '@/components/commons/Tier'
+import useFilterStore from '@/stores/filter-store'
 
 interface Note {
   id: number
@@ -14,6 +15,7 @@ interface Problem {
   id: number
   title: string
   tier: number
+  tags: string[]
 }
 
 interface Member {
@@ -41,8 +43,16 @@ export const handleKeyPress = (
   }
 }
 
+const tagFiltering = (bookmarks: Bookmark[], compareCategory: string[]) => {
+  return bookmarks.filter((note) =>
+    note.problem.tags.some((tag) => compareCategory.includes(tag)),
+  )
+}
+
 const Notes = () => {
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([])
+  const [filteredBookmarks, setFilteredBookmarks] = useState<Bookmark[]>([])
+  const { categories } = useFilterStore()
 
   const router = useRouter()
 
@@ -51,6 +61,7 @@ const Notes = () => {
       try {
         const response = await bookmarkListApi()
         setBookmarks(response.data)
+        setFilteredBookmarks(response.data)
       } catch (err) {
         console.log(err)
       }
@@ -59,9 +70,18 @@ const Notes = () => {
     fetchBookmarks()
   }, [])
 
+  useEffect(() => {
+    if (categories.length === 0) {
+      setFilteredBookmarks(bookmarks)
+    } else {
+      const filteredNotes = tagFiltering(bookmarks, categories)
+      setFilteredBookmarks(filteredNotes)
+    }
+  }, [categories])
+
   return (
     <div className={styles.frame}>
-      {bookmarks.map((it, index: number) => {
+      {filteredBookmarks.map((it, index: number) => {
         const key = `${it.problem.title}-${index}`
 
         return (

@@ -6,7 +6,7 @@ import getFullNote from '@/apis/full-noteAxios'
 import FilterSection from '@/components/commons/Buttons/FilterSection'
 import SearchInput from '@/components/commons/SearchInput'
 import styles from '@/pages/bookmark/bookmark.module.scss'
-import useSearchResult from '@/stores/search-store'
+import { useSearchResult } from '@/stores/search-store'
 
 // 동적 임포트 설정
 const DynamicResultNote = dynamic(
