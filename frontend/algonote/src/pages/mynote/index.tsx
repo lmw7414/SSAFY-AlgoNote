@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import s from './mynote.module.scss'
 import getMyNote from '@/apis/mynote'
+import FilterSection from '@/components/commons/Buttons/FilterSection'
 import Folder from '@/components/commons/Folder'
 
 interface Notes {
@@ -32,6 +33,16 @@ interface ProblemData {
   problems: Problems[]
 }
 
+const tier = ['브론즈', '실버', '골드', '플레티넘', '다이아', '루비']
+const category = [
+  '구현',
+  '문자열',
+  '그래프',
+  '수학 및 이론',
+  '전략 및 최적화',
+  '자료구조',
+]
+
 const MyNote = () => {
   const [myNotes, setMyNotes] = useState<ProblemData>()
 
@@ -49,6 +60,10 @@ const MyNote = () => {
   return (
     <div className={s.container}>
       <div className={s.contents}>
+        <div className={s.filterButton}>
+          <FilterSection title="티어" items={tier} itemKey="tier" />
+          <FilterSection title="유형" items={category} itemKey="category" />
+        </div>
         <div className={s.folderContainer}>
           {myNotes &&
             myNotes.problems.map((problem) => (

@@ -66,8 +66,8 @@ const Notes = () => {
         const response = await bookmarkListApi()
         setBookmarks(response.data)
         setFilteredBookmarks(response.data)
-      } catch (err) {
-        console.log(err)
+      } catch (error) {
+        throw error
       }
     }
 
