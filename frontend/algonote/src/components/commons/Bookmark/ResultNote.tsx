@@ -3,19 +3,40 @@
 import redHeart from '@public/images/redHeart.svg'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
+import type { Notes } from '@/stores/search-store'
 import { handleDetailNote, handleKeyPress } from './Note'
 import styles from './Note.module.scss'
 import TierImg from '@/components/commons/Tier'
-import useSearchResult from '@/stores/search-store'
+import useFilterStore from '@/stores/filter-store'
+import { useSearchResult } from '@/stores/search-store'
+
+const tagFiltering = (filteredNotes: Notes[], compareCategory: string[]) => {
+  return filteredNotes.filter((note) =>
+    note.tags.some((tag) => compareCategory.includes(tag)),
+  )
+}
+
+const tierFiltering = (filteredNotes: Notes[], tiers: number[]) => {
+  return filteredNotes.filter((note) => tiers.includes(note.problemTier))
+}
 
 const ResultNote = () => {
   const { searchResult, isSearched } = useSearchResult()
+  const { tiers, categories } = useFilterStore()
   const router = useRouter()
 
-  const filteredNotes =
+  let filteredNotes =
     router.asPath === '/bookmark'
       ? searchResult.notes.filter((it) => it.bookmarked)
       : searchResult.notes
+
+  // 필터링 버튼으로 한번 더 필터링
+  if (categories.length !== 0) {
+    filteredNotes = tagFiltering(filteredNotes, categories)
+  }
+  if (tiers.length !== 0) {
+    filteredNotes = tierFiltering(filteredNotes, tiers)
+  }
 
   return (
     <div className={styles.frame}>

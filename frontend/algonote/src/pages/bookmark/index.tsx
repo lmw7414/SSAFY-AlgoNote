@@ -4,40 +4,19 @@ import { useEffect } from 'react'
 import style from './bookmark.module.scss'
 import Notes from '@/components/commons/Bookmark/Note'
 import ResultNote from '@/components/commons/Bookmark/ResultNote'
-import { FilterButton } from '@/components/commons/Buttons/Button'
+import FilterSection from '@/components/commons/Buttons/FilterSection'
 import SearchInput from '@/components/commons/SearchInput'
-import useSearchResult from '@/stores/search-store'
+import { useSearchResult } from '@/stores/search-store'
 
-interface FilterSectionProps {
-  title: string
-  items: string[]
-  itemKey: string
-}
-
-const tier = ['브론즈', '실버', '골드', '플레티넘', '다이아', '루비'] //
-const category = ['구현', '그리디', '그래프', '플래티넘', 'DP', '자료구조'] // note.title
-
-const FilterSection = ({ title, items, itemKey }: FilterSectionProps) => {
-  return (
-    <div className={style.bookmark}>
-      <div>{title}</div>
-      <div className={style.filterButton}>
-        {items.map((it, index) => {
-          const tierKey = `${itemKey}-${index}`
-          return (
-            <div key={tierKey}>
-              <FilterButton
-                text={it}
-                onClick={() => console.log('눌렸음')}
-                className="search"
-              />
-            </div>
-          )
-        })}
-      </div>
-    </div>
-  )
-}
+const tier = ['브론즈', '실버', '골드', '플레티넘', '다이아', '루비']
+const category = [
+  '구현',
+  '문자열',
+  '그래프',
+  '수학 및 이론',
+  '전략 및 최적화',
+  '자료구조',
+]
 
 const Bookmark = () => {
   const { isSearched, resetSearch } = useSearchResult()
