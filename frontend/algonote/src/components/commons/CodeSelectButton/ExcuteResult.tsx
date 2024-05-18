@@ -64,6 +64,8 @@ const ExecuteResult = ({
   }, [inputData, expectedOutput, codes])
 
   const handleCodeExecute = async () => {
+    setInputValue({ isDisabled: true, alertText: '코드 분석 중입니다' })
+
     try {
       const results = await Promise.all(
         codes.map((code) =>
@@ -82,6 +84,8 @@ const ExecuteResult = ({
       setComplexityResult(results.map((result) => result[1]))
     } catch (error) {
       console.error('API 호출 중 오류 발생:', error)
+    } finally {
+      setInputValue({ isDisabled: false, alertText: '' })
     }
   }
 
@@ -120,21 +124,23 @@ const ExecuteResult = ({
                   <p>
                     <strong>실행 시간 | </strong>
                     {result.executionTime !== null
-                      ? JSON.stringify(result.executionTime)
+                      ? `${Math.round(result.executionTime)} ms`
                       : '계산 불가'}
                   </p>
                   <p>
                     <strong>메모리 | </strong>
                     {result.memoryUsage !== null
-                      ? JSON.stringify(result.memoryUsage)
+                      ? `${Math.round(result.memoryUsage)} kb`
                       : '계산 불가'}
                   </p>
                 </div>
                 <div>
                   <p>
+                    <strong>시간복잡도 | </strong>
                     {JSON.stringify(complexityResult[index].timeComplexity)}
                   </p>
                   <p>
+                    <strong>공간복잡도 | </strong>
                     {JSON.stringify(complexityResult[index].spaceComplexity)}
                   </p>
                 </div>
