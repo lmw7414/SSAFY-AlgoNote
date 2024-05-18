@@ -135,6 +135,10 @@ public class NoteService {
         return parseSearchHits(noteHits);
     }
 
+    public List<Note> getNotesByProblem(Long memberId, Long problemId) {
+        return noteRepository.findByMember_IdAndProblem_Id(memberId, problemId);
+    }
+    
     public List<NoteSearchDto> getAllNotes(Pageable pageable){
 //        MatchAllQuery matchAllQuery = matchAllQuery();
 //        Query query = createQuery(List.of(matchAllQuery._toQuery()));
