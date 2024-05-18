@@ -10,7 +10,7 @@ const TierImg = ({ tier }: TierImgProps) => {
   let file
 
   switch (true) {
-    case tier <= 5:
+    case tier <= 5 && tier > 0:
       folder = 'bronze'
       file = 6 - tier
       break

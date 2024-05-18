@@ -49,10 +49,14 @@ const tagFiltering = (bookmarks: Bookmark[], compareCategory: string[]) => {
   )
 }
 
+const tierFiltering = (filteredNotes: Bookmark[], tiers: number[]) => {
+  return filteredNotes.filter((note) => tiers.includes(note.problem.tier))
+}
+
 const Notes = () => {
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([])
   const [filteredBookmarks, setFilteredBookmarks] = useState<Bookmark[]>([])
-  const { categories } = useFilterStore()
+  const { tiers, categories } = useFilterStore()
 
   const router = useRouter()
 
@@ -71,13 +75,22 @@ const Notes = () => {
   }, [])
 
   useEffect(() => {
-    if (categories.length === 0) {
+    if (categories.length === 0 && tiers.length === 0) {
       setFilteredBookmarks(bookmarks)
     } else {
-      const filteredNotes = tagFiltering(bookmarks, categories)
-      setFilteredBookmarks(filteredNotes)
+      const tagFilteredNotes = tagFiltering(bookmarks, categories)
+      setFilteredBookmarks(tagFilteredNotes)
     }
   }, [categories])
+
+  useEffect(() => {
+    if (categories.length === 0 && tiers.length === 0) {
+      setFilteredBookmarks(bookmarks)
+    } else {
+      const tierFilteredNotes = tierFiltering(bookmarks, tiers)
+      setFilteredBookmarks(tierFilteredNotes)
+    }
+  }, [tiers])
 
   return (
     <div className={styles.frame}>

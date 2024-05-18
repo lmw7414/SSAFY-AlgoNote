@@ -19,6 +19,28 @@ const getKeyByValue = <T extends object>(
     | undefined
 }
 
+const getTierRange = (tier: string) => {
+  if (tier === '브론즈') {
+    return [1, 2, 3, 4, 5]
+  }
+  if (tier === '실버') {
+    return [6, 7, 8, 9, 10]
+  }
+  if (tier === '골드') {
+    return [11, 12, 13, 14, 15]
+  }
+  if (tier === '플레티넘') {
+    return [16, 17, 18, 19, 20]
+  }
+  if (tier === '다이아') {
+    return [20, 21, 22, 23, 24, 25]
+  }
+  if (tier === '루비') {
+    return [26, 27, 28, 29, 30]
+  }
+  return [0]
+}
+
 const FilterSection = ({ title, items, itemKey }: FilterSectionProps) => {
   const [activeFilters, setActiveFilters] = useState<string[]>([])
   const { addTier, addCategory, deleteTier, deleteCategory, resetFilter } =
@@ -33,7 +55,8 @@ const FilterSection = ({ title, items, itemKey }: FilterSectionProps) => {
       // 활성화 상태이면 비활성화, 전역 데이터에서 제거
       setActiveFilters(activeFilters.filter((filter) => filter !== item))
       if (key === 'tier') {
-        deleteTier(item)
+        const tierRange = getTierRange(item)
+        deleteTier(tierRange)
       } else if (key === 'category') {
         const engCategory = getKeyByValue(dictionary, item) // 카테고리만 영어로 매핑 후 사용
         if (engCategory) {
@@ -45,7 +68,8 @@ const FilterSection = ({ title, items, itemKey }: FilterSectionProps) => {
       // 전역 데이터에 추가 (아이템키는 tier or category)
       setActiveFilters([...activeFilters, item])
       if (key === 'tier') {
-        addTier(item)
+        const tierRange = getTierRange(item)
+        addTier(tierRange)
       } else if (key === 'category') {
         const engCategory = getKeyByValue(dictionary, item)
         if (engCategory) {

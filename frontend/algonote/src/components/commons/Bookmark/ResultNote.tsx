@@ -16,9 +16,13 @@ const tagFiltering = (filteredNotes: Notes[], compareCategory: string[]) => {
   )
 }
 
+const tierFiltering = (filteredNotes: Notes[], tiers: number[]) => {
+  return filteredNotes.filter((note) => tiers.includes(note.problemTier))
+}
+
 const ResultNote = () => {
   const { searchResult, isSearched } = useSearchResult()
-  const { categories } = useFilterStore()
+  const { tiers, categories } = useFilterStore()
   const router = useRouter()
 
   let filteredNotes =
@@ -29,6 +33,9 @@ const ResultNote = () => {
   // 필터링 버튼으로 한번 더 필터링
   if (categories.length !== 0) {
     filteredNotes = tagFiltering(filteredNotes, categories)
+  }
+  if (tiers.length !== 0) {
+    filteredNotes = tierFiltering(filteredNotes, tiers)
   }
 
   return (

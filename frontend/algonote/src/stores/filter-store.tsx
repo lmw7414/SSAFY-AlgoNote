@@ -1,10 +1,10 @@
 import { create } from 'zustand'
 
 interface FilterType {
-  tiers: string[]
+  tiers: number[]
   categories: string[]
-  addTier: (clickTier: string) => void
-  deleteTier: (unclickTier: string) => void
+  addTier: (clickTier: number[]) => void
+  deleteTier: (unclickTier: number[]) => void
   addCategory: (clickCategory: string[]) => void
   deleteCategory: (unclickCategory: string[]) => void
   resetFilter: () => void
@@ -13,10 +13,12 @@ interface FilterType {
 const useFilterStore = create<FilterType>((set) => ({
   tiers: [],
   categories: [],
-  addTier: (clickTier: string) =>
-    set((prev) => ({ tiers: [...prev.tiers, clickTier] })),
-  deleteTier: (unclickTier: string) =>
-    set((state) => ({ tiers: state.tiers.filter((it) => it !== unclickTier) })),
+  addTier: (clickTier: number[]) =>
+    set((prev) => ({ tiers: [...prev.tiers, ...clickTier] })),
+  deleteTier: (unclickTier: number[]) =>
+    set((state) => ({
+      tiers: state.tiers.filter((it) => !unclickTier.includes(it)),
+    })),
   addCategory: (clickCategory: string[]) =>
     set((prev) => ({ categories: [...prev.categories, ...clickCategory] })),
   deleteCategory: (unclickCategory: string[]) =>
