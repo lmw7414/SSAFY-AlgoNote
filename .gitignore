@@ -1,7 +1,6 @@
 ###### BE PART ####### 
 ## public
 backend/src/main/resources/application.yml
-frontend/**
 
 ## minwoo
 backend/database/**
@@ -19,4 +18,9 @@ backend/jacoco/**
 /recommender/divide/*
 /recommender/tag/*
 backend/src/main/generated/**
-grading-server
+
+
+grading-server/.idea/**
+grading-server/build/**
+grading-server/.gradle/**
+

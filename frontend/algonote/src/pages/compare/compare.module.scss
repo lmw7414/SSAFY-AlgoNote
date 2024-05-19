@@ -1,0 +1,101 @@
+.container{
+    padding-top: 60px;
+    width: 100%;
+
+      .header {
+          width: 100%;
+          padding: 2.4rem 12.5%;
+          background: linear-gradient(45deg, var(--color-start), var(--color-end));
+          p {
+            margin: 0.1rem 0;
+          }
+          .headerSentence {
+            display: flex;
+            width: 100%;
+            .headerLight {
+              font-size: 1.8rem;
+              font-weight: 300;
+              color: var(--white);
+            }
+            .headerBold {
+              margin-left: 0.4rem;
+              font-size: 1.8rem;
+              font-weight: 700;
+              color: var(--white);
+            }
+            .contentLight {
+              padding-top: 0.4rem;
+              margin-left: 0.4rem;
+              font-size: 1.2rem;
+              font-weight: 300;
+              color: var(--white);
+            }
+          }
+        }
+
+    .element div{
+      margin-top: 1rem;
+    }
+
+    .element{
+        min-height: 30rem;
+        margin: 0 12.5%;
+        justify-content: space-between;
+
+        .insertBox{
+          display: flex;
+          justify-content: flex-end;
+        }
+
+        .insert{
+            height: 3rem;
+            width: 12.5rem;
+            border-radius: 0.5rem;
+            padding: 0.5rem 0.5rem;
+            margin-left: 0.625rem;
+            border: 2px solid var(--blue);
+        }
+
+        select.insert {
+            -webkit-appearance: none; // 기본 디자인 제거
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12"><polyline points="1,4 6,9 11,4" style="fill:none;stroke:black;stroke-width:2"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 0.625rem center; // 화살표 위치
+            background-size: 0.75rem 0.75rem; // 화살표 크기
+          }
+        
+          .insert, select.insert {
+            box-sizing: border-box;
+        }
+
+        .insert:focus{
+          border-color: #2f7cf7;
+        }
+    }
+
+    .compareButtons{
+        width: 100%;
+        display: flex;
+      
+        .compareButton{
+            width: 50%;
+            display: flex;
+            justify-content: flex-end;
+        }
+    }
+
+    .codeView{
+      background-color: var(--soft-gray);
+      min-height: 30rem;
+    }
+
+    
+}
+
+.tags{
+  font-size: 0.9rem;
+  color: var(--charcoal);
+  word-wrap: break-word;
+}

@@ -1,0 +1,48 @@
+/* components/TextCarousel.module.css */
+
+.carouselContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    position: relative;
+  }
+  
+  .carouselButton {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(255, 255, 255, 0.5);
+    border: none;
+    padding: 10px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .carouselButton:hover {
+    background-color: rgba(255, 255, 255, 0.8);
+  }
+  
+  .slide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+  
+  .text {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    color: #333;
+  }
+  
+  .noteTitleCon {
+    text-align: center;
+    font-weight: 600;
+  }
+
+  .noteTitle {
+    color: var(--blue);
+  }

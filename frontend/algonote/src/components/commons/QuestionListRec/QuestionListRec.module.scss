@@ -1,0 +1,42 @@
+.wrapper {
+  height: 2.8rem;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 0.6rem;
+  font-size: 0.95rem;
+  
+  .level {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding-top: 0.1rem;
+    .blank {
+      width: 0.6rem;
+      height: 1rem;
+    }
+  }
+
+  .questionNumber {
+    flex: 1;
+  }
+
+  .title {
+    flex: 4;
+  }
+
+  .acceptedUserCount {
+    flex: 1;
+  }
+
+  .averageTries {
+    flex: 1;
+  }
+}
+
+.bottomHr {
+  border: none;
+  height: 1px;
+  background-color: var(--soft-gray);
+  margin: 0;
+}

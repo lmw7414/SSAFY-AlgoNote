@@ -1,0 +1,168 @@
+.main {
+  padding-top: 60px;
+}
+
+.container {
+  width: 75%;
+  margin: auto;
+}
+
+.title {
+  margin: 3rem 0 1.5rem 0;
+}
+
+.header {
+  width: 100%;
+  padding: 2.4rem 12.5%;
+  background: linear-gradient(45deg, var(--color-start), var(--color-end));
+  p {
+    margin: 0.1rem 0;
+  }
+  .headerSentence {
+    display: flex;
+    width: 100%;
+    .headerLight {
+      font-size: 1.8rem;
+      font-weight: 300;
+      color: var(--white);
+    }
+    .headerBold {
+      margin-left: 0.4rem;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--white);
+    }
+  }
+}
+
+.analysis {
+  display: flex;
+  height: 20rem;
+  justify-content: space-between;
+}
+
+.radarCont {
+  width: 49%;
+  height: 100%;
+  background-color: var(--soft-sky);
+  // border: 0.5px solid var(--blue);
+  border-radius: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  .radarBox {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+  }
+}
+
+.graphTitle {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--navy);
+}
+
+.right {
+  width: 49%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border-radius: 1rem;
+  padding: 0.8rem;
+}
+
+.top {
+  // margin-top: 0.4rem;
+  display: flex;
+  justify-content: center;
+  color: var(--navy);
+  gap: 0.4rem;
+
+  a {
+    font-size: 1.3rem;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  p {
+    font-size: 1.3rem;
+  }
+}
+
+.elements {
+  // background-color: var(--soft-sky);
+  border-radius: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 60%;
+  margin: auto;
+  gap: 1.4rem;
+
+  .elementCont {
+    display: flex;
+    color: var(--navy);
+    gap: 0.6rem;
+    align-items: center;
+    .descCont {
+      width: 13rem;
+      font-size: 1.2rem;
+      font-weight: 500;
+    }
+    
+    a {
+      font-weight: 800;
+      font-size: 1.2rem;
+      text-decoration: none;
+    }
+  }
+}
+
+.numCont {
+  min-width: 2rem;
+  margin-right: 0.5rem;
+  text-align: center;
+}
+
+.divide {
+  border: 0.5px solid var(--soft-gray);
+  margin-top: 3rem;
+}
+
+.recommendCont {
+  background-color: var(--soft-sky);
+  border-radius: 1rem;
+  margin-bottom: 1.5rem;
+  padding: 2rem 3rem 3.2rem;
+
+  .recommendDesc {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 3rem;
+  }
+
+  .waveCont {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    .wave:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.btnCont {
+  margin-top: auto;
+}
+

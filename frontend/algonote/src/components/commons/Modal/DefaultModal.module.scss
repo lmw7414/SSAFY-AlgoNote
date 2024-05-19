@@ -1,0 +1,41 @@
+.container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  }
+  
+  .children {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    max-width: 70rem;
+    max-height: 80% ;
+    justify-content: space-between;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .content {
+    flex: 1;
+    margin-top: 10px;
+  }
+  
+  .problem {
+    display: flex;
+    border: 1px solid blue;
+    padding: 10px;
+    word-break: break-word;
+  }
+  

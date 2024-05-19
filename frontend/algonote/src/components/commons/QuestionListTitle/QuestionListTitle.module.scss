@@ -1,0 +1,42 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+
+  div {
+    line-height: 2rem;
+    text-align: center;
+    color: var(--black);
+    font-weight: 600;
+    font-size: 15px;
+  }
+
+  .level {
+    flex: 0.8;
+  }
+
+  .questionNumber {
+    flex: 0.8;
+  }
+
+  .title {
+    flex: 2.5;
+  }
+
+  .type {
+    flex: 2.5;
+  }
+
+  .summitDate {
+    flex: 1;
+  }
+
+  .writeNote {
+    flex: 1;
+  }
+}
+
+.bottomHr {
+  border: none;
+  height: 1px;
+  background-color: var(--soft-gray);
+}
