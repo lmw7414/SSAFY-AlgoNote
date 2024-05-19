@@ -7,6 +7,7 @@ import NavBar from '@/components/commons/NavBar'
 import NoteNavBar from '@/components/commons/NoteNavBar'
 import SSE from '@/components/commons/Notification/SSE/SSE'
 import { getCookie } from '@/utils/cookie'
+import LandingNavBar from '@/components/commons/NavBar/landing'
 
 const App = ({ Component, pageProps }: AppProps) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null)
@@ -25,6 +26,8 @@ const App = ({ Component, pageProps }: AppProps) => {
     <>
       {router.pathname === '/writenote' || router.pathname === '/revisenote' ? (
         <NoteNavBar />
+      ) : router.pathname === '/login' || router.pathname === '/signup' ? (
+        <LandingNavBar />
       ) : (
         <NavBar />
       )}
