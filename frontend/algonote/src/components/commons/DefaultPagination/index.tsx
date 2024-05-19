@@ -20,33 +20,6 @@ const DefaultPagination = ({
     onPageChange(page)
   }
 
-  // const renderPageNumbers = () => {
-  //   const pageNumbers = []
-  //   const maxPageButtons = 5
-  //   let startPage = Math.max(1, currentPage - Math.floor(maxPageButtons / 2))
-  //   let endPage = startPage + maxPageButtons - 1
-
-  //   if (endPage > totalPages) {
-  //     endPage = totalPages
-  //     startPage = Math.max(1, endPage - maxPageButtons + 1)
-  //   }
-
-  //   for (let i = startPage; i <= endPage; i = +1) {
-  //     pageNumbers.push(
-  //       <button
-  //         key={i}
-  //         type="button"
-  //         onClick={() => handleClick(i)}
-  //         className={currentPage === i ? styles.active : ''}
-  //       >
-  //         {i}
-  //       </button>,
-  //     )
-  //   }
-
-  //   return pageNumbers
-  // }
-
   return (
     <div className={styles.pagination}>
       <button
@@ -56,7 +29,6 @@ const DefaultPagination = ({
       >
         &lt;
       </button>
-      {/* {renderPageNumbers()} */}
       {Array.from({ length: totalPages }, (_, index) => (
         <button
           type="button"

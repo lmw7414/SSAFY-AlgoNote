@@ -3,10 +3,10 @@ import { NextRouter, useRouter } from 'next/router'
 import styles from './Note.module.scss'
 import { bookmarkListApi } from '@/apis/bookmarkAxios'
 import DefaultPagination from '@/components/commons/DefaultPagination'
-// import { onSearchResult } from '@/components/commons/SearchInput'
+import { onSearchResult } from '@/components/commons/SearchInput'
 import TierImg from '@/components/commons/Tier'
 import useFilterStore from '@/stores/filter-store'
-// import { useSearchResult } from '@/stores/search-store'
+import { useSearchResult } from '@/stores/search-store'
 
 interface Note {
   id: number
@@ -74,6 +74,10 @@ const Notes = () => {
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page)
+    if (page % 20 === 0) {
+      const { inputValue } = useSearchResult.getState()
+      onSearchResult(inputValue, page / 20)
+    }
   }
 
   useEffect(() => {

@@ -8,6 +8,7 @@ import type { Notes } from '@/stores/search-store'
 import { handleDetailNote, handleKeyPress } from './Note'
 import styles from './Note.module.scss'
 import DefaultPagination from '@/components/commons/DefaultPagination'
+import { onSearchResult } from '@/components/commons/SearchInput'
 import TierImg from '@/components/commons/Tier'
 import useFilterStore from '@/stores/filter-store'
 import { useSearchResult } from '@/stores/search-store'
@@ -48,7 +49,11 @@ const ResultNote = () => {
   const currentNotes = filteredNotes.slice(indexOfFirstNote, indexOfLastNote)
 
   const handlePageChange = (page: number) => {
+    const { inputValue } = useSearchResult.getState()
     setCurrentPage(page)
+    if (page % 20 === 0) {
+      onSearchResult(inputValue, page / 20)
+    }
   }
 
   useEffect(() => {
