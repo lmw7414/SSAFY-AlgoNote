@@ -40,7 +40,7 @@ const Recommend = () => {
         <div className={s.headerSentence}>
           <p className={s.contentLight} id="math_theory">
             부족한 유형, 많이 틀린 유형을 집중적으로 공부해보세요. 해결한 문제는
-            오답노트에서 확인할 수 있어요.
+            노트 작성 페이지에서 확인할 수 있어요.
           </p>
         </div>
       </div>

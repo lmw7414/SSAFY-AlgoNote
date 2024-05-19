@@ -3,6 +3,7 @@ import { NextRouter, useRouter } from 'next/router'
 import styles from './Note.module.scss'
 import { bookmarkListApi } from '@/apis/bookmarkAxios'
 import TierImg from '@/components/commons/Tier'
+import useFilterStore from '@/stores/filter-store'
 
 interface Note {
   id: number
@@ -14,6 +15,7 @@ interface Problem {
   id: number
   title: string
   tier: number
+  tags: string[]
 }
 
 interface Member {
@@ -41,8 +43,20 @@ export const handleKeyPress = (
   }
 }
 
+const tagFiltering = (bookmarks: Bookmark[], compareCategory: string[]) => {
+  return bookmarks.filter((note) =>
+    note.problem.tags.some((tag) => compareCategory.includes(tag)),
+  )
+}
+
+const tierFiltering = (filteredNotes: Bookmark[], tiers: number[]) => {
+  return filteredNotes.filter((note) => tiers.includes(note.problem.tier))
+}
+
 const Notes = () => {
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([])
+  const [filteredBookmarks, setFilteredBookmarks] = useState<Bookmark[]>([])
+  const { tiers, categories } = useFilterStore()
 
   const router = useRouter()
 
@@ -51,17 +65,34 @@ const Notes = () => {
       try {
         const response = await bookmarkListApi()
         setBookmarks(response.data)
-      } catch (err) {
-        console.log(err)
+        setFilteredBookmarks(response.data)
+      } catch (error) {
+        throw error
       }
     }
 
     fetchBookmarks()
   }, [])
 
+  useEffect(() => {
+    if (categories.length === 0 && tiers.length === 0) {
+      setFilteredBookmarks(bookmarks)
+    } else if (tiers.length === 0) {
+      const tagFilteredNotes = tagFiltering(bookmarks, categories)
+      setFilteredBookmarks(tagFilteredNotes)
+    } else if (categories.length === 0) {
+      const tierFilteredNotes = tierFiltering(bookmarks, tiers)
+      setFilteredBookmarks(tierFilteredNotes)
+    } else {
+      const tagFilteredNotes = tagFiltering(bookmarks, categories)
+      const tierFilteredNotes = tierFiltering(tagFilteredNotes, tiers)
+      setFilteredBookmarks(tierFilteredNotes)
+    }
+  }, [tiers, categories, bookmarks])
+
   return (
     <div className={styles.frame}>
-      {bookmarks.map((it, index: number) => {
+      {filteredBookmarks.map((it, index: number) => {
         const key = `${it.problem.title}-${index}`
 
         return (

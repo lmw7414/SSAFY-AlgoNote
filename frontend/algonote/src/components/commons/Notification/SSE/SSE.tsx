@@ -36,6 +36,7 @@ const SSE = () => {
         headers: {
           Authorization: `Bearer ${accessToken}`,
           Connection: 'keep-alive',
+          Accept: 'text/event-stream',
         },
         heartbeatTimeout: 3600000,
       },

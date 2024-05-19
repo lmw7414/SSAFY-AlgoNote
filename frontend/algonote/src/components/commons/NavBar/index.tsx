@@ -12,7 +12,7 @@ import { eraseCookie, getCookie } from '@/utils/cookie'
 const NavBar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const { deleteUserInfo } = useUserInfo()
-  const [userProfile, setUserProfile] = useState('/images/basicprofileimg')
+  const [userProfile, setUserProfile] = useState('/images/basicprofileimg.png')
   const [isNotificationOpen, setIsNotificationOpen] = useState(false)
   const [isNotReadNoti, setIsNotReadNoti] = useState(false)
   const [isImageLoaded, setIsImageLoaded] = useState(false)

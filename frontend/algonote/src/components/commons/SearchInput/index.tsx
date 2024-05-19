@@ -4,7 +4,7 @@ import Image from 'next/image'
 import styles from './SearchInput.module.scss'
 import getFullNote from '@/apis/full-noteAxios'
 import getSearchResult from '@/apis/searchAxios'
-import useSearchResult from '@/stores/search-store'
+import { useSearchResult } from '@/stores/search-store'
 
 const onSearchResult = async (input: HTMLInputElement | null) => {
   const { setSearchResult } = useSearchResult.getState()

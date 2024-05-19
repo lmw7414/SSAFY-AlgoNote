@@ -2,6 +2,7 @@
     width: 23.8%;
     min-width: 12rem;
     margin-bottom: 1rem;
+
 }
 
 .tierContainer {
@@ -34,6 +35,7 @@
     padding: 1rem 1.2rem;
     border-radius: 0 0.75rem 0.75rem 0.75rem;
     background-color: var(--soft-sky-gray);
+
 }
 
 .top {
@@ -53,4 +55,9 @@
 
 .carouselContainer {
     margin: 0 1.2rem;
+}
+
+.carouselContainer:hover{
+    cursor: pointer;
+   
 }

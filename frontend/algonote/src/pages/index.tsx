@@ -160,7 +160,12 @@ const Main = () => {
               <div className={s.btnCont}>
                 <SimpleButton
                   text="노트 작성하러 가기"
-                  style={{ fontWeight: '700' }}
+                  style={{
+                    fontWeight: '600',
+                    fontSize: '1.1rem',
+                    height: '3.4rem',
+                    borderRadius: '0.8rem',
+                  }}
                   onClick={() => router.push('/solvedproblems')}
                 />
               </div>
@@ -192,7 +197,12 @@ const Main = () => {
           </div>
           <SimpleButton
             text="추천 문제 보러가기"
-            style={{ fontWeight: '700' }}
+            style={{
+              fontWeight: '600',
+              fontSize: '1.1rem',
+              height: '3.4rem',
+              borderRadius: '0.8rem',
+            }}
             onClick={() => router.push('/recommend')}
           />
         </div>

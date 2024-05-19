@@ -40,6 +40,10 @@
     display: flex; // Flexbox를 활용하여 내부 요소 정렬
     flex-direction: column; // 요소들을 세로로 정렬
 
+    &:hover{
+        cursor:pointer
+    }
+
     &::after {
         content: ''; // 가상 요소에는 content 속성이 필요
         position: absolute;

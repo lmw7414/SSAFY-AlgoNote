@@ -31,7 +31,27 @@ const User = () => {
   const [nickname, setNickName] = useState<string>('')
   const fileInput = useRef<HTMLInputElement>(null)
 
+  const MAX_IMAGE_SIZE_BYTES = 1024 * 1024 * 10
+  const ALLOWED_EXTENSIONS = ['jpg', 'jpeg', 'png']
+
+  const isValidExtension = (filename: string) => {
+    const extension = filename.split('.').pop()?.toLowerCase()
+    return extension ? ALLOWED_EXTENSIONS.includes(extension) : false
+  }
+
   const handleImgChange = async (file: File) => {
+    if (!isValidExtension(file.name)) {
+      alert(
+        '허용되지 않은 파일 형식입니다. jpg, jpeg, png 파일만 업로드해주세요.',
+      )
+      return
+    }
+
+    if (file.size > MAX_IMAGE_SIZE_BYTES) {
+      alert('파일 크기는 10MB 이하여야합니다.')
+      return
+    }
+
     if (file instanceof File) {
       try {
         const response = await imageChange(file)
@@ -167,30 +187,25 @@ const User = () => {
       </div>
       <div className={style.nickname}>
         {isChangeClicked ? (
-          <>
-            <div className={style.nicknameContainer}>
-              <input
-                type="text"
-                defaultValue={userDetails.nickname}
-                onChange={(e) => setNickName(e.target.value)}
-                maxLength={14}
-                className={style.input}
-              />
-              <SimpleButton
-                text="변경"
-                onClick={nicknameCheck}
-                isDisabled={nicknameState.status}
-                style={{
-                  width: '6rem',
-                  height: '2.5rem',
-                  marginLeft: '0.5rem',
-                }}
-              />
-            </div>
-            <div className={style.nicknameValue}>
-              {nicknameState.value && <div>{nicknameState.value}</div>}
-            </div>
-          </>
+          <div className={style.nicknameContainer}>
+            <input
+              type="text"
+              defaultValue={userDetails.nickname}
+              onChange={(e) => setNickName(e.target.value)}
+              maxLength={14}
+              className={style.input}
+            />
+            <SimpleButton
+              text="변경"
+              onClick={nicknameCheck}
+              isDisabled={nicknameState.status}
+              style={{
+                width: '6rem',
+                height: '2.5rem',
+                marginLeft: '0.5rem',
+              }}
+            />
+          </div>
         ) : (
           <div className={style.nameContainer}>
             <p className={style.name}>{userDetails.nickname} </p>
@@ -203,6 +218,9 @@ const User = () => {
             />
           </div>
         )}
+        <div className={style.nicknameValue}>
+          {isChangeClicked ? nicknameState.value : ''}
+        </div>
       </div>
     </div>
   )
