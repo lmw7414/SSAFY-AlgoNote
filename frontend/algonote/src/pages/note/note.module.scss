@@ -1,6 +1,6 @@
 .noteWrapper {
   margin: 0 auto;
-  margin-top: 3rem;
+  // margin-top: 3rem;
   width: 100%;
 }
 
@@ -14,8 +14,9 @@
 
 .titleSection {
   display: flex;
-  justify-content: flex-start;
-  font-size: 1.3rem;
+  // justify-content: flex-start;
+  align-items: center;
+  font-size: 1.2rem;
   font-weight: 400;
 
   span {
@@ -23,16 +24,21 @@
     align-items: center;
     padding-left: 0.6rem;
   }
+
+  .boj {
+    font-weight: 400;
+  }
+
+  .probTitle {
+    font-weight: 600;
+  }
 }
 
 .tagBox {
   display: flex;
   align-items: center;
-  margin-left: 1rem;
-  padding-top: 0.1rem;
-  padding-bottom: 0.1rem;
-  padding-left: 0.6rem;
-  padding-right: 0.6rem;
+  margin-left: 0.6rem;
+  padding: 0.1rem 0.6rem 0.1rem;
   border-radius: 2rem;
   background: var(--soft-gray);
   color: var(--black);
@@ -51,21 +57,26 @@
 }
 
 .noteTitleSection {
-  // padding-top: 1rem;
-  font-size: 3.4rem;
+  // padding-top: 0.2rem;
+  font-size: 2.2rem;
   font-weight: 600;
   color: var(--black);
-}
-
-.writerWrapper {
   display: flex;
   justify-content: space-between;
 }
 
+.writerWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  // justify-content: flex-end;
+  // justify-content: space-between;
+}
+
 .writerSection {
-  padding-top: 3rem;
   display: flex;
   font-size: 1rem;
+  margin-right: 0.8rem;
 
   .noteWriter {
     color: var(--black);
@@ -87,6 +98,7 @@
 
 .buttonSection {
   display: flex;
+  justify-content: flex-end;
   align-items: flex-end;
 
   button {
@@ -179,7 +191,7 @@
 }
 
 .upperHr {
-  margin-top: 1rem;
+  margin-top: 0.6rem;
   height: 1px;
   background: var(--soft-gray);
   border: none;

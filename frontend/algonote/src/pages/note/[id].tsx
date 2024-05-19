@@ -1,10 +1,10 @@
 import { ChangeEvent, useEffect, useState } from 'react'
-import Image from 'next/image'
-import { useRouter } from 'next/router'
 import BookMarkSVG from '@public/images/bookmark.svg'
 import BookMarkOffSVG from '@public/images/bookmark_off.svg'
 import HeartOffSVG from '@public/images/heart.svg'
 import HeartSVG from '@public/images/redHeart.svg'
+import Image from 'next/image'
+import { useRouter } from 'next/router'
 import { bookmarkButtonApi } from '@/apis/bookmarkAxios'
 import likeApi from '@/apis/likeAxios'
 import { deleteNote, getNoteDetail } from '@/apis/note-detailAxios'
@@ -18,6 +18,7 @@ import myInfo from '@/apis/user-infoAxios'
 import { SimpleButton } from '@/components/commons/Buttons/Button'
 import ImageToggle from '@/components/commons/Buttons/ImageToggle'
 import EditorInNoteDetail from '@/components/commons/Editor/detail'
+import { dictionary } from '@/components/commons/QuestionList'
 import TierImg from '@/components/commons/Tier'
 import style from '@/pages/note/note.module.scss'
 import useNoteStore from '@/stores/note-store'
@@ -235,56 +236,58 @@ const Note = () => {
           <div className={style.tierImg}>
             <TierImg tier={Number(noteDetail?.problem.tier)} />
           </div>
-          <span>백준 {noteDetail?.problem.id}</span>
-          <span>{noteDetail?.problem.title}</span>
+          <span className={style.boj}>백준 {noteDetail?.problem.id}</span>
+          <span className={style.probTitle}>{noteDetail?.problem.title}</span>
           {noteDetail?.problem.tags.map((tag) => (
             <div key={tag}>
-              <div className={style.tagBox}>{tag}</div>
+              <div className={style.tagBox}>{dictionary[tag]}</div>
             </div>
           ))}
         </div>
-        <div className={style.tries}>
+        {/* <div className={style.tries}>
           <span> 평균 {noteDetail?.problem.averageTries}회 시도</span>
           <span>| 맞은 사람 {noteDetail?.problem.acceptUserCount}명</span>
-        </div>
+        </div> */}
         <hr className={style.upperHr} />
       </div>
 
       <div className={style.noteWrapper}>
-        <div className={style.noteTitleSection}>{noteDetail?.noteTitle}</div>
-        <div className={style.writerWrapper}>
-          <div className={style.writerSection}>
-            <div className={style.noteWriter}>
-              {noteDetail?.member.nickname}{' '}
+        <div className={style.noteTitleSection}>
+          {noteDetail?.noteTitle}
+          <div className={style.writerWrapper}>
+            <div className={style.writerSection}>
+              <div className={style.noteWriter}>
+                {noteDetail?.member.nickname}{' '}
+              </div>
+              <div className={style.noteCreatedDay}> · {formattedDate}</div>
             </div>
-            <div className={style.noteCreatedDay}> · {formattedDate}</div>
-          </div>
-          <div className={style.buttonSection}>
-            <SimpleButton
-              text="수정"
-              onClick={handleReviseNote}
-              style={{
-                width: '3.5rem',
-                height: '2.2rem',
-                fontFamily: 'Pretendard',
-                background: '#ffffff',
-                color: '#b9b9b9',
-                border: 'none',
-              }}
-            />
-            <SimpleButton
-              text="삭제"
-              onClick={handleDeleteNote}
-              style={{
-                width: '3.5rem',
-                height: '2.2rem',
-                background: '#ffffff',
-                color: '#b9b9b9',
-                border: 'none',
-                fontFamily: 'Pretendard',
-                marginLeft: '0.4rem',
-              }}
-            />
+            <div className={style.buttonSection}>
+              <SimpleButton
+                text="수정"
+                onClick={handleReviseNote}
+                style={{
+                  width: '3.5rem',
+                  height: '2.2rem',
+                  fontFamily: 'Pretendard',
+                  background: '#ffffff',
+                  color: '#b9b9b9',
+                  border: 'none',
+                }}
+              />
+              <SimpleButton
+                text="삭제"
+                onClick={handleDeleteNote}
+                style={{
+                  width: '3.5rem',
+                  height: '2.2rem',
+                  background: '#ffffff',
+                  color: '#b9b9b9',
+                  border: 'none',
+                  fontFamily: 'Pretendard',
+                  marginLeft: '0.4rem',
+                }}
+              />
+            </div>
           </div>
         </div>
 
