@@ -1,10 +1,10 @@
 import { useEffect } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import styles from './landing.module.scss'
 import NavBar from '@/components/commons/NavBar'
 import { getCookie } from '@/utils/cookie'
-import Link from 'next/link'
 
 const Home = () => {
   const router = useRouter()
@@ -97,7 +97,7 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <div className={styles.forthSection}>
+      {/* <div className={styles.forthSection}>
         {' '}
         <div className={styles.secondWrapper}>
           <div className={styles.secondTitleBox}>
@@ -118,7 +118,7 @@ const Home = () => {
             <Image src="/images/listimage.png" alt="second-image" fill />
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   )
 }
