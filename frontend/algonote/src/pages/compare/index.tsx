@@ -37,6 +37,7 @@ const ComparePage = () => {
     problemId: 0,
   })
   const codes = useCodeInfo((state) => state.codes)
+  const { resetCodes } = useCodeInfo()
   const [language, setLanguage] = useState<string>('java')
   const [inputData, setInputData] = useState<string>('')
   const [expectedOutput, setExpectedOutput] = useState<string>('')
@@ -48,6 +49,7 @@ const ComparePage = () => {
     }
 
     fetchData()
+    resetCodes()
   }, [])
 
   useEffect(() => {
