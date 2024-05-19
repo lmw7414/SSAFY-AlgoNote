@@ -3,7 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import styles from './landing.module.scss'
-import NavBar from '@/components/commons/NavBar'
+import LandingNavBar from '@/components/commons/NavBar/landing'
 import { getCookie } from '@/utils/cookie'
 
 const Home = () => {
@@ -19,7 +19,7 @@ const Home = () => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.firstSection}>
-        <NavBar />
+        <LandingNavBar />
         <div className={styles.introduce}>
           <div className={styles.title}>
             <p>균형잡힌 알고리즘 공부</p>
