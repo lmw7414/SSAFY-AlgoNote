@@ -214,6 +214,8 @@ public class NoteController {
                     tags);
         }).toList();
 
+//        Long count = noteService.countAllNotes();
+//        return ResponseEntity.ok(AllSearchRestDto.of(count, resDtos));
         return ResponseEntity.ok(SearchResDto.from(resDtos));
     }
 
@@ -224,11 +226,11 @@ public class NoteController {
     )
     @GetMapping("/full-text")
     public ResponseEntity<SearchResDto> fullTextSearch(@RequestParam("keyword") String keyword,
-                                                       @RequestParam(value = "page", required = true) int page) {
+                                                       @PageableDefault(size=20) Pageable pageable) {
         Long memberId = SecurityUtil.getMemberId();
-        log.info("fullTextSearch keyword: {}, page: {}", keyword, page);
+        log.info("fullTextSearch keyword: {}, page: {}, size:{}", keyword, pageable.getOffset(), pageable.getPageSize());
 
-        List<NoteSearchDto> noteSearchResults = noteService.fulltextNoteSearch(keyword, page);
+        List<NoteSearchDto> noteSearchResults = noteService.fulltextNoteSearch(keyword, pageable);
         List<NoteSearchResDto> resDtos = noteSearchResults.stream().map(resDto -> {
             List<String> tags = problemService.getTagOfProblem(resDto.problemId());
 

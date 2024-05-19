@@ -17,6 +17,8 @@ import com.ssafy.algonote.problem.domain.WritingStatus;
 import com.ssafy.algonote.problem.repository.ProblemDocumentRepository;
 import com.ssafy.algonote.problem.repository.SolvedProblemRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.client.elc.NativeQueryBuilder;
@@ -37,6 +39,7 @@ import static org.springframework.data.elasticsearch.client.elc.Queries.matchAll
 
 @Service
 @Transactional
+@Slf4j
 @RequiredArgsConstructor
 public class NoteService {
 
@@ -129,16 +132,19 @@ public class NoteService {
         return noteRepository.saveAndFlush(note);
     }
 
-    public List<NoteSearchDto> fulltextNoteSearch(String keyword, int page) {
+    public List<NoteSearchDto> fulltextNoteSearch(String keyword, Pageable pageable) {
 
-        SearchHits<NoteDocument> noteHits = searchNoteDocument(keyword, page);
+        SearchHits<NoteDocument> noteHits = searchNoteDocument(keyword, pageable);
         return parseSearchHits(noteHits);
     }
 
     public List<Note> getNotesByProblem(Long memberId, Long problemId) {
         return noteRepository.findByMember_IdAndProblem_Id(memberId, problemId);
     }
-    
+
+    public Long countAllNotes(){
+        return noteRepository.count();
+    }
     public List<NoteSearchDto> getAllNotes(Pageable pageable){
 //        MatchAllQuery matchAllQuery = matchAllQuery();
 //        Query query = createQuery(List.of(matchAllQuery._toQuery()));
@@ -150,7 +156,7 @@ public class NoteService {
         return noteRepository.searchAll(pageable);
     }
 
-    private SearchHits<NoteDocument> searchNoteDocument(String keyword, int page) {
+    private SearchHits<NoteDocument> searchNoteDocument(String keyword, Pageable pageable) {
 
 //        MatchQuery problemIdMatch = MatchQuery.of(m -> m.field("problemId").query(keyword));
 //        MatchQuery problemTitleMatch = MatchQuery.of(m -> m.field("problemTitle").query(keyword));
@@ -165,12 +171,12 @@ public class NoteService {
 
         CriteriaQuery query = new CriteriaQuery(noteCriteria);
 
-        query.setPageable(PageRequest.of(page, 10));
+        query.setPageable(pageable);
 
         return operations.search(query, NoteDocument.class);
-    }
+}
 
-    @Transactional
+@Transactional
     public List<NoteSearchDto> parseSearchHits(SearchHits<NoteDocument> noteHits) {
         List<NoteSearchDto> noteSearchResults = new ArrayList<>();
 
