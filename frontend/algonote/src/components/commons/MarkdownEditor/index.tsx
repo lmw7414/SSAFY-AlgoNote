@@ -4,7 +4,7 @@ import st from '../ChatBot/ChatBot.module.scss'
 import s from './MarkdownEditor.module.scss'
 import NoteContent from '@/pages/notecontent'
 import useNoteStore from '@/stores/note-store'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 interface Tab {
   title: string | undefined
@@ -36,8 +36,11 @@ const MarkdownEditor = ({
     })
 
     setTmpTitle(() => e.target.value)
-    setModifiedTitle(tmpTitle ?? '')
   }
+
+  useEffect(() => {
+    setModifiedTitle(tmpTitle ?? '')
+  }, [tmpTitle])
 
   return (
     <div id="editor" className={s.wrapper}>
