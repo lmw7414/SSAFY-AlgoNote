@@ -29,7 +29,7 @@ const SolvedProblems = () => {
       console.log('pageNumber: ', page)
 
       setMySolvedList(res)
-      setPageQuantity(Math.ceil(res.length / 15 + 1)) // 한 페이지 당 15개의 문제 리스트
+      setPageQuantity(Math.ceil(res.length / 15)) // 한 페이지 당 15개의 문제 리스트
     })
   }, [page]) // 페이지 번호가 변경될 때마다 실행
 
