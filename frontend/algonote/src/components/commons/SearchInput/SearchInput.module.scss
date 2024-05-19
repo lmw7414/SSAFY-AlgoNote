@@ -1,0 +1,33 @@
+.border {
+    border: 0.0625rem solid transparent; /* 전체 테두리를 투명하게 초기화 */
+    padding: 0.75rem 0.25rem;
+    outline: none; /* 포커스 시 기본 아웃라인 제거 */
+    border-image: linear-gradient(to right, var(--color-start), var(--color-end)) 1 / 0 0 0.125rem 0 stretch; /* 그라디언트 적용 */
+    margin: 0rem 12.5rem;
+    width: calc(100% - 25rem);
+    height: 3rem;
+    display: flex;
+
+    .input_div{
+        width: 100%;
+    }
+
+    input{
+        border: none;
+        outline: none;
+        font-size: 1.2rem;
+        width: 100%;
+    }
+  }
+  
+  @media (max-width: 1024px) {
+    .border {
+      margin: 1rem;
+      width: calc(100% - 2rem);
+      padding: 0.5rem 0.2rem;
+
+      input{
+        font-size: 1rem;
+      }
+    }
+  }

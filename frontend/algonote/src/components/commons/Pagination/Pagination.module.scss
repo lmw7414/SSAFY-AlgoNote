@@ -1,0 +1,21 @@
+.wrapper {
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  width: 12rem;
+  height: 3rem;
+}
+
+.pageBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 3rem;
+  height: 3rem;
+  color: var(--black);
+  background-color: var(--white);
+  button {
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+}

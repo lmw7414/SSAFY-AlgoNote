@@ -1,0 +1,146 @@
+.wrapper {
+  z-index: 100;
+  position: fixed;
+  width: 100%;
+  height: 60px;
+  // line-height: 60px;
+  margin: 0 auto;
+  color: var(--black);
+  background-color: var(--white);
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+}
+
+.navBox {
+  margin: 0 auto;
+  max-width: 75vw;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.landingNavBox {
+  margin: 0 auto;
+  width: 75vw;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logoSec {
+  width: 18vw;
+  display: flex;
+  justify-content: space-between;
+  line-height: 1px;
+}
+
+.menuSec {
+  width: 33vw;
+  display: flex;
+  justify-content: space-between;
+
+  a {
+    text-decoration: none;
+    color: var(--black);
+  }
+}
+
+.buttonSec {
+  width: 10vw;
+  height: 20px;
+  display: flex;
+  justify-content: space-between;
+  line-height: 1px;
+
+  .notiCont {
+    position: relative;
+    .redDot {
+      width: 6px; /* 지름 설정 */
+      height: 6px; /* 지름 설정 */
+      background-color: var(--red); /* 배경색 설정 */
+      border-radius: 50%; /* 원 모양으로 만듦 */
+      position: absolute;
+      top: -0.25rem;
+      left: 1.1rem;
+    }
+  }
+
+  .icon {
+    cursor: pointer;
+  }
+}
+
+.blank {
+  width: 10vw;
+}
+
+.profileSec {
+  width: 10vw;
+  height: 30px;
+  display: flex;
+  justify-content: space-around;
+  line-height: 1px;
+
+  img {
+    cursor: pointer;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+}
+
+.loginSec {
+  display: flex;
+  justify-content: center;
+  width: 10vw;
+  a {
+    text-decoration: none;
+    color: var(--black);
+  }
+}
+
+.profileDropdown {
+  position: absolute;
+  top: 100%;
+  right: 50;
+  background-color: #fff;
+  border-radius: 10px;
+  border: 1px solid #eaeaea;
+  z-index: 10;
+  width: 8rem;
+  text-align: center;
+  padding: 0.5rem;
+
+  a {
+    text-decoration: none;
+    color: var(--black);
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
+    line-height: 0.43em;
+  }
+
+  p {
+    padding: 10px;
+    cursor: pointer;
+    font-weight: 500;
+    height: 1.5rem;
+    vertical-align: center;
+  }
+
+  button {
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
+    width: 100%;
+    font-size: 1rem;
+    font-family: 'Pretendard';
+    font-weight: 500;
+  }
+
+  p:hover {
+    background-color: #f0f0f0;
+  }
+
+  button:hover {
+    background-color: #f0f0f0;
+  }
+}

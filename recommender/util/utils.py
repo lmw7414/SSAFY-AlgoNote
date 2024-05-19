@@ -30,3 +30,21 @@ def get_df(tag):
     # print(df)
     df["rating"] = 5
     return df
+
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+
+from dotenv import load_dotenv
+import os
+
+# 데이터베이스 연결 설정
+def get_session():
+    load_dotenv()
+    username = os.getenv('DB_USERNAME')
+    password = os.getenv('DB_PASSWORD')
+    host = os.getenv('DB_HOST')
+    print(f"username: {username}, password: {password}, host: {host}")
+    engine = create_engine(f'mysql+pymysql://{username}:{password}@{host}:3306/algonote')
+    Session = sessionmaker(bind=engine)
+    session = Session()
+    return session

@@ -1,0 +1,168 @@
+.pageWrapper {
+  position: relative;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 95vh;
+  max-height: 100vh;
+  position: fixed;
+  overflow: auto;
+}
+
+.left {
+  max-width: 356.5px;
+  height: 100%;
+  flex: 1;
+  border-right: 1px solid var(--soft-gray);
+}
+
+.right {
+  overflow: auto;
+  min-width: 1066.5px;
+  transition: flex 0.4s ease-out;
+  flex: 3;
+  height: 90%;
+}
+
+.right::-webkit-scrollbar {
+  width: 10px; /* 스크롤바의 너비 */
+}
+
+.right::-webkit-scrollbar-track {
+  background: #f1f1f1; /* 스크롤바 트랙의 배경색 */
+}
+
+.right::-webkit-scrollbar-thumb {
+  background: var(--gray); /* 스크롤바 자체의 배경색 */
+  border-radius: 1rem;
+}
+
+.right::-webkit-scrollbar-thumb:hover {
+  background: #555; /* 스크롤바를 호버했을 때의 배경색 */
+}
+
+.submitTitleBox {
+  margin: 0;
+  padding-right: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--soft-gray);
+  width: 100%;
+  height: 2.6rem;
+  padding-left: 1rem;
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--blue);
+  img {
+    // padding-right: 1rem;
+  }
+}
+
+.buttonSection {
+  transition: width 0.4s ease-out;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 8px;
+  background: var(--white);
+  padding-left: 1rem;
+  padding-right: 1rem;
+  bottom: 0.01rem;
+  border: none;
+  width: 36.5%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 4rem;
+  position: fixed;
+
+  a {
+    text-decoration: none;
+  }
+}
+
+.exitButtonSec {
+  display: flex;
+  align-items: center;
+}
+
+.exitButton {
+  color: var(--black);
+  font-family: 'Pretendard';
+  font-weight: 500;
+  font-size: 1.1rem;
+}
+
+.chatGpt {
+  position: fixed;
+  right: 1.6rem;
+  bottom: 5rem;
+}
+
+.saveButtonSection {
+  display: flex;
+  justify-content: space-between;
+}
+
+// 임시 노트
+.tempNoteListBox {
+  padding-top: 3rem;
+}
+
+.tempNoteTitleBox {
+  margin: 0;
+  padding-right: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--soft-gray);
+  width: 100%;
+  height: 2.6rem;
+  padding-left: 1rem;
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--blue);
+}
+
+.tempNoteList {
+  background: var(--white);
+  border-radius: 8px; // 둥근 모서리
+  padding: 1rem; // 내부 패딩
+  padding-top: 0.5rem;
+
+  button {
+    width: 100%;
+  }
+}
+
+.detailModal{
+  display: flex;
+  width: 65rem;
+}
+
+.uploadButton{
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem;
+  gap: 1rem;
+  width: 50%;
+  right: 0; /* 오른쪽 고정 */
+  bottom: 0; /* 하단 고정 */
+  float: right;
+}
+
+.selectedCode{
+  width: calc(100% - 25rem);
+  max-height: 27rem;
+  padding: 1rem;
+  background-color: var(--soft-gray);
+  border-radius: 1rem;
+  margin:0 1rem 0 2rem;
+  font-family: 'Pretendard';
+  font-size: 0.9rem;
+  overflow-y: auto; 
+  overflow-x: auto; /* 가로 스크롤이 가능하도록 설정 */
+  white-space: pre-wrap; /* 코드가 줄바꿈되지 않도록 설정 */
+}
+
