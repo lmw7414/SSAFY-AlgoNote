@@ -1,0 +1,58 @@
+.wrapper {
+  position: sticky;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.inputSection {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex: 1;
+  margin-right: 0.5rem;
+  padding-top: 2rem;
+  padding-left: 2rem;
+
+  input {
+    border: none;
+    font-size: 1.7rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    outline: none;
+  }
+
+  input::placeholder {
+    font-size: 1.7rem;
+    color: #ced4da;
+    font-weight: 600;
+  }
+}
+
+.content {
+  width: 100%;
+  height: 90%;
+}
+
+.previewSection {
+  transition: flex 0.2s ease-out;
+  display: flex;
+  flex: 1;
+  height: 100%;
+  margin: 0.7rem;
+  max-width: 36vw;
+  min-height: 89.5vh;
+  padding: 0.5rem;
+  background-color: var(--soft-gray);
+  border-radius: 1rem;
+  font-size: 1.2rem;
+  line-height: 2rem;
+}
+
+.previewTitleSection {
+  margin-bottom: 2rem;
+  padding-bottom: 3rem;
+  font-weight: 600;
+  font-size: 2rem;
+}
