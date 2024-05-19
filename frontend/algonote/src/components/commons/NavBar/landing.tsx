@@ -14,7 +14,7 @@ const LandingNavBar = () => {
   const { deleteUserInfo } = useUserInfo()
   const [userProfile, setUserProfile] = useState('/images/basicprofileimg.png')
   const [isNotificationOpen, setIsNotificationOpen] = useState(false)
-  const [isNotReadNoti, setIsNotReadNoti] = useState(false)
+  const setIsNotReadNoti = useState(false)[1]
   const [isImageLoaded, setIsImageLoaded] = useState(false)
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false)
 
@@ -68,10 +68,6 @@ const LandingNavBar = () => {
     await eraseCookie('memberId')
     deleteUserInfo()
     router.replace('/')
-  }
-
-  const handleNotification = () => {
-    setIsNotificationOpen(!isNotificationOpen)
   }
 
   const toggleProfileDropdown = () => {
