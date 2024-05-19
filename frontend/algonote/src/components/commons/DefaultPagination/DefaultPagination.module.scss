@@ -1,10 +1,11 @@
-// components/commons/Pagination/Pagination.module.scss
+
 
 .pagination {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 8rem 0;
+    margin: 5rem 0;
+    width: 100%;
   
     button {
       margin: 0 5px;
@@ -12,7 +13,7 @@
       background-color: var(--white);
       cursor: pointer;
       width: 3rem;
-    height: 3rem;
+      height: 3rem;
       
       &:disabled {
         cursor: not-allowed;
