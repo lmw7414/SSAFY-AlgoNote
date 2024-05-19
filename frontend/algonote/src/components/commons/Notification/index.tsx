@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useRouter } from 'next/router'
 import s from './Notification.module.scss'
 import {
@@ -34,7 +34,7 @@ const Notification = ({
   const [notifications, setNotifications] = useState<Array<NotificationType>>(
     [],
   )
-
+  const modalRef = useRef<HTMLDivElement>(null)
   const router = useRouter()
 
   useEffect(() => {
@@ -53,6 +53,23 @@ const Notification = ({
       setIsNotReadNoti(true)
     }
   }, [notifications])
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        modalRef.current &&
+        !modalRef.current.contains(event.target as Node)
+      ) {
+        setIsNotificationOpen(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [setIsNotificationOpen])
 
   const clickNotification = async (
     type: string,
@@ -89,7 +106,7 @@ const Notification = ({
   }
 
   return (
-    <div className={s.container}>
+    <div className={s.container} ref={modalRef}>
       <div className={s.header}>
         <p className={s.title}>알림</p>
       </div>
