@@ -321,7 +321,7 @@ const Note = () => {
 
         <div className={style.reviewsContainer}>
           <div className={style.reviewsConTainerTitle}>
-            <span>리뷰 </span>
+            <span>댓글 </span>
             <span>{reviews?.length} </span>
           </div>
           {reviews?.map((review) => (
@@ -330,8 +330,9 @@ const Note = () => {
                 <Image
                   src={review.member.profileImg} // 이미지 경로
                   alt="profile-image"
-                  width={60}
-                  height={80}
+                  width={45}
+                  height={60}
+                  style={{ objectFit: 'cover' }}
                 />
               </div>
               <div className={style.reviewContentSection}>
@@ -398,8 +399,9 @@ const Note = () => {
                 <Image
                   src={userDetails?.profileImg ?? ''} // 이미지 경로
                   alt="profile-image"
-                  width={60}
-                  height={80}
+                  width={45}
+                  height={60}
+                  style={{ objectFit: 'cover' }}
                 />
               </div>
               <input
