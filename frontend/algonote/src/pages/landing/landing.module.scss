@@ -37,12 +37,17 @@
   height: 55px;
   padding: 10px 20px;
   background-color: var(--black);
-  color: var(--white);
+
   border-radius: 20px;
   cursor: pointer;
   font-weight: 600;
   border: none;
   transition: background-color 0.5s;
+
+  a {
+    text-decoration: none;
+    color: var(--white);
+  }
 }
 
 .startButton:hover {

@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import styles from './landing.module.scss'
 import NavBar from '@/components/commons/NavBar'
 import { getCookie } from '@/utils/cookie'
+import Link from 'next/link'
 
 const Home = () => {
   const router = useRouter()
@@ -40,7 +41,14 @@ const Home = () => {
               <span className={styles.emphasis}> 1:1 코드 배틀</span>
             </p>
           </div>
-          <div className={styles.startButton}>지금 알고노트 시작하기</div>
+          <div className={styles.startButton}>
+            <Link
+              href="https://chromewebstore.google.com/detail/jjejbifejcmbnabfpopimjabliklkfbg"
+              target="_blank"
+            >
+              지금 알고노트 시작하기
+            </Link>
+          </div>
           <div className={styles.warning}>
             <p>* 알고노트를 이용하기 위해 Chrome 브라우저를 이용해주세요.</p>
           </div>
