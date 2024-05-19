@@ -32,7 +32,7 @@ const NoteSearch = () => {
   useEffect(() => {
     resetSearch()
     const fetchData = async () => {
-      const response = await getFullNote()
+      const response = await getFullNote(0, 401)
       setSearchResult(response)
     }
 
