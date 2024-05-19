@@ -3,8 +3,10 @@ import { NextRouter, useRouter } from 'next/router'
 import styles from './Note.module.scss'
 import { bookmarkListApi } from '@/apis/bookmarkAxios'
 import DefaultPagination from '@/components/commons/DefaultPagination'
+// import { onSearchResult } from '@/components/commons/SearchInput'
 import TierImg from '@/components/commons/Tier'
 import useFilterStore from '@/stores/filter-store'
+// import { useSearchResult } from '@/stores/search-store'
 
 interface Note {
   id: number
@@ -61,7 +63,7 @@ const Notes = () => {
 
   const router = useRouter()
 
-  const itemsPerPage = 16
+  const itemsPerPage = 20
   const [currentPage, setCurrentPage] = useState(1)
   const indexOfLastNote = currentPage * itemsPerPage
   const indexOfFirstNote = indexOfLastNote - itemsPerPage
@@ -143,7 +145,7 @@ const Notes = () => {
       </div>
       <div className={styles.pagination}>
         <DefaultPagination
-          totalItems={currentNotes.length}
+          totalItems={filteredBookmarks.length}
           itemsPerPage={itemsPerPage}
           currentPage={currentPage}
           onPageChange={handlePageChange}

@@ -41,7 +41,7 @@ const ResultNote = () => {
   }
 
   // 페이지네이션 관련 부분
-  const itemsPerPage = 16
+  const itemsPerPage = 20
   const [currentPage, setCurrentPage] = useState(1)
   const indexOfLastNote = currentPage * itemsPerPage
   const indexOfFirstNote = indexOfLastNote - itemsPerPage
