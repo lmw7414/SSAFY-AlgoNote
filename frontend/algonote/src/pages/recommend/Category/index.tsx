@@ -191,6 +191,7 @@ const Category = ({ categoryName }: CategoryProps) => {
                   href={`https://www.acmicpc.net/problem/${problem.id}`}
                   key={problem.id}
                   style={{ textDecoration: 'none', color: 'black' }}
+                  target="_blank"
                 >
                   <div className={s.problem}>
                     <QuestionListRec
