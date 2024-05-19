@@ -104,12 +104,12 @@
   top: 100%;
   right: 50;
   background-color: #fff;
-  border-radius: 10px;
+  border-radius: 0.4rem;
   border: 1px solid #eaeaea;
   z-index: 10;
   width: 8rem;
   text-align: center;
-  padding: 0.5rem;
+  padding: 0.2rem;
 
   a {
     text-decoration: none;
@@ -120,14 +120,18 @@
   }
 
   p {
-    padding: 10px;
+    border-radius: 0.4rem;
+    padding: 1rem 0;
     cursor: pointer;
     font-weight: 500;
     height: 1.5rem;
-    vertical-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   button {
+    border-radius: 0.4rem;
     padding-top: 0.3rem;
     padding-bottom: 0.3rem;
     width: 100%;

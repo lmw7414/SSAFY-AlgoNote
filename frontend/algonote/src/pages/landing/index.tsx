@@ -36,10 +36,6 @@ const Home = () => {
               · 간편한 정리노트 <span className={styles.emphasis}>템플릿</span>{' '}
               제공
             </p>
-            <p>
-              · 혼자 풀기 심심할 땐
-              <span className={styles.emphasis}> 1:1 코드 배틀</span>
-            </p>
           </div>
           <div className={styles.startButton}>
             <Link

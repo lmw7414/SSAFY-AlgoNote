@@ -66,7 +66,7 @@ const ChatBot = () => {
 
   return (
     <div className={s.container}>
-      <h4>Doraemong</h4>
+      <h4>AlgoBot</h4>
       <div>
         <div id="chatContainer" className={s.answerCont}>
           {chats.map((chat) => (

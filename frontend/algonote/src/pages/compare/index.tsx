@@ -37,6 +37,7 @@ const ComparePage = () => {
     problemId: 0,
   })
   const codes = useCodeInfo((state) => state.codes)
+  const { resetCodes } = useCodeInfo()
   const [language, setLanguage] = useState<string>('java')
   const [inputData, setInputData] = useState<string>('')
   const [expectedOutput, setExpectedOutput] = useState<string>('')
@@ -48,6 +49,7 @@ const ComparePage = () => {
     }
 
     fetchData()
+    resetCodes()
   }, [])
 
   useEffect(() => {
@@ -75,11 +77,11 @@ const ComparePage = () => {
     setLanguage(event.target.value)
   }
 
-  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setInputData(event.target.value)
   }
 
-  const handleOutputChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleOutputChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setExpectedOutput(event.target.value)
   }
 
@@ -121,15 +123,13 @@ const ComparePage = () => {
               <option value="c">C</option>
               <option value="cpp">C++</option>
             </select>
-            <input
-              type="text"
+            <textarea
               placeholder="테스트 케이스 입력"
               value={inputData}
               onChange={handleInputChange}
               className={style.insert}
             />
-            <input
-              type="text"
+            <textarea
               placeholder="예상 출력 결과"
               value={expectedOutput}
               onChange={handleOutputChange}
