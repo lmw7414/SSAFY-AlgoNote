@@ -51,9 +51,9 @@
  **FrontEnd**
 
 
-<img alt="typescript" src="https://img.shields.io/badge/typescript-3178C6.svg?&style=for-the-badge&logo=TypeScript&logoColor=#3178C6">
+<img alt="typescript" src="https://img.shields.io/badge/typescript-3178C6.svg?&style=for-the-badge&logo=TypeScript&logoColor=white">
 <img alt="next.js" src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=Next.js&logoColor=white">
-
+<img alt="zustand" src="https://img.shields.io/badge/zustand-%2320232a.svg?style=for-the-badge&logo=Next.js&logoColor=%2361DAFB">
 
  **DataBase**
 
@@ -78,7 +78,7 @@
 
 # ⚙ 시스템 아키텍쳐
 
-<img src="./asset/system_architecture.png"/>
+<img src="./exec/asset/system_architecture.png"/>
 
 <br>
 
