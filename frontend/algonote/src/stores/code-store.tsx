@@ -5,6 +5,7 @@ interface CodeType {
   updateIndex: number
   updateCodes: (index: number, newCode: string) => void
   setUpdateIndex: (index: number) => void
+  resetCodes: () => void
 }
 
 const useCodeInfo = create<CodeType>((set) => ({
@@ -17,6 +18,10 @@ const useCodeInfo = create<CodeType>((set) => ({
       return { codes: newCodes }
     }),
   setUpdateIndex: (index) => set({ updateIndex: index }),
+  resetCodes: () =>
+    set({
+      codes: [' ', ' '],
+    }),
 }))
 
 export default useCodeInfo
