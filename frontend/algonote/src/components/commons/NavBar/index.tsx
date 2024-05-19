@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -17,6 +17,8 @@ const NavBar = () => {
   const [isNotReadNoti, setIsNotReadNoti] = useState(false)
   const [isImageLoaded, setIsImageLoaded] = useState(false)
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false)
+
+  const modalRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -62,6 +64,22 @@ const NavBar = () => {
       setIsNotificationOpen(false)
     }
   }, [url])
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        modalRef.current &&
+        !modalRef.current.contains(event.target as Node)
+      ) {
+        setIsProfileDropdownOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [setIsProfileDropdownOpen])
 
   const logout = async () => {
     await eraseCookie('access_token')
@@ -159,7 +177,7 @@ const NavBar = () => {
               />
             </div>
             {isProfileDropdownOpen && (
-              <div className={styles.profileDropdown}>
+              <div className={styles.profileDropdown} ref={modalRef}>
                 <Link href="/member">
                   <p>마이페이지</p>
                 </Link>
