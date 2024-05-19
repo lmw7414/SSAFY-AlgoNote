@@ -71,11 +71,6 @@ public class RecommendService {
     public RecommendGroupDto recommendByTags(Long memberId, String group, int page, int size){
         RecommendGroupDto groupDto = problemRepository.findSolvedProblemIdByGroup(memberId, group);
 
-        JsonNode node = getJsonNodeByTag(groupDto);
-        for(JsonNode returnDto : node){
-            returnDto
-            log.info("tag: {}", tag);
-        }
         return groupDto;
     }
 
