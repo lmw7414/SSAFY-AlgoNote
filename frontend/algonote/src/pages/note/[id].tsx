@@ -21,7 +21,7 @@ import EditorInNoteDetail from '@/components/commons/Editor/detail'
 import { dictionary } from '@/components/commons/QuestionList'
 import TierImg from '@/components/commons/Tier'
 import style from '@/pages/note/note.module.scss'
-import useNoteStore from '@/stores/note-store'
+// import useNoteStore from '@/stores/note-store'
 
 interface Member {
   memberId: number
@@ -83,7 +83,7 @@ const Note = () => {
   const [userDetails, setUserDetails] = useState<UserInfo | null>(null)
   const [updateId, setUpdateId] = useState<number | null>(null)
   const [updating, setUpdating] = useState(false)
-  const { setSelectedNoteData } = useNoteStore()
+  // const { setSelectedNoteData } = useNoteStore()
 
   const handleBookmark = async () => {
     const response = await bookmarkButtonApi(id as string)
@@ -94,30 +94,6 @@ const Note = () => {
     const response = await likeApi(id as string)
     if (response.status === 200) {
       setLikeIsOff(response.data.hearted)
-
-      // 좋아요
-      if (response.data.hearted) {
-        setNoteDetail((prevDetail) => {
-          if (prevDetail) {
-            return {
-              ...prevDetail,
-              heartCnt: prevDetail.heartCnt + 1,
-            }
-          }
-          return prevDetail
-        })
-      } else {
-        // 좋아요 취소
-        setNoteDetail((prevDetail) => {
-          if (prevDetail) {
-            return {
-              ...prevDetail,
-              heartCnt: prevDetail.heartCnt - 1,
-            }
-          }
-          return prevDetail
-        })
-      }
     }
   }
 
@@ -232,11 +208,11 @@ const Note = () => {
     setNewComment(newValue)
   }
 
-  // 노트 수정
-  const handleReviseNote = () => {
-    setSelectedNoteData(noteDetail || null)
-    router.push('/revisenote')
-  }
+  // // 노트 수정
+  // const handleReviseNote = () => {
+  //   setSelectedNoteData(noteDetail || null)
+  //   router.push('/revisenote')
+  // }
 
   // 노트 삭제
   const handleDeleteNote = () => {
@@ -283,10 +259,10 @@ const Note = () => {
               <div className={style.noteWriter}>
                 {noteDetail?.member.nickname}{' '}
               </div>
-              <div className={style.noteCreatedDay}> | {formattedDate}</div>
+              <div className={style.noteCreatedDay}> · {formattedDate}</div>
             </div>
             <div className={style.buttonSection}>
-              <SimpleButton
+              {/* <SimpleButton
                 text="수정"
                 onClick={handleReviseNote}
                 style={{
@@ -297,7 +273,7 @@ const Note = () => {
                   color: '#b9b9b9',
                   border: 'none',
                 }}
-              />
+              /> */}
               <SimpleButton
                 text="삭제"
                 onClick={handleDeleteNote}
@@ -345,7 +321,7 @@ const Note = () => {
 
         <div className={style.reviewsContainer}>
           <div className={style.reviewsConTainerTitle}>
-            <span>댓글 </span>
+            <span>리뷰 </span>
             <span>{reviews?.length} </span>
           </div>
           {reviews?.map((review) => (
@@ -354,9 +330,8 @@ const Note = () => {
                 <Image
                   src={review.member.profileImg} // 이미지 경로
                   alt="profile-image"
-                  width={45}
-                  height={60}
-                  style={{ objectFit: 'cover' }}
+                  width={60}
+                  height={80}
                 />
               </div>
               <div className={style.reviewContentSection}>
@@ -423,9 +398,8 @@ const Note = () => {
                 <Image
                   src={userDetails?.profileImg ?? ''} // 이미지 경로
                   alt="profile-image"
-                  width={45}
-                  height={60}
-                  style={{ objectFit: 'cover' }}
+                  width={60}
+                  height={80}
                 />
               </div>
               <input
