@@ -42,12 +42,17 @@
         margin: 0 12.5%;
         justify-content: space-between;
 
+        .insertBox{
+          display: flex;
+          justify-content: flex-end;
+        }
+
         .insert{
             height: 3rem;
             width: 12.5rem;
             border-radius: 0.5rem;
             padding: 0.5rem 0.5rem;
-            margin-right: 0.625rem;
+            margin-left: 0.625rem;
             border: 2px solid var(--blue);
         }
 

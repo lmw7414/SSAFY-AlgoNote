@@ -95,32 +95,6 @@ const ComparePage = () => {
       </div>
       <div className={style.element}>
         <div>
-          <div className={style.insertBox}>
-            <select
-              value={language}
-              onChange={handleLanguageChange}
-              className={style.insert}
-            >
-              <option value="java">Java</option>
-              <option value="py">Python</option>
-              <option value="c">C</option>
-              <option value="cpp">C++</option>
-            </select>
-            <input
-              type="text"
-              placeholder="입력 데이터"
-              value={inputData}
-              onChange={handleInputChange}
-              className={style.insert}
-            />
-            <input
-              type="text"
-              placeholder="예상 출력 결과"
-              value={expectedOutput}
-              onChange={handleOutputChange}
-              className={style.insert}
-            />
-          </div>
           <div className={style.compareButtons}>
             <div className={style.compareButton}>
               <CodeSelectButton setIsModalOpened={setIsModalOpened} index={0} />
@@ -134,6 +108,32 @@ const ComparePage = () => {
               oldValue={codes[0]}
               newValue={codes[1]}
               compareMethod={DiffMethod.WORDS}
+            />
+          </div>
+          <div className={style.insertBox}>
+            <select
+              value={language}
+              onChange={handleLanguageChange}
+              className={style.insert}
+            >
+              <option value="java">Java</option>
+              <option value="py">Python</option>
+              <option value="c">C</option>
+              <option value="cpp">C++</option>
+            </select>
+            <input
+              type="text"
+              placeholder="테스트 케이스 입력"
+              value={inputData}
+              onChange={handleInputChange}
+              className={style.insert}
+            />
+            <input
+              type="text"
+              placeholder="예상 출력 결과"
+              value={expectedOutput}
+              onChange={handleOutputChange}
+              className={style.insert}
             />
           </div>
           <div>
