@@ -200,7 +200,7 @@ const QuestionList = ({
   }
 
   const handleViewNote = () => {
-    router.push('/mynote')
+    router.push(`/folder/${id}`)
   }
 
   return (

@@ -259,7 +259,7 @@ const Note = () => {
               <div className={style.noteWriter}>
                 {noteDetail?.member.nickname}{' '}
               </div>
-              <div className={style.noteCreatedDay}> · {formattedDate}</div>
+              <div className={style.noteCreatedDay}> | {formattedDate}</div>
             </div>
             <div className={style.buttonSection}>
               <SimpleButton

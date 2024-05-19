@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import s from './Folder.module.scss'
 import TextCarousel from './TextCarousel'
 import { Bronze, Silver, Gold, Platinum, Diamond, Ruby } from './Tiers'
@@ -19,6 +20,19 @@ interface FolderProps {
 }
 const Folder = ({ tier, problemId, problemTitle, notes }: FolderProps) => {
   const newTier = tier
+  const router = useRouter()
+  const goFolderPage = () => {
+    // notes 배열을 JSON 문자열로 변환
+    const queryData = JSON.stringify(notes)
+    router.push({
+      pathname: `/folder/${problemId}`,
+      query: { notes: queryData, tier, problemTitle },
+    })
+  }
+
+  const onKey = () => {
+    console.log('온키')
+  }
   return (
     <div className={s.wrapper}>
       <div className={s.tierContainer}>
@@ -55,7 +69,12 @@ const Folder = ({ tier, problemId, problemTitle, notes }: FolderProps) => {
         ) : null}
       </div>
       <div className={s.container}>
-        <div className={s.top}>
+        <div
+          className={s.top}
+          onClick={goFolderPage}
+          onKeyDown={onKey}
+          role="presentation"
+        >
           <p className={s.problemId}>백준 {problemId}</p>
           <p className={s.problemTitle}>{problemTitle}</p>
         </div>
