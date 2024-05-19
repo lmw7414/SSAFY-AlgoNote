@@ -134,7 +134,7 @@
 
 | 이민우           | 김성재   | 김희수   | 김성현  | 이은규 | 조은영  |
 | ----------------- | -------- | -------- | ------- | ------- | ------- |
-|  | | |  |  |  |
+|  ![alt text](./exec/asset/이민우.png)| ![alt text](./exec/asset/김성재.png)|![alt text](./exec/asset/김희수.png) |![alt text](./exec/asset/김성현.png)  | ![alt text](./exec/asset/이은규.png) | ![alt text](./exec/asset/조은영.png) |
 | Leader & Backend | Backend | Backend | Frontend | Frontend | Frontend |
 
 
