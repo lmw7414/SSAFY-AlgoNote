@@ -30,7 +30,9 @@ const App = ({ Component, pageProps }: AppProps) => {
       )}
       <Component {...pageProps} />
       {isLoggedIn ? <SSE /> : null}
-      {router.pathname !== '/writenote' && router.pathname !== '/revisenote' ? (
+      {router.pathname !== '/writenote' &&
+      router.pathname !== '/revisenote' &&
+      router.pathname !== '/landing' ? (
         <Footer />
       ) : null}
     </>
