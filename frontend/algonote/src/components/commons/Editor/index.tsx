@@ -66,6 +66,10 @@ export default function App() {
 
   useEffect(() => {
     console.log('tab 업데이트 ')
+    console.log('내용', currentTab?.content)
+    console.log('selectedNoteData', selectedNoteData)
+
+    console.log('currentTab: ', currentTab)
   }, [currentTab?.content, tabs])
 
   return (

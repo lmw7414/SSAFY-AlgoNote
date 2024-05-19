@@ -2,7 +2,12 @@
     width: 23.8%;
     min-width: 12rem;
     margin-bottom: 1rem;
+    transition: all 0.3s;
+}
 
+.wrapper:hover {
+    transform: scale(1.02);
+    cursor: pointer;
 }
 
 .tierContainer {

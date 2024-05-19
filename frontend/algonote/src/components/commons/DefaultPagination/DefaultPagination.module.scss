@@ -1,0 +1,30 @@
+
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 5rem 0;
+    width: 100%;
+  
+    button {
+      margin: 0 5px;
+      padding: 5px 10px;
+      background-color: var(--white);
+      cursor: pointer;
+      width: 3rem;
+      height: 3rem;
+      
+      &:disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+      }
+      
+      &.active {
+        background-color: var(--blue);
+        color: var(--white);
+        border-color: var(--blue);
+      }
+    }
+  }
+  

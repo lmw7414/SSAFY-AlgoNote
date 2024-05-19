@@ -62,7 +62,7 @@ const Wave = ({ type, date }: WaveProps) => {
   return (
     <div className={styles.box}>
       <div className={styles.type}>{typeName}</div>
-      {dateDif === 19855 ? (
+      {dateDif >= 19855 ? (
         <p className={styles.validation}>푼 적이 없어요</p>
       ) : dateDif > 15 ? (
         <div className={styles.validation}>

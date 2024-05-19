@@ -94,6 +94,30 @@ const Note = () => {
     const response = await likeApi(id as string)
     if (response.status === 200) {
       setLikeIsOff(response.data.hearted)
+
+      // 좋아요
+      if (response.data.hearted) {
+        setNoteDetail((prevDetail) => {
+          if (prevDetail) {
+            return {
+              ...prevDetail,
+              heartCnt: prevDetail.heartCnt + 1,
+            }
+          }
+          return prevDetail
+        })
+      } else {
+        // 좋아요 취소
+        setNoteDetail((prevDetail) => {
+          if (prevDetail) {
+            return {
+              ...prevDetail,
+              heartCnt: prevDetail.heartCnt - 1,
+            }
+          }
+          return prevDetail
+        })
+      }
     }
   }
 
@@ -259,7 +283,7 @@ const Note = () => {
               <div className={style.noteWriter}>
                 {noteDetail?.member.nickname}{' '}
               </div>
-              <div className={style.noteCreatedDay}> · {formattedDate}</div>
+              <div className={style.noteCreatedDay}> | {formattedDate}</div>
             </div>
             <div className={style.buttonSection}>
               <SimpleButton
@@ -321,7 +345,7 @@ const Note = () => {
 
         <div className={style.reviewsContainer}>
           <div className={style.reviewsConTainerTitle}>
-            <span>리뷰 </span>
+            <span>댓글 </span>
             <span>{reviews?.length} </span>
           </div>
           {reviews?.map((review) => (
@@ -330,8 +354,9 @@ const Note = () => {
                 <Image
                   src={review.member.profileImg} // 이미지 경로
                   alt="profile-image"
-                  width={60}
-                  height={80}
+                  width={45}
+                  height={60}
+                  style={{ objectFit: 'cover' }}
                 />
               </div>
               <div className={style.reviewContentSection}>
@@ -398,8 +423,9 @@ const Note = () => {
                 <Image
                   src={userDetails?.profileImg ?? ''} // 이미지 경로
                   alt="profile-image"
-                  width={60}
-                  height={80}
+                  width={45}
+                  height={60}
+                  style={{ objectFit: 'cover' }}
                 />
               </div>
               <input

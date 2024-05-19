@@ -48,15 +48,15 @@ const ExecuteResult = ({
   const [correctColor, incorrectColor] = ['#3c87fe', '#fb4444']
 
   useEffect(() => {
-    if (inputData.length === 0 || expectedOutput.length === 0) {
-      setInputValue({
-        isDisabled: true,
-        alertText: '상단에 입출력 데이터를 넣어주세요',
-      })
-    } else if (codes[0].length === 1 && codes[1].length === 1) {
+    if (codes[0].length === 1 && codes[1].length === 1) {
       setInputValue({
         isDisabled: true,
         alertText: '비교할 코드를 넣어주세요',
+      })
+    } else if (inputData.length === 0 || expectedOutput.length === 0) {
+      setInputValue({
+        isDisabled: true,
+        alertText: '상단에 입출력 데이터를 넣어주세요',
       })
     } else {
       setInputValue({ isDisabled: false, alertText: '' })

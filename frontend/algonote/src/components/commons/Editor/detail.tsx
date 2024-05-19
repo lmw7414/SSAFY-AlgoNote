@@ -16,8 +16,6 @@ interface EditorInNoteDetailProps {
 }
 
 const EditorInNoteDetail = ({ content }: EditorInNoteDetailProps) => {
-  console.log(123)
-
   const [noteContent, setNoteContent] = useState(content)
 
   useEffect(() => {
