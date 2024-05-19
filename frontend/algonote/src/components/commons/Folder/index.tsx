@@ -23,11 +23,7 @@ const Folder = ({ tier, problemId, problemTitle, notes }: FolderProps) => {
   const router = useRouter()
   const goFolderPage = () => {
     // notes 배열을 JSON 문자열로 변환
-    const queryData = JSON.stringify(notes)
-    router.push({
-      pathname: `/folder/${problemId}`,
-      query: { notes: queryData, tier, problemTitle },
-    })
+    router.push(`/folder/${problemId}`)
   }
 
   const onKey = () => {
