@@ -24,28 +24,25 @@ const registNote = async (
     console.log('decodedContent:', decodedContent)
 
     if (decodedTitle?.trim() !== '' || decodedContent?.trim() !== '') {
-      await axiosAuthApi()
-        .post(`/api/notes`, {
-          problemId,
-          title,
-          content,
-        })
-        .then((res) => {
-          if (res.status === 200) {
-            console.log('노트 저장 성공')
+      const res = await axiosAuthApi().post(`/api/notes`, {
+        problemId,
+        title,
+        content,
+      })
 
-            return 'success'
-          }
-          console.log('노트 저장 실패')
-          return 'fail'
-        })
-    } else {
-      console.log('제목 또는 내용 입력 안함')
+      if (res.status === 200) {
+        console.log('노트 저장 성공')
+        return 'success'
+      }
+      console.log('노트 저장 실패')
+      return 'fail'
     }
+    console.log('제목 또는 내용 입력 안함')
+    return 'fail'
   } catch (e) {
     console.log(e)
+    return 'fail'
   }
-  return 'fail'
 }
 
 const tempRegistNote = async (

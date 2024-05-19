@@ -121,16 +121,22 @@ const WriteNote = () => {
     setIsCollapsed(!isCollapsed)
   }
 
-  const handleClickButton = () => {
+  const handleClickButton = async () => {
     console.log('노트 저장 버튼 클릭')
 
-    registNote(Number(id), title, content).then((res) => {
+    try {
+      const res = await registNote(Number(id), title, content)
+
       if (res === 'success') {
         router.push('/mynote')
       } else {
+        console.log('res in writenote page: ', res)
         alert('제목 또는 내용을 입력해주세요')
       }
-    })
+    } catch (error) {
+      console.log('Error:', error)
+      alert('노트 저장에 실패했습니다.')
+    }
   }
 
   const handleTempSave = () => {
