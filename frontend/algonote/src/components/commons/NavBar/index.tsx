@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { SimpleButton } from '../Buttons/Button'
 import Notification from '../Notification'
 import styles from './NavBar.module.scss'
 import { getNotificationsApi } from '@/apis/notificationAxios'
@@ -17,6 +16,7 @@ const NavBar = () => {
   const [isNotificationOpen, setIsNotificationOpen] = useState(false)
   const [isNotReadNoti, setIsNotReadNoti] = useState(false)
   const [isImageLoaded, setIsImageLoaded] = useState(false)
+  const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false)
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -30,6 +30,7 @@ const NavBar = () => {
       }
       getNoti()
     }
+    setIsProfileDropdownOpen(false)
   }, [isLoggedIn])
 
   const router = useRouter()
@@ -48,7 +49,7 @@ const NavBar = () => {
         console.log('API 통신 오류')
         console.log(e)
       })
-  }, [isImageLoaded]) // Removed userProfile dependency to avoid unnecessary re-fetching
+  }, [isImageLoaded])
 
   useEffect(() => {
     const checkLogin = async () => {
@@ -71,6 +72,16 @@ const NavBar = () => {
 
   const handleNotification = () => {
     setIsNotificationOpen(!isNotificationOpen)
+  }
+
+  const toggleProfileDropdown = () => {
+    setIsProfileDropdownOpen(!isProfileDropdownOpen)
+  }
+
+  const handleKeyPress = (e: { key: string }) => {
+    if (e.key === 'Enter') {
+      toggleProfileDropdown()
+    }
   }
 
   return (
@@ -132,7 +143,13 @@ const NavBar = () => {
         </div>
         {isLoggedIn ? (
           <div className={styles.profileSec}>
-            <Link href="/member">
+            <div
+              className={styles.profileImageWrapper}
+              onClick={toggleProfileDropdown}
+              onKeyDown={handleKeyPress}
+              tabIndex={0}
+              role="button"
+            >
               <Image
                 src={isImageLoaded ? userProfile : '/images/logo.png'}
                 alt="Img"
@@ -140,17 +157,17 @@ const NavBar = () => {
                 height={30}
                 onLoadingComplete={() => setIsImageLoaded(true)}
               />
-            </Link>
-            <SimpleButton
-              text="로그아웃"
-              style={{
-                width: '4rem',
-                height: '2rem',
-                fontSize: '0.8rem',
-                padding: '0',
-              }}
-              onClick={logout}
-            />
+            </div>
+            {isProfileDropdownOpen && (
+              <div className={styles.profileDropdown}>
+                <Link href="/member">
+                  <p>마이페이지</p>
+                </Link>
+                <button type="button" onClick={logout}>
+                  로그아웃
+                </button>
+              </div>
+            )}
           </div>
         ) : (
           <div className={styles.loginSec}>
