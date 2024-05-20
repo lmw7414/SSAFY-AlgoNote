@@ -158,7 +158,7 @@
 |  ![alt text](./exec/asset/이민우.png)| ![alt text](./exec/asset/김성재.png)|![alt text](./exec/asset/김희수.png) |![alt text](./exec/asset/김성현.png)  | ![alt text](./exec/asset/이은규.png) | ![alt text](./exec/asset/조은영.png) |
 | Leader & Backend | Backend | Backend & Infra | Frontend | Frontend | Frontend |
 
-### 이민우
+### 이민우 BE DATA 
 - 노트 작성 기능
 - C언어, C++, Java, Python 등 다양한 언어를 지원하는 코드 분석 서버 개발
 - 제출 이력 관리
