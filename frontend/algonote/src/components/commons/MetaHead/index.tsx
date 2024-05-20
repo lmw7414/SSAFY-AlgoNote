@@ -19,6 +19,10 @@ const MetaHead = ({
       <meta property="og:description" content={description} />
       <meta property="og:image" content={image} />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <meta
+        name="google-site-verification"
+        content="orGf2AsBPWGGpcuzv3_LwDYQl-GDxrDxrYWEO5KPFu4"
+      />
       <link rel="icon" href="/favicon.ico" />
     </Head>
   )
