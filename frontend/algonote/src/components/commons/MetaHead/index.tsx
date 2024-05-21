@@ -9,7 +9,7 @@ export interface MetaType {
 const MetaHead = ({
   title = 'Algonote',
   description = '균형잡힌 알고리즘 공부 알고노트로 시작하세요',
-  image = '/images/longLogo.png',
+  image = '/images/loginLogo.png',
 }: MetaType) => {
   return (
     <Head>

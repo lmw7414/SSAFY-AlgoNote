@@ -74,6 +74,7 @@ const Main = () => {
       <MetaHead
         title="균형잡힌 알고리즘 공부 알고노트로 시작하세요"
         description="수준별 문제 추천과 간단한 정리노트 템플릿 제공"
+        image="/images/loginLogo"
       />
       <main className={s.main}>
         <div className={s.header}>
