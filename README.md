@@ -50,40 +50,49 @@
 **Algonote - 코딩테스트의 모든 것, 여기에서 시작됩니다.**
 
 
-
+<br>
 <br>
 
 # 💡 주요 기능
 ### 크롬 익스텐션
 - 백준에 풀이를 제출하면 코드, 소요시간, 점유한 메모리, 작성언어에 대한 정보를 가져와요.
+<br>
 
 ### 오답노트 작성
 - 크롬 익스텐션에서 가져온 제출이력을 볼 수 있어요.
 <img src="./exec/asset/노트작성-제출이력.png">
 - 해당 제출이력을 바탕으로 오답노트를 작성할 수 있어요.
 <img src="./exec/asset/노트작성-마크다운.png">
+[문제 제출, 노트 작성 화면]
 ![문제제출,노트작성](https://github.com/laidbackGuy/Algorithm/assets/139303875/d8e9e2e0-2820-4994-b5af-b5e152b6d84c)
+<br>
 
 ### GPT-4o 챗봇
 - 궁금한 내용은 챗봇에게 물어볼 수 있어요. 
 <img src="./exec/asset/챗봇.png">
+[챗봇 이용 화면]
 ![챗봇](https://github.com/laidbackGuy/Algorithm/assets/139303875/5e9d732b-1403-41a3-a8c2-9035c570515f)
+<br>
 
 ### 맞춤형 문제 추천
 - 협업필터링 기반 알고리즘인 Bayseian Personalized Ranking 사용하여 개인화된 문제 추천시스템을 실현했어요.
 <img src="./exec/asset/추천시스템.png">
+<br>
 
 ### 취약 알고리즘 분석
 - 푼지 오래된 문제 유형을 확인할 수 있어요.
 - 이를 통해, 다양한 문제 유형에 대해 꾸준히 학습하세요.
 <img src="./exec/asset/취약알고리즘.png">
+[로그인, 푼 문제 분석, 취약 알고리즘 분석, 문제 추천 화면]
 ![로그인,메인,문제추천](https://github.com/laidbackGuy/Algorithm/assets/139303875/c4f4556c-b84e-4003-ad66-85882ba16043)
+<br>
 
 ### 코드 비교 분석
 - 코드를 비교 분석해서 어떤 코드가 더 효율적인지 비교할 수 있어요.
-<img src="./exec/asset/코드비교분석.png">
+[코드 비교 분석 화면]
 ![코드비교](https://github.com/laidbackGuy/Algorithm/assets/139303875/c18489c9-c8d0-4d9d-b308-dda2d8e83e71)
 
+<br>
 <br>
 
 # 부가 기능
