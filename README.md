@@ -62,10 +62,12 @@
 <img src="./exec/asset/노트작성-제출이력.png">
 - 해당 제출이력을 바탕으로 오답노트를 작성할 수 있어요.
 <img src="./exec/asset/노트작성-마크다운.png">
+![문제제출,노트작성](https://github.com/laidbackGuy/Algorithm/assets/139303875/d8e9e2e0-2820-4994-b5af-b5e152b6d84c)
 
 ### GPT-4o 챗봇
 - 궁금한 내용은 챗봇에게 물어볼 수 있어요. 
 <img src="./exec/asset/챗봇.png">
+![챗봇](https://github.com/laidbackGuy/Algorithm/assets/139303875/5e9d732b-1403-41a3-a8c2-9035c570515f)
 
 ### 맞춤형 문제 추천
 - 협업필터링 기반 알고리즘인 Bayseian Personalized Ranking 사용하여 개인화된 문제 추천시스템을 실현했어요.
@@ -75,11 +77,29 @@
 - 푼지 오래된 문제 유형을 확인할 수 있어요.
 - 이를 통해, 다양한 문제 유형에 대해 꾸준히 학습하세요.
 <img src="./exec/asset/취약알고리즘.png">
-
+![로그인,메인,문제추천](https://github.com/laidbackGuy/Algorithm/assets/139303875/c4f4556c-b84e-4003-ad66-85882ba16043)
 
 ### 코드 비교 분석
 - 코드를 비교 분석해서 어떤 코드가 더 효율적인지 비교할 수 있어요.
 <img src="./exec/asset/코드비교분석.png">
+![코드비교](https://github.com/laidbackGuy/Algorithm/assets/139303875/c18489c9-c8d0-4d9d-b308-dda2d8e83e71)
+
+<br>
+
+# 부가 기능
+### 랜딩, 크롬 웹스토어
+- 서비스 소개 랜딩 페이지에서 로그인, 회원가입이 가능해요.
+- 크롬 익스텐션을 다운로드할 수 있는 크롬 웹스토어로 이동할 수 있어요.
+![랜딩, 크롬웹스토어3](https://github.com/laidbackGuy/Algorithm/assets/139303875/84f5508d-4ae3-42c4-912d-6547d741372d)
+
+### 노트 검색, 필터링
+- 노트를 유형, 난이도 별로 필터링하고 검색이 가능해요.
+![노트검색,필터링](https://github.com/laidbackGuy/Algorithm/assets/139303875/abea829a-4ba9-4441-9bcb-008a79df6229)
+
+### 알림
+- 실시간 알림 팝업창을 클릭하면 해당 내용으로 이동해요.
+- 네비게이션 바 알림 아이콘을 통해 알림 내역을 확인할 수 있어요.
+![알림클릭이동,댓글](https://github.com/laidbackGuy/Algorithm/assets/139303875/0267e68d-e969-44e5-8e93-79cf1cb9e660)
 
 
 
