@@ -80,7 +80,7 @@
 ### 코드 비교 분석
 - 코드를 비교 분석해서 어떤 코드가 더 효율적인지 비교할 수 있어요.
 <img src="./exec/asset/코드비교분석.png">
-
+![코드비교](https://github.com/laidbackGuy/Algorithm/assets/139303875/c18489c9-c8d0-4d9d-b308-dda2d8e83e71)
 
 
 
