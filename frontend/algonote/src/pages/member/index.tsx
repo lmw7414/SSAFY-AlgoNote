@@ -1,12 +1,14 @@
 import React, { useEffect, useState, useRef } from 'react'
+import { GetServerSideProps } from 'next'
 import Image from 'next/image'
 import { LuPencil } from 'react-icons/lu'
 import { MdOutlineEmail } from 'react-icons/md'
 import style from './member.module.scss'
 import { nameChange, imageChange } from '@/apis/info-changeAxios'
-import myInfo from '@/apis/user-infoAxios'
+import myInfo from '@/apis/ssr-user-infoAxios'
 import { nicknameDupCheckApi } from '@/apis/userAxios'
 import { SimpleButton } from '@/components/commons/Buttons/Button'
+import { getCookie } from '@/utils/cookie'
 
 interface UserInfo {
   memberId: number
@@ -20,9 +22,15 @@ interface NicknameValidation {
   status: boolean
 }
 
-const User = () => {
+interface UserProps {
+  initialUserDetails: UserInfo | null
+}
+
+const User = ({ initialUserDetails }: UserProps) => {
   // useState를 null 가능한 UserInfo 타입으로 설정
-  const [userDetails, setUserDetails] = useState<UserInfo | null>(null)
+  const [userDetails, setUserDetails] = useState<UserInfo | null>(
+    initialUserDetails,
+  )
   const [nicknameState, setNicknameState] = useState<NicknameValidation>({
     value: '',
     status: false,
@@ -121,22 +129,6 @@ const User = () => {
   }
 
   useEffect(() => {
-    const fetchMyInfo = async () => {
-      try {
-        const response = await myInfo()
-        // API 응답을 상태에 저장하기 전에 형식이 맞는지 확인
-        if (response && typeof response === 'object') {
-          setUserDetails(response.data)
-        }
-      } catch (error) {
-        console.error('내 정보 가져오기 실패:', error)
-      }
-    }
-
-    fetchMyInfo()
-  }, [])
-
-  useEffect(() => {
     const idRegExp = /^[^\s]{2,14}$/
     const isLengthLimited = nickname && !idRegExp.test(nickname)
 
@@ -224,6 +216,35 @@ const User = () => {
       </div>
     </div>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  try {
+    const { req } = context
+    const cookie = cookie.parse(req.headers.cookie || '')
+    const response = await myInfo()
+    // API 응답을 상태에 저장하기 전에 형식이 맞는지 확인
+    console.log('응답', response)
+    if (response && typeof response === 'object') {
+      return {
+        props: {
+          initialUserDetails: response.data,
+        },
+      }
+    }
+    return {
+      props: {
+        initialUserDetails: null,
+      },
+    }
+  } catch (error) {
+    console.error('내 정보 가져오기 실패:', error)
+    return {
+      props: {
+        initialUserDetails: null,
+      },
+    }
+  }
 }
 
 export default User
